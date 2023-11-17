@@ -84,7 +84,8 @@ contract ZKubeTest is Test {
     function testConcrete_getBlock() public {
         uint256 stake = 1 ether;
         uint8 interval = 10;
-        uint256 id = _createGame(player1, interval, 20, stake);
+        uint16 numberOfRounds = 20; 
+        uint256 id = _createGame(player1, interval, numberOfRounds, stake);
 
         vm.prank(player2);
         zKube.joinGame{value: stake}(id);
@@ -92,13 +93,13 @@ contract ZKubeTest is Test {
 
         (,,,,, uint72 startingBlock,) = zKube.games(id);
 
-        assertEq(zKube.exposed_getBlock(interval, startingBlock), 10);
+        assertEq(zKube.exposed_getBlock(interval, startingBlock, numberOfRounds), 10);
     }
 
     function testFuzz_getBlock(uint256 jump) public {
         uint256 stake = 1 ether;
         uint8 interval = 10;
-        uint256 numberOfTurns = 20;
+        uint16 numberOfTurns = 20;
 
         vm.assume(jump > 10 && jump < interval * numberOfTurns);
         uint256 id = _createGame(player1, interval, 20, stake);
@@ -110,9 +111,30 @@ contract ZKubeTest is Test {
         (,,,,, uint72 startingBlock,) = zKube.games(id);
         uint256 expectedBlockNumber = block.number - block.number % interval;
 
-        assertEq(zKube.exposed_getBlock(interval, startingBlock), expectedBlockNumber);
-        assertTrue(zKube.exposed_getBlock(interval, startingBlock) % interval == 0);
+        assertEq(zKube.exposed_getBlock(interval, startingBlock, numberOfTurns), expectedBlockNumber);
+        assertTrue(zKube.exposed_getBlock(interval, startingBlock, numberOfTurns) % interval == 0);
     }
+
+    function testFuzz_submitPuzzle_reverts_ifGameFinished(uint256 jump) public {
+        uint256 stake = 1 ether;
+        uint8 interval = 10;
+        uint16 numberOfTurns = 20;
+
+        
+        uint256 id = _createGame(player1, interval, 20, stake);
+
+        vm.prank(player2);
+        zKube.joinGame{value: stake}(id);
+
+        vm.assume(jump >= interval * numberOfTurns + 11 && jump < type(uint72).max);
+
+        vm.roll(jump);
+
+        (,,,,, uint72 startingBlock,) = zKube.games(id);
+        vm.expectRevert(GameFinished.selector);
+        zKube.exposed_getBlock(interval, startingBlock, numberOfTurns);
+    }
+
 
     function testConcrete_submitPuzzle_reverts_ifInvalidProof() public {
         uint256 stake = 1 ether;
@@ -146,7 +168,7 @@ contract ZKubeTest is Test {
         vm.prank(player1);
         zKube.submitPuzzle(id, publicSignals, proof);
 
-        (Player memory p1, Player memory p2, , , ,,) = zKube.games(id);
+        (Player memory p1,, , , ,,) = zKube.games(id);
 
         assertEq(p1.score, 1);
         assertEq(p1.totalBlocks, 1);

@@ -9,3 +9,4 @@ error JoiningYourOwnGame();
 error StakeNotMet();
 error InvalidProof();
 error NotValidPlayer();
+error GameFinished();

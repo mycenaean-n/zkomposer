@@ -26,6 +26,10 @@ contract ZKube is IZKube {
         _;
     }
 
+    function ifGameNotFinished (uint8 interval, uint72 startingBlock, uint16 numberOfRounds) private view {
+        if (block.number > startingBlock + interval * numberOfRounds) revert GameFinished();
+    }
+
     constructor(address verifier_) {
         verifier = verifier_;
     }
@@ -52,15 +56,16 @@ contract ZKube is IZKube {
     // The selectPuzzle view function uses previous block.hash to select the same puzzle for both players deterministically
     function selectPuzzle (uint256 id) external view returns (Puzzle memory puzzle) {
         Game memory game = games[id];
-        uint256 randomNumber = getRandomNumber(getBlock(game.interval, game.startingBlock));
+        uint256 randomNumber = getRandomNumber(getBlock(game.interval, game.startingBlock, game.numberOfRounds));
         return IZKubePuzzleSet(game.puzzleSet).getPuzzle(randomNumber);
     }
 
     // check is player and verify proof, revert if not valid proof.
     function submitPuzzle (uint256 id, uint256[3] calldata publicSignals, Proof calldata proof) external {
-        //TODO: add msg.sender check in here, in verifier function?? Is it a publicSignal we hardcode as msg.sender?
+        //TODO: add msg.sender check in here, in verifier function?? Is it a publicSignal we hardcode as msg.sender? call selectPuzzle here to get publicSignals??
         // if (!IZKubeVerifier(verifier).verifyProof(proof.a, proof.b, proof.c, publicSignals)) revert InvalidProof();
         Game memory game = games[id];
+        ifGameNotFinished(game.interval, game.startingBlock, game.numberOfRounds);
         if (msg.sender == game.player1.address_) {
             game.player1 = Player(game.player1.address_, game.player1.score + 1, game.player1.totalBlocks + uint72(block.number % game.interval));
         }
@@ -78,9 +83,10 @@ contract ZKube is IZKube {
         return uint256(blockhash(blockNumber - 1));
     }
 
-    function getBlock (uint8 interval, uint72 startingBlock) internal view returns (uint256 blockNumber) {
+    function getBlock (uint8 interval, uint72 startingBlock, uint16 numberOfRounds) internal view returns (uint256 blockNumber) {
         uint256 currentBlock = block.number;
         if (currentBlock < startingBlock) revert GameNotStarted();
         blockNumber = block.number - block.number % interval;
+        ifGameNotFinished(interval, startingBlock, numberOfRounds);
     }
 }
