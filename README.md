@@ -27,7 +27,7 @@ class ZKube{
     +createGame(address puzzleSet, uint8 interval, uint16 numberOfTurns) (uint256 id)
     +joinGame(uint256 id)
     +selectPuzzle(uint256 id) (Puzzle puzzle)
-    +submitPuzzle(uint256 id, Proof proof)
+    +submitPuzzle(uint256 id, uint256[3] publicSignals, Proof proof)
 }
 
 class ZKubePuzzleSet {

@@ -2,8 +2,8 @@
 pragma solidity ^0.8.19;
 
 struct Game {
-    address player1;
-    address player2;
+    Player player1;
+    Player player2;
     address puzzleSet;
     uint8 interval;
     uint16 numberOfRounds;
@@ -23,6 +23,12 @@ struct Puzzle {
     uint8[] availableFunctions;
 }
 
+struct Player {
+    address address_;
+    uint16 score;
+    uint72 totalBlocks; // for tie breaks
+}
+
 interface IZKube {
     // When a game is created, the blockstart is defined. Each turn must be made within a blockinterval no greater than 256 blocks. 
     function createGame (address puzzleSet, uint8 interval, uint16 numberOfTurns) external payable returns (uint256 id);
@@ -33,7 +39,7 @@ interface IZKube {
     function selectPuzzle (uint256 id) external view returns (Puzzle memory puzzle);
 
     // check is player and verify proof, revert if not valid proof.
-    function submitPuzzle (uint256 id, Proof calldata proof) external;
+    function submitPuzzle (uint256 id, uint256[3] memory publicSignals, Proof calldata proof) external;
 }
 
 // Please note that you should adjust the length of the inputs
@@ -44,4 +50,8 @@ interface IZKubeVerifier {
         uint256[2] memory c,
         uint256[3] memory input
     ) external view returns (bool r);
+}
+
+interface IZKubePuzzleSet {
+    function getPuzzle(uint256 randomNumber) external view returns (Puzzle memory puzzle);
 }

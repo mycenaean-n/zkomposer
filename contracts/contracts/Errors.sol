@@ -7,3 +7,5 @@ error GameInactive();
 error IntervalTooBig();
 error JoiningYourOwnGame();
 error StakeNotMet();
+error InvalidProof();
+error NotValidPlayer();
