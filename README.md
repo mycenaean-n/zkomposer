@@ -24,7 +24,7 @@ title: Smart Contracts
 classDiagram
 class ZKube{
     <<IZKube>>
-    +createGame(address puzzleSet, uint256 interval) (uint256 id)
+    +createGame(address puzzleSet, uint8 interval, uint16 numberOfTurns) (uint256 id)
     +joinGame(uint256 id)
     +selectPuzzle(uint256 id) (Puzzle puzzle)
     +submitPuzzle(uint256 id, Proof proof)
