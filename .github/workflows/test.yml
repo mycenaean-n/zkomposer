@@ -17,7 +17,7 @@ jobs:
         run: |
           cd contracts
         id: cd
-        
+
       - uses: actions/checkout@v4
         with:
           submodules: recursive
@@ -36,9 +36,9 @@ jobs:
       - name: Run Forge tests
         run: |
           forge test -vvv
-        id: Forge test
+        id: testForge
 
       - name: Run Hardhat tests
         run: |
           npm run test
-        id: Hardhat test
+        id: testHardhat
