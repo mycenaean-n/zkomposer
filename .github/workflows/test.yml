@@ -13,6 +13,11 @@ jobs:
     name: Foundry project
     runs-on: ubuntu-latest
     steps:
+      - name: Change directory into contracts
+        run: |
+          cd contracts
+        id: cd
+        
       - uses: actions/checkout@v4
         with:
           submodules: recursive
