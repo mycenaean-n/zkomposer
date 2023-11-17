@@ -38,7 +38,7 @@ class ZKubePuzzleSet {
 
 ZKube --> ZKubePuzzleSet: getPuzzle
 
-class ZKubeProver {
+class ZKubeVerifier {
     +validateProof (Proof proof) : bool
 }
 
