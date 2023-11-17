@@ -1,6 +1,6 @@
 name: test
 
-on: workflow_dispatch
+on: push
 
 env:
   FOUNDRY_PROFILE: ci
@@ -31,4 +31,9 @@ jobs:
       - name: Run Forge tests
         run: |
           forge test -vvv
-        id: test
+        id: Forge test
+
+      - name: Run Hardhat tests
+        run: |
+          npm run test
+        id: Hardhat test
