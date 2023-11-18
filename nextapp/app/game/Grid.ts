@@ -33,7 +33,7 @@ export class Grid {
         this.renderer = new THREE.WebGLRenderer();
         this.renderer.setSize( container.clientWidth, container.clientHeight );
         this.renderer.setPixelRatio(window.devicePixelRatio);
-        document.body.appendChild( this.renderer.domElement );
+        container.appendChild( this.renderer.domElement );
 
         this.camera.position.z = 10;
         this.camera.position.x = 10;

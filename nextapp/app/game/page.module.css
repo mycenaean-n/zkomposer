@@ -1,5 +1,59 @@
+.gameContainer {
+    display: grid;
+    height: 80vh;
+    grid-template-rows: 70% 30%;
+}
+
 .sceneContainer {
-    position: absolute;
     width: 50rem;
     height: 50rem;
 }
+
+.gameUI {
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+}
+
+.availableFunctions {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    border: 2px solid black;
+}
+
+.chosenFunctions {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    border: 2px dashed black;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    border: 2px solid black;
+}
+
+.footer {
+    box-sizing: border-box;
+    padding: 2rem;
+    position: fixed;
+    bottom: 0;
+    height: 7rem;
+    width: 100vw;
+    background-color: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer h4 {
+    color: white;
+    text-align: center;
+}
+
+.footer span {
+    font-size: 3rem;
+}
+

@@ -9,7 +9,33 @@ export default function Game() {
   useGrid(sceneRef)
 
   return (
-      <div ref={sceneRef} className={styles.sceneContainer}>
+    <div className={styles.gameContainer}>
+      <div ref={sceneRef} className={styles.sceneContainer}/>
+      <div className={styles.gameUI}>
+        <div className={styles.availableFunctions}>
+
+        </div>
+        <div className={styles.chosenFunctions}>
+
+        </div>
+        <div className={styles.actions}>
+          <button>submit solution</button>
+        </div>
       </div>
+      <div className={styles.footer}>
+        <h4>
+          Blocks Left
+          <br/>
+          <span>100</span>
+        </h4>
+        <h4>
+          Score <br/>
+          <span>5</span>
+        </h4>
+      </div>
+      
+    </div>
+
+      
   )
 }
