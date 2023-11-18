@@ -5,7 +5,6 @@ import {Test, console2} from "forge-std/Test.sol";
 import {ZKubeHarness} from "./ZKube.harness.sol";
 import {Game, Player, Proof, Puzzle} from "../../contracts/Types.sol";
 import {ZKubePuzzleSet} from "../../contracts/ZKubePuzzleSet.sol";
-
 import "../../contracts/Errors.sol";
 
 contract ZKubeTest is Test {
@@ -22,6 +21,8 @@ contract ZKubeTest is Test {
         vm.deal(player1, 100 ether);
         vm.deal(player2, 100 ether);
         vm.startPrank(deployer);
+        // deploying from hardhat
+        zKubeVerifier = address(deployCode("artifacts/src/verifier/ZKubeVerifier.sol/ZKubeVerifier.json", ""));
         ZKubePuzzleSet puzzleSet = new ZKubePuzzleSet("Demo puzzle set", "ZKPuzzle");
         zKubePuzzleSet = address(puzzleSet);
         Puzzle memory puzzle;
