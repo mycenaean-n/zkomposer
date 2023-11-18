@@ -35,6 +35,7 @@ class ZKubePuzzleSet {
         <<IERC721>>
         +owner address
         +getPuzzle(uint256 randNum) : (Puzzle puzzle)
+        +addPuzzle(Puzzle puzzle)
 } 
 
 ZKube --> ZKubePuzzleSet: getPuzzle
