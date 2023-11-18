@@ -24,10 +24,11 @@ title: Smart Contracts
 classDiagram
 class ZKube{
     <<IZKube>>
-    +createGame(address puzzleSet, uint256 interval) (uint256 id)
+    +createGame(address puzzleSet, uint8 interval, uint16 numberOfTurns) (uint256 id)
     +joinGame(uint256 id)
     +selectPuzzle(uint256 id) (Puzzle puzzle)
-    +submitPuzzle(uint256 id, Proof proof)
+    +submitPuzzle(uint256 id, uint256[3] publicSignals, Proof proof)
+    +resolveGame(uint256 id)
 }
 
 class ZKubePuzzleSet {
@@ -38,7 +39,7 @@ class ZKubePuzzleSet {
 
 ZKube --> ZKubePuzzleSet: getPuzzle
 
-class ZKubeProver {
+class ZKubeVerifier {
     +validateProof (Proof proof) : bool
 }
 
@@ -47,7 +48,7 @@ ZKube --> ZKubeProver: validateProof
 
 ```
 
-The **ZKube** contract is the only contract players will interact with. The first player will create a game using `createGame` and the second player will join using `joinGame`, the game will start X blocks after this. The players will get the puzzle by calling `selectPuzzle` and they will submit the proof of their solution using `submitProof`.
+The **ZKube** contract is the only contract players will interact with. The first player will create a game using `createGame` and the second player will join using `joinGame`, the game will start X blocks after this. The players will get the puzzle by calling `selectPuzzle` and they will submit the proof of their solution using `submitProof`. The game can be resolved when it is finished by calling `resolveGame`
 
 The **ZKubePuzzleSet** ERC721 contract defines a set of possible puzzles in a game contract, this makes the game very composable as it allows the community to create different sets of puzzles by deploying different **ZKubePuzzleSet** contracts - we will create a small set of puzzles as a POC. 
 
