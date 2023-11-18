@@ -1,9 +1,9 @@
 import styles from './page.module.css'
 
-export default function Home() {
+export default function Lobbies() {
   return (
-    <main className={styles.main}>
+    <div className={styles.lobbies}>
       
-    </main>
+    </div>
   )
 }
