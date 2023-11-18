@@ -36,7 +36,7 @@ interface IZKube {
     function joinGame (uint256 id) external payable;
 
     // The selectPuzzle view function uses previous block.hash to select the same puzzle for both players deterministically
-    function selectPuzzle (uint256 id) external view returns (Puzzle memory puzzle);
+    function selectPuzzle (uint256 id) external view returns (uint256 roundBlockNumber, Game memory game, Puzzle memory puzzle);
 
     // check is player and verify proof, revert if not valid proof.
     function submitPuzzle (uint256 id, uint256[3] memory publicSignals, Proof calldata proof) external;

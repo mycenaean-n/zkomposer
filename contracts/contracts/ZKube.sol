@@ -15,6 +15,9 @@ contract ZKube is IZKube {
 
     mapping (uint256 => Game) public games;
 
+    // game Id => player => roundBlockNumber => hasSubmittedRound
+    mapping (uint256 => mapping(address => mapping(uint256 => bool))) public roundSubmitted;
+
     /// MODIFIERS ///
     modifier ifGameNotStarted (uint256 id) {
         if (games[id].player2.address_ != address(0)) revert GameStarted();
@@ -27,7 +30,7 @@ contract ZKube is IZKube {
     }
 
     function ifGameNotFinished (uint8 interval, uint72 startingBlock, uint16 numberOfRounds) private view {
-        if (block.number > startingBlock + interval * numberOfRounds) revert GameFinished();
+        if (block.number >= startingBlock + interval * numberOfRounds) revert GameFinished();
     }
 
     constructor(address verifier_) {
@@ -54,22 +57,28 @@ contract ZKube is IZKube {
     }
 
     // The selectPuzzle view function uses previous block.hash to select the same puzzle for both players deterministically
-    function selectPuzzle (uint256 id) external view returns (Puzzle memory puzzle) {
-        Game memory game = games[id];
-        uint256 randomNumber = getRandomNumber(getBlock(game.interval, game.startingBlock, game.numberOfRounds));
-        return IZKubePuzzleSet(game.puzzleSet).getPuzzle(randomNumber);
+    function selectPuzzle (uint256 id) public view returns (uint256 roundBlockNumber, Game memory game, Puzzle memory puzzle) {
+        game = games[id];
+        roundBlockNumber = getBlock(game.interval, game.startingBlock, game.numberOfRounds);
+        uint256 randomNumber = getRandomNumber(roundBlockNumber);
+        puzzle = IZKubePuzzleSet(game.puzzleSet).getPuzzle(randomNumber);
     }
 
     // check is player and verify proof, revert if not valid proof.
     function submitPuzzle (uint256 id, uint256[3] calldata publicSignals, Proof calldata proof) external {
+        address sender = msg.sender;
+        (uint256 roundBlockNumber, Game memory game, Puzzle memory puzzle) = selectPuzzle(id);
+        
+        if (roundSubmitted[id][sender][roundBlockNumber]) revert AlreadySubmitted();
+        roundSubmitted[id][sender][roundBlockNumber] = true;
+
         //TODO: add msg.sender check in here, in verifier function?? Is it a publicSignal we hardcode as msg.sender? call selectPuzzle here to get publicSignals??
         // if (!IZKubeVerifier(verifier).verifyProof(proof.a, proof.b, proof.c, publicSignals)) revert InvalidProof();
-        Game memory game = games[id];
-        ifGameNotFinished(game.interval, game.startingBlock, game.numberOfRounds);
-        if (msg.sender == game.player1.address_) {
+        
+        if (sender == game.player1.address_) {
             game.player1 = Player(game.player1.address_, game.player1.score + 1, game.player1.totalBlocks + uint72(block.number % game.interval));
         }
-        else if (msg.sender == game.player2.address_) {
+        else if (sender == game.player2.address_) {
             game.player2 = Player(game.player2.address_, game.player2.score + 1, game.player2.totalBlocks + uint72(block.number % game.interval));
         }
         else {
@@ -83,10 +92,14 @@ contract ZKube is IZKube {
         return uint256(blockhash(blockNumber - 1));
     }
 
+    function claimWinnings (uint256 id) external {
+        
+    }
+
     function getBlock (uint8 interval, uint72 startingBlock, uint16 numberOfRounds) internal view returns (uint256 blockNumber) {
+        ifGameNotFinished(interval, startingBlock, numberOfRounds);
         uint256 currentBlock = block.number;
         if (currentBlock < startingBlock) revert GameNotStarted();
-        blockNumber = block.number - block.number % interval;
-        ifGameNotFinished(interval, startingBlock, numberOfRounds);
+        blockNumber = currentBlock - currentBlock % interval;
     }
 }

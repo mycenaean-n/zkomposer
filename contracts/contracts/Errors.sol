@@ -10,3 +10,4 @@ error StakeNotMet();
 error InvalidProof();
 error NotValidPlayer();
 error GameFinished();
+error AlreadySubmitted();

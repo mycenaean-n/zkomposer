@@ -52,11 +52,9 @@ contract ZKubeTest is Test {
         uint256 id = _createGame(player1, 10, 20, stake);
 
         uint88 currentBlock = uint88(block.number);
-        vm.prank(player2);
-        zKube.joinGame{value: stake}(id);
+        (uint256 startingBlock) = _joinGame(player2, id, stake);
 
-
-        (, Player memory p2,,,, uint72 startingBlock,) = zKube.games(id);
+        (, Player memory p2,,,,,) = zKube.games(id);
         assertEq(p2.address_, player2);
         assertEq(startingBlock, currentBlock + zKube.BLOCKS_UNTIL_START());
     }
@@ -87,13 +85,9 @@ contract ZKubeTest is Test {
         uint16 numberOfRounds = 20; 
         uint256 id = _createGame(player1, interval, numberOfRounds, stake);
 
-        vm.prank(player2);
-        zKube.joinGame{value: stake}(id);
-        vm.roll(block.number + 10);
-
-        (,,,,, uint72 startingBlock,) = zKube.games(id);
-
-        assertEq(zKube.exposed_getBlock(interval, startingBlock, numberOfRounds), 10);
+        (uint256 startingBlock) = _joinGame(player2, id, stake);
+        vm.roll(startingBlock);
+        assertEq(zKube.exposed_getBlock(interval, uint72(startingBlock), numberOfRounds), 10);
     }
 
     function testFuzz_getBlock(uint256 jump) public {
@@ -101,21 +95,19 @@ contract ZKubeTest is Test {
         uint8 interval = 10;
         uint16 numberOfTurns = 20;
 
-        vm.assume(jump > 10 && jump < interval * numberOfTurns);
+        vm.assume(jump < interval * numberOfTurns);
         uint256 id = _createGame(player1, interval, 20, stake);
 
-        vm.prank(player2);
-        zKube.joinGame{value: stake}(id);
-        vm.roll(block.number + jump);
+        (uint256 startingBlock) = _joinGame(player2, id, stake);
+        vm.roll(startingBlock + jump);
 
-        (,,,,, uint72 startingBlock,) = zKube.games(id);
         uint256 expectedBlockNumber = block.number - block.number % interval;
 
-        assertEq(zKube.exposed_getBlock(interval, startingBlock, numberOfTurns), expectedBlockNumber);
-        assertTrue(zKube.exposed_getBlock(interval, startingBlock, numberOfTurns) % interval == 0);
+        assertEq(zKube.exposed_getBlock(interval, uint72(startingBlock), numberOfTurns), expectedBlockNumber);
+        assertTrue(zKube.exposed_getBlock(interval, uint72(startingBlock), numberOfTurns) % interval == 0);
     }
 
-    function testFuzz_submitPuzzle_reverts_ifGameFinished(uint256 jump) public {
+    function testFuzz_getBlock_reverts_ifGameFinished(uint256 jump) public {
         uint256 stake = 1 ether;
         uint8 interval = 10;
         uint16 numberOfTurns = 20;
@@ -123,44 +115,23 @@ contract ZKubeTest is Test {
         
         uint256 id = _createGame(player1, interval, 20, stake);
 
-        vm.prank(player2);
-        zKube.joinGame{value: stake}(id);
+        (uint256 startingBlock) = _joinGame(player2, id, stake);
+        vm.roll(startingBlock);
 
-        vm.assume(jump >= interval * numberOfTurns + 11 && jump < type(uint72).max);
-
+        vm.assume(jump >= interval * numberOfTurns && jump < type(uint72).max);
         vm.roll(jump);
 
-        (,,,,, uint72 startingBlock,) = zKube.games(id);
         vm.expectRevert(GameFinished.selector);
-        zKube.exposed_getBlock(interval, startingBlock, numberOfTurns);
+        zKube.exposed_getBlock(interval, uint72(startingBlock), numberOfTurns);
     }
 
-
-    function testConcrete_submitPuzzle_reverts_ifInvalidProof() public {
-        uint256 stake = 1 ether;
-        uint256 id = _createGame(player1, 10, 20, stake);
-
-        vm.prank(player2);
-        zKube.joinGame{value: stake}(id);
-
-        vm.roll(block.number + 10);
-
-        Proof memory proof;
-        uint256[3] memory publicSignals;
-
-        vm.prank(player1);
-        vm.expectRevert(InvalidProof.selector);
-        zKube.submitPuzzle(id, publicSignals, proof);
-    }
 
     function testConcrete_submitPuzzle() public {
         uint256 stake = 1 ether;
         uint256 id = _createGame(player1, 10, 20, stake);
 
-        vm.prank(player2);
-        zKube.joinGame{value: stake}(id);
-
-        vm.roll(block.number + 10);
+        (uint256 startingBlock) = _joinGame(player2, id, stake);
+        vm.roll(startingBlock);
 
         Proof memory proof;
         uint256[3] memory publicSignals;
@@ -174,8 +145,64 @@ contract ZKubeTest is Test {
         assertEq(p1.totalBlocks, 1);
     }
 
+    function testConcrete_submitPuzzle_reverts_ifInvalidProof() public {
+        uint256 stake = 1 ether;
+        uint256 id = _createGame(player1, 10, 20, stake);
+
+        (uint256 startingBlock) = _joinGame(player2, id, stake);
+        vm.roll(startingBlock);
+
+        Proof memory proof;
+        uint256[3] memory publicSignals;
+
+        vm.prank(player1);
+        vm.expectRevert(InvalidProof.selector);
+        zKube.submitPuzzle(id, publicSignals, proof);
+    }
+
+    function testConcrete_submitPuzzle_reverts_ifAlreadySubmitted() public {
+        uint256 stake = 1 ether;
+        uint256 id = _createGame(player1, 10, 20, stake);
+
+        (uint256 startingBlock) = _joinGame(player2, id, stake);
+        vm.roll(startingBlock);
+
+        Proof memory proof;
+        uint256[3] memory publicSignals;
+
+        vm.startPrank(player1);
+        zKube.submitPuzzle(id, publicSignals, proof);
+
+        vm.expectRevert(InvalidProof.selector);
+        zKube.submitPuzzle(id, publicSignals, proof);
+    }
+
+    function testConcrete_submitPuzzle_reverts_ifGameFinished () public {
+        uint256 stake = 1 ether;
+        uint8 interval = 10;
+        uint16 numberOfTurns = 20;
+        
+        uint256 id = _createGame(player1, interval, 20, stake);
+
+        (uint256 startingBlock) = _joinGame(player2, id, stake);
+        vm.roll(startingBlock + interval * numberOfTurns);
+
+        Proof memory proof;
+        uint256[3] memory publicSignals;
+
+        vm.expectRevert(GameFinished.selector);
+        vm.prank(player1);
+        zKube.submitPuzzle(id, publicSignals, proof);
+    }
+
     function _createGame (address player, uint8 interval, uint16 numberOfTurns, uint256 stake) private returns (uint256 id) {
         vm.prank(player);
         id = zKube.createGame{value: stake}(zKubePuzzleSet, interval, numberOfTurns);
+    }
+
+    function _joinGame (address player, uint256 id, uint256 stake) private returns (uint256 startingBlock) {
+        vm.prank(player);
+        zKube.joinGame{value: stake}(id);
+        (,,,,,startingBlock,) = zKube.games(id);
     }
 }
