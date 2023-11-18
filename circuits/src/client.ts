@@ -1,6 +1,8 @@
-import buildCalculator from "../zk/circuits/main_js/witness_calculator";
+// import buildCalculator from "../zk/circuits/main_js/witness_calculator";
+import buildCalculator from "../zk/circuits/transform_js/witness_calculator";
 import { buildBabyjub } from "circomlibjs";
 import * as snarkjs from "snarkjs";
+import { Colors } from "../types";
 
 export interface Proof {
   a: [bigint, bigint];
@@ -68,6 +70,35 @@ export class ZKPClient {
       S,
       R8x,
       R8y,
+    };
+    const wtns = await this.calculator.calculateWTNSBin(inputs, 0);
+    const { proof } = await snarkjs.groth16.prove(this._zkey, wtns);
+    return {
+      a: [proof.pi_a[0], proof.pi_a[1]] as [bigint, bigint],
+      b: [proof.pi_b[0].reverse(), proof.pi_b[1].reverse()] as [
+        [bigint, bigint],
+        [bigint, bigint]
+      ],
+      c: [proof.pi_c[0], proof.pi_c[1]] as [bigint, bigint],
+    };
+  }
+
+  /**
+   * @dev customize this functions for your own circuit!
+   */
+  async proveTransform({
+    grid,
+    inColor,
+    outColor,
+  }: {
+    grid: Colors[][];
+    inColor: Colors;
+    outColor: Colors;
+  }): Promise<any> {
+    const inputs = {
+      grid,
+      inColor,
+      outColor,
     };
     const wtns = await this.calculator.calculateWTNSBin(inputs, 0);
     const { proof } = await snarkjs.groth16.prove(this._zkey, wtns);
