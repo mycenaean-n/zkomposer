@@ -3,7 +3,9 @@ pragma solidity ^0.8.13;
 
 import {Test, console2} from "forge-std/Test.sol";
 import {ZKubeHarness} from "./ZKube.harness.sol";
-import {Game, Player, Proof} from "../../contracts/Types.sol";
+import {Game, Player, Proof, Puzzle} from "../../contracts/Types.sol";
+import {ZKubePuzzleSet} from "../../contracts/ZKubePuzzleSet.sol";
+
 import "../../contracts/Errors.sol";
 
 contract ZKubeTest is Test {
@@ -20,6 +22,10 @@ contract ZKubeTest is Test {
         vm.deal(player1, 100 ether);
         vm.deal(player2, 100 ether);
         vm.startPrank(deployer);
+        ZKubePuzzleSet puzzleSet = new ZKubePuzzleSet("Demo puzzle set", "ZKPuzzle");
+        zKubePuzzleSet = address(puzzleSet);
+        Puzzle memory puzzle;
+        puzzleSet.addPuzzle(puzzle);
         zKube = new ZKubeHarness(zKubeVerifier);
         vm.stopPrank();
     }
@@ -125,7 +131,7 @@ contract ZKubeTest is Test {
         vm.roll(startingBlock);
 
         vm.assume(jump >= interval * numberOfTurns && jump < type(uint72).max);
-        vm.roll(jump);
+        vm.roll(startingBlock + jump);
 
         vm.expectRevert(GameFinished.selector);
         zKube.exposed_getBlock(interval, uint72(startingBlock), numberOfTurns);
@@ -178,7 +184,7 @@ contract ZKubeTest is Test {
         vm.startPrank(player1);
         zKube.submitPuzzle(id, publicSignals, proof);
 
-        vm.expectRevert(InvalidProof.selector);
+        vm.expectRevert(AlreadySubmitted.selector);
         zKube.submitPuzzle(id, publicSignals, proof);
     }
 
