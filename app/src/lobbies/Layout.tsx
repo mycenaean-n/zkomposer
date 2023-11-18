@@ -13,6 +13,7 @@ export default function Layout({
         <header className={styles.header}>
             <img src={logo} className={styles.logo}/>
             <div className={styles.walletConnect}>
+              <w3m-button/>
             </div>
           </header>
           {children}
