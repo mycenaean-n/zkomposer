@@ -49,56 +49,21 @@ export class ZKPClient {
    * @dev customize this functions for your own circuit!
    */
   async prove({
-    M,
-    Ax,
-    Ay,
-    S,
-    R8x,
-    R8y,
+    initialGrid,
+    finalGrid,
+    account,
+    selectedFunctions,
   }: {
-    M: bigint;
-    Ax: bigint;
-    Ay: bigint;
-    S: bigint;
-    R8x: bigint;
-    R8y: bigint;
+    initialGrid: number[][];
+    finalGrid: number[][];
+    account: string;
+    selectedFunctions: number[][][];
   }): Promise<Proof> {
     const inputs = {
-      M,
-      Ax,
-      Ay,
-      S,
-      R8x,
-      R8y,
-    };
-    const wtns = await this.calculator.calculateWTNSBin(inputs, 0);
-    const { proof } = await snarkjs.groth16.prove(this._zkey, wtns);
-    return {
-      a: [proof.pi_a[0], proof.pi_a[1]] as [bigint, bigint],
-      b: [proof.pi_b[0].reverse(), proof.pi_b[1].reverse()] as [
-        [bigint, bigint],
-        [bigint, bigint]
-      ],
-      c: [proof.pi_c[0], proof.pi_c[1]] as [bigint, bigint],
-    };
-  }
-
-  /**
-   * @dev customize this functions for your own circuit!
-   */
-  async proveTransform({
-    grid,
-    inColor,
-    outColor,
-  }: {
-    grid: Colors[][];
-    inColor: Colors;
-    outColor: Colors;
-  }): Promise<any> {
-    const inputs = {
-      grid,
-      inColor,
-      outColor,
+      initialGrid,
+      finalGrid,
+      account,
+      selectedFunctions,
     };
     const wtns = await this.calculator.calculateWTNSBin(inputs, 0);
     const { proof } = await snarkjs.groth16.prove(this._zkey, wtns);
