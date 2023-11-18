@@ -6,7 +6,7 @@ import { BigNumber } from "ethers";
 import { ZKPClient, EdDSA } from "circuits";
 import fs from "fs";
 import path from "path";
-import * as puzzles from "./data/test-data.json";
+import * as puzzles from "./data/puzzles.json";
 import { padWithZerosToSizeEight } from "../utils/padWithZerosToSizeEight";
 import { Colors } from "../types";
 
