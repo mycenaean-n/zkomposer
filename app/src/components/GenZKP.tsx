@@ -23,16 +23,16 @@ function GenZKP({
           else if (!pubKey) alert("EdDSA pubkey is not ready");
           else if (!signature) alert("EdDSA signature is not ready");
           else {
-            client
-              .prove({
-                M: message,
-                Ax: pubKey[0],
-                Ay: pubKey[1],
-                S: signature.S,
-                R8x: client.babyjub.F.toObject(signature.R8[0]),
-                R8y: client.babyjub.F.toObject(signature.R8[1]),
-              })
-              .then(onResult);
+            // client
+            //   .prove({
+            //     M: message,
+            //     Ax: pubKey[0],
+            //     Ay: pubKey[1],
+            //     S: signature.S,
+            //     R8x: client.babyjub.F.toObject(signature.R8[0]),
+            //     R8y: client.babyjub.F.toObject(signature.R8[1]),
+            //   })
+            //   .then(onResult);
           }
         }}
       >
