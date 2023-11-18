@@ -11,10 +11,27 @@
     color: black;
 }
 
-.availableLobbies {
-
+.createLobby {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.lobby {
-    
+.availableLobbies {
+    margin: 3rem;
+    padding-left: 1rem;
+    padding-right: 1.5rem;
+    overflow-y: scroll;
+}
+
+table, th, tr, td {
+    align-items: center;
+    padding: 1rem;
+    border: 2px solid black;
+    border-collapse: collapse;
+}
+
+
+.lobby button {
+    align-items: center;
 }

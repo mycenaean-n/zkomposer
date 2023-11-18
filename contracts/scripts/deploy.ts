@@ -14,7 +14,7 @@ async function main() {
   // await hre.run('compile');
 
   // We get the contract to deploy
-  const Verifier = await ethers.getContractFactory("Verifier");
+  const Verifier = await ethers.getContractFactory("ZKubeVerifier");
   const verifier = await Verifier.deploy();
   console.log("verifier address:  ", verifier.address)
 }
