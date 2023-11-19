@@ -65,7 +65,7 @@ export function CreateGame({ setInactive }: { setInactive: () => void }) {
           value={gameConfig.numberOfRounds}
         />
         <div className={styles.actions}>
-          <button onClick={() => createGame(gameConfig)}>cancel</button>
+          <button onClick={() => createGame(gameConfig)}>create</button>
           <button onClick={() => setInactive()}>cancel</button>
         </div>
         
