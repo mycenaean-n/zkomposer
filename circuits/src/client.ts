@@ -99,8 +99,6 @@ export class ZKPClient {
       selectedFunctions,
     };
 
-    console.log(inputs, "inputsinputsinputs");
-
     const wtns = await this.calculator.calculateWTNSBin(inputs, 0);
     const { proof } = await snarkjs.groth16.prove(this._zkey, wtns);
     return {

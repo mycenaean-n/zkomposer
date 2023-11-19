@@ -11,7 +11,6 @@ const switchNetwork = async (chainId: number) => {
       method: "wallet_switchEthereumChain",
       params: [{ chainId: hexlify(chainId).replace("0x0", "0x") }],
     });
-    console.log("result", result);
   } catch (switchError) {
     console.error(switchError);
   }

@@ -16,13 +16,6 @@ export function GenerateProof({
   onResult: (proof: Proof) => void;
 }) {
   const { client } = useCircuit();
-  console.log({
-    client,
-    initialGrid,
-    finalGrid,
-    account,
-    selectedFunctions,
-  });
 
   return (
     <div>
@@ -48,10 +41,7 @@ export function GenerateProof({
                 account,
                 selectedFunctions,
               })
-              .then((proof) => {
-                console.log(proof);
-                onResult(proof);
-              });
+              .then(onResult);
           }
         }}
       >

@@ -20,7 +20,6 @@ async function main() {
   const ZkApp = await ethers.getContractFactory("ZkApp");
   const zkApp = await ZkApp.deploy(verifier.address);
   await zkApp.deployed();
-  console.log(zkApp.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
