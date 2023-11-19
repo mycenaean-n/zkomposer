@@ -1,0 +1,39 @@
+.createGame {
+    position: absolute;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0,0,0,0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.gameModal {
+    background-color: white;
+    width: 30rem;
+    height: 35rem;
+}
+
+.gameModal h1 {
+    margin-bottom: 3rem;
+}
+
+.gameModal input {
+    text-align: center;
+
+}
+
+
+.actions {
+    margin-top: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5rem;
+}
+
+.actions button {
+    width: 6rem;
+}
