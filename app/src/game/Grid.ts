@@ -108,7 +108,7 @@ export class Grid {
 
         console.log(currentGrid)
         
-        let newGrid = JSON.parse(JSON.stringify(currentGrid));
+        let newGrid = currentGrid;
 
         for (let column of newGrid) {
             for (let index in column) {
@@ -127,7 +127,7 @@ export class Grid {
         const numberOfGrids = this.grids.length;
         const currentGrid = this.grids[numberOfGrids - 1]
         
-        let newGrid = JSON.parse(JSON.stringify(currentGrid));
+        let newGrid = currentGrid;
         
         for (let column of newGrid) {
             for (let index in column) {

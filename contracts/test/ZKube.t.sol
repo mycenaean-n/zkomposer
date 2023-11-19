@@ -6,7 +6,7 @@ import {ZKubeHarness} from "./ZKube.harness.sol";
 import {Game, Player, Proof, Puzzle} from "../src/Types.sol";
 import {ZKubePuzzleSet} from "../src/ZKubePuzzleSet.sol";
 import "../src/Errors.sol";
-import {ZKubeVerifier} from "../src/verifier/ZKubeVerifier.sol";
+import {ZKubeVerifier} from "../src/ZKubeVerifier.sol";
 
 contract ZKubeTest is Test {
     ZKubeHarness public zKube;
