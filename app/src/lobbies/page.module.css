@@ -1,0 +1,37 @@
+.lobbies {
+    height: 80vh;
+    color: black;
+    margin-top: 15vh;
+    width: 100vw;
+    display: grid;
+    grid-template-rows: 10% 40% 50%;
+}
+
+.lobbies h1 {
+    color: black;
+}
+
+.createLobby {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.availableLobbies {
+    margin: 3rem;
+    padding-left: 1rem;
+    padding-right: 1.5rem;
+    overflow-y: scroll;
+}
+
+table, th, tr, td {
+    align-items: center;
+    padding: 1rem;
+    border: 2px solid black;
+    border-collapse: collapse;
+}
+
+
+.lobby button {
+    align-items: center;
+}
