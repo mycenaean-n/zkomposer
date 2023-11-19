@@ -1,21 +1,45 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./page.module.css";
 import { useGrid } from "./useGrid";
 // import { GenerateProof } from "./zk/generateProof";
 import { Proof } from "circuits";
+import { functionMapping, idToGridFunction, puzzleMapping } from "./Puzzles";
+import { Grid } from "./Grid";
+
+const mockPuzzle = puzzleMapping[2];
 
 export default function Game() {
   const sceneRef = useRef<HTMLDivElement>(null);
   const [proof, setProof] = useState<Proof>();
+  const [grid, setGrid] = useState<Grid>();
+  const [rendered, setRendered] = useState(false);
 
-  useGrid(sceneRef);
+  useEffect(() => {
+    console.log(sceneRef.current);
+    if (sceneRef.current && !grid) {
+      setGrid(new Grid(sceneRef));
+      setRendered(true);
+    }
+    if (grid) {
+      grid.start()
+      grid.initStartingGrid(mockPuzzle.startingGrid)
+    }
+  }, [sceneRef, rendered, grid]);
+
+  console.log(grid)
 
   return (
     <div className={styles.gameContainer}>
       <div ref={sceneRef} className={styles.sceneContainer} />
       <div className={styles.gameUI}>
-        <div className={styles.availableFunctions}></div>
+        <div className={styles.availableFunctions}>
+          {mockPuzzle.availableFunctions.map((id) => (
+            <button onClick={() => (idToGridFunction as any)[id](grid)}>
+              {(functionMapping as any)[id]}
+            </button>
+          ))}
+        </div>
         <div className={styles.chosenFunctions}></div>
         <div className={styles.actions}>
           <button>submit solution</button>
