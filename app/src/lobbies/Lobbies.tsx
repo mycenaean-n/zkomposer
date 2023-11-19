@@ -1,5 +1,7 @@
-import { ethers } from 'ethers'
-import styles from './page.module.css'
+import { ethers } from "ethers";
+import styles from "./page.module.css";
+import { useState } from "react";
+import { CreateGame } from "./createGame/CreateGame";
 
 const MockLobbies = [
   {
@@ -7,39 +9,43 @@ const MockLobbies = [
     player1: "0x84526CB0b3A0765FbD24E9CBb7d08B0FC2216B7a",
     puzzles: "0x84526CB0b3A0765FbD24E9CBb7d08B0FC2216B7a",
     interval: 100,
-    stake: ethers.utils.parseEther("1").toString()
+    stake: ethers.utils.parseEther("1").toString(),
   },
   {
     id: 2,
     player1: "0x84526CB0b3A0765FbD24E9CBb7d08B0FC2216B7a",
     puzzles: "0x84526CB0b3A0765FbD24E9CBb7d08B0FC2216B7a",
     interval: 100,
-    stake: ethers.utils.parseEther("1").toString()
-  }
-]
+    stake: ethers.utils.parseEther("1").toString(),
+  },
+];
 
-const LobbiesElements = MockLobbies.map((lobby) => 
-<tr key={lobby.id} className={styles.lobby}>
-  <td>{lobby.id}</td>
-  <td>{lobby.player1}</td>
-  <td>{lobby.puzzles}</td>
-  <td>{lobby.interval}</td>
-  <td>{ethers.utils.parseUnits(lobby.stake, "wei").toString()}</td>
-  <button>join</button>
-</tr>
-)
+const LobbiesElements = MockLobbies.map((lobby) => (
+  <tr key={lobby.id} className={styles.lobby}>
+    <td>{lobby.id}</td>
+    <td>{lobby.player1}</td>
+    <td>{lobby.puzzles}</td>
+    <td>{lobby.interval}</td>
+    <td>{ethers.utils.parseUnits(lobby.stake, "wei").toString()}</td>
+    <td>
+      <button>join</button>
+    </td>
+  </tr>
+));
 
 export default function Lobbies() {
+  const [createGameIsActive, setCreateGameIsActive] = useState(false);
+
   return (
     <div className={styles.lobbies}>
       <h1>Lobbies</h1>
       <div className={styles.createLobby}>
-        <button>
+        <button onClick={() => setCreateGameIsActive(true)}>
           Create a game
         </button>
       </div>
       <table className={styles.availableLobbies}>
-      <colgroup span={6}></colgroup>
+        <colgroup span={6}></colgroup>
         <tr>
           <th>ID</th>
           <th>Player 1</th>
@@ -50,6 +56,9 @@ export default function Lobbies() {
         </tr>
         {LobbiesElements}
       </table>
+      {createGameIsActive && (
+          <CreateGame setInactive={() => setCreateGameIsActive(false)}/>
+        )}
     </div>
-  )
+  );
 }

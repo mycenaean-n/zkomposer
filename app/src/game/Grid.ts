@@ -47,7 +47,7 @@ export class Grid {
         const geometry = new THREE.BoxGeometry( 1, 1, 1 );
         // immediately use the texture for material creation 
 
-        const material = new THREE.MeshBasicMaterial( { color: "yellow"} );
+        const material = new THREE.MeshBasicMaterial( { color } );
         const cube = new THREE.Mesh( geometry, material );
         
         cube.position.x = position.x
@@ -65,15 +65,19 @@ export class Grid {
         cube.add(edges);
     }
 
-    private initStartingGrid () {
-        this.grids = [[[1, 1, 1, 1, 1, 1, 1, 1], 
-            [1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1, 1, 1, 1]]]
+    public initStartingGrid (grid: string) {
+        console.log(grid)
+        const gridArray = Array.from(grid)
+        console.log(gridArray)
+
+        const startingGrid: number[][] = [[],[],[],[],[],[],[], []]
+
+        gridArray.forEach((value, index) => {
+            const column = Math.floor(index / 8)
+            startingGrid[column].push(Number(value))
+        })
+
+        this.grids = [startingGrid]
         
         this.drawGrid()
         
@@ -86,6 +90,7 @@ export class Grid {
         for (let grid of this.grids) {
             for (let column of grid) {
                 for (let cube of column) {
+                    console.log(numberToColour(cube))
                     this.addCube(numberToColour(cube)!, new THREE.Vector3(xOffset, yOffset, zOffset + 1))
                     yOffset += 1
                 }
@@ -97,9 +102,51 @@ export class Grid {
         }
     }
 
-    start () {
-        this.initStartingGrid ()
+    public transform (fromColour: number, toColour: number) {
+        const numberOfGrids = this.grids.length;
+        const currentGrid = this.grids[numberOfGrids - 1]
 
+        console.log(currentGrid)
+        
+        let newGrid = JSON.parse(JSON.stringify(currentGrid));
+
+        for (let column of newGrid) {
+            for (let index in column) {
+                if (column[index] === fromColour) {
+                    column[index] = toColour;
+                }
+            }
+            newGrid.push(column)
+        } 
+        
+        this.grids.push(newGrid)
+        this.drawGrid()
+    }
+
+    public stack (colour: number) {
+        const numberOfGrids = this.grids.length;
+        const currentGrid = this.grids[numberOfGrids - 1]
+        
+        let newGrid = JSON.parse(JSON.stringify(currentGrid));
+        
+        for (let column of newGrid) {
+            for (let index in column) {
+                console.log(index)
+                if (column[index] === 0) {
+                    console.log("transparent")
+                    column[index] = colour;
+                    break
+                }
+            }
+            newGrid.push(column)
+        } 
+        
+
+        this.grids.push(newGrid)
+        this.drawGrid()
+    }
+
+    start () {
         this.renderer.setAnimationLoop(() => {
             this.renderer.render(this.scene, this.camera);
         });

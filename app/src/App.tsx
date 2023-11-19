@@ -6,7 +6,7 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
-import Layout from "./lobbies/Layout";
+import Layout from "./layout/Layout";
 import Lobbies from "./lobbies/Lobbies";
 import Game from "./game/Game";
 
