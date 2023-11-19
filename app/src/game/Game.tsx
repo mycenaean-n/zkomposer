@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import styles from "./page.module.css";
-import { useGrid } from "./useGrid";
 // import { GenerateProof } from "./zk/generateProof";
 import { Proof } from "circuits";
 import { functionMapping, idToGridFunction, puzzleMapping } from "./Puzzles";
