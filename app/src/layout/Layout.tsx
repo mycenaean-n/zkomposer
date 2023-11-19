@@ -1,4 +1,4 @@
-import './globals.css'
+import '../globals.css'
 import styles from "./layout.module.css"
 
 import logo from "./zKubeLogo.svg"
