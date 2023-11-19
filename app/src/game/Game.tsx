@@ -4,6 +4,7 @@ import styles from "./page.module.css";
 import { useGrid } from "./useGrid";
 // import { GenerateProof } from "./zk/generateProof";
 import { Proof } from "circuits";
+import { GenerateProof } from "./zk/generateProof";
 
 export default function Game() {
   const sceneRef = useRef<HTMLDivElement>(null);
@@ -33,7 +34,7 @@ export default function Game() {
         </h4>
       </div>
 
-      {/* <GenerateProof
+      <GenerateProof
         initialGrid={[
           [1, 1, 2, 0, 0, 0, 0, 0],
           [1, 2, 0, 0, 0, 0, 0, 0],
@@ -66,7 +67,7 @@ export default function Game() {
           ],
         ]}
         onResult={(result) => setProof(result)}
-      /> */}
+      />
     </div>
   );
 }
