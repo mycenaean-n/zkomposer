@@ -49,6 +49,13 @@ ZKube --> ZKubeProver: validateProof
 
 ```
 
+### Addresses
+The contracts are deployed to Scroll Sepolia at these addresses:
+* `ZKubeVerifier`: 0xe100A337f6b0287C6146E01B009ab7A31B934E69
+* `ZKube`: 0xf888A609892674dA466F176E413adc8e67A9415a
+* `ZKubePuzzleSet`: 0x84946DdC8F9472E6b299797fB970D95bCc66596E
+
+
 The **ZKube** contract is the only contract players will interact with. The first player will create a game using `createGame` and the second player will join using `joinGame`, the game will start X blocks after this. The players will get the puzzle by calling `selectPuzzle` and they will submit the proof of their solution using `submitProof`. The game can be resolved when it is finished by calling `resolveGame`
 
 The **ZKubePuzzleSet** ERC721 contract defines a set of possible puzzles in a game contract, this makes the game very composable as it allows the community to create different sets of puzzles by deploying different **ZKubePuzzleSet** contracts - we will create a small set of puzzles as a POC. 
