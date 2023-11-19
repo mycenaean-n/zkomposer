@@ -10,8 +10,8 @@
     "contracts"
   ],
   "scripts": {
-    "build": "yarn build:contracts",
-    "build:all": "yarn build:contracts && yarn build:app",
+    "build": "yarn build:circuits && yarn build:contracts",
+    "build:all": "yarn build:circuits && yarn build:contracts && yarn build:app",
     "build:app": "yarn workspace app build",
     "build:contracts": "yarn workspace contracts build",
     "build:circuits": "yarn workspace circuits build",
@@ -19,7 +19,6 @@
   },
   "private": true,
   "devDependencies": {
-    "@nomicfoundation/hardhat-foundry": "^1.1.1",
     "ts-node": "^10.4.0"
   },
   "engines": {
