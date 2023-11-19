@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity 0.8.22;
 
 import { Proof, IZKube, IZKubeVerifier, Puzzle, Game, IZKubePuzzleSet, Player } from "./Types.sol";
 import "./Errors.sol";
@@ -109,7 +109,6 @@ contract ZKube is IZKube {
     (
       uint256 roundBlockNumber,
       Game memory game,
-      Puzzle memory puzzle
     ) = selectPuzzle(id);
 
     if (roundSubmitted[id][sender][roundBlockNumber]) revert AlreadySubmitted();
