@@ -1,65 +1,7 @@
 pragma circom 2.0.0;
 include "../../node_modules/circomlib/circuits/comparators.circom";
-
-template Transform(W, H) {
-    signal input grid[W][H];
-    // type(): 0 (do not transform, but perserve) | 1 | 2 | 3 | 4
-    signal input inColor;
-    // type(): 0 (do not transform, but perserve) | 1 | 2 | 3 | 4
-    signal input outColor;
-    signal margin[W][H];
-    signal mask[W][H];
-    component isOneTransform[W][H];
-
-    signal output out[W][H];
-    
-    for (var i = 0; i < W; i++) {
-        for (var j = 0; j < H; j++) {
-            // checking for == 1
-            // 1st step
-            margin[i][j] <== outColor - grid[i][j];
-            // 2nd step
-            isOneTransform[i][j] = IsEqual();
-            isOneTransform[i][j].in[0] <== grid[i][j];
-            isOneTransform[i][j].in[1] <== inColor;
-            // 3rd step
-            mask[i][j] <== isOneTransform[i][j].out * margin[i][j];
-            // 4th step
-            out[i][j] <== grid[i][j] + mask[i][j];
-        }
-    }
-}
-
-template Stack(W, H) {
-    signal input grid[W][H];
-    signal input onOff;
-    signal input color;
-    signal stack[W][H];
-    signal stackColoring <== onOff * color;
-    signal output out[W][H];
-
-    component isZeroStack[W][H];
-    component gtZeroStack[W][H];
-
-    for (var i = 0; i < W; i++) {
-        stack[i][0] <== 0;
-        for (var j = 1; j < H; j++) {
-            var prevIndex = j - 1;
-
-            // checking for == 0
-            isZeroStack[i][j] = IsZero();
-            isZeroStack[i][j].in <== grid[i][j];
-
-            // checking for gt 0
-            gtZeroStack[i][j] = GreaterThan(4);
-            gtZeroStack[i][j].in[0] <== grid[i][prevIndex];
-            gtZeroStack[i][j].in[1] <== 0;
-
-            stack[i][j] <== isZeroStack[i][j].out * gtZeroStack[i][j].out;
-            out[i][prevIndex] <== grid[i][prevIndex] + stack[i][prevIndex]  * stackColoring;
-        }
-    }
-}
+include "transform.circom";
+include "stack.circom";
 
 template ZKubes(W, H, F) {
     // public
