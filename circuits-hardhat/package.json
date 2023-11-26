@@ -13,6 +13,7 @@
   "scripts": {
     "circom:dev": "hardhat circom --deterministic --debug --verbose",
     "circom:prod": "hardhat circom --verbose",
-    "test": "hardhat test"
+    "test": "hardhat test",
+    "pad-puzzles": "ts-node utils/padPuzzles.ts"
   }
 }
