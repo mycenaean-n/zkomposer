@@ -9,5 +9,10 @@
     "hardhat-circom": "^3.3.2",
     "ts-node": "^10.9.1",
     "typescript": "^5.3.2"
+  },
+  "scripts": {
+    "circom:dev": "hardhat circom --deterministic --debug --verbose",
+    "circom:prod": "hardhat circom --verbose",
+    "test": "hardhat test"
   }
 }
