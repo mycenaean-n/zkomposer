@@ -19,7 +19,7 @@ export default {
     ptau: "https://hermez.s3-eu-west-1.amazonaws.com/powersOfTau28_hez_final_15.ptau",
     circuits: [
       {
-        name: "ZKubes",
+        name: "test/transform_test",
         // No protocol, so it defaults to groth16
       },
     ],
