@@ -17,6 +17,7 @@
     "circom:dev": "hardhat circom --deterministic --debug --verbose",
     "circom:prod": "hardhat circom --verbose",
     "test": "hardhat test",
-    "pad-puzzles": "ts-node utils/padPuzzles.ts"
+    "pad-puzzles": "ts-node utils/padPuzzles.ts",
+    "transform-puzzles": "ts-node utils/transform.ts"
   }
 }

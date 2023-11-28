@@ -1,6 +1,6 @@
 import { writeFileSync } from "fs";
 import path from "path";
-import { Puzzles } from "../test/data/puzzles.interface";
+import { Puzzles } from "../test/data/puzzles.types";
 const puzzles: Puzzles = require("../test/data/puzzles.json");
 
 function padWithZerosToSizeEight(arr: number[][]): number[][] {
