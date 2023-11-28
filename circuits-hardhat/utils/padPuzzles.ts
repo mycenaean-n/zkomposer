@@ -1,6 +1,7 @@
 import { writeFileSync } from "fs";
 import path from "path";
-const puzzles = require("../test/data/test-puzzles.json");
+import { Puzzles } from "../test/data/puzzles.interface";
+const puzzles: Puzzles = require("../test/data/test-puzzles.json");
 
 function padWithZerosToSizeEight(arr: number[][]): number[][] {
   // Pad each nested array with zeros until its size is 8
@@ -20,12 +21,7 @@ function padWithZerosToSizeEight(arr: number[][]): number[][] {
   return paddedArray;
 }
 
-function padPuzzles(obj: {
-  [lvl: string]: {
-    initial: number[][];
-    target: number[][];
-  };
-}) {
+function padPuzzles(obj: Puzzles) {
   for (const key in obj) {
     if (obj.hasOwnProperty(key)) {
       obj[key].initial = padWithZerosToSizeEight(obj[key].initial);
