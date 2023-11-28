@@ -1,7 +1,7 @@
 import hre from "hardhat";
 import { assert, util } from "chai";
 import { CircuitTestUtils } from "hardhat-circom";
-import { Puzzles } from "./data/puzzles.interface";
+import { Puzzles } from "./data/puzzles.types";
 const puzzles: Puzzles = require("./data/puzzles.json");
 
 describe.only("transform circuit", () => {
