@@ -11,5 +11,6 @@ export interface Puzzles {
     transform: Colors[][];
     stack: Colors[][];
     transformTwo: Colors[][];
+    reverse: Colors[][];
   };
 }
