@@ -10,5 +10,6 @@ export interface Puzzles {
     target: Colors[][];
     transform: Colors[][];
     stack: Colors[][];
+    transformTwo: Colors[][];
   };
 }
