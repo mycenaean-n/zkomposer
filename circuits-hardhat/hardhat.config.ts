@@ -20,7 +20,9 @@ export default {
     circuits: [
       {
         name: "test/transform_test",
-        // No protocol, so it defaults to groth16
+      },
+      {
+        name: "test/stack_test",
       },
     ],
   },
