@@ -24,6 +24,9 @@ export default {
       {
         name: "test/stack_test",
       },
+      {
+        name: "test/removeairpockets_test",
+      },
     ],
   },
 };
