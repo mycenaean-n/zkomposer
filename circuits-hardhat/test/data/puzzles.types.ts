@@ -7,7 +7,8 @@ export enum Colors {
 export interface Puzzles {
   [lvl: string]: {
     initial: Colors[][];
-    transform: Colors[][];
     target: Colors[][];
+    transform: Colors[][];
+    stack: Colors[][];
   };
 }
