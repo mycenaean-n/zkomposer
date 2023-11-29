@@ -3,12 +3,12 @@ import { assert } from "chai";
 import { CircuitTestUtils } from "hardhat-circom";
 import { Colors, Puzzles } from "./data/puzzles.types";
 import { transform } from "../utils/transform";
+import config from "../config";
 const puzzles: Puzzles = require("./data/puzzles.json");
 
 describe.only("transform circuit", () => {
   let circuit: CircuitTestUtils;
 
-  const sampleInput = puzzles;
   const sanityCheck = true;
 
   before(async () => {
@@ -17,17 +17,16 @@ describe.only("transform circuit", () => {
 
   it("produces a witness with valid constraints", async () => {
     const witness = await circuit.calculateWitness(
-      { grid: sampleInput[0.1].initial, inColor: 1, outColor: 2 },
+      { grid: puzzles[0.1].initial, inColor: 1, outColor: 2 },
       sanityCheck
     );
 
-    // console.log("witness: ", matchKey(outRegex, witness));
     await circuit.checkConstraints(witness);
   });
 
   it("has valid constraints", async () => {
     const witness = await circuit.calculateWitness(
-      { grid: sampleInput[0.1].initial, inColor: 1, outColor: 2 },
+      { grid: puzzles[0.1].initial, inColor: 1, outColor: 2 },
       sanityCheck
     );
 
@@ -36,7 +35,7 @@ describe.only("transform circuit", () => {
 
   it("has expected witness values", async () => {
     const witness = await circuit.calculateLabeledWitness(
-      { grid: sampleInput[0.1].initial, inColor: 1, outColor: 2 },
+      { grid: puzzles[0.1].initial, inColor: 1, outColor: 2 },
       sanityCheck
     );
 
@@ -45,7 +44,7 @@ describe.only("transform circuit", () => {
         assert.propertyVal(
           witness,
           `main.out[${i}][${j}]`,
-          String(sampleInput[0.1].target[i][j])
+          String(puzzles[0.1].target[i][j])
         );
       }
     }
@@ -53,33 +52,39 @@ describe.only("transform circuit", () => {
 
   it("produces expected witness values", async () => {
     const witness = await circuit.calculateLabeledWitness(
-      { grid: sampleInput[0.1].initial, inColor: 1, outColor: 3 },
+      { grid: puzzles[0.1].initial, inColor: 1, outColor: 3 },
       sanityCheck
     );
 
     assert.notPropertyVal(
       witness,
       "main.out[0][0]",
-      String(sampleInput[0.2].target[0][0])
+      String(puzzles[0.2].target[0][0])
     );
   });
 
-  it("transformation witness values equals transformation function return values", async () => {
-    const witness = await circuit.calculateLabeledWitness(
-      { grid: sampleInput[0.1].initial, inColor: 1, outColor: 2 },
-      sanityCheck
-    );
-
-    for (let i = 0; i < 8; i++) {
-      const column = transform(
-        sampleInput[0.1].initial[i],
-        Colors.Yellow,
-        Colors.Red
+  ["0.1", "0.2", "0.3", "0.4"].forEach((lvl: string) => {
+    it(`transform witness values for level ${lvl} equals transform function return values`, async () => {
+      const witness = await circuit.calculateLabeledWitness(
+        { grid: puzzles[0.1].initial, inColor: 1, outColor: 2 },
+        sanityCheck
       );
 
-      for (let j = 0; j < 8; j++) {
-        assert.propertyVal(witness, `main.out[${i}][${j}]`, String(column[j]));
+      for (let i = 0; i < config.gridWidth; i++) {
+        const column = transform(
+          puzzles[0.1].initial[i],
+          Colors.Yellow,
+          Colors.Red
+        );
+
+        for (let j = 0; j < config.gridHeight; j++) {
+          assert.propertyVal(
+            witness,
+            `main.out[${i}][${j}]`,
+            String(column[j])
+          );
+        }
       }
-    }
+    });
   });
 });
