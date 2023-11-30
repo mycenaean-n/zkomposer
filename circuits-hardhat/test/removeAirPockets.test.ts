@@ -4,7 +4,7 @@ import { CircuitTestUtils } from "hardhat-circom";
 import { Colors } from "./data/puzzles.types";
 import config from "../config";
 
-describe.only("transform circuit", () => {
+describe.only("removeairpockets circuit", () => {
   let circuit: CircuitTestUtils;
   const expectedValue = [1, 2, 3, 0, 0, 0, 0, 0];
   const sampleInput = [
