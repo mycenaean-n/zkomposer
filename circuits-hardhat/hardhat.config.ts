@@ -27,6 +27,9 @@ export default {
       {
         name: "test/removeairpockets_test",
       },
+      {
+        name: "test/transformtwo_test",
+      },
     ],
   },
 };
