@@ -19,6 +19,7 @@
     "test": "hardhat test",
     "pad-puzzles": "ts-node utils/padPuzzles.ts",
     "transform-puzzles": "ts-node utils/transform.ts",
-    "stack-puzzles": "ts-node utils/stack.ts"
+    "stack-puzzles": "ts-node utils/stack.ts",
+    "transformtwo-puzzles": "ts-node utils/transformTwo.ts"
   }
 }

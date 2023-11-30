@@ -3,7 +3,7 @@ import { writeFileSync } from "fs";
 import path from "path";
 const puzzles: Puzzles = require("../test/data/puzzles.json");
 
-function transformTwo(
+export function transformTwo(
   column: Array<Colors>,
   inColor: Colors,
   outColor: Colors
