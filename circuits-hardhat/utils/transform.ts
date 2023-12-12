@@ -20,6 +20,14 @@ export function transform(
   ];
 }
 
+export function transformGrid(
+  grid: Array<Array<Colors>>,
+  inColor: Colors,
+  outColor: Colors
+): Array<Array<Colors>> {
+  return grid.map((column) => transform(column, inColor, outColor));
+}
+
 function transformPuzzles(obj: Puzzles) {
   for (const key in obj) {
     if (obj.hasOwnProperty(key)) {

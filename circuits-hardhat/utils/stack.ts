@@ -18,6 +18,13 @@ export function stack(column: Array<Colors>, color: Colors): Array<Colors> {
   return column;
 }
 
+export function stackGrid(
+  grid: Array<Array<Colors>>,
+  color: Colors
+): Array<Array<Colors>> {
+  return grid.map((col) => stack(col, color));
+}
+
 function stackPuzzles(obj: Puzzles) {
   for (const key in obj) {
     if (obj.hasOwnProperty(key)) {

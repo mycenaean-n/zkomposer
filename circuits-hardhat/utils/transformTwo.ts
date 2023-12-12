@@ -23,6 +23,14 @@ export function transformTwo(
   return [...transformed, ...transformTwo(remaining, inColor, outColor)];
 }
 
+export function transformTwoGrid(
+  grid: Array<Array<Colors>>,
+  inColor: Colors,
+  outColor: Colors
+): Array<Array<Colors>> {
+  return grid.map((col) => transformTwo(col, inColor, outColor));
+}
+
 function transformTwoPuzzles(obj: Puzzles) {
   for (const key in obj) {
     if (obj.hasOwnProperty(key)) {
