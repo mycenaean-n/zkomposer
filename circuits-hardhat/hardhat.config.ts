@@ -27,6 +27,9 @@ export default {
       {
         name: "test/transformtwo_test",
       },
+      {
+        name: "main",
+      },
     ],
   },
 };
