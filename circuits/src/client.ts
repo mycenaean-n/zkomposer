@@ -1,8 +1,5 @@
-// import buildCalculator from "../zk/circuits/main_js/witness_calculator";
-import buildCalculator from "../zk/circuits/transform_js/witness_calculator";
-import { buildBabyjub } from "circomlibjs";
+import buildCalculator from "../zk/circuits/main_js/witness_calculator";
 import * as snarkjs from "snarkjs";
-import { Colors } from "../types";
 
 export interface Proof {
   a: [bigint, bigint];
@@ -12,20 +9,10 @@ export interface Proof {
 
 export class ZKPClient {
   private _calculator: any;
-  private _babyjub: any;
   private _zkey: any;
 
   get initialized() {
-    return (
-      this._calculator !== undefined &&
-      this._babyjub !== undefined &&
-      this._zkey !== undefined
-    );
-  }
-
-  get babyjub() {
-    if (!this.initialized) throw Error("Not initialized");
-    return this._babyjub;
+    return this._calculator !== undefined && this._zkey !== undefined;
   }
 
   get calculator() {
@@ -36,10 +23,9 @@ export class ZKPClient {
   async init(wasm: Buffer, zKey: Buffer) {
     if (this.initialized) return this;
     // you can adjust the file path here
-    [this._zkey, this._calculator, this._babyjub] = await Promise.all([
+    [this._zkey, this._calculator] = await Promise.all([
       zKey,
       buildCalculator(wasm),
-      buildBabyjub(),
     ]);
     this._zkey.type = "mem";
     return this;
