@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Layout from "./layout/Layout";
 import Lobbies from "./lobbies/Lobbies";
 import Game from "./game/Game";
-import { Proof } from "./game/zk/hooks/useProof";
+import { Proof } from "./game/zk/types";
 
 function App() {
   const [proof, setProof] = useState<Proof>();

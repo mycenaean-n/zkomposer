@@ -6,13 +6,53 @@ import styles from "./page.module.css";
 import { functionMapping, idToGridFunction, puzzleMapping } from "./Puzzles";
 import { Grid } from "./Grid";
 import { GenerateProof } from "./zk/GenerateProof";
-import { Proof } from "./zk/hooks/useProof";
+import { InputSignals, Proof } from "./zk/types";
 
 const mockPuzzle = puzzleMapping[2];
 
 export default function Game() {
   const sceneRef = useRef<HTMLDivElement>(null);
   const [proof, setProof] = useState<Proof | string>();
+  const [inputSignals, setInputSignals] = useState<InputSignals>({
+    initialGrid: [
+      [1, 1, 2, 0, 0, 0, 0, 0],
+      [1, 2, 0, 0, 0, 0, 0, 0],
+      [2, 0, 0, 0, 0, 0, 0, 0],
+      [2, 0, 0, 0, 0, 0, 0, 0],
+      [1, 2, 0, 0, 0, 0, 0, 0],
+      [1, 1, 2, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+    ],
+    finalGrid: [
+      [1, 1, 1, 2, 0, 0, 0, 0],
+      [1, 1, 2, 0, 0, 0, 0, 0],
+      [1, 2, 0, 0, 0, 0, 0, 0],
+      [1, 2, 0, 0, 0, 0, 0, 0],
+      [1, 1, 2, 0, 0, 0, 0, 0],
+      [1, 1, 1, 2, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+    ],
+    account: "0x123",
+    selectedFunctions: [
+      [
+        [1, 2, 1],
+        [0, 0, 0],
+        [0, 0, 0],
+      ],
+      [
+        [0, 0, 0],
+        [1, 2, 0],
+        [0, 0, 0],
+      ],
+      [
+        [0, 0, 0],
+        [0, 0, 0],
+        [0, 0, 0],
+      ],
+    ],
+  });
   const [grid, setGrid] = useState<Grid>();
   const [rendered, setRendered] = useState(false);
 
@@ -57,44 +97,7 @@ export default function Game() {
       </div>
 
       <GenerateProof
-        initialGrid={[
-          [1, 1, 2, 0, 9, 0, 0, 0],
-          [1, 2, 0, 0, 0, 0, 0, 0],
-          [2, 0, 0, 0, 0, 0, 0, 0],
-          [2, 0, 0, 0, 0, 0, 0, 0],
-          [1, 2, 0, 0, 0, 0, 0, 0],
-          [1, 1, 2, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0],
-        ]}
-        finalGrid={[
-          [1, 1, 1, 2, 0, 0, 0, 0],
-          [1, 1, 2, 0, 0, 0, 0, 0],
-          [1, 2, 0, 0, 0, 0, 0, 0],
-          [1, 2, 0, 0, 0, 0, 0, 0],
-          [1, 1, 2, 0, 0, 0, 0, 0],
-          [1, 1, 1, 2, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0, 0, 0, 0],
-        ]}
-        account={"0x123"}
-        selectedFunctions={[
-          [
-            [1, 2, 1],
-            [0, 0, 0],
-            [0, 0, 0],
-          ],
-          [
-            [0, 0, 0],
-            [1, 2, 0],
-            [0, 0, 0],
-          ],
-          [
-            [0, 0, 0],
-            [0, 0, 0],
-            [0, 0, 0],
-          ],
-        ]}
+        inputSignals={inputSignals}
         onResult={(result) => setProof(result)}
       />
     </div>

@@ -1,16 +1,11 @@
-import { Proof, useProof } from "./hooks/useProof";
+import { useProof } from "./hooks/useProof";
+import { InputSignals, Proof } from "./types";
 
 export function GenerateProof({
-  initialGrid,
-  finalGrid,
-  account,
-  selectedFunctions,
+  inputSignals: { initialGrid, finalGrid, account, selectedFunctions },
   onResult,
 }: {
-  initialGrid: number[][];
-  finalGrid: number[][];
-  account: string;
-  selectedFunctions: number[][][];
+  inputSignals: InputSignals;
   onResult: (proof: Proof | string) => void;
 }) {
   const proofCallback = useProof(
