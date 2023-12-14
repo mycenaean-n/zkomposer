@@ -9,8 +9,8 @@ export function GenerateProof({
   onResult: (proof: Proof | string) => void;
 }) {
   const proofCallback = useProof(
-    `${process.env.PUBLIC_URL}/main.wasm`,
-    `${process.env.PUBLIC_URL}/main.zkey`
+    `${process.env.PUBLIC_URL}/zk/main.wasm`,
+    `${process.env.PUBLIC_URL}/zk/main.zkey`
   );
 
   return (
