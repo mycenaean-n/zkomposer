@@ -17,6 +17,7 @@ export default {
   circom: {
     inputBasePath: "./circuits",
     ptau: "https://hermez.s3-eu-west-1.amazonaws.com/powersOfTau28_hez_final_15.ptau",
+    // groth16 by default
     circuits: [
       {
         name: "test/transform_test",
