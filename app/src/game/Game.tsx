@@ -2,15 +2,17 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./page.module.css";
 // import { GenerateProof } from "./zk/generateProof";
-import { Proof } from "circuits";
+// import { Proof } from "circuits";
 import { functionMapping, idToGridFunction, puzzleMapping } from "./Puzzles";
 import { Grid } from "./Grid";
+import { GenerateProof } from "./zk/GenerateProof";
+import { Proof } from "./zk/hooks/useProof";
 
 const mockPuzzle = puzzleMapping[2];
 
 export default function Game() {
   const sceneRef = useRef<HTMLDivElement>(null);
-  const [proof, setProof] = useState<Proof>();
+  const [proof, setProof] = useState<Proof | string>();
   const [grid, setGrid] = useState<Grid>();
   const [rendered, setRendered] = useState(false);
 
@@ -21,12 +23,10 @@ export default function Game() {
       setRendered(true);
     }
     if (grid) {
-      grid.start()
-      grid.initStartingGrid(mockPuzzle.startingGrid)
+      grid.start();
+      grid.initStartingGrid(mockPuzzle.startingGrid);
     }
   }, [sceneRef, rendered, grid]);
-
-  console.log(grid)
 
   return (
     <div className={styles.gameContainer}>
@@ -56,9 +56,9 @@ export default function Game() {
         </h4>
       </div>
 
-      {/* <GenerateProof
+      <GenerateProof
         initialGrid={[
-          [1, 1, 2, 0, 0, 0, 0, 0],
+          [1, 1, 2, 0, 9, 0, 0, 0],
           [1, 2, 0, 0, 0, 0, 0, 0],
           [2, 0, 0, 0, 0, 0, 0, 0],
           [2, 0, 0, 0, 0, 0, 0, 0],
@@ -68,28 +68,35 @@ export default function Game() {
           [0, 0, 0, 0, 0, 0, 0, 0],
         ]}
         finalGrid={[
-          [2, 2, 2, 1, 0, 0, 0, 0],
-          [2, 2, 1, 0, 0, 0, 0, 0],
-          [2, 2, 0, 0, 0, 0, 0, 0],
-          [2, 1, 0, 0, 0, 0, 0, 0],
-          [2, 2, 1, 0, 0, 0, 0, 0],
-          [2, 2, 2, 1, 0, 0, 0, 0],
+          [1, 1, 1, 2, 0, 0, 0, 0],
+          [1, 1, 2, 0, 0, 0, 0, 0],
+          [1, 2, 0, 0, 0, 0, 0, 0],
+          [1, 2, 0, 0, 0, 0, 0, 0],
+          [1, 1, 2, 0, 0, 0, 0, 0],
+          [1, 1, 1, 2, 0, 0, 0, 0],
           [0, 0, 0, 0, 0, 0, 0, 0],
           [0, 0, 0, 0, 0, 0, 0, 0],
         ]}
-        account={"0x0"}
+        account={"0x123"}
         selectedFunctions={[
           [
-            [0, 1, 2],
+            [1, 2, 1],
+            [0, 0, 0],
             [0, 0, 0],
           ],
           [
             [0, 0, 0],
-            [1, 1, 0],
+            [1, 2, 0],
+            [0, 0, 0],
+          ],
+          [
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0],
           ],
         ]}
         onResult={(result) => setProof(result)}
-      /> */}
+      />
     </div>
   );
 }
