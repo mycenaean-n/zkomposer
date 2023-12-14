@@ -14,9 +14,10 @@
     "node": ">=16"
   },
   "scripts": {
-    "circom:dev": "hardhat circom --deterministic --debug --verbose",
-    "circom:prod": "hardhat circom --verbose",
+    "circom:dev": "hardhat circom  --circuit main --deterministic --debug --verbose",
+    "circom:prod": "hardhat circom --circuit main --verbose",
     "test": "hardhat test",
+    "postbuild": "mkdir ../app/public/zk  & cp ./node_modules/snarkjs/build/snarkjs.min.js ../app/public/zk & cp artifacts/circom/main.wasm ../app/public/zk && cp artifacts/circom/main.zkey ../app/public/zk",
     "pad-puzzles": "ts-node utils/padPuzzles.ts",
     "transform-puzzles": "ts-node utils/transform.ts",
     "stack-puzzles": "ts-node utils/stack.ts",
