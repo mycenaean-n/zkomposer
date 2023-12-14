@@ -1,18 +1,6 @@
 import { useCallback } from "react";
+import { InputSignals, Proof } from "../types";
 const { groth16 } = window.snarkjs;
-
-export interface Proof {
-  a: [bigint, bigint];
-  b: [[bigint, bigint], [bigint, bigint]];
-  c: [bigint, bigint];
-}
-
-interface InputSignals {
-  initialGrid: number[][];
-  finalGrid: number[][];
-  account: string;
-  selectedFunctions: number[][][];
-}
 
 async function exportCallDataGroth16(
   input: InputSignals,
