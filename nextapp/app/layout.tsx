@@ -10,7 +10,6 @@ const roboto = Roboto({
   subsets: ['latin'],
 })
 
-import { Web3ModalProvider } from "./context/Web3Modal";
 import Image from 'next/image'
 
 export const metadata: Metadata = {
@@ -26,15 +25,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={roboto.className}>
-      <Web3ModalProvider>
         <header className={styles.header}>
             <Image src={logo} alt='logo' className={styles.logo}/>
             <div className={styles.walletConnect}>
-              <w3m-button/>
             </div>
           </header>
           {children}
-      </Web3ModalProvider>
       </body>
     </html>
   )

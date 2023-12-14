@@ -2,12 +2,12 @@
 import { useRef, useState } from "react";
 import styles from "./page.module.css";
 import { useGrid } from "./useGrid";
-import { GenerateProof } from "./zk/generateProof";
-import { Proof } from "circuits";
+// import { GenerateProof } from "./zk/generateProof";
+// import { Proof } from "circuits";
 
 export default function Game() {
   const sceneRef = useRef<HTMLDivElement>(null);
-  const [proof, setProof] = useState<Proof>();
+  // const [proof, setProof] = useState<Proof>();
 
   useGrid(sceneRef);
 
@@ -33,7 +33,7 @@ export default function Game() {
         </h4>
       </div>
 
-      <GenerateProof
+      {/* <GenerateProof
         initialGrid={[
           [1, 1, 2, 0, 0, 0, 0, 0],
           [1, 2, 0, 0, 0, 0, 0, 0],
@@ -66,7 +66,7 @@ export default function Game() {
           ],
         ]}
         onResult={(result) => setProof(result)}
-      />
+      /> */}
     </div>
   );
 }
