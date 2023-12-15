@@ -1,21 +1,22 @@
-"use client";
+'use client'
 import { useRef, useState } from "react";
 import styles from "./page.module.css";
-import { useGrid } from "./useGrid";
-// import { GenerateProof } from "./zk/generateProof";
-// import { Proof } from "circuits";
+import { GenerateProof } from "./zk/generateProof";
+import { Proof } from "circuits";
+import { puzzleMapping } from "./Puzzles";
+
+const mockPuzzle = puzzleMapping[2];
 
 export default function Game() {
   const sceneRef = useRef<HTMLDivElement>(null);
-  // const [proof, setProof] = useState<Proof>();
-
-  useGrid(sceneRef);
+  const [proof, setProof] = useState<Proof>();
 
   return (
     <div className={styles.gameContainer}>
       <div ref={sceneRef} className={styles.sceneContainer} />
       <div className={styles.gameUI}>
-        <div className={styles.availableFunctions}></div>
+        <div className={styles.availableFunctions}>
+        </div>
         <div className={styles.chosenFunctions}></div>
         <div className={styles.actions}>
           <button>submit solution</button>
@@ -33,7 +34,7 @@ export default function Game() {
         </h4>
       </div>
 
-      {/* <GenerateProof
+      <GenerateProof
         initialGrid={[
           [1, 1, 2, 0, 0, 0, 0, 0],
           [1, 2, 0, 0, 0, 0, 0, 0],
@@ -66,7 +67,7 @@ export default function Game() {
           ],
         ]}
         onResult={(result) => setProof(result)}
-      /> */}
+      />
     </div>
   );
 }

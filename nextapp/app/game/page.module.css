@@ -15,9 +15,21 @@
 }
 
 .availableFunctions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
     margin-left: 1rem;
     margin-right: 1rem;
     border: 2px solid black;
+}
+
+.availableFunctions button {
+    background-color: grey;
+    color: white;
+    width: 15rem;
+    font-size: 1.1rem;
 }
 
 .chosenFunctions {
