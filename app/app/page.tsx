@@ -37,7 +37,6 @@ async function getLobbies () {
 
 export default async function Page() {
   const lobbiesElements = await getLobbies()
-  console.log(lobbiesElements.length)
 
   return (
     <div className={styles.lobbies}>
