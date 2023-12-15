@@ -5,10 +5,12 @@
     width: 100vw;
     display: grid;
     grid-template-rows: 10% 40% 50%;
+    text-align: center;
 }
 
 .lobbies h1 {
     color: black;
+
 }
 
 .createLobby {
@@ -22,16 +24,16 @@
     padding-left: 1rem;
     padding-right: 1.5rem;
     overflow-y: scroll;
-}
-
-table, th, tr, td {
-    align-items: center;
-    padding: 1rem;
-    border: 2px solid black;
     border-collapse: collapse;
+    align-items: center;
+    text-align: center;
+
+    & tr, th, td {
+            padding: 1rem;
+            border: 2px solid black;
+    }
 }
 
-
-.lobby button {
+.joinButton {
     align-items: center;
 }

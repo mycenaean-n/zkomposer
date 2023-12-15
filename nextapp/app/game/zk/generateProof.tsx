@@ -1,5 +1,4 @@
 import { Proof } from "circuits";
-import { EdDSASignature } from "circuits/src/eddsa";
 import useCircuit from "./hooks/useCircuit";
 
 export function GenerateProof({
