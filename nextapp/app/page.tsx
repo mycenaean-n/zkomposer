@@ -1,35 +1,44 @@
-import { ethers } from 'ethers'
-import styles from './page.module.css'
+import styles from './page.module.scss'
 
-const MockLobbies = [
-  {
-    id: 1,
-    player1: "0x84526CB0b3A0765FbD24E9CBb7d08B0FC2216B7a",
-    puzzles: "0x84526CB0b3A0765FbD24E9CBb7d08B0FC2216B7a",
-    interval: 100,
-    stake: ethers.utils.parseEther("1").toString()
-  },
-  {
-    id: 2,
-    player1: "0x84526CB0b3A0765FbD24E9CBb7d08B0FC2216B7a",
-    puzzles: "0x84526CB0b3A0765FbD24E9CBb7d08B0FC2216B7a",
-    interval: 100,
-    stake: ethers.utils.parseEther("1").toString()
-  }
-]
+async function getLobbies () {
+  const MockLobbies = [
+    {
+      id: 1,
+      player1: "0x84526CB0b3A0765FbD24E9CBb7d08B0FC2216B7a",
+      puzzles: "0x84526CB0b3A0765FbD24E9CBb7d08B0FC2216B7a",
+      interval: 100,
+      stake: 1
+    },
+    {
+      id: 2,
+      player1: "0x84526CB0b3A0765FbD24E9CBb7d08B0FC2216B7a",
+      puzzles: "0x84526CB0b3A0765FbD24E9CBb7d08B0FC2216B7a",
+      interval: 100,
+      stake: 1
+    }
+  ]
+  const lobbiesElements = await Promise.all(MockLobbies.map((lobby) => 
+  <tr key={lobby.id} className={styles.lobby}>
+    <td>{lobby.id}</td>
+    <td>{lobby.player1}</td>
+    <td>{lobby.puzzles}</td>
+    <td>{lobby.interval}</td>
+    <td>{1}</td>
+    <td>
+      <button>join</button>
+    </td>
+    
+  </tr>
+  ))
+  return lobbiesElements
+}
 
-const LobbiesElements = MockLobbies.map((lobby) => 
-<tr key={lobby.id} className={styles.lobby}>
-  <td>{lobby.id}</td>
-  <td>{lobby.player1}</td>
-  <td>{lobby.puzzles}</td>
-  <td>{lobby.interval}</td>
-  <td>{ethers.utils.parseUnits(lobby.stake, "wei").toString()}</td>
-  <button>join</button>
-</tr>
-)
 
-export default function Lobbies() {
+
+export default async function Page() {
+  const lobbiesElements = await getLobbies()
+  console.log(lobbiesElements.length)
+
   return (
     <div className={styles.lobbies}>
       <h1>Lobbies</h1>
@@ -38,18 +47,20 @@ export default function Lobbies() {
           Create a game
         </button>
       </div>
-      <table className={styles.availableLobbies}>
-      <colgroup span={6}></colgroup>
-        <tr>
-          <th>ID</th>
-          <th>Player 1</th>
-          <th>Puzzles</th>
-          <th>Interval (blocks)</th>
-          <th>Stake</th>
-          <th></th>
-        </tr>
-        {LobbiesElements}
-      </table>
+      
+        <table className={styles.availableLobbies}>
+          <tbody>
+            <tr>
+              <th>ID</th>
+              <th>Player 1</th>
+              <th>Puzzles</th>
+              <th>Interval (blocks)</th>
+              <th>Stake</th>
+              <th></th>
+            </tr>
+              {lobbiesElements}
+          </tbody>
+        </table>
     </div>
   )
 }

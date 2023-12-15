@@ -1,5 +1,3 @@
-import { Grid } from "./Grid";
-
 export const functionMapping = {
   1: "transform(yellow, red)",
   2: "transform(yellow, blue)",
@@ -13,15 +11,15 @@ export const functionMapping = {
   10: "reverse()",
 };
 
-export const idToGridFunction = {
-  2: (grid: Grid) => grid.transform(1, 3),
-  3: (grid: Grid) => grid.transform(2, 1),
-  4: (grid: Grid) => grid.transform(2, 3),
-  6: (grid: Grid) => grid.transform(3, 1),
-  7: (grid: Grid) => grid.stack(1),
-  8: (grid: Grid) => grid.stack(2),
-  9: (grid: Grid) => grid.stack(3),
-};
+// export const idToGridFunction = {
+//   2: (grid: Grid) => grid.transform(1, 3),
+//   3: (grid: Grid) => grid.transform(2, 1),
+//   4: (grid: Grid) => grid.transform(2, 3),
+//   6: (grid: Grid) => grid.transform(3, 1),
+//   7: (grid: Grid) => grid.stack(1),
+//   8: (grid: Grid) => grid.stack(2),
+//   9: (grid: Grid) => grid.stack(3),
+// };
 
 export const functionToCall = {
   2: {}

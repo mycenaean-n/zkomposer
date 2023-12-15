@@ -7,14 +7,14 @@ function useCircuit(): {
   client?: ZKPClient;
 } {
   const [client, setClient] = useState<ZKPClient>();
-
+    console.log(process.env.PUBLIC_URL)
   useEffect(() => {
     if (!cache) {
       Promise.all([
-        fetch(`${process.env.PUBLIC_URL}/main.wasm`).then((res) =>
+        fetch(`./main.wasm`).then((res) =>
           res.arrayBuffer()
         ),
-        fetch(`${process.env.PUBLIC_URL}/main.zkey`).then((res) =>
+        fetch(`./main.zkey`).then((res) =>
           res.arrayBuffer()
         ),
       ]).then(([wasm, zkey]) => {
