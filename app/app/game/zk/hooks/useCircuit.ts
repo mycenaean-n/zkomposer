@@ -7,7 +7,6 @@ function useCircuit(): {
   client?: ZKPClient;
 } {
   const [client, setClient] = useState<ZKPClient>();
-    console.log(process.env.PUBLIC_URL)
   useEffect(() => {
     if (!cache) {
       Promise.all([
