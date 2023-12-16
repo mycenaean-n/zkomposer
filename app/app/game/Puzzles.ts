@@ -1,4 +1,4 @@
-export const functionMapping = {
+export const functionMapping : Record<number, string> = {
   1: "transform(yellow, red)",
   2: "transform(yellow, blue)",
   3: "transform(red, yellow)",
