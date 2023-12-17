@@ -1,5 +1,5 @@
 {
-  "name": "nextapp",
+  "name": "app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -15,6 +15,7 @@
     "react": "^18",
     "react-dom": "^18",
     "snarkjs": "^0.7.2",
+    "three": "^0.159.0",
     "viem": "^1.20.0",
     "wagmi": "^1.4.12"
   },

@@ -1,27 +1,16 @@
 'use client'
-import { useRef, useState } from "react";
-import styles from "./page.module.css";
+import { useState } from "react";
+import styles from "./styles/page.module.css";
 import { GenerateProof } from "./zk/generateProof";
 import { Proof } from "circuits";
-import { puzzleMapping } from "./Puzzles";
+import { Game } from "./components/Game";
 
-const mockPuzzle = puzzleMapping[2];
-
-export default function Game() {
-  const sceneRef = useRef<HTMLDivElement>(null);
+export default function Page() {
   const [proof, setProof] = useState<Proof>();
 
   return (
-    <div className={styles.gameContainer}>
-      <div ref={sceneRef} className={styles.sceneContainer} />
-      <div className={styles.gameUI}>
-        <div className={styles.availableFunctions}>
-        </div>
-        <div className={styles.chosenFunctions}></div>
-        <div className={styles.actions}>
-          <button>submit solution</button>
-        </div>
-      </div>
+    <div>
+      <Game />
       <div className={styles.footer}>
         <h4>
           Blocks Left
