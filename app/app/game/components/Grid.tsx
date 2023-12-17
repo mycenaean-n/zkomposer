@@ -16,7 +16,7 @@ export enum Colour {
 function numberToColour(colour: Colour): ColorRepresentation {
 	switch (colour) {
 		case 0:
-			return "transparent";
+			return "white";
 		case 1:
 			return "yellow";
 		case 2:
@@ -37,11 +37,11 @@ export function Grid(props: GridProps) {
 		props.position.y,
 		props.position.z,
 	];
-	for (let column of props.grid) {
-		for (let cube of column) {
+	for (const [columnIndex, column] of props.grid.entries()) {
+		for (const [cubeIndex, cube] of column.entries()) {
 			cubeElements.push(
 				<Cube
-					key={1}
+					key={`[${columnIndex}, ${cubeIndex}]`}
 					colour={new Color(numberToColour(cube))}
 					position={new Vector3(xOffset, yOffset, zOffset)}
 				/>
