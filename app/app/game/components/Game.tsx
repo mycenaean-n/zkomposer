@@ -13,7 +13,7 @@ type Puzzle = {
     availableFunctions: number[];
 };
 
-const mockPuzzle = puzzleMapping[0];
+const mockPuzzle = puzzleMapping[1];
 
 function mapGrid(gridString: string): number[][] {
 	const gridArray = Array.from(gridString);
