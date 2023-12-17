@@ -15,10 +15,6 @@ function getNewCopy(grid: number[][]) : number[][] {
 export function stack(grid: number[][], colour: number) : number[][] {
     // if transparent, change to colour
     const newGrid = getNewCopy(grid)
-    console.log(newGrid)
-
-    // for (let column of newGrid) {}
-
     for (const [columnIndex, column] of newGrid.entries()) {
         for (const [cubeIndex, cube] of column.entries()) {
             if (cube == 0) {

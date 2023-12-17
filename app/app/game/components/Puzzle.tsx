@@ -1,7 +1,7 @@
 "use client";
 import { Canvas } from "@react-three/fiber";
 import { Grid } from "./Grid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Vector3 } from "three";
 import styles from "../styles/puzzle.module.scss";
 import { functionMapping, idToMutator } from "../Puzzles";
@@ -50,20 +50,25 @@ export function Puzzle({
 			{functionMapping[functionId]}
 		</button>
 	));
-    const mutatedGrids: number[][][] = []
-    chosenFunctions.forEach((functionId, index) => {
-        if (index == 0) {
-            console.log("mutating starting grid")
-            const grid = idToMutator[functionId](startingGrid)
-            mutatedGrids.push(grid)
-            console.log(startingGrid)
-        }
-        else {
-            const grid = idToMutator[functionId](mutatedGrids[index - 1])
-            mutatedGrids.push(grid)
-        }
-    })
-    console.log(mutatedGrids)
+    
+    
+
+    useEffect(() => {
+        setGrids([])
+        const mutatedGrids: number[][][] = []
+        chosenFunctions.forEach((functionId, index) => {
+            if (index == 0) {
+                const grid = idToMutator[functionId](startingGrid)
+                mutatedGrids.push(grid)
+            }
+            else {
+                const grid = idToMutator[functionId](mutatedGrids[index - 1])
+                mutatedGrids.push(grid)
+            }
+        })
+        setGrids(mutatedGrids)
+
+    }, [chosenFunctions])
 
 	return (
 		<div className={styles.Puzzle}>
