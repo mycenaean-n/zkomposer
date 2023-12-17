@@ -1,4 +1,4 @@
-import { stack } from "./components/Mutators";
+import { stack, transform } from "./components/Mutators";
 
 export const functionMapping : Record<number, string> = {
   1: "transform(yellow, red)",
@@ -14,10 +14,10 @@ export const functionMapping : Record<number, string> = {
 };
 
 export const idToMutator: Record<number, (grid: number[][]) => number[][]> = {
-  // 2: (grid: number[][]) => transform(1, 3),
-  // 3: (grid: number[][]) => transform(2, 1),
-  // 4: (grid: number[][]) => transform(2, 3),
-  // 6: (grid: number[][]) => transform(3, 1),
+  2: (grid: number[][]) => transform(grid, 1, 3),
+  3: (grid: number[][]) => transform(grid, 2, 1),
+  4: (grid: number[][]) => transform(grid, 2, 3),
+  6: (grid: number[][]) => transform(grid, 3, 1),
   7: (grid: number[][]) => stack(grid, 1),
   8: (grid: number[][]) => stack(grid, 2),
   9: (grid: number[][]) => stack(grid, 3),
