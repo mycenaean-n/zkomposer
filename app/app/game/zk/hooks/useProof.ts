@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { InputSignals, Proof } from "../types";
-const { groth16 } = window.snarkjs;
+import { groth16 } from "snarkjs";
 
 async function exportCallDataGroth16(
   input: InputSignals,
@@ -55,4 +55,3 @@ export function useProof(wasmPath: string, zkeyPath: string) {
     [wasmPath, zkeyPath]
   );
 }
-// }

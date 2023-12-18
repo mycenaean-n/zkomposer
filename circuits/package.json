@@ -18,6 +18,8 @@
     "snarkjs": "0.7.2"
   },
   "devDependencies": {
+    "@types/chai": "^4.3.11",
+    "@types/mocha": "^10.0.6",
     "chai": "^4.3.6",
     "hardhat": "^2.9.1",
     "hardhat-circom": "^3.3.2",
@@ -31,7 +33,7 @@
     "circom:dev": "hardhat circom  --circuit main --deterministic --debug --verbose",
     "circom:prod": "hardhat circom --circuit main --verbose",
     "test": "hardhat test",
-    "postbuild": "mkdir ../app/public/zk  & cp ./node_modules/snarkjs/build/snarkjs.min.js ../app/public/zk & cp artifacts/circom/main.wasm ../app/public/zk && cp artifacts/circom/main.zkey ../app/public/zk",
+    "postbuild": "mkdir ../app/public/zk  & cp artifacts/circom/main.zkey ../app/public/zk",
     "pad-puzzles": "ts-node utils/padPuzzles.ts",
     "transform-puzzles": "ts-node utils/transform.ts",
     "stack-puzzles": "ts-node utils/stack.ts",
