@@ -1,50 +1,36 @@
-import { Proof } from "circuits";
-import useCircuit from "./hooks/useCircuit";
+import { useProof } from "./hooks/useProof";
+import { InputSignals, Proof } from "./types";
 
 export function GenerateProof({
-  initialGrid,
-  finalGrid,
-  account,
-  selectedFunctions,
+  inputSignals: { initialGrid, finalGrid, account, selectedFunctions },
   onResult,
 }: {
-  initialGrid: number[][];
-  finalGrid: number[][];
-  account: string;
-  selectedFunctions: number[][][];
-  onResult: (proof: Proof) => void;
+  inputSignals: InputSignals;
+  onResult: (proof: Proof | string) => void;
 }) {
-  const { client } = useCircuit();
+  const proofCallback = useProof("./zk/main.wasm", "./zk/main.zkey");
+
   return (
-    <div>
-      <button
-        disabled={
-          !client ||
-          !initialGrid ||
-          !finalGrid ||
-          !account ||
-          !selectedFunctions
+    <button
+      disabled={!initialGrid || !finalGrid || !account || !selectedFunctions}
+      onClick={async () => {
+        if (!initialGrid) alert("Initial grid is not ready");
+        else if (!finalGrid) alert("finalGrid is not ready");
+        else if (!account) alert("account is not ready");
+        else if (!selectedFunctions) alert("selectedFunctions is not ready");
+        else {
+          proofCallback({
+            initialGrid,
+            finalGrid,
+            account,
+            selectedFunctions,
+          }).then((res) => {
+            onResult(res);
+          });
         }
-        onClick={async () => {
-          if (!client) alert("Client is not ready");
-          else if (!initialGrid) alert("Initial grid is not ready");
-          else if (!finalGrid) alert("finalGrid is not ready");
-          else if (!account) alert("account is not ready");
-          else if (!selectedFunctions) alert("selectedFunctions is not ready");
-          else {
-            client
-              .prove({
-                initialGrid,
-                finalGrid,
-                account,
-                selectedFunctions,
-              })
-              .then(onResult);
-          }
-        }}
-      >
-        Create zkp
-      </button>
-    </div>
+      }}
+    >
+      Submit Solution
+    </button>
   );
 }
