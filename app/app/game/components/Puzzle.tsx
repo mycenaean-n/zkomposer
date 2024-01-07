@@ -1,89 +1,35 @@
 "use client";
-import { Canvas } from "@react-three/fiber";
-import { Grid } from "./Grid";
-import {
-	createContext,
-	useEffect,
-	useState,
-} from "react";
-import { Vector3 } from "three";
+import { createContext, useState } from "react";
 import styles from "../styles/puzzle.module.scss";
-import { idToMutator } from "../Puzzles";
 import { Actions } from "./Actions";
-import { PuzzleContext as PuzzleContextType } from "@/types/PuzzleContext";
+import { PuzzleContext as PuzzleContextType, PuzzleInit } from "@/types/Puzzle";
+import { Scene } from "./Scene";
 
 export const PuzzleContext = createContext<PuzzleContextType>({
+	initConfig: { startingGrid: [], finalGrid: [], availableFunctions: [] },
 	remainingFunctions: [],
 	setRemainingFunctions: () => {},
 	chosenFunctions: [],
 	setChosenFunctions: () => {},
 });
 
-export function Puzzle({
-	startingGrid,
-	finalGrid,
-	availableFunctions,
-}: {
-	startingGrid: number[][];
-	finalGrid: number[][];
-	availableFunctions: number[];
-}) {
-	const [grids, setGrids] = useState<number[][][]>([]);
+export function Puzzle(initConfig: PuzzleInit) {
 	const [chosenFunctions, setChosenFunctions] = useState<number[]>([]);
-	const [remainingFunctions, setRemainingFunctions] =
-		useState<number[]>(availableFunctions);
-
-	let xGap = 10 / (availableFunctions.length + 1);
-	let xPos = -5;
-	const gridElements = grids.map((grid, index) => {
-		xPos += xGap;
-		return <Grid key={index} grid={grid} position={{ x: xPos, y: 0, z: 0 }} />;
-	});
-
-	useEffect(() => {
-		setGrids([]);
-		const mutatedGrids: number[][][] = [];
-		chosenFunctions.forEach((functionId, index) => {
-			if (index == 0) {
-				const grid = idToMutator[functionId](startingGrid);
-				mutatedGrids.push(grid);
-			} else {
-				const grid = idToMutator[functionId](mutatedGrids[index - 1]);
-				mutatedGrids.push(grid);
-			}
-		});
-		setGrids(mutatedGrids);
-	}, [chosenFunctions]);
+	const [remainingFunctions, setRemainingFunctions] = useState<number[]>(
+		initConfig.availableFunctions
+	);
 
 	return (
 		<PuzzleContext.Provider
 			value={{
+				initConfig,
 				remainingFunctions,
 				setRemainingFunctions,
 				chosenFunctions,
 				setChosenFunctions,
 			}}>
 			<div className={styles.Puzzle}>
-				<div className={styles.canvasContainer}>
-					<Canvas
-						className={styles.canvas}
-						orthographic
-						camera={{
-							position: new Vector3(0.5, 0.5, 1),
-							left: -10,
-							right: 10,
-							top: 10,
-							bottom: -10,
-							zoom: 60,
-							near: -20,
-							far: 20,
-						}}>
-						<ambientLight intensity={Math.PI} />1
-						<Grid grid={startingGrid} position={{ x: -5, y: 0, z: 0 }} />
-						{gridElements}
-						<Grid grid={finalGrid} position={{ x: 5, y: 0, z: 0 }} />
-					</Canvas>
-				</div>
+				<Scene />
 				<Actions />
 			</div>
 		</PuzzleContext.Provider>

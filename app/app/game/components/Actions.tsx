@@ -1,4 +1,3 @@
-"use client";
 import { useContext, useState } from "react";
 import { PuzzleContext } from "./Puzzle";
 import { InputSignals, Proof } from "../zk/types";
