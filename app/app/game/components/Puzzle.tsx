@@ -2,8 +2,6 @@
 import { Canvas } from "@react-three/fiber";
 import { Grid } from "./Grid";
 import {
-	Dispatch,
-	SetStateAction,
 	createContext,
 	useEffect,
 	useState,
@@ -12,13 +10,7 @@ import { Vector3 } from "three";
 import styles from "../styles/puzzle.module.scss";
 import { idToMutator } from "../Puzzles";
 import { Actions } from "./Actions";
-
-export type PuzzleContextType = {
-	remainingFunctions: number[];
-	setRemainingFunctions: Dispatch<SetStateAction<number[]>>;
-	chosenFunctions: number[];
-	setChosenFunctions: Dispatch<SetStateAction<number[]>>;
-};
+import { PuzzleContext as PuzzleContextType } from "@/types/PuzzleContext";
 
 export const PuzzleContext = createContext<PuzzleContextType>({
 	remainingFunctions: [],
