@@ -100,38 +100,40 @@ export function Actions() {
 	}
 
 	return (
-		<div className={styles.gameUI}>
-			<DragDropContext onDragEnd={onDragEnd}>
-				<Droppable droppableId={PuzzleFunctionState.remaining}>
-					{(provided) => (
-						<div
-							className={styles.availableFunctions}
-							ref={provided.innerRef}
-							{...provided.droppableProps}>
-							{remainingFunctionsElements}
-							{provided.placeholder}
-						</div>
-					)}
-				</Droppable>
+		<div className={styles.actions}>
+			<div className={styles.gameUI}>
+				<DragDropContext onDragEnd={onDragEnd}>
+					<Droppable droppableId={PuzzleFunctionState.remaining}>
+						{(provided) => (
+							<div
+								className={styles.availableFunctions}
+								ref={provided.innerRef}
+								{...provided.droppableProps}>
+								{remainingFunctionsElements}
+								{provided.placeholder}
+							</div>
+						)}
+					</Droppable>
 
-				<Droppable droppableId={PuzzleFunctionState.chosen}>
-					{(provided) => (
-						<div
-							ref={provided.innerRef}
-							className={styles.chosenFunctions}
-							{...provided.droppableProps}>
-							{chosenFunctionsElements}
-							{provided.placeholder}
-						</div>
-					)}
-				</Droppable>
-			</DragDropContext>
+					<Droppable droppableId={PuzzleFunctionState.chosen}>
+						{(provided) => (
+							<div
+								ref={provided.innerRef}
+								className={styles.chosenFunctions}
+								{...provided.droppableProps}>
+								{chosenFunctionsElements}
+								{provided.placeholder}
+							</div>
+						)}
+					</Droppable>
+				</DragDropContext>
 
-			<div className={styles.submit}>
-				<GenerateProof
-					inputSignals={inputSignals}
-					onResult={(result) => setProof(result)}
-				/>
+				<div className={styles.submit}>
+					<GenerateProof
+						inputSignals={inputSignals}
+						onResult={(result) => setProof(result)}
+					/>
+				</div>
 			</div>
 		</div>
 	);

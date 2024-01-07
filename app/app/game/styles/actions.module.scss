@@ -1,29 +1,37 @@
-.gameUI {
-  display: grid;
-  padding: 3rem;
-  gap: 3rem;
-  grid-template-columns: 30% 30% 30%;
+.actions {
+  display: flex;
+  align-items: center;
   justify-content: center;
-  height: 20vh;
-
-  
+  transition: 0s !important;
 }
 
-.availableFunctions {
+.gameUI {
+  display: grid;
+  grid-template-columns: 40% 40% 20%;
+  gap: 2rem;
+  justify-content: center;
+  height: 20vh;
+  width: 80vw;
+}
+
+.functionsWrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
-  margin-left: 1rem;
-  margin-right: 1rem;
+  width: 100%;
+}
+
+.availableFunctions {
   border: 2px solid black;
 }
 
 .function {
   background-color: grey;
   color: white;
-  width: 15rem;
+  width: 16vw;
+  margin-left: 8vw;
+  margin-top: 1rem;
   font-size: 1.1rem;
   cursor: pointer;
   text-align: center;
@@ -31,21 +39,9 @@
 
 
 .chosenFunctions {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  margin-left: 1rem;
-  margin-right: 1rem;
   border: 2px dashed black;
 }
 
-.actions {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 1rem;
-  margin-right: 1rem;
-  border: 2px solid black;
+.submit {
+  border: 2px solid green;
 }
