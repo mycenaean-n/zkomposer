@@ -6,13 +6,7 @@
   justify-content: center;
   height: 20vh;
 
-  & button {
-      background-color: grey;
-      color: white;
-      width: 15rem;
-      font-size: 1.1rem;
-      cursor: pointer;
-  }
+  
 }
 
 .availableFunctions {
@@ -24,6 +18,15 @@
   margin-left: 1rem;
   margin-right: 1rem;
   border: 2px solid black;
+}
+
+.function {
+  background-color: grey;
+  color: white;
+  width: 15rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+  text-align: center;
 }
 
 

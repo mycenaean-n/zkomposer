@@ -8,7 +8,7 @@ import styles from "../styles/puzzle.module.scss";
 
 export function Scene() {
 	const [grids, setGrids] = useState<number[][][]>([]);
-	const { initConfig, chosenFunctions } = useContext(PuzzleContext);
+	const { initConfig, functions } = useContext(PuzzleContext);
 	const { startingGrid, finalGrid, availableFunctions } = initConfig;
 
 	const xGap = 10 / (availableFunctions.length + 1);
@@ -21,7 +21,7 @@ export function Scene() {
 	useEffect(() => {
 		setGrids([]);
 		const mutatedGrids: number[][][] = [];
-		chosenFunctions.forEach((functionId, index) => {
+		functions.chosen.forEach((functionId, index) => {
 			if (index == 0) {
 				const grid = idToMutator[functionId](startingGrid);
 				mutatedGrids.push(grid);
@@ -31,7 +31,7 @@ export function Scene() {
 			}
 		});
 		setGrids(mutatedGrids);
-	}, [chosenFunctions]);
+	}, [functions]);
 
 	return (
 		<div className={styles.canvasContainer}>
