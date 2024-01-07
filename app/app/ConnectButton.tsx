@@ -1,8 +1,6 @@
-'use client'
-import { ConnectKitButton } from "connectkit"
+"use client";
+import { ConnectKitButton } from "connectkit";
 
-export function ConnectButton () {
-  return (
-      <ConnectKitButton/>
-  ) 
+export function ConnectButton() {
+	return <ConnectKitButton />;
 }

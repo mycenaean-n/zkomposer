@@ -29,8 +29,8 @@ export default function RootLayout({
 					<header className={styles.header}>
 						<Image src={logo} alt="logo" className={styles.logo} />
 						<div className={styles.connectButton}>
-              <ConnectButton/>
-            </div>
+							<ConnectButton />
+						</div>
 					</header>
 					{children}
 				</body>

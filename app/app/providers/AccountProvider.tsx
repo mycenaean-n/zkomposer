@@ -1,18 +1,15 @@
 "use client";
 import { WagmiConfig, createConfig } from "wagmi";
-import {
-	ConnectKitProvider,
-	getDefaultConfig,
-} from "connectkit";
+import { ConnectKitProvider, getDefaultConfig } from "connectkit";
 import { scrollTestnet, scroll } from "viem/chains";
-const chains = [scroll, scrollTestnet]
+const chains = [scroll, scrollTestnet];
 
 const config = createConfig(
 	getDefaultConfig({
 		// Required API Keys
 		walletConnectProjectId: process.env.WALLETCONNECT_PROJECT_ID!,
 
-    chains,
+		chains,
 		// Required
 		appName: "zKubes",
 
@@ -24,10 +21,7 @@ const config = createConfig(
 export function AccountProvider({ children }: { children: React.ReactNode }) {
 	return (
 		<WagmiConfig config={config}>
-			<ConnectKitProvider
-				theme="retro">
-				{children}
-			</ConnectKitProvider>
+			<ConnectKitProvider theme="retro">{children}</ConnectKitProvider>
 		</WagmiConfig>
 	);
 }
