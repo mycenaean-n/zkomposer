@@ -6,6 +6,7 @@ import { argumentBuilder } from "../utils/circuitFunctions";
 import { WasmTester, wasm } from "circom_tester";
 import path from "path";
 import { calculateLabeledWitness } from "./utils/calculateLabeledWitness";
+import { CircuitFunctions } from "../utils/enums/circuitFunctions.enum";
 const puzzles: Puzzles = require("./data/puzzles.json");
 
 describe.only("transformtwo circuit", () => {
@@ -22,7 +23,7 @@ describe.only("transformtwo circuit", () => {
 
   it("produces a witness with valid constraints", async () => {
     const [onOff, inColor, outColor] = argumentBuilder(
-      "TRANSFORMTWO_YELLOW_RED"
+      CircuitFunctions.TRANSFORMTWO_YELLOW_RED
     );
 
     const witness = await circuit.calculateWitness(
@@ -35,7 +36,7 @@ describe.only("transformtwo circuit", () => {
 
   it("has expected witness values for onOff == 1", async () => {
     const [onOff, inColor, outColor] = argumentBuilder(
-      "TRANSFORMTWO_YELLOW_RED"
+      CircuitFunctions.TRANSFORMTWO_YELLOW_RED
     );
     const witness = await calculateLabeledWitness(
       circuit,
@@ -55,7 +56,9 @@ describe.only("transformtwo circuit", () => {
   });
 
   it("has expected witness values for onOff == 0", async () => {
-    const [inColor, outColor] = argumentBuilder("TRANSFORMTWO_YELLOW_RED");
+    const [inColor, outColor] = argumentBuilder(
+      CircuitFunctions.TRANSFORMTWO_YELLOW_RED
+    );
     const witness = await calculateLabeledWitness(
       circuit,
       { grid: initialGrid, onOff: 0, inColor, outColor },
@@ -75,7 +78,7 @@ describe.only("transformtwo circuit", () => {
 
   it("produces expected witness values", async () => {
     const [onOff, inColor, outColor] = argumentBuilder(
-      "TRANSFORMTWO_YELLOW_RED"
+      CircuitFunctions.TRANSFORMTWO_YELLOW_RED
     );
     const witness = await calculateLabeledWitness(
       circuit,
@@ -93,7 +96,7 @@ describe.only("transformtwo circuit", () => {
   ["0.1", "0.2", "0.3", "0.4"].forEach((lvl: string) => {
     it(`transform witness values for level ${lvl} equals transform function return values`, async () => {
       const [onOff, inColor, outColor] = argumentBuilder(
-        "TRANSFORMTWO_YELLOW_BLUE"
+        CircuitFunctions.TRANSFORMTWO_YELLOW_BLUE
       );
       const witness = await calculateLabeledWitness(
         circuit,

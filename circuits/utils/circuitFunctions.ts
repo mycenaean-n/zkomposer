@@ -4,7 +4,7 @@ import { CircuitFunctions } from "./enums/circuitFunctions.enum";
 const FUNCTION_ORDER = ["TRANSFORM", "STACK", "TRANSFORMTWO"];
 
 export function argumentBuilder(
-  arg: keyof typeof CircuitFunctions
+  arg: CircuitFunctions
 ): [OnOff.On, Colors, Colors] {
   const colorIn = arg.split("_")[1];
   const colorOut = arg.split("_")[2];
@@ -14,19 +14,17 @@ export function argumentBuilder(
     colorIn === "YELLOW"
       ? Colors.Yellow
       : colorIn === "RED"
-      ? Colors.Red
-      : Colors.Blue,
+        ? Colors.Red
+        : Colors.Blue,
     colorOut === "YELLOW"
       ? Colors.Yellow
       : colorOut === "RED"
-      ? Colors.Red
-      : Colors.Blue,
+        ? Colors.Red
+        : Colors.Blue,
   ];
 }
 
-export function argumentBuilderMain(
-  args: (keyof typeof CircuitFunctions)[]
-): number[][][] {
+export function argumentBuilderMain(args: CircuitFunctions[]): number[][][] {
   const numSelectedFunctions = args.length;
   const numAvailableFunctions = FUNCTION_ORDER.length;
   // cannot set nested array in JS only with fill due to object references

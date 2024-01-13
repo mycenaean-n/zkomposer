@@ -10,13 +10,13 @@ function selectColor(color: ArgumentColor) {
   return color === "YELLOW"
     ? Colors.Yellow
     : color === "RED"
-    ? Colors.Red
-    : Colors.Blue;
+      ? Colors.Red
+      : Colors.Blue;
 }
 
 export function gridMutator(
   grid: Array<Array<Colors>>,
-  args: (keyof typeof CircuitFunctions)[]
+  args: CircuitFunctions[]
 ) {
   if (args.length === 0) return grid;
 

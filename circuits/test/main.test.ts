@@ -21,15 +21,15 @@ describe.only("main circuit", () => {
 
   it("produces a witness with valid constraints", async () => {
     const targetGrid = gridMutator(initialGrid, [
-      "TRANSFORM_YELLOW_RED",
-      "STACK_RED",
-      "TRANSFORMTWO_RED_BLUE",
+      CircuitFunctions.TRANSFORM_YELLOW_RED,
+      CircuitFunctions.STACK_RED,
+      CircuitFunctions.TRANSFORMTWO_RED_BLUE,
     ]);
 
     const circuitFunctionArguments = argumentBuilderMain([
-      "TRANSFORM_YELLOW_RED",
-      "STACK_RED",
-      "TRANSFORMTWO_RED_BLUE",
+      CircuitFunctions.TRANSFORM_YELLOW_RED,
+      CircuitFunctions.STACK_RED,
+      CircuitFunctions.TRANSFORMTWO_RED_BLUE,
     ]);
 
     const witness = await circuit.calculateWitness(
@@ -47,17 +47,15 @@ describe.only("main circuit", () => {
 
   it("has expected witness values", async () => {
     const targetGrid = gridMutator(initialGrid, [
-      "TRANSFORM_YELLOW_RED",
-      "STACK_RED",
-      "EMPTY",
+      CircuitFunctions.TRANSFORM_YELLOW_RED,
+      CircuitFunctions.STACK_RED,
+      CircuitFunctions.EMPTY,
     ]);
-
     const circuitFunctionArguments = argumentBuilderMain([
-      "TRANSFORM_YELLOW_RED",
-      "STACK_RED",
-      "EMPTY",
+      CircuitFunctions.TRANSFORM_YELLOW_RED,
+      CircuitFunctions.STACK_RED,
+      CircuitFunctions.EMPTY,
     ]);
-
     const witness = await calculateLabeledWitness(
       circuit,
       {
@@ -82,15 +80,15 @@ describe.only("main circuit", () => {
 
   it("produces expected witness values", async () => {
     const targetGrid = gridMutator(initialGrid, [
-      "TRANSFORM_YELLOW_RED",
-      "STACK_RED",
-      "TRANSFORMTWO_RED_BLUE",
+      CircuitFunctions.TRANSFORM_YELLOW_RED,
+      CircuitFunctions.STACK_RED,
+      CircuitFunctions.TRANSFORMTWO_RED_BLUE,
     ]);
 
     const circuitFunctionArguments = argumentBuilderMain([
-      "TRANSFORM_YELLOW_RED",
-      "STACK_RED",
-      "TRANSFORMTWO_RED_BLUE",
+      CircuitFunctions.TRANSFORM_YELLOW_RED,
+      CircuitFunctions.STACK_RED,
+      CircuitFunctions.TRANSFORMTWO_RED_BLUE,
     ]);
 
     const witness = await calculateLabeledWitness(
@@ -113,9 +111,9 @@ describe.only("main circuit", () => {
 
   it("reverts for duplicated manipulation in same round", async () => {
     const targetGrid = gridMutator(initialGrid, [
-      "TRANSFORM_YELLOW_RED",
-      "STACK_RED",
-      "TRANSFORMTWO_RED_BLUE",
+      CircuitFunctions.TRANSFORM_YELLOW_RED,
+      CircuitFunctions.STACK_RED,
+      CircuitFunctions.TRANSFORMTWO_RED_BLUE,
     ]);
 
     const witnessPromise = calculateLabeledWitness(
@@ -157,9 +155,9 @@ describe.only("main circuit", () => {
 
   it("reverts for a negative argument", async () => {
     const targetGrid = gridMutator(initialGrid, [
-      "TRANSFORM_YELLOW_RED",
-      "STACK_RED",
-      "TRANSFORMTWO_RED_BLUE",
+      CircuitFunctions.TRANSFORM_YELLOW_RED,
+      CircuitFunctions.STACK_RED,
+      CircuitFunctions.TRANSFORMTWO_RED_BLUE,
     ]);
 
     const witnessPromise = calculateLabeledWitness(
@@ -200,9 +198,9 @@ describe.only("main circuit", () => {
 
   it("reverts for inactive function with non-zero arguments", async () => {
     const targetGrid = gridMutator(initialGrid, [
-      "TRANSFORM_YELLOW_RED",
-      "STACK_RED",
-      "TRANSFORMTWO_RED_BLUE",
+      CircuitFunctions.TRANSFORM_YELLOW_RED,
+      CircuitFunctions.STACK_RED,
+      CircuitFunctions.TRANSFORMTWO_RED_BLUE,
     ]);
 
     const witnessPromise = calculateLabeledWitness(
@@ -245,70 +243,62 @@ describe.only("main circuit", () => {
     {
       lvl: "0.1",
       args: [
-        "TRANSFORM_YELLOW_RED",
-        "STACK_RED",
-        "TRANSFORMTWO_RED_BLUE",
-      ] as (keyof typeof CircuitFunctions)[],
+        CircuitFunctions.TRANSFORM_YELLOW_RED,
+        CircuitFunctions.STACK_RED,
+        CircuitFunctions.TRANSFORMTWO_RED_BLUE,
+      ] as CircuitFunctions[],
     },
     {
       lvl: "0.2",
       args: [
-        "STACK_RED",
-        "EMPTY",
-        "EMPTY",
-      ] as (keyof typeof CircuitFunctions)[],
+        CircuitFunctions.STACK_RED,
+        CircuitFunctions.EMPTY,
+        CircuitFunctions.EMPTY,
+      ] as CircuitFunctions[],
     },
     {
       lvl: "0.3",
       args: [
-        "STACK_RED",
-        "TRANSFORM_YELLOW_RED",
-        "TRANSFORMTWO_RED_YELLOW",
-      ] as (keyof typeof CircuitFunctions)[],
+        CircuitFunctions.STACK_RED,
+        CircuitFunctions.TRANSFORM_YELLOW_RED,
+        CircuitFunctions.TRANSFORMTWO_RED_YELLOW,
+      ] as CircuitFunctions[],
     },
     {
       lvl: "0.4",
       args: [
-        "TRANSFORM_YELLOW_BLUE",
-        "STACK_RED",
-        "TRANSFORMTWO_RED_YELLOW",
-      ] as (keyof typeof CircuitFunctions)[],
+        CircuitFunctions.TRANSFORM_YELLOW_BLUE,
+        CircuitFunctions.STACK_RED,
+        CircuitFunctions.TRANSFORMTWO_RED_YELLOW,
+      ] as CircuitFunctions[],
     },
-  ].forEach(
-    ({
-      lvl,
-      args,
-    }: {
-      lvl: string;
-      args: (keyof typeof CircuitFunctions)[];
-    }) => {
-      it(`witness values for level ${lvl} equals values returned for arguments ${args}`, async () => {
-        const initialGrid = puzzles[lvl].initial;
-        const targetGrid = gridMutator(initialGrid, [...args]);
+  ].forEach(({ lvl, args }: { lvl: string; args: CircuitFunctions[] }) => {
+    it(`witness values for level ${lvl} equals values returned for arguments ${args}`, async () => {
+      const initialGrid = puzzles[lvl].initial;
+      const targetGrid = gridMutator(initialGrid, [...args]);
 
-        const circuitFunctionArguments = argumentBuilderMain([...args]);
+      const circuitFunctionArguments = argumentBuilderMain([...args]);
 
-        const witness = await calculateLabeledWitness(
-          circuit,
-          {
-            initialGrid,
-            finalGrid: targetGrid,
-            account: address,
-            selectedFunctions: circuitFunctionArguments,
-          },
-          sanityCheck
-        );
+      const witness = await calculateLabeledWitness(
+        circuit,
+        {
+          initialGrid,
+          finalGrid: targetGrid,
+          account: address,
+          selectedFunctions: circuitFunctionArguments,
+        },
+        sanityCheck
+      );
 
-        for (let i = 0; i < 8; i++) {
-          for (let j = 0; j < 8; j++) {
-            assert.propertyVal(
-              witness,
-              `main.finishingGrid[${i}][${j}]`,
-              String(targetGrid[i][j])
-            );
-          }
+      for (let i = 0; i < 8; i++) {
+        for (let j = 0; j < 8; j++) {
+          assert.propertyVal(
+            witness,
+            `main.finishingGrid[${i}][${j}]`,
+            String(targetGrid[i][j])
+          );
         }
-      });
-    }
-  );
+      }
+    });
+  });
 });
