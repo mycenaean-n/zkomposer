@@ -3,6 +3,7 @@ import { stackGrid } from "./stack";
 import { transformGrid } from "./transform";
 import { transformTwoGrid } from "./transformTwo";
 import { CircuitFunctions } from "./enums/circuitFunctions.enum";
+import { mapIndexToCircuitFunction } from "./mapIndexToCircuitFunction";
 
 type ArgumentColor = "YELLOW" | "RED" | "BLUE";
 
@@ -11,7 +12,9 @@ function selectColor(color: ArgumentColor) {
     ? Colors.Yellow
     : color === "RED"
       ? Colors.Red
-      : Colors.Blue;
+      : color === "BLUE"
+        ? Colors.Blue
+        : Colors.White;
 }
 
 export function gridMutator(
@@ -20,7 +23,8 @@ export function gridMutator(
 ) {
   if (args.length === 0) return grid;
 
-  const splitAtguments = args[0].split("_");
+  const funcName = mapIndexToCircuitFunction(args[0]);
+  const splitAtguments = String(funcName).split("_");
   const mutator = splitAtguments[0];
   const colorIn = selectColor(splitAtguments[1] as ArgumentColor);
   //manipulate grid with calls to transformGrid, stackGrid, and/or transformTwoGrid
