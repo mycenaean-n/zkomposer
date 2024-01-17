@@ -1,16 +1,16 @@
-import { Colors, OnOff } from "../test/data/puzzles.types";
-import { CircuitFunctions } from "./enums/circuitFunctions.enum";
-import { mapIndexToCircuitFunction } from "./mapIndexToCircuitFunction";
+import {
+  CircuitFunctions,
+  Colors,
+  OnOff,
+} from "../types/circuitFunctions.types";
 
 const FUNCTION_ORDER = ["TRANSFORM", "STACK", "TRANSFORMTWO"];
 
 export function argumentBuilder(
   arg: CircuitFunctions
 ): [OnOff.On, Colors, Colors] {
-  const funcName = String(mapIndexToCircuitFunction(arg));
-
-  const colorIn = funcName.split("_")[1];
-  const colorOut = funcName.split("_")[2];
+  const colorIn = arg.split("_")[1];
+  const colorOut = arg.split("_")[2];
 
   return [
     OnOff.On,
@@ -42,8 +42,7 @@ export function argumentBuilderMain(args: CircuitFunctions[]): number[][][] {
     });
 
   args.forEach((arg, i) => {
-    const funcName = mapIndexToCircuitFunction(arg);
-    const func = String(funcName).split("_")[0];
+    const func = arg.split("_")[0];
     const index = FUNCTION_ORDER.indexOf(func);
     argumentsArray[i][index] = argumentBuilder(arg);
   });

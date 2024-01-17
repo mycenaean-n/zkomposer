@@ -1,9 +1,7 @@
-import { Colors } from "../test/data/puzzles.types";
 import { stackGrid } from "./stack";
 import { transformGrid } from "./transform";
 import { transformTwoGrid } from "./transformTwo";
-import { CircuitFunctions } from "./enums/circuitFunctions.enum";
-import { mapIndexToCircuitFunction } from "./mapIndexToCircuitFunction";
+import { CircuitFunctions, Colors } from "../types/circuitFunctions.types";
 
 type ArgumentColor = "YELLOW" | "RED" | "BLUE";
 
@@ -23,8 +21,7 @@ export function gridMutator(
 ) {
   if (args.length === 0) return grid;
 
-  const funcName = mapIndexToCircuitFunction(args[0]);
-  const splitAtguments = String(funcName).split("_");
+  const splitAtguments = args[0].split("_");
   const mutator = splitAtguments[0];
   const colorIn = selectColor(splitAtguments[1] as ArgumentColor);
   //manipulate grid with calls to transformGrid, stackGrid, and/or transformTwoGrid

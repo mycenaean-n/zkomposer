@@ -1,6 +1,6 @@
-import { Colors, Puzzles } from "../test/data/puzzles.types";
 import { writeFileSync } from "fs";
 import path from "path";
+import { Colors, Puzzles } from "../types/circuitFunctions.types";
 const puzzles: Puzzles = require("../test/data/puzzles.json");
 
 export function stack(column: Array<Colors>, color: Colors): Array<Colors> {
