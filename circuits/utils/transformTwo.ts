@@ -30,20 +30,3 @@ export function transformTwoGrid(
 ): Array<Array<Colors>> {
   return grid.map((col) => transformTwo(col, inColor, outColor));
 }
-
-function transformTwoPuzzles(obj: Puzzles) {
-  for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      obj[key].transformTwo = obj[key].initial.map((col) =>
-        transformTwo(col, 1, 2)
-      );
-    }
-  }
-
-  writeFileSync(
-    path.join(__dirname, "../test/data/puzzles.json"),
-    JSON.stringify(obj, null, 2)
-  );
-}
-
-transformTwoPuzzles(puzzles);
