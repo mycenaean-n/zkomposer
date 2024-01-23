@@ -1,4 +1,3 @@
-import { argumentBuilderMain } from "../utils/circuitFunctions";
 import { assert } from "chai";
 import { gridMutator } from "../utils/gridMutator";
 import { CircuitFunctions, Puzzles } from "../types/circuitFunctions.types";
@@ -6,6 +5,7 @@ import { WasmTester, wasm } from "circom_tester";
 import path from "path";
 import { calculateLabeledWitness } from "./utils/calculateLabeledWitness";
 import config from "../config";
+import { getCircuitFunctionIndex } from "../utils/circuitFunctionGetter";
 const puzzles: Puzzles = require("./data/puzzles.json");
 
 describe.only("main circuit", () => {
@@ -43,8 +43,7 @@ describe.only("main circuit", () => {
       "STACK_RED",
       "TRANSFORMTWO_RED_BLUE",
     ]);
-
-    const circuitFunctionArguments = argumentBuilderMain([
+    const circuitFunctionArguments = getCircuitFunctionIndex([
       "TRANSFORM_YELLOW_RED",
       "STACK_RED",
       "TRANSFORMTWO_RED_BLUE",
@@ -55,7 +54,7 @@ describe.only("main circuit", () => {
         initialGrid: initialGrid,
         finalGrid: targetGrid,
         account: address,
-        selectedFunctions: circuitFunctionArguments,
+        selectedFunctionsIndexes: circuitFunctionArguments,
       },
       sanityCheck
     );
@@ -69,7 +68,7 @@ describe.only("main circuit", () => {
       "STACK_RED",
       "EMPTY",
     ]);
-    const circuitFunctionArguments = argumentBuilderMain([
+    const circuitFunctionArguments = getCircuitFunctionIndex([
       "TRANSFORM_YELLOW_RED",
       "STACK_RED",
       "EMPTY",
@@ -80,7 +79,7 @@ describe.only("main circuit", () => {
         initialGrid: initialGrid,
         finalGrid: targetGrid,
         account: address,
-        selectedFunctions: circuitFunctionArguments,
+        selectedFunctionsIndexes: circuitFunctionArguments,
       },
       sanityCheck
     );
@@ -103,7 +102,7 @@ describe.only("main circuit", () => {
       "TRANSFORMTWO_RED_BLUE",
     ]);
 
-    const circuitFunctionArguments = argumentBuilderMain([
+    const circuitFunctionArguments = getCircuitFunctionIndex([
       "TRANSFORM_YELLOW_RED",
       "STACK_RED",
       "TRANSFORMTWO_RED_BLUE",
@@ -115,7 +114,7 @@ describe.only("main circuit", () => {
         initialGrid: initialGrid,
         finalGrid: targetGrid,
         account: address,
-        selectedFunctions: circuitFunctionArguments,
+        selectedFunctionsIndexes: circuitFunctionArguments,
       },
       sanityCheck
     );
@@ -127,7 +126,7 @@ describe.only("main circuit", () => {
     );
   });
 
-  it("reverts for duplicated manipulation in same round", async () => {
+  it("reverts for selectedFunctionIndexes greater than 15", async () => {
     const targetGrid = gridMutator(initialGrid, [
       "TRANSFORM_YELLOW_RED",
       "STACK_RED",
@@ -140,24 +139,7 @@ describe.only("main circuit", () => {
         initialGrid: initialGrid,
         finalGrid: targetGrid,
         account: address,
-        selectedFunctions: [
-          [
-            [1, 1, 2],
-            [0, 0, 0],
-            [0, 0, 0],
-          ],
-          // Duplicate
-          [
-            [1, 1, 2],
-            [1, 2, 0],
-            [0, 0, 0],
-          ],
-          [
-            [0, 0, 0],
-            [0, 0, 0],
-            [0, 0, 0],
-          ],
-        ],
+        selectedFunctionsIndexes: [19, 1, 2],
       },
       sanityCheck
     );
@@ -171,7 +153,7 @@ describe.only("main circuit", () => {
     }
   });
 
-  it("reverts for a negative argument", async () => {
+  it("reverts for a negative value in selectedFunctionIndexes", async () => {
     const targetGrid = gridMutator(initialGrid, [
       "TRANSFORM_YELLOW_RED",
       "STACK_RED",
@@ -184,66 +166,7 @@ describe.only("main circuit", () => {
         initialGrid: initialGrid,
         finalGrid: targetGrid,
         account: address,
-        selectedFunctions: [
-          [
-            [1, -1, 2],
-            [0, 0, 0],
-            [0, 0, 0],
-          ],
-          [
-            [0, 0, 0],
-            [1, 2, 0],
-            [0, 0, 0],
-          ],
-          [
-            [0, 0, 0],
-            [0, 0, 0],
-            [0, 0, 0],
-          ],
-        ],
-      },
-      sanityCheck
-    );
-
-    try {
-      await witnessPromise;
-      assert.fail("Expected an error but did not get one");
-    } catch (error: any) {
-      const expectedPattern = /Error in template ZKube/;
-      assert.match(error.message, expectedPattern);
-    }
-  });
-
-  it("reverts for inactive function with non-zero arguments", async () => {
-    const targetGrid = gridMutator(initialGrid, [
-      "TRANSFORM_YELLOW_RED",
-      "STACK_RED",
-      "TRANSFORMTWO_RED_BLUE",
-    ]);
-
-    const witnessPromise = calculateLabeledWitness(
-      circuit,
-      {
-        initialGrid: initialGrid,
-        finalGrid: targetGrid,
-        account: address,
-        selectedFunctions: [
-          [
-            [1, -1, 2],
-            [0, 0, 0],
-            [0, 0, 0],
-          ],
-          [
-            [0, 0, 0],
-            [1, 2, 0],
-            [0, 0, 0],
-          ],
-          [
-            [0, 0, 0],
-            [0, 0, 0],
-            [0, 2, 3],
-          ],
-        ],
+        selectedFunctionsIndexes: [1, 4, -1],
       },
       sanityCheck
     );
@@ -262,7 +185,7 @@ describe.only("main circuit", () => {
       const initialGrid = puzzles[lvl].initial;
       const targetGrid = gridMutator(initialGrid, [...args]);
 
-      const circuitFunctionArguments = argumentBuilderMain([...args]);
+      const circuitFunctionArguments = getCircuitFunctionIndex([...args]);
 
       const witness = await calculateLabeledWitness(
         circuit,
@@ -270,7 +193,7 @@ describe.only("main circuit", () => {
           initialGrid,
           finalGrid: targetGrid,
           account: address,
-          selectedFunctions: circuitFunctionArguments,
+          selectedFunctionsIndexes: circuitFunctionArguments,
         },
         sanityCheck
       );
