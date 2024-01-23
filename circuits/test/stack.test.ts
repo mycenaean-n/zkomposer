@@ -1,18 +1,22 @@
-import hre from "hardhat";
 import { assert } from "chai";
-import { CircuitTestUtils } from "hardhat-circom";
 import { Colors, Puzzles } from "./data/puzzles.types";
 import { stack } from "../utils/stack";
 import config from "../config";
+import { WasmTester, wasm } from "circom_tester";
+import { calculateLabeledWitness } from "./utils/calculateLabeledWitness";
+import path from "path";
+// import { calculateLabeledWitness } from "./calculateLabeledWitness";
 const puzzles: Puzzles = require("./data/puzzles.json");
 
 describe.only("stack circuit", () => {
-  let circuit: CircuitTestUtils;
+  let circuit: WasmTester;
   const sanityCheck = true;
   const initialGrid = puzzles[0.2].initial;
 
   before(async () => {
-    circuit = await hre.circuitTest.setup("test/stack_test");
+    circuit = await wasm(
+      path.join(__dirname, "../circuits/test/stack_test.circom")
+    );
   });
 
   it("produces a witness with valid constraints", async () => {
@@ -25,7 +29,8 @@ describe.only("stack circuit", () => {
   });
 
   it("has expected witness values", async () => {
-    const witness = await circuit.calculateLabeledWitness(
+    const witness = await calculateLabeledWitness(
+      circuit,
       { grid: initialGrid, onOff: 1, color: 1 },
       sanityCheck
     );
@@ -42,7 +47,8 @@ describe.only("stack circuit", () => {
   });
 
   it("produces expected witness values", async () => {
-    const witness = await circuit.calculateLabeledWitness(
+    const witness = await calculateLabeledWitness(
+      circuit,
       { grid: initialGrid, onOff: 1, color: 1 },
       sanityCheck
     );
@@ -56,7 +62,8 @@ describe.only("stack circuit", () => {
 
   ["0.1", "0.2", "0.3", "0.4"].forEach((lvl: string) => {
     it(`stack witness values for level ${lvl} equals stack function return values`, async () => {
-      const witness = await circuit.calculateLabeledWitness(
+      const witness = await calculateLabeledWitness(
+        circuit,
         { grid: puzzles[lvl].initial, onOff: 1, color: 1 },
         sanityCheck
       );

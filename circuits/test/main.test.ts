@@ -1,21 +1,22 @@
-import hre from "hardhat";
-import { CircuitTestUtils } from "hardhat-circom";
 import { Puzzles } from "./data/puzzles.types";
 import { argumentBuilderMain } from "../utils/circuitFunctions";
 import { assert } from "chai";
 import { gridMutator } from "../utils/gridMutator";
 import { CircuitFunctions } from "../utils/enums/circuitFunctions.enum";
+import { WasmTester, wasm } from "circom_tester";
+import path from "path";
+import { calculateLabeledWitness } from "./utils/calculateLabeledWitness";
 const puzzles: Puzzles = require("./data/puzzles.json");
 
 describe.only("main circuit", () => {
-  let circuit: CircuitTestUtils;
+  let circuit: WasmTester;
 
   const sanityCheck = true;
   const address = "0x123";
   const initialGrid = puzzles[0.3].initial;
 
   before(async () => {
-    circuit = await hre.circuitTest.setup("main");
+    circuit = await wasm(path.join(__dirname, "../circuits/main.circom"));
   });
 
   it("produces a witness with valid constraints", async () => {
@@ -57,7 +58,8 @@ describe.only("main circuit", () => {
       "EMPTY",
     ]);
 
-    const witness = await circuit.calculateLabeledWitness(
+    const witness = await calculateLabeledWitness(
+      circuit,
       {
         initialGrid: initialGrid,
         finalGrid: targetGrid,
@@ -91,7 +93,8 @@ describe.only("main circuit", () => {
       "TRANSFORMTWO_RED_BLUE",
     ]);
 
-    const witness = await circuit.calculateLabeledWitness(
+    const witness = await calculateLabeledWitness(
+      circuit,
       {
         initialGrid: initialGrid,
         finalGrid: targetGrid,
@@ -115,7 +118,8 @@ describe.only("main circuit", () => {
       "TRANSFORMTWO_RED_BLUE",
     ]);
 
-    const witnessPromise = circuit.calculateLabeledWitness(
+    const witnessPromise = calculateLabeledWitness(
+      circuit,
       {
         initialGrid: initialGrid,
         finalGrid: targetGrid,
@@ -158,7 +162,8 @@ describe.only("main circuit", () => {
       "TRANSFORMTWO_RED_BLUE",
     ]);
 
-    const witnessPromise = circuit.calculateLabeledWitness(
+    const witnessPromise = calculateLabeledWitness(
+      circuit,
       {
         initialGrid: initialGrid,
         finalGrid: targetGrid,
@@ -200,7 +205,8 @@ describe.only("main circuit", () => {
       "TRANSFORMTWO_RED_BLUE",
     ]);
 
-    const witnessPromise = circuit.calculateLabeledWitness(
+    const witnessPromise = calculateLabeledWitness(
+      circuit,
       {
         initialGrid: initialGrid,
         finalGrid: targetGrid,
@@ -282,7 +288,8 @@ describe.only("main circuit", () => {
 
         const circuitFunctionArguments = argumentBuilderMain([...args]);
 
-        const witness = await circuit.calculateLabeledWitness(
+        const witness = await calculateLabeledWitness(
+          circuit,
           {
             initialGrid,
             finalGrid: targetGrid,
