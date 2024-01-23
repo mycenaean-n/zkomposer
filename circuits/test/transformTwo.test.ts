@@ -1,20 +1,23 @@
-import hre from "hardhat";
 import { assert } from "chai";
-import { CircuitTestUtils } from "hardhat-circom";
 import { Colors, Puzzles } from "./data/puzzles.types";
 import config from "../config";
 import { transformTwo } from "../utils/transformTwo";
 import { argumentBuilder } from "../utils/circuitFunctions";
+import { WasmTester, wasm } from "circom_tester";
+import path from "path";
+import { calculateLabeledWitness } from "./utils/calculateLabeledWitness";
 const puzzles: Puzzles = require("./data/puzzles.json");
 
 describe.only("transformtwo circuit", () => {
-  let circuit: CircuitTestUtils;
+  let circuit: WasmTester;
 
   const sanityCheck = true;
   const initialGrid = puzzles[0.4].initial;
 
   before(async () => {
-    circuit = await hre.circuitTest.setup("test/transformtwo_test");
+    circuit = await wasm(
+      path.join(__dirname, "../circuits/test/transformtwo_test.circom")
+    );
   });
 
   it("produces a witness with valid constraints", async () => {
@@ -34,7 +37,8 @@ describe.only("transformtwo circuit", () => {
     const [onOff, inColor, outColor] = argumentBuilder(
       "TRANSFORMTWO_YELLOW_RED"
     );
-    const witness = await circuit.calculateLabeledWitness(
+    const witness = await calculateLabeledWitness(
+      circuit,
       { grid: initialGrid, onOff, inColor, outColor },
       sanityCheck
     );
@@ -52,7 +56,8 @@ describe.only("transformtwo circuit", () => {
 
   it("has expected witness values for onOff == 0", async () => {
     const [inColor, outColor] = argumentBuilder("TRANSFORMTWO_YELLOW_RED");
-    const witness = await circuit.calculateLabeledWitness(
+    const witness = await calculateLabeledWitness(
+      circuit,
       { grid: initialGrid, onOff: 0, inColor, outColor },
       sanityCheck
     );
@@ -72,7 +77,8 @@ describe.only("transformtwo circuit", () => {
     const [onOff, inColor, outColor] = argumentBuilder(
       "TRANSFORMTWO_YELLOW_RED"
     );
-    const witness = await circuit.calculateLabeledWitness(
+    const witness = await calculateLabeledWitness(
+      circuit,
       { grid: initialGrid, onOff, inColor, outColor },
       sanityCheck
     );
@@ -89,7 +95,8 @@ describe.only("transformtwo circuit", () => {
       const [onOff, inColor, outColor] = argumentBuilder(
         "TRANSFORMTWO_YELLOW_BLUE"
       );
-      const witness = await circuit.calculateLabeledWitness(
+      const witness = await calculateLabeledWitness(
+        circuit,
         { grid: initialGrid, onOff, inColor, outColor },
         sanityCheck
       );
