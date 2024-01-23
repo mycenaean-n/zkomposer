@@ -11,5 +11,5 @@ export interface InputSignals {
   initialGrid: number[][];
   finalGrid: number[][];
   account: Address;
-  selectedFunctions: number[][][];
+  selectedFunctionsIndexes: number[];
 }

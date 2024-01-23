@@ -12,7 +12,7 @@ import {
 } from 'react-beautiful-dnd';
 import { PuzzleFunctionState } from '@/types/Puzzle';
 import { useAccount } from 'wagmi';
-import { argumentBuilderMain } from 'circuits';
+import { getCircuitFunctionIndex } from 'circuits';
 
 export function Actions() {
   const { functions, setFunctions, initConfig } = useContext(PuzzleContext);
@@ -26,7 +26,7 @@ export function Actions() {
     setInputSignals({
       ...initConfig,
       account: address,
-      selectedFunctions: argumentBuilderMain(functions.chosen),
+      selectedFunctionsIndexes: getCircuitFunctionIndex(functions.chosen),
     });
   }, [functions, address]);
 
