@@ -1,11 +1,11 @@
-import { Puzzles } from "./data/puzzles.types";
 import { argumentBuilderMain } from "../utils/circuitFunctions";
 import { assert } from "chai";
 import { gridMutator } from "../utils/gridMutator";
-import { CircuitFunctions } from "../utils/enums/circuitFunctions.enum";
+import { CircuitFunctions, Puzzles } from "../types/circuitFunctions.types";
 import { WasmTester, wasm } from "circom_tester";
 import path from "path";
 import { calculateLabeledWitness } from "./utils/calculateLabeledWitness";
+import config from "../config";
 const puzzles: Puzzles = require("./data/puzzles.json");
 
 describe.only("main circuit", () => {
@@ -14,6 +14,24 @@ describe.only("main circuit", () => {
   const sanityCheck = true;
   const address = "0x123";
   const initialGrid = puzzles[0.3].initial;
+  const levels: { lvl: string; args: CircuitFunctions[] }[] = [
+    {
+      lvl: "0.1",
+      args: ["TRANSFORM_YELLOW_RED", "STACK_RED", "TRANSFORMTWO_RED_BLUE"],
+    },
+    {
+      lvl: "0.2",
+      args: ["STACK_RED", "EMPTY", "EMPTY"],
+    },
+    {
+      lvl: "0.3",
+      args: ["STACK_RED", "TRANSFORM_YELLOW_RED", "TRANSFORMTWO_RED_YELLOW"],
+    },
+    {
+      lvl: "0.4",
+      args: ["TRANSFORM_YELLOW_BLUE", "STACK_RED", "TRANSFORMTWO_RED_YELLOW"],
+    },
+  ];
 
   before(async () => {
     circuit = await wasm(path.join(__dirname, "../circuits/main.circom"));
@@ -51,13 +69,11 @@ describe.only("main circuit", () => {
       "STACK_RED",
       "EMPTY",
     ]);
-
     const circuitFunctionArguments = argumentBuilderMain([
       "TRANSFORM_YELLOW_RED",
       "STACK_RED",
       "EMPTY",
     ]);
-
     const witness = await calculateLabeledWitness(
       circuit,
       {
@@ -241,74 +257,33 @@ describe.only("main circuit", () => {
     }
   });
 
-  [
-    {
-      lvl: "0.1",
-      args: [
-        "TRANSFORM_YELLOW_RED",
-        "STACK_RED",
-        "TRANSFORMTWO_RED_BLUE",
-      ] as (keyof typeof CircuitFunctions)[],
-    },
-    {
-      lvl: "0.2",
-      args: [
-        "STACK_RED",
-        "EMPTY",
-        "EMPTY",
-      ] as (keyof typeof CircuitFunctions)[],
-    },
-    {
-      lvl: "0.3",
-      args: [
-        "STACK_RED",
-        "TRANSFORM_YELLOW_RED",
-        "TRANSFORMTWO_RED_YELLOW",
-      ] as (keyof typeof CircuitFunctions)[],
-    },
-    {
-      lvl: "0.4",
-      args: [
-        "TRANSFORM_YELLOW_BLUE",
-        "STACK_RED",
-        "TRANSFORMTWO_RED_YELLOW",
-      ] as (keyof typeof CircuitFunctions)[],
-    },
-  ].forEach(
-    ({
-      lvl,
-      args,
-    }: {
-      lvl: string;
-      args: (keyof typeof CircuitFunctions)[];
-    }) => {
-      it(`witness values for level ${lvl} equals values returned for arguments ${args}`, async () => {
-        const initialGrid = puzzles[lvl].initial;
-        const targetGrid = gridMutator(initialGrid, [...args]);
+  levels.forEach(({ lvl, args }) => {
+    it(`witness values for level ${lvl} equals values returned for arguments ${args}`, async () => {
+      const initialGrid = puzzles[lvl].initial;
+      const targetGrid = gridMutator(initialGrid, [...args]);
 
-        const circuitFunctionArguments = argumentBuilderMain([...args]);
+      const circuitFunctionArguments = argumentBuilderMain([...args]);
 
-        const witness = await calculateLabeledWitness(
-          circuit,
-          {
-            initialGrid,
-            finalGrid: targetGrid,
-            account: address,
-            selectedFunctions: circuitFunctionArguments,
-          },
-          sanityCheck
-        );
+      const witness = await calculateLabeledWitness(
+        circuit,
+        {
+          initialGrid,
+          finalGrid: targetGrid,
+          account: address,
+          selectedFunctions: circuitFunctionArguments,
+        },
+        sanityCheck
+      );
 
-        for (let i = 0; i < 8; i++) {
-          for (let j = 0; j < 8; j++) {
-            assert.propertyVal(
-              witness,
-              `main.finishingGrid[${i}][${j}]`,
-              String(targetGrid[i][j])
-            );
-          }
+      for (let i = 0; i < config.gridWidth; i++) {
+        for (let j = 0; j < config.gridHeight; j++) {
+          assert.propertyVal(
+            witness,
+            `main.finishingGrid[${i}][${j}]`,
+            String(targetGrid[i][j])
+          );
         }
-      });
-    }
-  );
+      }
+    });
+  });
 });

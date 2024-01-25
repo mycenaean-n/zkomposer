@@ -1,10 +1,10 @@
 import { assert } from "chai";
-import { Colors, Puzzles } from "./data/puzzles.types";
-import { stack } from "../utils/stack";
 import config from "../config";
 import { WasmTester, wasm } from "circom_tester";
 import { calculateLabeledWitness } from "./utils/calculateLabeledWitness";
 import path from "path";
+import { Puzzles } from "../types/circuitFunctions.types";
+import { gridMutator } from "../utils/gridMutator";
 // import { calculateLabeledWitness } from "./calculateLabeledWitness";
 const puzzles: Puzzles = require("./data/puzzles.json");
 
@@ -68,14 +68,14 @@ describe.only("stack circuit", () => {
         sanityCheck
       );
 
-      for (let i = 0; i < config.gridWidth; i++) {
-        const column = stack(puzzles[lvl].initial[i], Colors.Yellow);
+      const targetGrid = gridMutator(initialGrid, ["STACK_YELLOW"]);
 
+      for (let i = 0; i < config.gridWidth; i++) {
         for (let j = 0; j < config.gridHeight; j++) {
           assert.propertyVal(
             witness,
             `main.out[${i}][${j}]`,
-            String(column[j])
+            String(targetGrid[i][j])
           );
         }
       }
