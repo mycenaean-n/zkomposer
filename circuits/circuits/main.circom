@@ -4,6 +4,122 @@ include "./transform.circom";
 include "./stack.circom";
 include "./transformtwo.circom";
 
+function indexToArgs(index) {
+    assert(index <= 15 && index>=0);
+    // "TRANSFORM_YELLOW_RED",
+    if (index == 1) {
+        return [
+            [1, 1, 2],
+            [0, 0, 0],
+            [0, 0, 0]
+        ];
+    // "TRANSFORM_YELLOW_BLUE",
+    } else if (index == 2) {
+        return [
+            [1, 1, 3],
+            [0, 0, 0],
+            [0, 0, 0]
+        ];
+    // "TRANSFORM_RED_YELLOW",
+    } else if (index == 3) {
+        return [
+            [1, 2, 1],
+            [0, 0, 0],
+            [0, 0, 0]
+        ];
+    // "TRANSFORM_RED_BLUE",
+    } else if (index == 4) {
+        return [
+            [1, 2, 3],
+            [0, 0, 0],
+            [0, 0, 0]
+        ];
+    // "TRANSFORM_BLUE_YELLOW",
+    } else if (index == 5) {
+        return [
+            [1, 3, 1],
+            [0, 0, 0],
+            [0, 0, 0]
+        ];
+    // "TRANSFORM_BLUE_RED",
+    } else if (index == 6) {
+        return [
+            [1, 3, 2],
+            [0, 0, 0],
+            [0, 0, 0]
+        ];
+    // "STACK_YELLOW",
+    } else if (index == 7) {
+        return [
+            [0, 0, 0],
+            [1, 1, 0],
+            [0, 0, 0]
+        ];
+    // "STACK_RED",
+    } else if (index == 8) {
+        return [
+            [0, 0, 0],
+            [1, 2, 0],
+            [0, 0, 0]
+        ];
+    // "STACK_BLUE",
+    } else if (index == 9) {
+        return [
+            [0, 0, 0],
+            [1, 3, 0],
+            [0, 0, 0]
+        ];
+    // "TRANSFORMTWO_YELLOW_RED",
+    } else if (index == 10) {
+        return [
+            [0, 0, 0],
+            [0, 0, 0],
+            [1, 1, 2]
+        ];
+    // "TRANSFORMTWO_YELLOW_BLUE",
+    } else if (index == 11) {
+        return [
+            [0, 0, 0],
+            [0, 0, 0],
+            [1, 1, 3]
+        ];
+    // "TRANSFORMTWO_RED_YELLOW",
+    } else if (index == 12) {
+        return [
+            [0, 0, 0],
+            [0, 0, 0],
+            [1, 2, 1]
+        ];
+    // "TRANSFORMTWO_RED_BLUE",
+    } else if (index == 13) {
+        return [
+            [0, 0, 0],
+            [0, 0, 0],
+            [1, 2, 3]
+        ];
+    // "TRANSFORMTWO_BLUE_YELLOW",
+    } else if (index == 14) {
+        return [
+            [0, 0, 0],
+            [0, 0, 0],
+            [1, 3, 1]
+        ];
+    // "TRANSFORMTWO_BLUE_RED",
+    } else if (index == 15) {
+        return [
+            [0, 0, 0],
+            [0, 0, 0],
+            [1, 3, 2]
+        ];
+    }
+    // "EMPTY",
+    return [
+            [0, 0, 0],
+            [0, 0, 0],
+            [0, 0, 0]
+    ];
+}
+
 template ZKubes(W, H, F) {
     // public
     signal input initialGrid[W][H];
@@ -12,33 +128,12 @@ template ZKubes(W, H, F) {
     signal input account;
     // private
     // F rounds of F available functions with 3 args
-    signal input selectedFunctions[F][F][3];
-
+    signal input selectedFunctionsIndexes[F];
     signal finishingGrid[W][H];
     // F rounds for each of the Function
     component transform[F];
     component stack[F];
     component transformTwo[F]; 
-
-    for(var i = 0; i < F; i++) {
-        var onOffCount = 0;
-        for(var j = 0; j     < F; j++) {
-            // checking if onOff is 0 or 1
-            assert(0 == selectedFunctions[i][j][0] || 1 == selectedFunctions[i][j][0]);
-            // checking that if onOff is 0 then all other elements are 0
-            if(selectedFunctions[i][j][0] == 0) {
-                assert(selectedFunctions[i][j][1] == 0);
-                assert(selectedFunctions[i][j][2] == 0);
-            }
-            onOffCount += selectedFunctions[i][j][0];
-        }
-        // checking there is only one onOff == 1
-        assert(0 == onOffCount || 1 == onOffCount);
-    }
-
-    // 1. check - if onOff == 0 then all other elements should be 0
-    // 2. check - there could be only 1 element == 1 at the same index in all calls combined
-
 
     // having +1 because we are assigning current value to the next one
     // F intermediate grids, corresponding to possible Functions. Of width W and height H
@@ -50,31 +145,36 @@ template ZKubes(W, H, F) {
         }
     }  
 
-     for (var i = 0; i < F; i++) {
-        // for (var j = 0; j < F; j++) {
-            var indexPlusOne = i + 1;
-            var indexPlusTwo = i + 2;
+    signal selectedFunctions[F][F][3];
+    for (var i = 0; i < F; i++) {
+        var indexPlusOne = i + 1;
+        var indexPlusTwo = i + 2;
+        
+        selectedFunctions[i] <-- indexToArgs(selectedFunctionsIndexes[i]);
+        selectedFunctions[i][i][0] === selectedFunctions[i][i][0] * selectedFunctions[i][i][0];
+        selectedFunctions[i][i][1] === selectedFunctions[i][i][0] * selectedFunctions[i][i][1];
+        selectedFunctions[i][i][2] === selectedFunctions[i][i][0] * selectedFunctions[i][i][2];
 
-            transform[i] = Transform(W, H);
-            transform[i].grid <== intermediateGrids[i][0];
-            transform[i].onOff <== selectedFunctions[i][0][0];
-            transform[i].inColor <== selectedFunctions[i][0][1];
-            transform[i].outColor <== selectedFunctions[i][0][2];
-            intermediateGrids[i][1] <== transform[i].out;
+        transform[i] = Transform(W, H);
+        transform[i].grid <== intermediateGrids[i][0];
+        transform[i].onOff <== selectedFunctions[i][0][0];
+        transform[i].inColor <== selectedFunctions[i][0][1];
+        transform[i].outColor <== selectedFunctions[i][0][2];
+        intermediateGrids[i][1] <== transform[i].out;
 
-            stack[i] = Stack(W, H);
-            stack[i].grid <== intermediateGrids[i][1];
-            stack[i].onOff <== selectedFunctions[i][1][0];
-            stack[i].color <== selectedFunctions[i][1][1];
-            intermediateGrids[i][2] <== stack[i].out;
+        stack[i] = Stack(W, H);
+        stack[i].grid <== intermediateGrids[i][1];
+        stack[i].onOff <== selectedFunctions[i][1][0];
+        stack[i].color <== selectedFunctions[i][1][1];
+        intermediateGrids[i][2] <== stack[i].out;
 
-            transformTwo[i] = TransformTwo(W, H);
-            transformTwo[i].grid <== intermediateGrids[i][2];
-            transformTwo[i].onOff <== selectedFunctions[i][2][0];
-            transformTwo[i].inColor <== selectedFunctions[i][2][1];
-            transformTwo[i].outColor <== selectedFunctions[i][2][2];
+        transformTwo[i] = TransformTwo(W, H);
+        transformTwo[i].grid <== intermediateGrids[i][2];
+        transformTwo[i].onOff <== selectedFunctions[i][2][0];
+        transformTwo[i].inColor <== selectedFunctions[i][2][1];
+        transformTwo[i].outColor <== selectedFunctions[i][2][2];
 
-            intermediateGrids[indexPlusOne][0] <== transformTwo[i].out;
+        intermediateGrids[indexPlusOne][0] <== transformTwo[i].out;
     }
 
     finishingGrid <== intermediateGrids[F][0];
