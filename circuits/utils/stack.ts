@@ -24,18 +24,3 @@ export function stackGrid(
 ): Array<Array<Colors>> {
   return grid.map((col) => stack(col, color));
 }
-
-function stackPuzzles(obj: Puzzles) {
-  for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      obj[key].stack = obj[key].initial.map((col) => stack(col, 1));
-    }
-  }
-
-  writeFileSync(
-    path.join(__dirname, "../test/data/puzzles.json"),
-    JSON.stringify(obj, null, 2)
-  );
-}
-
-stackPuzzles(puzzles);

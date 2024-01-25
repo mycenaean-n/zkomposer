@@ -1,4 +1,7 @@
+import { Address } from 'viem';
+
 export interface Proof {
+  Input: string[];
   a: [bigint, bigint];
   b: [[bigint, bigint], [bigint, bigint]];
   c: [bigint, bigint];
@@ -7,6 +10,6 @@ export interface Proof {
 export interface InputSignals {
   initialGrid: number[][];
   finalGrid: number[][];
-  account: string;
+  account: Address;
   selectedFunctions: number[][][];
 }

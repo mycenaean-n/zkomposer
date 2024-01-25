@@ -45,12 +45,7 @@ async function exportCallDataGroth16(
 export function useProof(wasmPath: string, zkeyPath: string) {
   return useCallback(
     async (input: InputSignals) => {
-      let result;
-      result = exportCallDataGroth16(input, wasmPath, zkeyPath).then(
-        (res) => res
-      );
-
-      return result;
+      return await exportCallDataGroth16(input, wasmPath, zkeyPath);
     },
     [wasmPath, zkeyPath]
   );

@@ -18,18 +18,3 @@ function reverse(column: Array<Colors>): Array<Colors> {
 
   return reversedColumn;
 }
-
-function reversePuzzles(obj: Puzzles) {
-  for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      obj[key].reverse = obj[key].initial.map((col) => reverse(col));
-    }
-  }
-
-  writeFileSync(
-    path.join(__dirname, "../test/data/puzzles.json"),
-    JSON.stringify(obj, null, 2)
-  );
-}
-
-reversePuzzles(puzzles);

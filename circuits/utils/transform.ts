@@ -27,18 +27,3 @@ export function transformGrid(
 ): Array<Array<Colors>> {
   return grid.map((column) => transform(column, inColor, outColor));
 }
-
-function transformPuzzles(obj: Puzzles) {
-  for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      obj[key].transform = obj[key].initial.map((col) => transform(col, 1, 2));
-    }
-  }
-
-  writeFileSync(
-    path.join(__dirname, "../test/data/puzzles.json"),
-    JSON.stringify(obj, null, 2)
-  );
-}
-
-transformPuzzles(puzzles);

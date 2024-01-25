@@ -37,11 +37,15 @@
   text-align: center;
 }
 
-
 .chosenFunctions {
   border: 2px dashed black;
 }
 
-.submit {
-  border: 2px solid green;
+.submitButton {
+  width: 16vw;
+  position: relative;
+  bottom: 0;
+  font-size: 1.1rem;
+  cursor: pointer;
+  text-align: center;
 }
