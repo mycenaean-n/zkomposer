@@ -1,4 +1,7 @@
-import { CircuitFunctions } from 'circuits/types/circuitFunctions.types';
+import {
+  CircuitFunctions,
+  Colors,
+} from 'circuits/types/circuitFunctions.types';
 import { Dispatch, SetStateAction } from 'react';
 
 export enum PuzzleFunctionState {
@@ -15,7 +18,7 @@ export type PuzzleContext = {
 };
 
 export type PuzzleInit = {
-  initialGrid: number[][];
-  finalGrid: number[][];
+  initialGrid: Colors[][];
+  finalGrid: Colors[][];
   availableFunctions: CircuitFunctions[];
 };
