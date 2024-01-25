@@ -1,6 +1,6 @@
 import { writeFileSync } from "fs";
 import path from "path";
-import { Puzzles } from "../test/data/puzzles.types";
+import { Puzzles } from "../types/circuitFunctions.types";
 const puzzles: Puzzles = require("../test/data/puzzles.json");
 
 function padWithZerosToSizeEight(arr: number[][]): number[][] {

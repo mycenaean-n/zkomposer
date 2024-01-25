@@ -1,11 +1,11 @@
-import { Colors, Puzzles } from "./data/puzzles.types";
-import { transform } from "../utils/transform";
 import config from "../config";
 import { argumentBuilder } from "../utils/circuitFunctions";
 import { WasmTester, wasm } from "circom_tester";
 import { calculateLabeledWitness } from "./utils/calculateLabeledWitness";
 import { assert } from "chai";
 import path from "path";
+import { Puzzles } from "../types/circuitFunctions.types";
+import { gridMutator } from "../utils/gridMutator";
 
 const puzzles: Puzzles = require("./data/puzzles.json");
 
@@ -100,14 +100,14 @@ describe.only("transform circuit", () => {
         sanityCheck
       );
 
-      for (let i = 0; i < config.gridWidth; i++) {
-        const column = transform(initialGrid[i], Colors.Yellow, Colors.Red);
+      const targetGrid = gridMutator(initialGrid, ["TRANSFORM_YELLOW_RED"]);
 
+      for (let i = 0; i < config.gridWidth; i++) {
         for (let j = 0; j < config.gridHeight; j++) {
           assert.propertyVal(
             witness,
             `main.out[${i}][${j}]`,
-            String(column[j])
+            String(targetGrid[i][j])
           );
         }
       }

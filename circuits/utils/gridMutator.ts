@@ -1,8 +1,7 @@
-import { Colors } from "../test/data/puzzles.types";
 import { stackGrid } from "./stack";
 import { transformGrid } from "./transform";
 import { transformTwoGrid } from "./transformTwo";
-import { CircuitFunctions } from "./enums/circuitFunctions.enum";
+import { CircuitFunctions, Colors } from "../types/circuitFunctions.types";
 
 type ArgumentColor = "YELLOW" | "RED" | "BLUE";
 
@@ -10,13 +9,15 @@ function selectColor(color: ArgumentColor) {
   return color === "YELLOW"
     ? Colors.Yellow
     : color === "RED"
-    ? Colors.Red
-    : Colors.Blue;
+      ? Colors.Red
+      : color === "BLUE"
+        ? Colors.Blue
+        : Colors.White;
 }
 
 export function gridMutator(
   grid: Array<Array<Colors>>,
-  args: (keyof typeof CircuitFunctions)[]
+  args: CircuitFunctions[]
 ) {
   if (args.length === 0) return grid;
 
