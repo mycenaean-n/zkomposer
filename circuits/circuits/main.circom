@@ -1,8 +1,17 @@
 pragma circom 2.0.0;
 include "../../node_modules/circomlib/circuits/comparators.circom";
+include "../../node_modules/circomlib/circuits/gates.circom";
 include "./transform.circom";
 include "./stack.circom";
 include "./transformtwo.circom";
+
+template XNOR() {
+    signal input a;
+    signal input b;
+    signal output out;
+
+    out <== 1 - a - b + 2*a*b;
+}
 
 function indexToArgs(index) {
     assert(index <= 15 && index>=0);
@@ -129,7 +138,7 @@ template ZKubes(W, H, F) {
     // private
     // F rounds of F available functions with 3 args
     signal input selectedFunctionsIndexes[F];
-    signal finishingGrid[W][H];
+    signal finalGridForPlayer[W][H];
     // F rounds for each of the Function
     component transform[F];
     component stack[F];
@@ -177,32 +186,17 @@ template ZKubes(W, H, F) {
         intermediateGrids[indexPlusOne][0] <== transformTwo[i].out;
     }
 
-    finishingGrid <== intermediateGrids[F][0];
+    finalGridForPlayer <== intermediateGrids[F][0];
 
-    var widthPlusOne = W + 1; 
-    
-    component isEqGrid[widthPlusOne];
-    component isEqGridNested[W][H];
-
-    signal finalMask[widthPlusOne][H];
-    finalMask[0][7] <== 1;
-
-    for (var i = 1; i < widthPlusOne; i++) {
-        var prevIndex = i - 1;
-        // hacky
-        isEqGrid[i] = IsEqual();
-        // checking for == 1
-        isEqGrid[i].in[0] <== finalGrid[i - 1][0];
-        isEqGrid[i].in[1] <== finishingGrid[i - 1][0];
-        finalMask[i][0] <== finalMask[i-1][7] * isEqGrid[i].out;
-        for (var j = 1; j < H; j++) {
-            isEqGridNested[prevIndex][j] = IsEqual();
-            // checking for == 1
-            isEqGridNested[prevIndex][j].in[0] <== finalGrid[prevIndex][j];
-            isEqGridNested[prevIndex][j].in[1] <== finishingGrid[prevIndex][j];
-            finalMask[i][j] <==  isEqGridNested[prevIndex][j].out * finalMask[i][j - 1];
+    component xnorGate[W][H];
+    var mask = 1;
+    for (var i = 0; i < W; i++) {
+        for (var j = 0; j < H; j++) {
+            xnorGate[i][j] = XNOR();
+            xnorGate[i][j].a <== finalGridForPlayer[i][j];
+            xnorGate[i][j].b <== finalGrid[i][j] * mask;
+            mask = xnorGate[i][j].out;
         }
-
     }
 
     component eqCheck;
@@ -210,7 +204,7 @@ template ZKubes(W, H, F) {
     eqCheck = ForceEqualIfEnabled();
     // if not equal no proof, sorry
     eqCheck.enabled <== 1;
-    eqCheck.in[0] <== finalMask[8][7];
+    eqCheck.in[0] <== mask;
     eqCheck.in[1] <== 1;
 }
 
