@@ -28,8 +28,6 @@ export function Scene() {
     functions.chosen.forEach((funcName, index) => {
       if (index == 0) {
         const grid = gridMutator(startingGrid, [funcName]);
-        console.log(funcName, 'gridgridgrid');
-
         mutatedGrids.push(grid);
       } else {
         const grid = gridMutator(mutatedGrids[index - 1], [funcName]);
