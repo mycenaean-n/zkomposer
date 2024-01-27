@@ -15,7 +15,8 @@
     "build:app": "yarn workspace app build",
     "build:contracts": "yarn workspace contracts build",
     "build:circuits": "yarn workspace circuits build",
-    "demo": "./demo.sh"
+    "demo": "./demo.sh",
+    "format": "prettier . --write"
   },
   "private": true,
   "devDependencies": {
