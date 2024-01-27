@@ -20,6 +20,6 @@
     "setup:sample-zkey": "snarkjs groth16 setup zk/main.r1cs  powersOfTau28_hez_final_15.ptau zk/main.zkey",
     "contribute:deterministic": "snarkjs zkey contribute ./zk/main.zkey ./zk/main_final.zkey --name='contributer_1' -v -e='00000'",
     "export:verifier": "snarkjs zkey export solidityverifier zk/main.zkey zk/main_verifier.sol",
-    "build:dev": "yarn compile && yarn setup:sample-zkey && yarn contribute:deterministic && yarn export:verifier"
+    "build": "yarn compile && yarn setup:sample-zkey && yarn contribute:deterministic && yarn export:verifier"
   }
 }
