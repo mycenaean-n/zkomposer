@@ -4,3 +4,4 @@ export {
   getCircuitFunctionIndex,
   getCircuitFunctionName,
 } from "./circuitFunctionGetter";
+export * from "./contracts/hexConversion"
