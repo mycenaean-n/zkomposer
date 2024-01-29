@@ -4,6 +4,7 @@ pragma solidity 0.8.22;
 import {Script} from "forge-std/Script.sol";
 import {ZKube} from "../src/ZKube.sol";
 import {ZKubePuzzleSet} from "../src/ZKubePuzzleSet.sol";
+import {ZKubeVerifier} from "../src/ZKubeVerifier.sol";
 import {Puzzle} from "../src/Types.sol";
 
 contract DeployZKube is Script {
@@ -19,35 +20,17 @@ contract DeployZKube is Script {
     Puzzle public puzzle4;
 
     function setUp () public {
+        availableFunctions1.push(1);
         availableFunctions1.push(7);
-        availableFunctions1.push(8);
-        availableFunctions1.push(9);
+        availableFunctions1.push(10);
 
-        availableFunctions2.push(8);
-        availableFunctions2.push(9);
-        availableFunctions2.push(3);
-        availableFunctions2.push(6);
-
-        availableFunctions3.push(7);
-        availableFunctions3.push(8);
-        availableFunctions3.push(9);
-        availableFunctions3.push(3);
-        availableFunctions3.push(6);
-
-        availableFunctions4.push(7);
-        availableFunctions4.push(8);
-        availableFunctions4.push(9);
-        availableFunctions4.push(3);
-
-        puzzle1 = Puzzle({ startingGrid: 0x3078343030303430303034303030343030303030303030303030303030303030, finalGrid: 0x3078364430303644303036443030364330303030303030303030303030303030, availableFunctions: availableFunctions1 });
-        puzzle2 = Puzzle({ startingGrid: 0x3078343030303430303034303030343030303030303030303030303030303030, finalGrid: 0x3078353430303534303035343030353430303030303030303030303030303030, availableFunctions: availableFunctions2 });
-        puzzle3 = Puzzle({ startingGrid: 0x3078383030303830303038303030383030303030303030303030303030303030, finalGrid: 0x3078414130304141303041413030413830303030303030303030303030303030, availableFunctions: availableFunctions3 });
-        puzzle4 = Puzzle({ startingGrid: 0x3078433030304330303043303030433030303030303030303030303030303030, finalGrid: 0x3078414530304145303041453030423030303030303030303030303030303030, availableFunctions: availableFunctions4 });
+        puzzle1 = Puzzle({ startingGrid: 0x40004000400040004000400040004000, finalGrid: 0xaa00aa00aa00aa00aa00aa00aa00aa00, availableFunctions: availableFunctions1 });
     }
 
-    function run(address verifier) public {
+    function run() public {
         vm.startBroadcast();
-        ZKube zKube = new ZKube(verifier);
+        ZKubeVerifier verifier = new ZKubeVerifier();
+        new ZKube(address(verifier));
         ZKubePuzzleSet puzzleSet = new ZKubePuzzleSet("Official ZKubePuzzleSet", "ZKPuzzle"); 
         puzzleSet.addPuzzle(puzzle1);
         puzzleSet.addPuzzle(puzzle2);

@@ -19,8 +19,8 @@ struct Proof {
 }
 
 struct Puzzle {
-  bytes32 startingGrid;
-  bytes32 finalGrid;
+  bytes16 startingGrid;
+  bytes16 finalGrid;
   uint8[] availableFunctions;
 }
 
