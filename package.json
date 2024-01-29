@@ -11,9 +11,11 @@
   ],
   "scripts": {
     "build": "yarn build:circuits && yarn build:app && yarn build:contracts",
+    "build:dev": "yarn build:circuits:dev && yarn build:app && yarn build:contracts",
     "build:app": "yarn workspace app build",
     "build:contracts": "cd contracts && forge build",
     "build:circuits": "yarn workspace circuits build",
+    "build:circuits:dev": "yarn workspace circuits build:dev",
     "format": "prettier . --write"
   },
   "private": true,
