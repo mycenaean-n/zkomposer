@@ -1,10 +1,10 @@
-import { Address } from 'viem';
+import { Address, Hex } from 'viem';
 
 export interface Proof {
-  Input: string[];
-  a: [bigint, bigint];
-  b: [[bigint, bigint], [bigint, bigint]];
-  c: [bigint, bigint];
+  a: [Hex, Hex];
+  b: [[Hex, Hex], [Hex, Hex]];
+  c: [Hex, Hex];
+  Input: Hex[];
 }
 
 export interface InputSignals {
