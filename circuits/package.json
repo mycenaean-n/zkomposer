@@ -19,7 +19,7 @@
     "compile": "circom circuits/zkube.circom --r1cs --sym --wasm -o zk/ ",
     "setup:sample-zkey": "snarkjs groth16 setup zk/zkube.r1cs  powersOfTau28_hez_final_15.ptau zk/zkube.zkey",
     "contribute:deterministic": "snarkjs zkey contribute ./zk/zkube.zkey ./zk/zkube_final.zkey --name='contributer_1' -v -e='00000'",
-    "generate:verifier": "snarkjs zkey export solidityverifier zk/zkube_final.zkey zk/zkube_verifier.sol",
+    "generate:verifier": "./generateSolidityVerifier.sh",
     "build:dev": "yarn compile && yarn setup:sample-zkey && yarn contribute:deterministic && yarn generate:verifier"
   }
 }
