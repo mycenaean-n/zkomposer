@@ -18,7 +18,7 @@
     "test": "mocha -r ts-node/register 'test/**/*.ts'",
     "compile": "circom circuits/zkube.circom --r1cs --sym --wasm -o zk/ ",
     "setup:sample-zkey": "snarkjs groth16 setup zk/zkube.r1cs  powersOfTau28_hez_final_15.ptau zk/zkube.zkey",
-    "contribute:deterministic": "snarkjs zkey contribute ./zk/zkube.zkey ./zk/zkube_final.zkey --name='contributer_1' -v -e='00000'",
+    "contribute:deterministic": "snarkjs zkey beacon ./zk/zkube.zkey ./zk/zkube_final.zkey CAFE 10 -n='Final Beacon phase2'",
     "generate:verifier": "./generateSolidityVerifier.sh",
     "build:dev": "yarn compile && yarn setup:sample-zkey && yarn contribute:deterministic && yarn generate:verifier"
   }
