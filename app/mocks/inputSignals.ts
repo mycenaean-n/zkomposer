@@ -19,7 +19,7 @@ export const mockInputSignals = {
     [0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0],
   ],
-  account: "0x123",
+  account: '0x123',
   selectedFunctions: [
     [
       [1, 2, 1],
@@ -37,4 +37,4 @@ export const mockInputSignals = {
       [0, 0, 0],
     ],
   ],
-}
+};

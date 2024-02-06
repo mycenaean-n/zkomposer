@@ -1,25 +1,25 @@
-import { assert } from "chai";
-import config from "../config";
-import { WasmTester, wasm } from "circom_tester";
-import { calculateLabeledWitness } from "./utils/calculateLabeledWitness";
-import path from "path";
-import { Puzzles } from "../types/circuitFunctions.types";
-import { gridMutator } from "../utils/gridMutator";
+import { assert } from 'chai';
+import config from '../config';
+import { WasmTester, wasm } from 'circom_tester';
+import { calculateLabeledWitness } from './utils/calculateLabeledWitness';
+import path from 'path';
+import { Puzzles } from '../types/circuitFunctions.types';
+import { gridMutator } from '../utils/gridMutator';
 // import { calculateLabeledWitness } from "./calculateLabeledWitness";
-const puzzles: Puzzles = require("./data/puzzles.json");
+const puzzles: Puzzles = require('./data/puzzles.json');
 
-describe.only("stack circuit", () => {
+describe.only('stack circuit', () => {
   let circuit: WasmTester;
   const sanityCheck = true;
   const initialGrid = puzzles[0.2].initial;
 
   before(async () => {
     circuit = await wasm(
-      path.join(__dirname, "../circuits/test/stack_test.circom")
+      path.join(__dirname, '../circuits/test/stack_test.circom')
     );
   });
 
-  it("produces a witness with valid constraints", async () => {
+  it('produces a witness with valid constraints', async () => {
     const witness = await circuit.calculateWitness(
       { grid: initialGrid, onOff: 1, color: 1 },
       sanityCheck
@@ -28,7 +28,7 @@ describe.only("stack circuit", () => {
     await circuit.checkConstraints(witness);
   });
 
-  it("has expected witness values", async () => {
+  it('has expected witness values', async () => {
     const witness = await calculateLabeledWitness(
       circuit,
       { grid: initialGrid, onOff: 1, color: 1 },
@@ -46,7 +46,7 @@ describe.only("stack circuit", () => {
     }
   });
 
-  it("produces expected witness values", async () => {
+  it('produces expected witness values', async () => {
     const witness = await calculateLabeledWitness(
       circuit,
       { grid: initialGrid, onOff: 1, color: 1 },
@@ -55,12 +55,12 @@ describe.only("stack circuit", () => {
 
     assert.notPropertyVal(
       witness,
-      "main.out[0][0]",
+      'main.out[0][0]',
       String(puzzles[0.2].target[0][3])
     );
   });
 
-  ["0.1", "0.2", "0.3", "0.4"].forEach((lvl: string) => {
+  ['0.1', '0.2', '0.3', '0.4'].forEach((lvl: string) => {
     it(`stack witness values for level ${lvl} equals stack function return values`, async () => {
       const witness = await calculateLabeledWitness(
         circuit,
@@ -68,7 +68,7 @@ describe.only("stack circuit", () => {
         sanityCheck
       );
 
-      const targetGrid = gridMutator(initialGrid, ["STACK_YELLOW"]);
+      const targetGrid = gridMutator(initialGrid, ['STACK_YELLOW']);
 
       for (let i = 0; i < config.gridWidth; i++) {
         for (let j = 0; j < config.gridHeight; j++) {
