@@ -7,8 +7,11 @@ import {Game, Player, Proof, Puzzle} from "../src/Types.sol";
 import {ZKubePuzzleSet} from "../src/ZKubePuzzleSet.sol";
 import "../src/Errors.sol";
 import {ZKubeVerifier} from "../src/ZKubeVerifier.sol";
+import { stdJson } from "forge-std/StdJson.sol";
+import "openzeppelin-contracts/contracts/utils/Strings.sol";
 
 contract ZKubeTest is Test {
+    using stdJson for string;
     ZKubeHarness public zKube;
     address public zKubeVerifier;
     address public zKubePuzzleSet;
@@ -17,10 +20,28 @@ contract ZKubeTest is Test {
     address public player1 = vm.addr(2);
     address public player2 = vm.addr(3);
 
-    Proof internal proof =
-        Proof(
-            [17315749776513005390560177110507537977279069603648711320006872142585882170360,20423542390656414328829321282453643134578381120758355095665437669364902733485],[[963923102516402918238872383257139492905181286038448031417181921067887427508,2844713701161579567676665727604314366700603330730263136928919380796539112623],[14894874413501351821296507041380624920983879504594816685858575032342712096959,9212034396074376883457863742449881588611153979357048075809015769574619233474]],[4839622511183645742268767173293623061342810181784977148058786404773964693785,17368641407556205577330992259918266620918735995852634057349842280686204971192],[uint(1),0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,2,2,2,2,0,0,0,0,2,2,2,2,0,0,0,0,2,2,2,2,0,0,0,0,2,2,2,2,0,0,0,0,2,2,2,2,0,0,0,0,2,2,2,2,0,0,0,0,2,2,2,2,0,0,0,0,2,2,2,2,0,0,0,0,294695669820380018590778770252161461656753396843]
+    Proof internal proof;
+
+    constructor() {
+        string memory root = vm.projectRoot();
+        string memory path = string.concat(root, "/test/zkube_proof.json");
+        string memory json = vm.readFile(path);
+
+        uint256[129] memory input;
+        for (uint i = 0; i < 129; i++) {
+            input[i] = json.readUint(string.concat(string.concat('.[3].[' , Strings.toString(i)),']'));
+        }
+
+        proof = Proof(
+            [json.readUint('.[0].[0]'),json.readUint('.[0].[1]')],
+            [
+                [json.readUint('.[1].[0].[0]'),json.readUint('.[1].[0].[1]')],
+                [json.readUint('.[1].[1].[0]'),json.readUint('.[1].[1].[1]')]
+            ],
+            [json.readUint('.[2].[0]'),json.readUint('.[2].[1]')],
+            input
         );
+    }
 
     function setUp() public {
         vm.deal(deployer, 100 ether);

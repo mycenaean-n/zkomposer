@@ -1,31 +1,20 @@
 import { useCallback } from 'react';
-import { InputSignals, Proof } from '../types';
-import { groth16 } from 'snarkjs';
+import { Proof } from '../types';
+import { exportCalldataGroth16 } from 'circuits';
+import { Hex } from 'viem';
+import { InputSignals } from 'circuits/types/proof.types';
 
 async function exportCallDataGroth16(
   input: InputSignals,
   wasmPath: string,
   zkeyPath: string
-): Promise<Proof & { Input: number[] }> {
-  let _proof, _publicSignals;
-
-  try {
-    ({ proof: _proof, publicSignals: _publicSignals } = await groth16.fullProve(
-      input,
-      wasmPath,
-      zkeyPath
-    ));
-  } catch (err) {
-    console.error(err);
-    throw new Error('Wrong answer!');
-  }
-
-  const calldata = await groth16.exportSolidityCallData(_proof, _publicSignals);
+): Promise<Proof & { Input: string[] }> {
+  const calldata = await exportCalldataGroth16(input, wasmPath, zkeyPath);
 
   const argv = calldata
     .replace(/["[\]\s]/g, '')
     .split(',')
-    .map((x: string) => BigInt(x).toString());
+    .map((x: string) => BigInt(x).toString()) as Hex[];
 
   const a: Proof['a'] = [argv[0], argv[1]];
   const b: Proof['b'] = [
