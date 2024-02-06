@@ -1,15 +1,15 @@
-import { assert } from "chai";
-import config from "../config";
-import { transformTwo } from "../utils/transformTwo";
-import { argumentBuilder } from "../utils/circuitFunctions";
-import { WasmTester, wasm } from "circom_tester";
-import path from "path";
-import { calculateLabeledWitness } from "./utils/calculateLabeledWitness";
-import { Puzzles } from "../types/circuitFunctions.types";
-import { gridMutator } from "../utils/gridMutator";
-const puzzles: Puzzles = require("./data/puzzles.json");
+import { assert } from 'chai';
+import config from '../config';
+import { transformTwo } from '../utils/transformTwo';
+import { argumentBuilder } from '../utils/circuitFunctions';
+import { WasmTester, wasm } from 'circom_tester';
+import path from 'path';
+import { calculateLabeledWitness } from './utils/calculateLabeledWitness';
+import { Puzzles } from '../types/circuitFunctions.types';
+import { gridMutator } from '../utils/gridMutator';
+const puzzles: Puzzles = require('./data/puzzles.json');
 
-describe.only("transformtwo circuit", () => {
+describe.only('transformtwo circuit', () => {
   let circuit: WasmTester;
 
   const sanityCheck = true;
@@ -17,13 +17,13 @@ describe.only("transformtwo circuit", () => {
 
   before(async () => {
     circuit = await wasm(
-      path.join(__dirname, "../circuits/test/transformtwo_test.circom")
+      path.join(__dirname, '../circuits/test/transformtwo_test.circom')
     );
   });
 
-  it("produces a witness with valid constraints", async () => {
+  it('produces a witness with valid constraints', async () => {
     const [onOff, inColor, outColor] = argumentBuilder(
-      "TRANSFORMTWO_YELLOW_RED"
+      'TRANSFORMTWO_YELLOW_RED'
     );
 
     const witness = await circuit.calculateWitness(
@@ -34,9 +34,9 @@ describe.only("transformtwo circuit", () => {
     await circuit.checkConstraints(witness);
   });
 
-  it("has expected witness values for onOff == 1", async () => {
+  it('has expected witness values for onOff == 1', async () => {
     const [onOff, inColor, outColor] = argumentBuilder(
-      "TRANSFORMTWO_YELLOW_RED"
+      'TRANSFORMTWO_YELLOW_RED'
     );
     const witness = await calculateLabeledWitness(
       circuit,
@@ -55,8 +55,8 @@ describe.only("transformtwo circuit", () => {
     }
   });
 
-  it("has expected witness values for onOff == 0", async () => {
-    const [inColor, outColor] = argumentBuilder("TRANSFORMTWO_YELLOW_RED");
+  it('has expected witness values for onOff == 0', async () => {
+    const [inColor, outColor] = argumentBuilder('TRANSFORMTWO_YELLOW_RED');
     const witness = await calculateLabeledWitness(
       circuit,
       { grid: initialGrid, onOff: 0, inColor, outColor },
@@ -74,9 +74,9 @@ describe.only("transformtwo circuit", () => {
     }
   });
 
-  it("produces expected witness values", async () => {
+  it('produces expected witness values', async () => {
     const [onOff, inColor, outColor] = argumentBuilder(
-      "TRANSFORMTWO_YELLOW_RED"
+      'TRANSFORMTWO_YELLOW_RED'
     );
     const witness = await calculateLabeledWitness(
       circuit,
@@ -86,15 +86,15 @@ describe.only("transformtwo circuit", () => {
 
     assert.notPropertyVal(
       witness,
-      "main.out[0][0]",
+      'main.out[0][0]',
       String(puzzles[0.2].target[0][0])
     );
   });
 
-  ["0.1", "0.2", "0.3", "0.4"].forEach((lvl: string) => {
+  ['0.1', '0.2', '0.3', '0.4'].forEach((lvl: string) => {
     it(`transform witness values for level ${lvl} equals transform function return values`, async () => {
       const [onOff, inColor, outColor] = argumentBuilder(
-        "TRANSFORMTWO_YELLOW_BLUE"
+        'TRANSFORMTWO_YELLOW_BLUE'
       );
       const witness = await calculateLabeledWitness(
         circuit,
@@ -102,7 +102,7 @@ describe.only("transformtwo circuit", () => {
         sanityCheck
       );
 
-      const targetGrid = gridMutator(initialGrid, ["TRANSFORMTWO_YELLOW_BLUE"]);
+      const targetGrid = gridMutator(initialGrid, ['TRANSFORMTWO_YELLOW_BLUE']);
 
       for (let i = 0; i < config.gridWidth; i++) {
         for (let j = 0; j < config.gridHeight; j++) {

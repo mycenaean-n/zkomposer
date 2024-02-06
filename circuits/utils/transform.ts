@@ -1,7 +1,7 @@
-import { writeFileSync } from "fs";
-import path from "path";
-import { Colors, Puzzles } from "../types/circuitFunctions.types";
-const puzzles: Puzzles = require("../test/data/puzzles.json");
+import { writeFileSync } from 'fs';
+import path from 'path';
+import { Colors, Puzzles } from '../types/circuitFunctions.types';
+const puzzles: Puzzles = require('../test/data/puzzles.json');
 
 export function transform(
   column: Array<Colors>,

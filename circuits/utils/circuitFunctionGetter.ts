@@ -1,7 +1,7 @@
 import {
   CircuitFunctions,
   circuitFunctionsArray,
-} from "../types/circuitFunctions.types";
+} from '../types/circuitFunctions.types';
 
 export function getCircuitFunctionIndexByName(funcName: CircuitFunctions) {
   const index = circuitFunctionsArray.indexOf(funcName);

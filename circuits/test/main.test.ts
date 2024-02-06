@@ -1,52 +1,52 @@
-import { assert } from "chai";
-import { gridMutator } from "../utils/gridMutator";
-import { CircuitFunctions, Puzzles } from "../types/circuitFunctions.types";
-import { WasmTester, wasm } from "circom_tester";
-import path from "path";
-import { calculateLabeledWitness } from "./utils/calculateLabeledWitness";
-import config from "../config";
-import { getCircuitFunctionIndex } from "../utils/circuitFunctionGetter";
-const puzzles: Puzzles = require("./data/puzzles.json");
+import { assert } from 'chai';
+import { gridMutator } from '../utils/gridMutator';
+import { CircuitFunctions, Puzzles } from '../types/circuitFunctions.types';
+import { WasmTester, wasm } from 'circom_tester';
+import path from 'path';
+import { calculateLabeledWitness } from './utils/calculateLabeledWitness';
+import config from '../config';
+import { getCircuitFunctionIndex } from '../utils/circuitFunctionGetter';
+const puzzles: Puzzles = require('./data/puzzles.json');
 
-describe.only("main circuit", () => {
+describe.only('main circuit', () => {
   let circuit: WasmTester;
 
   const sanityCheck = true;
-  const address = "0x123";
+  const address = '0x123';
   const initialGrid = puzzles[0.3].initial;
   const levels: { lvl: string; args: CircuitFunctions[] }[] = [
     {
-      lvl: "0.1",
-      args: ["TRANSFORM_YELLOW_RED", "STACK_RED", "TRANSFORMTWO_RED_BLUE"],
+      lvl: '0.1',
+      args: ['TRANSFORM_YELLOW_RED', 'STACK_RED', 'TRANSFORMTWO_RED_BLUE'],
     },
     {
-      lvl: "0.2",
-      args: ["STACK_RED", "EMPTY", "EMPTY"],
+      lvl: '0.2',
+      args: ['STACK_RED', 'EMPTY', 'EMPTY'],
     },
     {
-      lvl: "0.3",
-      args: ["STACK_RED", "TRANSFORM_YELLOW_RED", "TRANSFORMTWO_RED_YELLOW"],
+      lvl: '0.3',
+      args: ['STACK_RED', 'TRANSFORM_YELLOW_RED', 'TRANSFORMTWO_RED_YELLOW'],
     },
     {
-      lvl: "0.4",
-      args: ["TRANSFORM_YELLOW_BLUE", "STACK_RED", "TRANSFORMTWO_RED_YELLOW"],
+      lvl: '0.4',
+      args: ['TRANSFORM_YELLOW_BLUE', 'STACK_RED', 'TRANSFORMTWO_RED_YELLOW'],
     },
   ];
 
   before(async () => {
-    circuit = await wasm(path.join(__dirname, "../circuits/main.circom"));
+    circuit = await wasm(path.join(__dirname, '../circuits/main.circom'));
   });
 
-  it("produces a witness with valid constraints", async () => {
+  it('produces a witness with valid constraints', async () => {
     const targetGrid = gridMutator(initialGrid, [
-      "TRANSFORM_YELLOW_RED",
-      "STACK_RED",
-      "TRANSFORMTWO_RED_BLUE",
+      'TRANSFORM_YELLOW_RED',
+      'STACK_RED',
+      'TRANSFORMTWO_RED_BLUE',
     ]);
     const circuitFunctionArguments = getCircuitFunctionIndex([
-      "TRANSFORM_YELLOW_RED",
-      "STACK_RED",
-      "TRANSFORMTWO_RED_BLUE",
+      'TRANSFORM_YELLOW_RED',
+      'STACK_RED',
+      'TRANSFORMTWO_RED_BLUE',
     ]);
 
     const witness = await circuit.calculateWitness(
@@ -62,16 +62,16 @@ describe.only("main circuit", () => {
     await circuit.checkConstraints(witness);
   });
 
-  it("has expected witness values", async () => {
+  it('has expected witness values', async () => {
     const targetGrid = gridMutator(initialGrid, [
-      "TRANSFORM_YELLOW_RED",
-      "STACK_RED",
-      "EMPTY",
+      'TRANSFORM_YELLOW_RED',
+      'STACK_RED',
+      'EMPTY',
     ]);
     const circuitFunctionArguments = getCircuitFunctionIndex([
-      "TRANSFORM_YELLOW_RED",
-      "STACK_RED",
-      "EMPTY",
+      'TRANSFORM_YELLOW_RED',
+      'STACK_RED',
+      'EMPTY',
     ]);
     const witness = await calculateLabeledWitness(
       circuit,
@@ -95,17 +95,17 @@ describe.only("main circuit", () => {
     }
   });
 
-  it("produces expected witness values", async () => {
+  it('produces expected witness values', async () => {
     const targetGrid = gridMutator(initialGrid, [
-      "TRANSFORM_YELLOW_RED",
-      "STACK_RED",
-      "TRANSFORMTWO_RED_BLUE",
+      'TRANSFORM_YELLOW_RED',
+      'STACK_RED',
+      'TRANSFORMTWO_RED_BLUE',
     ]);
 
     const circuitFunctionArguments = getCircuitFunctionIndex([
-      "TRANSFORM_YELLOW_RED",
-      "STACK_RED",
-      "TRANSFORMTWO_RED_BLUE",
+      'TRANSFORM_YELLOW_RED',
+      'STACK_RED',
+      'TRANSFORMTWO_RED_BLUE',
     ]);
 
     const witness = await calculateLabeledWitness(
@@ -121,16 +121,16 @@ describe.only("main circuit", () => {
 
     assert.notPropertyVal(
       witness,
-      "main.finishingGrid[0][4]",
+      'main.finishingGrid[0][4]',
       String(targetGrid[0][3])
     );
   });
 
-  it("reverts for selectedFunctionIndexes greater than 15", async () => {
+  it('reverts for selectedFunctionIndexes greater than 15', async () => {
     const targetGrid = gridMutator(initialGrid, [
-      "TRANSFORM_YELLOW_RED",
-      "STACK_RED",
-      "TRANSFORMTWO_RED_BLUE",
+      'TRANSFORM_YELLOW_RED',
+      'STACK_RED',
+      'TRANSFORMTWO_RED_BLUE',
     ]);
 
     const witnessPromise = calculateLabeledWitness(
@@ -146,18 +146,18 @@ describe.only("main circuit", () => {
 
     try {
       await witnessPromise;
-      assert.fail("Expected an error but did not get one");
+      assert.fail('Expected an error but did not get one');
     } catch (error: any) {
       const expectedPattern = /Error in template ZKube/;
       assert.match(error, expectedPattern);
     }
   });
 
-  it("reverts for a negative value in selectedFunctionIndexes", async () => {
+  it('reverts for a negative value in selectedFunctionIndexes', async () => {
     const targetGrid = gridMutator(initialGrid, [
-      "TRANSFORM_YELLOW_RED",
-      "STACK_RED",
-      "TRANSFORMTWO_RED_BLUE",
+      'TRANSFORM_YELLOW_RED',
+      'STACK_RED',
+      'TRANSFORMTWO_RED_BLUE',
     ]);
 
     const witnessPromise = calculateLabeledWitness(
@@ -173,7 +173,7 @@ describe.only("main circuit", () => {
 
     try {
       await witnessPromise;
-      assert.fail("Expected an error but did not get one");
+      assert.fail('Expected an error but did not get one');
     } catch (error: any) {
       const expectedPattern = /Error in template ZKube/;
       assert.match(error.message, expectedPattern);
