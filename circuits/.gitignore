@@ -9,4 +9,5 @@ zk/**/*.wasm
 zk/*.r1cs
 zk/*.zkey
 zk/*.sol
+zk/*.json
 

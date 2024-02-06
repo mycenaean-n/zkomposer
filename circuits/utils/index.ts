@@ -4,3 +4,4 @@ export {
   getCircuitFunctionIndex,
   getCircuitFunctionName,
 } from './circuitFunctionGetter';
+export { exportCalldataGroth16 } from './exportCalldataGroth16';

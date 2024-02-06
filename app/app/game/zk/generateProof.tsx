@@ -1,6 +1,7 @@
 import { useProof } from './hooks/useProof';
-import { InputSignals, Proof } from './types';
+import { Proof } from './types';
 import styles from '../styles/actions.module.scss';
+import { InputSignals } from 'circuits/types/proof.types';
 
 export function GenerateProof({
   inputSignals,
@@ -9,7 +10,7 @@ export function GenerateProof({
   inputSignals?: InputSignals;
   onResult: (proof: Proof) => void;
 }) {
-  const proofCallback = useProof('./zk/main.wasm', './zk/main_final.zkey');
+  const proofCallback = useProof('./zk/zkube.wasm', './zk/zkube_final.zkey');
 
   if (!inputSignals)
     return (

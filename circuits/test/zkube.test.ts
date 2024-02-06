@@ -8,7 +8,7 @@ import config from '../config';
 import { getCircuitFunctionIndex } from '../utils/circuitFunctionGetter';
 const puzzles: Puzzles = require('./data/puzzles.json');
 
-describe.only('main circuit', () => {
+describe.only('zkube circuit', () => {
   let circuit: WasmTester;
 
   const sanityCheck = true;
@@ -34,7 +34,7 @@ describe.only('main circuit', () => {
   ];
 
   before(async () => {
-    circuit = await wasm(path.join(__dirname, '../circuits/main.circom'));
+    circuit = await wasm(path.join(__dirname, '../circuits/zkube.circom'));
   });
 
   it('produces a witness with valid constraints', async () => {
@@ -88,7 +88,7 @@ describe.only('main circuit', () => {
       for (let j = 0; j < 8; j++) {
         assert.propertyVal(
           witness,
-          `main.finishingGrid[${i}][${j}]`,
+          `zkube.finalGridForPlayer[${i}][${j}]`,
           String(targetGrid[i][j])
         );
       }
@@ -121,7 +121,7 @@ describe.only('main circuit', () => {
 
     assert.notPropertyVal(
       witness,
-      'main.finishingGrid[0][4]',
+      'zkube.finalGridForPlayer[0][4]',
       String(targetGrid[0][3])
     );
   });
@@ -202,7 +202,7 @@ describe.only('main circuit', () => {
         for (let j = 0; j < config.gridHeight; j++) {
           assert.propertyVal(
             witness,
-            `main.finishingGrid[${i}][${j}]`,
+            `main.finalGridForPlayer[${i}][${j}]`,
             String(targetGrid[i][j])
           );
         }

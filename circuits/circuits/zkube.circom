@@ -129,7 +129,7 @@ function indexToArgs(index) {
     ];
 }
 
-template ZKubes(W, H, F) {
+template ZKube(W, H, F) {
     // public
     signal input initialGrid[W][H];
     signal input finalGrid[W][H];
@@ -208,4 +208,4 @@ template ZKubes(W, H, F) {
     eqCheck.in[1] <== 1;
 }
 
-component main { public [initialGrid, finalGrid, account] } = ZKubes(8, 8, 3);
+component main { public [initialGrid, finalGrid, account] } = ZKube(8, 8, 3);
