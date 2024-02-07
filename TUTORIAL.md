@@ -202,7 +202,7 @@
    -        records.push(publicSignals);
    +        signedMessages.push(message);
         }
- 
+
         /**
          * Please adjust the IVerifier.sol and the array length of publicSignals
          */

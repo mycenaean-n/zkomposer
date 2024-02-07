@@ -10,12 +10,13 @@
     "contracts"
   ],
   "scripts": {
-    "build": "yarn build:contracts",
-    "build:all": "yarn build:contracts && yarn build:app",
+    "build": "yarn build:circuits && yarn build:app && yarn build:contracts",
+    "build:dev": "yarn build:circuits:dev && yarn build:app && yarn build:contracts",
     "build:app": "yarn workspace app build",
-    "build:contracts": "yarn workspace contracts build",
+    "build:contracts": "cd contracts && forge build",
     "build:circuits": "yarn workspace circuits build",
-    "demo": "./demo.sh"
+    "build:circuits:dev": "yarn workspace circuits build:dev",
+    "format": "prettier . --write"
   },
   "private": true,
   "devDependencies": {

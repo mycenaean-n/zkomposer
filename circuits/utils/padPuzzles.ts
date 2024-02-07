@@ -1,7 +1,7 @@
-import { writeFileSync } from "fs";
-import path from "path";
-import { Puzzles } from "../types/circuitFunctions.types";
-const puzzles: Puzzles = require("../test/data/puzzles.json");
+import { writeFileSync } from 'fs';
+import path from 'path';
+import { Puzzles } from '../types/circuitFunctions.types';
+const puzzles: Puzzles = require('../test/data/puzzles.json');
 
 function padWithZerosToSizeEight(arr: number[][]): number[][] {
   // Pad each nested array with zeros until its size is 8
@@ -30,7 +30,7 @@ function padPuzzles(obj: Puzzles) {
   }
 
   writeFileSync(
-    path.join(__dirname, "../test/data/puzzles.json"),
+    path.join(__dirname, '../test/data/puzzles.json'),
     JSON.stringify(obj, null, 2)
   );
 }
