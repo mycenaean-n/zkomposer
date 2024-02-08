@@ -1,8 +1,4 @@
-type Puzzle = {
-	startingGrid: string;
-	finalGrid: string;
-	availableFunctions: number[];
-};
+import { Puzzle } from "app/app/game/Puzzles";
 
 function base4ToHex(base4: string): string {
 	const base4Array = Array.from(base4)
@@ -43,13 +39,25 @@ function hexToBase4(base16: string): string {
   return base4String;
 }
 
+export function padPuzzle (puzzle: Puzzle) : Puzzle {
+	return {
+		startingGrid: puzzle.startingGrid.padEnd(64, '0'),
+		finalGrid: puzzle.finalGrid.padEnd(64, '0'),
+		availableFunctions: puzzle.availableFunctions
+	}
+}
+
+function checkLength (puzzle: Puzzle) {
+	if (puzzle.startingGrid.length != 64 || puzzle.finalGrid.length != 64) {
+		throw new Error("Grid must be length 64.");
+	}
+}
 
 export function convertPuzzleToHex(puzzle: Puzzle): Puzzle {
 	const { startingGrid, finalGrid, availableFunctions } = puzzle;
 
-	if (startingGrid.length != 64 || finalGrid.length != 64) {
-		throw new Error("Grid must be length 64.");
-	}
+	checkLength(puzzle)
+
 	return {
 		startingGrid: base4ToHex(startingGrid),
 		finalGrid: base4ToHex(finalGrid),
@@ -59,6 +67,8 @@ export function convertPuzzleToHex(puzzle: Puzzle): Puzzle {
 
 export function convertPuzzleToBase4(puzzle: Puzzle): Puzzle {
 	const { startingGrid, finalGrid, availableFunctions } = puzzle;
+
+	checkLength(puzzle)
 
 	return {
 		startingGrid: hexToBase4(startingGrid),
