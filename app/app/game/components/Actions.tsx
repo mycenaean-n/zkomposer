@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { PuzzleContext } from './Puzzle';
-import { InputSignals, Proof } from '../zk/types';
+import { Proof } from '../zk/types';
 import styles from '../styles/actions.module.scss';
 import { GenerateProof } from '../zk/generateProof';
 import {
@@ -13,6 +13,8 @@ import {
 import { PuzzleFunctionState } from '@/types/Puzzle';
 import { useAccount } from 'wagmi';
 import { getCircuitFunctionIndex } from 'circuits';
+import { InputSignals } from 'circuits/types/proof.types';
+
 
 export function Actions() {
   const { functions, setFunctions, initConfig } = useContext(PuzzleContext);
