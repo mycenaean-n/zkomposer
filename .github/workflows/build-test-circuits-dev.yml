@@ -15,7 +15,7 @@ jobs:
       - run: yarn install
 
       - name: install rust
-        run: curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh
+        run: curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf -y | sh
 
       - name: install circom
         run: |
