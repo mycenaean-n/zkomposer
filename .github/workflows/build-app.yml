@@ -1,0 +1,19 @@
+name: build app
+on: [pull_request]
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: install node_modules
+        uses: actions/setup-node@v3
+        with: 
+          node-version: '18'
+      - run: yarn install
+
+      - name: build app
+        run: yarn build:app
+        id: build-app
