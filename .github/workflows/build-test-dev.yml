@@ -1,0 +1,52 @@
+name: build and test
+on: [pull_request]
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: install node_modules
+        uses: actions/setup-node@v3
+        with: 
+          node-version: '18'
+      - run: yarn install
+
+      - name: install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: nightly
+
+  build:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps: 
+      - name: build app
+        run: yarn build:app
+        id: build-app
+    
+      - name: build contracts
+        run: |
+          yarn build:contracts
+        id: build-contracts
+
+      - name: build circuits
+        run: |
+          yarn build:circuits:dev
+        id: build-circuits
+
+  test: 
+    needs: build
+    runs-on: ubuntu-latest
+    steps: 
+      - name: test contracts
+        run: |
+          yarn test:contracts
+        id: test-contracts
+
+      - name: test circuits
+        run: |
+          yarn test:circuits
+        id: test-circuits
