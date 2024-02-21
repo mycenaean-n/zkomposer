@@ -43,18 +43,18 @@ class ZKubeVerifier {
     +validateProof (Proof proof) : bool
 }
 
-ZKube --> ZKubeProver: validateProof
+ZKube --> ZKubeVerifier: validateProof
 
 
 ```
 
 ### Addresses
 
-The contracts are deployed to Scroll Sepolia at these addresses:
+The contracts are deployed to Arbitrum Sepolia at these addresses:
 
-- `ZKubeVerifier`: [0xD81541EE7925A297457139CF6D23F385FE32fEe0](https://sepolia.scrollscan.dev/address/0xD81541EE7925A297457139CF6D23F385FE32fEe0)
-- `ZKube`: [0xaD93D72d91fBcb21b7558562891EB52d216F6538](https://sepolia.scrollscan.dev/address/0xaD93D72d91fBcb21b7558562891EB52d216F6538)
-- `ZKubePuzzleSet`: [0xe1570ceDC712AC569663AE2Be961B53c62eDBc12](https://sepolia.scrollscan.dev/address/0xe1570ceDC712AC569663AE2Be961B53c62eDBc12)
+- `ZKubeVerifier`: [0x9BDB1535eE3e91B1acc79e45436Bc69ee4294031](https://sepolia.arbiscan.io/address/0x9BDB1535eE3e91B1acc79e45436Bc69ee4294031)
+- `ZKube`: [0x3BC7e6383311c52C3D14cc3ca258B15253582Cac](https://sepolia.arbiscan.io/address/0x3BC7e6383311c52C3D14cc3ca258B15253582Cac)
+- `ZKubePuzzleSet`: [0xadBD7ff2cC42576D814EA1B83CDC5f29805d63A9](https://sepolia.arbiscan.io/address/0xadBD7ff2cC42576D814EA1B83CDC5f29805d63A9)
 
 The **ZKube** contract is the only contract players will interact with. The first player will create a game using `createGame` and the second player will join using `joinGame`, the game will start X blocks after this. The players will get the puzzle by calling `selectPuzzle` and they will submit the proof of their solution using `submitProof`. The game can be resolved when it is finished by calling `resolveGame`
 
@@ -67,8 +67,6 @@ The **ZKubePuzzleSet** ERC721 contract defines a set of possible puzzles in a ga
 ## Application Architecture
 
 The front-end is a NextJS app deployed to Vercel.
-
-The smart contracts will be deployed to [TODO].
 
 The interactions will happen directly from the browser to the network the game exists on. There is no need for a backend for this demo. It is possible that we might benefit from a backend in a future update, this is why we chose NextJS.
 
@@ -83,7 +81,7 @@ Each column of 8 is appended sequentially in base4. We chose base4 to limit the 
 
 The columns are appended from left to right and from the bottom up. For example, a column with 1 yellow square at the bottom would be represented by 10000000. We append each column and the result is a base4 number of 64 length.
 
-We will encode this from base4 (saves storage space) to hexadecimal bytes32.
+We will encode this from base4 (saves storage space) to hexadecimal bytes16.
 
 ## Considerations
 

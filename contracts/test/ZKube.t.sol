@@ -7,11 +7,12 @@ import {Game, Player, Proof, Puzzle} from "../src/Types.sol";
 import {ZKubePuzzleSet} from "../src/ZKubePuzzleSet.sol";
 import "../src/Errors.sol";
 import {ZKubeVerifier} from "../src/ZKubeVerifier.sol";
-import { stdJson } from "forge-std/StdJson.sol";
+import {stdJson} from "forge-std/StdJson.sol";
 import "openzeppelin-contracts/contracts/utils/Strings.sol";
 
 contract ZKubeTest is Test {
     using stdJson for string;
+
     ZKubeHarness public zKube;
     address public zKubeVerifier;
     address public zKubePuzzleSet;
@@ -28,17 +29,17 @@ contract ZKubeTest is Test {
         string memory json = vm.readFile(path);
 
         uint256[129] memory input;
-        for (uint i = 0; i < 129; i++) {
-            input[i] = json.readUint(string.concat(string.concat('.[3].[' , Strings.toString(i)),']'));
+        for (uint256 i = 0; i < 129; i++) {
+            input[i] = json.readUint(string.concat(string.concat(".[3].[", Strings.toString(i)), "]"));
         }
 
         proof = Proof(
-            [json.readUint('.[0].[0]'),json.readUint('.[0].[1]')],
+            [json.readUint(".[0].[0]"), json.readUint(".[0].[1]")],
             [
-                [json.readUint('.[1].[0].[0]'),json.readUint('.[1].[0].[1]')],
-                [json.readUint('.[1].[1].[0]'),json.readUint('.[1].[1].[1]')]
+                [json.readUint(".[1].[0].[0]"), json.readUint(".[1].[0].[1]")],
+                [json.readUint(".[1].[1].[0]"), json.readUint(".[1].[1].[1]")]
             ],
-            [json.readUint('.[2].[0]'),json.readUint('.[2].[1]')],
+            [json.readUint(".[2].[0]"), json.readUint(".[2].[1]")],
             input
         );
     }
@@ -49,10 +50,7 @@ contract ZKubeTest is Test {
         vm.deal(player2, 100 ether);
         vm.startPrank(deployer);
         zKubeVerifier = address(new ZKubeVerifier());
-        ZKubePuzzleSet puzzleSet = new ZKubePuzzleSet(
-            "Demo puzzle set",
-            "ZKPuzzle"
-        );
+        ZKubePuzzleSet puzzleSet = new ZKubePuzzleSet("Demo puzzle set", "ZKPuzzle");
         zKubePuzzleSet = address(puzzleSet);
         Puzzle memory puzzle;
         puzzleSet.addPuzzle(puzzle);
@@ -97,7 +95,7 @@ contract ZKubeTest is Test {
         uint88 currentBlock = uint88(block.number);
         uint256 startingBlock = _joinGame(player2, id, stake);
 
-        (, Player memory p2, , , , , ) = zKube.games(id);
+        (, Player memory p2,,,,,) = zKube.games(id);
         assertEq(p2.address_, player2);
         assertEq(startingBlock, currentBlock + zKube.BLOCKS_UNTIL_START());
     }
@@ -130,14 +128,7 @@ contract ZKubeTest is Test {
 
         uint256 startingBlock = _joinGame(player2, id, stake);
         vm.roll(startingBlock);
-        assertEq(
-            zKube.exposed_getBlock(
-                interval,
-                uint72(startingBlock),
-                numberOfRounds
-            ),
-            10
-        );
+        assertEq(zKube.exposed_getBlock(interval, uint72(startingBlock), numberOfRounds), 10);
     }
 
     function testFuzz_getBlock(uint256 jump) public {
@@ -153,23 +144,8 @@ contract ZKubeTest is Test {
 
         uint256 expectedBlockNumber = block.number - (block.number % interval);
 
-        assertEq(
-            zKube.exposed_getBlock(
-                interval,
-                uint72(startingBlock),
-                numberOfTurns
-            ),
-            expectedBlockNumber
-        );
-        assertTrue(
-            zKube.exposed_getBlock(
-                interval,
-                uint72(startingBlock),
-                numberOfTurns
-            ) %
-                interval ==
-                0
-        );
+        assertEq(zKube.exposed_getBlock(interval, uint72(startingBlock), numberOfTurns), expectedBlockNumber);
+        assertTrue(zKube.exposed_getBlock(interval, uint72(startingBlock), numberOfTurns) % interval == 0);
     }
 
     function testFuzz_getBlock_reverts_ifGameFinished(uint256 jump) public {
@@ -199,7 +175,7 @@ contract ZKubeTest is Test {
         vm.prank(player1);
         zKube.submitPuzzle(id, proof);
 
-        (Player memory p1, , , , , , ) = zKube.games(id);
+        (Player memory p1,,,,,,) = zKube.games(id);
 
         assertEq(p1.score, 1);
         assertEq(p1.totalBlocks, 1);
@@ -272,27 +248,17 @@ contract ZKubeTest is Test {
         assertEq(player1.balance, balBefore + 2 * stake);
     }
 
-    function _createGame(
-        address player,
-        uint8 interval,
-        uint16 numberOfTurns,
-        uint256 stake
-    ) private returns (uint256 id) {
+    function _createGame(address player, uint8 interval, uint16 numberOfTurns, uint256 stake)
+        private
+        returns (uint256 id)
+    {
         vm.prank(player);
-        id = zKube.createGame{value: stake}(
-            zKubePuzzleSet,
-            interval,
-            numberOfTurns
-        );
+        id = zKube.createGame{value: stake}(zKubePuzzleSet, interval, numberOfTurns);
     }
 
-    function _joinGame(
-        address player,
-        uint256 id,
-        uint256 stake
-    ) private returns (uint256 startingBlock) {
+    function _joinGame(address player, uint256 id, uint256 stake) private returns (uint256 startingBlock) {
         vm.prank(player);
         zKube.joinGame{value: stake}(id);
-        (, , , , , startingBlock, ) = zKube.games(id);
+        (,,,,, startingBlock,) = zKube.games(id);
     }
 }
