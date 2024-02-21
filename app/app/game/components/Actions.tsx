@@ -15,7 +15,6 @@ import { useAccount } from 'wagmi';
 import { getCircuitFunctionIndex } from 'circuits';
 import { InputSignals } from 'circuits/types/proof.types';
 
-
 export function Actions() {
   const { functions, setFunctions, initConfig } = useContext(PuzzleContext);
   const { address } = useAccount();
