@@ -1,8 +1,8 @@
 'use client';
 import { WagmiConfig, createConfig } from 'wagmi';
 import { ConnectKitProvider, getDefaultConfig } from 'connectkit';
-import { scrollTestnet, scroll } from 'viem/chains';
-const chains = [scroll, scrollTestnet];
+import { arbitrumSepolia } from 'viem/chains';
+const chains = [arbitrumSepolia];
 
 const config = createConfig(
   getDefaultConfig({

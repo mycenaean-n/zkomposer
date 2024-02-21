@@ -12,10 +12,7 @@ contract ZKubePuzzleSet is IZKubePuzzleSet, ERC721, Ownable {
 
     string public baseUri;
 
-    constructor(
-        string memory name,
-        string memory symbol
-    ) ERC721(name, symbol) Ownable(msg.sender) {}
+    constructor(string memory name, string memory symbol) ERC721(name, symbol) Ownable(msg.sender) {}
 
     function addPuzzle(Puzzle calldata puzzle) external onlyOwner {
         uint256 puzzleId = numberOfPuzzles++;
@@ -23,9 +20,7 @@ contract ZKubePuzzleSet is IZKubePuzzleSet, ERC721, Ownable {
         _mint(msg.sender, puzzleId);
     }
 
-    function getPuzzle(
-        uint256 randomNumber
-    ) external view returns (Puzzle memory puzzle) {
+    function getPuzzle(uint256 randomNumber) external view returns (Puzzle memory puzzle) {
         puzzle = puzzles[1 + (randomNumber % numberOfPuzzles)];
     }
 

@@ -1,4 +1,10 @@
-export const puzzleMapping = {
+export type Puzzle = {
+	startingGrid: string;
+	finalGrid: string;
+	availableFunctions: number[];
+};
+
+export const puzzleMapping: Record<number, Puzzle> = {
   0: {
     startingGrid:
       '1000000010000000100000001000000010000000100000001000000010000000',
