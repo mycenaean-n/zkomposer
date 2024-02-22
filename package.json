@@ -13,9 +13,11 @@
     "build": "yarn build:circuits && yarn build:app && yarn build:contracts",
     "build:dev": "yarn build:circuits:dev && yarn build:app && yarn build:contracts",
     "build:app": "yarn workspace app build",
-    "build:contracts": "cd contracts && forge build",
+    "build:contracts": "cd contracts && forge build --sizes",
     "build:circuits": "yarn workspace circuits build",
     "build:circuits:dev": "yarn workspace circuits build:dev",
+    "test:contracts": "cd contracts && forge test -vvv",
+    "test:circuits": "yarn workspace circuits test",
     "format": "prettier . --write"
   },
   "private": true,
