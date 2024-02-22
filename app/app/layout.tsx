@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
-import './globals.css';
-import styles from './layout.module.css';
+import './globals.scss';
+import styles from '../src/styles/layout.module.scss'
 import { Roboto } from 'next/font/google';
 import Image from 'next/image';
-import logo from './zKubeLogo.svg';
-import { AccountProvider } from './providers/AccountProvider';
-import { ConnectButton } from './ConnectButton';
+import logo from '../src/assets/zKubeLogo.svg';
+import { AccountProvider } from '../src/providers/AccountProvider';
+import { ConnectButton } from '../src/components/ConnectButton';
 
 const roboto = Roboto({
   weight: '400',

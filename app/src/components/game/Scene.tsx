@@ -3,7 +3,7 @@ import { PuzzleContext } from './Puzzle';
 import { Grid } from './Grid';
 import { Canvas } from '@react-three/fiber';
 import { Vector3 } from 'three';
-import styles from '../styles/puzzle.module.scss';
+import styles from '../../styles/puzzle.module.scss';
 import { gridMutator } from 'circuits';
 
 export function Scene() {

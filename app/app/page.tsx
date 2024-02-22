@@ -1,4 +1,4 @@
-import styles from './page.module.scss';
+import styles from '../src/styles/lobbies.module.scss';
 
 async function getLobbies() {
   const MockLobbies = [
@@ -34,7 +34,7 @@ async function getLobbies() {
   return lobbiesElements;
 }
 
-export default async function Page() {
+export default async function Lobbies() {
   const lobbiesElements = await getLobbies();
 
   return (
