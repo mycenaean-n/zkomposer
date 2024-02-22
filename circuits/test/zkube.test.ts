@@ -88,7 +88,7 @@ describe.only('zkube circuit', () => {
       for (let j = 0; j < 8; j++) {
         assert.propertyVal(
           witness,
-          `zkube.finalGridForPlayer[${i}][${j}]`,
+          `main.finalGridForPlayer[${i}][${j}]`,
           String(targetGrid[i][j])
         );
       }
