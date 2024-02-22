@@ -4,7 +4,7 @@ import styles from '../src/styles/layout.module.scss'
 import { Roboto } from 'next/font/google';
 import Image from 'next/image';
 import logo from '../src/assets/zKubeLogo.svg';
-import { AccountProvider } from '../src/providers/AccountProvider';
+import { Web3Provider } from '../src/providers/Web3Provider';
 import { ConnectButton } from '../src/components/ConnectButton';
 
 const roboto = Roboto({
@@ -24,7 +24,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <AccountProvider>
+      <Web3Provider>
         <body className={roboto.className}>
           <header className={styles.header}>
             <Image src={logo} alt="logo" className={styles.logo} />
@@ -34,7 +34,7 @@ export default function RootLayout({
           </header>
           {children}
         </body>
-      </AccountProvider>
+      </Web3Provider>
     </html>
   );
 }
