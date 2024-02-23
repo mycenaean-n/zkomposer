@@ -2,7 +2,7 @@
 import { WagmiProvider, createConfig } from 'wagmi';
 import { ConnectKitProvider, getDefaultConfig } from 'connectkit';
 import { arbitrumSepolia } from 'wagmi/chains';
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const queryClient = new QueryClient();
 

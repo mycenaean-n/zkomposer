@@ -1,7 +1,7 @@
 export type Puzzle = {
-	startingGrid: string;
-	finalGrid: string;
-	availableFunctions: number[];
+  startingGrid: string;
+  finalGrid: string;
+  availableFunctions: number[];
 };
 
 export const puzzleMapping: Record<number, Puzzle> = {

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.scss';
-import styles from '../src/styles/layout.module.scss'
+import styles from '../src/styles/layout.module.scss';
 import { Roboto } from 'next/font/google';
 import Image from 'next/image';
 import logo from '../src/assets/zKubeLogo.svg';
