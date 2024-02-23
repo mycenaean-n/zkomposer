@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const queryClient = new QueryClient();
 
-const config = createConfig(
+export const config = createConfig(
   getDefaultConfig({
     // Required API Keys
     walletConnectProjectId: process.env.WALLETCONNECT_PROJECT_ID!,
