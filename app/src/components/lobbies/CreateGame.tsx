@@ -60,7 +60,12 @@ export function CreateGame() {
             </div>
 
             <button
-              onClick={() => createGame(puzzleSet, interval, numberOfTurns)}
+              onClick={async () => {
+                const result = await createGame(puzzleSet, interval, numberOfTurns);
+                if (result.success) {
+                  setInputsShowing(false);
+                }
+              }}
             >
               create game
             </button>
