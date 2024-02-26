@@ -1,0 +1,4 @@
+export const ZKUBE_ADDRESS: `0x${string}` =
+  '0x3BC7e6383311c52C3D14cc3ca258B15253582Cac';
+export const ZKUBE_PUZZLESET_ADDRESS: `0x${string}` =
+  '0xadBD7ff2cC42576D814EA1B83CDC5f29805d63A9';
