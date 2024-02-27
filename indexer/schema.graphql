@@ -1,0 +1,8 @@
+type Game @entity {
+  id: ID!
+  puzzleSet: String! @index
+  interval: Int!
+  numberOfRounds: Int!
+  startingBlock: Int!
+  stake: BigInt!
+}
