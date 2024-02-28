@@ -3,6 +3,7 @@ pragma solidity 0.8.22;
 
 import {Proof, IZKube, IZKubeVerifier, Puzzle, Game, IZKubePuzzleSet, Player} from "./Types.sol";
 import "./Errors.sol";
+import {GameCreated, GameJoined, PlayerSubmitted, GameResolved} from "./Events.sol";
 
 contract ZKube is IZKube {
     /// STATE ///
@@ -10,7 +11,7 @@ contract ZKube is IZKube {
 
     uint96 public gameId;
 
-    uint72 public constant BLOCKS_UNTIL_START = 10;
+    uint72 public constant BLOCKS_UNTIL_START = 90; // approx 30 secs on arb-sepolia
 
     mapping(uint256 => Game) public games;
 
@@ -55,6 +56,7 @@ contract ZKube is IZKube {
         id = ++gameId;
         games[id] =
             Game(Player(msg.sender, 0, 0), Player(address(0), 0, 0), puzzleSet, interval, numberOfTurns, 0, msg.value);
+        emit GameCreated(id, msg.sender, msg.value);
     }
 
     function joinGame(uint256 id) external payable ifGameNotStarted(id) {
@@ -64,6 +66,7 @@ contract ZKube is IZKube {
         game.player2.address_ = msg.sender;
         game.startingBlock = uint72(block.number) + BLOCKS_UNTIL_START;
         games[id] = game;
+        emit GameJoined(id, msg.sender, game.startingBlock);
     }
 
     // The selectPuzzle view function uses previous block.hash to select the same puzzle for both players deterministically
@@ -95,12 +98,14 @@ contract ZKube is IZKube {
                 game.player1.score + 1,
                 game.player1.totalBlocks + uint72(block.number % game.interval)
             );
+            emit PlayerSubmitted(id, game.player1);
         } else if (sender == game.player2.address_) {
             game.player2 = Player(
                 game.player2.address_,
                 game.player2.score + 1,
                 game.player2.totalBlocks + uint72(block.number % game.interval)
             );
+            emit PlayerSubmitted(id, game.player2);
         } else {
             revert NotValidPlayer();
         }
@@ -118,19 +123,19 @@ contract ZKube is IZKube {
         ifGameFinished(game.interval, game.startingBlock, game.numberOfRounds);
 
         if (game.player1.score > game.player2.score) {
-            payable(game.player1.address_).transfer(2 * game.stake);
+            payoutPlayer1(game);
         } else if (game.player2.score > game.player1.score) {
-            payable(game.player2.address_).transfer(2 * game.stake);
+            payoutPlayer2(game);
         } else if (game.player1.score == game.player2.score) {
             if (game.player1.totalBlocks < game.player2.totalBlocks) {
-                payable(game.player1.address_).transfer(2 * game.stake);
+                payoutPlayer1(game);
             } else if (game.player2.totalBlocks < game.player1.totalBlocks) {
-                payable(game.player2.address_).transfer(2 * game.stake);
+                payoutPlayer2(game);
             } else if (game.player2.totalBlocks == game.player1.totalBlocks) {
-                payable(game.player1.address_).transfer(game.stake);
-                payable(game.player2.address_).transfer(game.stake);
+                payoutTie(game);
             }
         }
+        emit GameResolved(id, game.player1.address_, game.stake);
     }
 
     function getBlock(uint8 interval, uint72 startingBlock, uint16 numberOfRounds)
@@ -142,5 +147,21 @@ contract ZKube is IZKube {
         uint256 currentBlock = block.number;
         if (currentBlock < startingBlock) revert GameNotStarted();
         blockNumber = currentBlock - (currentBlock % interval);
+    }
+
+    function payoutPlayer1(Game memory game) private {
+        payable(game.player1.address_).transfer(2 * game.stake);
+        emit GameResolved(gameId, game.player1.address_, 2 * game.stake);
+    }
+
+    function payoutPlayer2(Game memory game) private {
+        payable(game.player2.address_).transfer(2 * game.stake);
+        emit GameResolved(gameId, game.player2.address_, 2 * game.stake);
+    }
+
+    function payoutTie(Game memory game) private {
+        payable(game.player1.address_).transfer(game.stake);
+        payable(game.player2.address_).transfer(game.stake);
+        emit GameResolved(gameId, address(0), game.stake);
     }
 }

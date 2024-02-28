@@ -9,6 +9,7 @@ import "../src/Errors.sol";
 import {ZKubeVerifier} from "../src/ZKubeVerifier.sol";
 import {stdJson} from "forge-std/StdJson.sol";
 import "openzeppelin-contracts/contracts/utils/Strings.sol";
+import {GameCreated, GameJoined, PlayerSubmitted, GameResolved} from "../src/Events.sol";
 
 contract ZKubeTest is Test {
     using stdJson for string;
@@ -66,6 +67,8 @@ contract ZKubeTest is Test {
         uint8 interval = 10;
         uint16 numberOfTurns = 20;
         uint256 stake = 1 ether;
+        vm.expectEmit(true, true, true, true);
+        emit GameCreated(1, player1, stake);
         uint256 id = _createGame(player1, interval, numberOfTurns, stake);
 
         (
@@ -93,6 +96,8 @@ contract ZKubeTest is Test {
         uint256 id = _createGame(player1, 10, 20, stake);
 
         uint88 currentBlock = uint88(block.number);
+        vm.expectEmit(true, true, true, true);
+        emit GameJoined(id, player2, currentBlock + zKube.BLOCKS_UNTIL_START());
         uint256 startingBlock = _joinGame(player2, id, stake);
 
         (, Player memory p2,,,,,) = zKube.games(id);
@@ -128,7 +133,7 @@ contract ZKubeTest is Test {
 
         uint256 startingBlock = _joinGame(player2, id, stake);
         vm.roll(startingBlock);
-        assertEq(zKube.exposed_getBlock(interval, uint72(startingBlock), numberOfRounds), 10);
+        assertEq(zKube.exposed_getBlock(interval, uint72(startingBlock), numberOfRounds), zKube.BLOCKS_UNTIL_START());
     }
 
     function testFuzz_getBlock(uint256 jump) public {
@@ -171,8 +176,10 @@ contract ZKubeTest is Test {
 
         uint256 startingBlock = _joinGame(player2, id, stake);
         vm.roll(startingBlock);
-
         vm.prank(player1);
+        Player memory expectedP1 = Player(player1, 1, 1);
+        vm.expectEmit(true, true, true, true);
+        emit PlayerSubmitted(id, expectedP1);
         zKube.submitPuzzle(id, proof);
 
         (Player memory p1,,,,,,) = zKube.games(id);
@@ -222,7 +229,6 @@ contract ZKubeTest is Test {
         vm.roll(startingBlock + interval * numberOfTurns);
 
         Proof memory proof;
-        uint256[3] memory publicSignals;
 
         vm.expectRevert(GameFinished.selector);
         vm.prank(player1);
@@ -244,8 +250,39 @@ contract ZKubeTest is Test {
         vm.roll(startingBlock + interval * numberOfRounds);
 
         uint256 balBefore = player1.balance;
+        vm.expectEmit(true, true, true, true);
+        emit GameResolved(id, player1, 2 * stake);
         zKube.resolveGame(id);
         assertEq(player1.balance, balBefore + 2 * stake);
+    }
+
+    function testConcrete_resolveGame_draw() external {
+        uint256 stake = 1 ether;
+        uint8 interval = 10;
+        uint16 numberOfRounds = 20;
+        uint256 id = _createGame(player1, 10, 20, stake);
+
+        uint256 startingBlock = _joinGame(player2, id, stake);
+        vm.roll(startingBlock);
+
+        vm.prank(player1);
+        zKube.submitPuzzle(id, proof);
+
+        vm.roll(block.number + interval);
+
+        vm.prank(player2);
+        zKube.submitPuzzle(id, proof);
+
+        vm.roll(block.number + interval * numberOfRounds);
+
+        uint256 p1BalBefore = player1.balance;
+        uint256 p2BalBefore = player2.balance;
+
+        vm.expectEmit(true, true, true, true);
+        emit GameResolved(id, address(0), stake);
+        zKube.resolveGame(id);
+        assertEq(player1.balance, p1BalBefore + stake);
+        assertEq(player2.balance, p2BalBefore + stake);
     }
 
     function _createGame(address player, uint8 interval, uint16 numberOfTurns, uint256 stake)
