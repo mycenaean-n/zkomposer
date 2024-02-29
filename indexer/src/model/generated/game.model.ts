@@ -18,11 +18,19 @@ export class Game {
     interval!: number
 
     @Column_("int4", {nullable: false})
-    numberOfRounds!: number
+    numberOfTurns!: number
 
-    @Column_("int4", {nullable: false})
-    startingBlock!: number
+    @Column_("int4", {nullable: true})
+    startingBlock!: number | undefined | null
 
     @Column_("numeric", {transformer: marshal.bigintTransformer, nullable: false})
     stake!: bigint
+
+    @Index_()
+    @Column_("text", {nullable: false})
+    player1!: string
+
+    @Index_()
+    @Column_("text", {nullable: true})
+    player2!: string | undefined | null
 }

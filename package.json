@@ -7,8 +7,7 @@
   "workspaces": [
     "app",
     "circuits",
-    "contracts",
-    "indexer"
+    "contracts"
   ],
   "scripts": {
     "build": "yarn build:circuits && yarn build:app && yarn build:contracts",

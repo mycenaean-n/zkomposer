@@ -1,0 +1,17 @@
+manifest_version: subsquid.io/v0.1
+name: zkube-squid
+version: 1
+description: |-
+  Squid indexing game data for ZKube.
+
+build: 
+
+deploy:
+  addons:
+    postgres: 
+  processor:
+    cmd: [ "sqd", "process:prod" ]
+    env: 
+      RPC_URL: ${{secrets.RPC_URL}}
+  api:
+    cmd: [ "sqd", "serve:prod" ]

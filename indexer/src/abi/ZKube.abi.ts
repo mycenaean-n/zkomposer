@@ -274,16 +274,16 @@ export const ABI_JSON = [
                 "name": "puzzle",
                 "components": [
                     {
-                        "type": "bytes32",
-                        "name": "startingGrid"
+                        "type": "uint8[]",
+                        "name": "availableFunctions"
                     },
                     {
-                        "type": "bytes32",
+                        "type": "bytes16",
                         "name": "finalGrid"
                     },
                     {
-                        "type": "uint8[]",
-                        "name": "availableFunctions"
+                        "type": "bytes16",
+                        "name": "startingGrid"
                     }
                 ]
             }
@@ -335,6 +335,118 @@ export const ABI_JSON = [
             {
                 "type": "address",
                 "name": ""
+            }
+        ]
+    },
+    {
+        "type": "event",
+        "anonymous": false,
+        "name": "GameCreated",
+        "inputs": [
+            {
+                "type": "uint256",
+                "name": "gameId",
+                "indexed": true
+            },
+            {
+                "type": "address",
+                "name": "puzzleSet",
+                "indexed": true
+            },
+            {
+                "type": "address",
+                "name": "player1",
+                "indexed": true
+            },
+            {
+                "type": "uint256",
+                "name": "interval",
+                "indexed": false
+            },
+            {
+                "type": "uint256",
+                "name": "numberOfTurns",
+                "indexed": false
+            },
+            {
+                "type": "uint256",
+                "name": "stake",
+                "indexed": false
+            }
+        ]
+    },
+    {
+        "type": "event",
+        "anonymous": false,
+        "name": "GameJoined",
+        "inputs": [
+            {
+                "type": "uint256",
+                "name": "gameId",
+                "indexed": true
+            },
+            {
+                "type": "address",
+                "name": "player2",
+                "indexed": true
+            },
+            {
+                "type": "uint256",
+                "name": "startingBlock",
+                "indexed": false
+            }
+        ]
+    },
+    {
+        "type": "event",
+        "anonymous": false,
+        "name": "GameResolved",
+        "inputs": [
+            {
+                "type": "uint256",
+                "name": "gameId",
+                "indexed": true
+            },
+            {
+                "type": "address",
+                "name": "winner",
+                "indexed": true
+            },
+            {
+                "type": "uint256",
+                "name": "prize",
+                "indexed": false
+            }
+        ]
+    },
+    {
+        "type": "event",
+        "anonymous": false,
+        "name": "PlayerSubmitted",
+        "inputs": [
+            {
+                "type": "uint256",
+                "name": "gameId",
+                "indexed": true
+            },
+            {
+                "type": "tuple",
+                "name": "player",
+                "indexed": false,
+                "components": [
+                    {
+                        "type": "address",
+                        "name": "address_"
+                    },
+                    {
+                        "type": "uint16",
+                        "name": "score"
+                    },
+                    {
+                        "type": "uint72",
+                        "name": "totalBlocks"
+                    }
+                ]
             }
         ]
     },
