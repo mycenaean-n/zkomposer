@@ -12,6 +12,7 @@ export const config = createConfig(
     walletConnectProjectId: process.env.WALLETCONNECT_PROJECT_ID!,
 
     chains: [arbitrumSepolia],
+    ssr: true,
     // Required
     appName: 'zKubes',
 

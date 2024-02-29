@@ -1,15 +1,26 @@
+"use client"
 import { createWalletClient, custom, getContract, isAddress } from 'viem';
 import { abi } from '../abis/zKube';
 import { useAccount, useClient } from 'wagmi';
 import { ZKUBE_ADDRESS } from '../config';
-import { getTransactionReceipt } from 'viem/actions';
+import { getTransactionReceipt, waitForTransactionReceipt } from 'viem/actions';
 
 type WriteResult = {
   txHash: `0x${string}`;
   success: boolean;
 };
 
-export function useContract() {
+type ContractActions = {
+  zKube: any;
+  createGame: (
+    targetPuzzleSet: string,
+    interval: number,
+    numberOfTurns: number
+  ) => Promise<WriteResult>;
+}
+
+export function useContract() : ContractActions {
+  if (typeof window == 'undefined') return {} as ContractActions; /// for SSR........... TODO: migrate to React.
   if (!window.ethereum) {
     alert('please connect your wallet');
   }
@@ -42,7 +53,8 @@ export function useContract() {
         [targetPuzzleSet, interval, numberOfTurns],
         { account: address, chain: walletClient.chain }
       );
-      const receipt = await getTransactionReceipt(publicClient!, {
+      
+      const receipt = await waitForTransactionReceipt(publicClient!,{
         hash: txHash,
       });
       return { txHash, success: receipt.status === 'success' };

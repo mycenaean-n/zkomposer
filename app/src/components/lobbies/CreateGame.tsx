@@ -1,9 +1,7 @@
 'use client';
 import { useContract } from '@/src/hooks/useContract';
 import { useState } from 'react';
-import { useAccount } from 'wagmi';
 import styles from '../../styles/createGame.module.scss';
-import { isAddress } from 'viem';
 import { ZKUBE_PUZZLESET_ADDRESS } from '@/src/config';
 
 export function CreateGame() {
@@ -61,8 +59,12 @@ export function CreateGame() {
 
             <button
               onClick={async () => {
-                const result = await createGame(puzzleSet, interval, numberOfTurns);
-                if (result.success) {
+                const result = await createGame(
+                  puzzleSet,
+                  interval,
+                  numberOfTurns
+                );
+                if (result && result.success == true) {
                   setInputsShowing(false);
                 }
               }}
