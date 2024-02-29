@@ -68,7 +68,7 @@ contract ZKubeTest is Test {
         uint16 numberOfTurns = 20;
         uint256 stake = 1 ether;
         vm.expectEmit(true, true, true, true);
-        emit GameCreated(1, player1, stake);
+        emit GameCreated(1, zKubePuzzleSet, player1, interval, numberOfTurns, stake);
         uint256 id = _createGame(player1, interval, numberOfTurns, stake);
 
         (
