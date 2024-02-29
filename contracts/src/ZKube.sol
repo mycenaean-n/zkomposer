@@ -56,7 +56,7 @@ contract ZKube is IZKube {
         id = ++gameId;
         games[id] =
             Game(Player(msg.sender, 0, 0), Player(address(0), 0, 0), puzzleSet, interval, numberOfTurns, 0, msg.value);
-        emit GameCreated(id, msg.sender, msg.value);
+        emit GameCreated(id, puzzleSet, msg.sender, interval, numberOfTurns, msg.value);
     }
 
     function joinGame(uint256 id) external payable ifGameNotStarted(id) {
