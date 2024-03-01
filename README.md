@@ -56,6 +56,7 @@ The contracts are deployed to Arbitrum Sepolia at these addresses:
 - `ZKube`: [0x813678bE2b736e0027B42276ACF4D8b032c6885e](https://sepolia.arbiscan.io/address/0x813678bE2b736e0027B42276ACF4D8b032c6885e)
 - `ZKubePuzzleSet`: [0x31D234a75Fdc64ca43b2600c0a85B79A9ED3E3F7](https://sepolia.arbiscan.io/address/0x31D234a75Fdc64ca43b2600c0a85B79A9ED3E3F7)
 
+
 The **ZKube** contract is the only contract players will interact with. The first player will create a game using `createGame` and the second player will join using `joinGame`, the game will start X blocks after this. The players will get the puzzle by calling `selectPuzzle` and they will submit the proof of their solution using `submitProof`. The game can be resolved when it is finished by calling `resolveGame`
 
 The **ZKubePuzzleSet** ERC721 contract defines a set of possible puzzles in a game contract, this makes the game very composable as it allows the community to create different sets of puzzles by deploying different **ZKubePuzzleSet** contracts - we will create a small set of puzzles as a POC.
