@@ -1,18 +1,18 @@
-import styles from '../../styles/lobbies.module.scss';
+import styles from '../../styles/games.module.scss';
 import { CreateGame } from './CreateGame';
-import { LobbiesTable } from './GamesTable';
-import { getLobbies } from './getGames';
+import { GamesTable } from './GamesTable';
+import { getGames } from './getGames';
 
 export async function Lobbies() {
-  const lobbies = await getLobbies();
+  const games = await getGames();
 
   return (
-    <div id="lobbies" className={styles.lobbies}>
+    <div id="games" className={styles.games}>
       <h1>Lobbies</h1>
       <div className={styles.createGame}>
         <CreateGame />
       </div>
-      <LobbiesTable lobbies={lobbies} />
+      <GamesTable firstGames={games} />
       
     </div>
   );

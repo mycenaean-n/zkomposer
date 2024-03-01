@@ -17,8 +17,8 @@ const GAMES_QUERY = gql`
   }
 `;
 
-export async function getLobbies() {
+export async function getGames() {
   const {data} = await client.query({query: GAMES_QUERY})
-  const lobbies = data.games as Game[];
-  return lobbies
+  const games = data.games as Game[];
+  return games
 }

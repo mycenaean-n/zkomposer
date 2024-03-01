@@ -1,8 +1,8 @@
 'use client';
 import { Game } from '@/src/types/Game';
-import { ApolloProvider, gql, useSubscription } from '@apollo/client';
-import styles from '../../styles/lobbies.module.scss';
-import { useEffect } from 'react';
+import { gql, useSubscription } from '@apollo/client';
+import styles from '../../styles/games.module.scss';
+import { useEffect, useState } from 'react';
 
 const GAMES_SUBSCRIPTION = gql`
 subscription OnGameUpdate {
@@ -19,20 +19,18 @@ subscription OnGameUpdate {
 }
 `;
 
-export function LobbiesTable({ lobbies }: { lobbies: Game[] }) {
+export function GamesTable({ firstGames }: { firstGames: Game[] }) {
+  const [games, setGames] = useState<Game[]>(firstGames); 
   const {data, loading, error } = useSubscription(GAMES_SUBSCRIPTION);
   
   useEffect(() => {
-    if (!loading) {
-      lobbies = data as Game[];
+    if (!loading && data) {
+      setGames(data.games);
     }
   }, [data, loading])
-  console.log(lobbies)
-  console.log(loading)
-  console.log(data)
-  console.log(error)
+
   return (
-    <table className={styles.availableLobbies}>
+    <table className={styles.availableGames}>
       <tbody>
         <tr>
           <th>ID</th>
@@ -42,13 +40,13 @@ export function LobbiesTable({ lobbies }: { lobbies: Game[] }) {
           <th>Stake</th>
           <th></th>
         </tr>
-        {lobbies.map((lobby) => (
-          <tr key={lobby.id} className={styles.lobby}>
-            <td>{lobby.id}</td>
-            <td>{lobby.player1}</td>
-            <td>{lobby.puzzleSet}</td>
-            <td>{lobby.interval}</td>
-            <td>{lobby.stake}</td>
+        {games.map((game) => (
+          <tr key={game.id} className={styles.game}>
+            <td>{game.id}</td>
+            <td>{game.player1}</td>
+            <td>{game.puzzleSet}</td>
+            <td>{game.interval}</td>
+            <td>{game.stake}</td>
             <td>
               <button>join</button>
             </td>
