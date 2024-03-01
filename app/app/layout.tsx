@@ -6,6 +6,7 @@ import Image from 'next/image';
 import logo from '../src/assets/zKubeLogo.svg';
 import { Web3Provider } from '../src/providers/Web3Provider';
 import { ConnectButton } from '../src/components/ConnectButton';
+import { ApolloClientProvider } from '../src/providers/ApolloClientProvider';
 
 const roboto = Roboto({
   weight: '400',
@@ -24,7 +25,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <Web3Provider>
+      <ApolloClientProvider>
+        <Web3Provider>
         <body className={roboto.className}>
           <header className={styles.header}>
             <Image src={logo} alt="logo" className={styles.logo} />
@@ -35,6 +37,7 @@ export default function RootLayout({
           {children}
         </body>
       </Web3Provider>
+      </ApolloClientProvider>
     </html>
   );
 }
