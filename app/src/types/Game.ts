@@ -7,4 +7,4 @@ export type Game = {
   puzzleSet: string;
   stake: string;
   startingBlock: number;
-}
+};

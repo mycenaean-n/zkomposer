@@ -5,29 +5,29 @@ import styles from '../../styles/games.module.scss';
 import { useEffect, useState } from 'react';
 
 const GAMES_SUBSCRIPTION = gql`
-subscription OnGameUpdate {
-  games {
-    id
-    interval
-    numberOfTurns
-    player1
-    player2
-    puzzleSet
-    stake
-    startingBlock
+  subscription OnGameUpdate {
+    games {
+      id
+      interval
+      numberOfTurns
+      player1
+      player2
+      puzzleSet
+      stake
+      startingBlock
+    }
   }
-}
 `;
 
 export function GamesTable({ firstGames }: { firstGames: Game[] }) {
-  const [games, setGames] = useState<Game[]>(firstGames); 
-  const {data, loading, error } = useSubscription(GAMES_SUBSCRIPTION);
-  
+  const [games, setGames] = useState<Game[]>(firstGames);
+  const { data, loading, error } = useSubscription(GAMES_SUBSCRIPTION);
+
   useEffect(() => {
     if (!loading && data) {
       setGames(data.games);
     }
-  }, [data, loading])
+  }, [data, loading]);
 
   return (
     <table className={styles.availableGames}>

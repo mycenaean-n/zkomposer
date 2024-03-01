@@ -27,16 +27,16 @@ export default function RootLayout({
     <html lang="en">
       <ApolloClientProvider>
         <Web3Provider>
-        <body className={roboto.className}>
-          <header className={styles.header}>
-            <Image src={logo} alt="logo" className={styles.logo} />
-            <div className={styles.connectButton}>
-              <ConnectButton />
-            </div>
-          </header>
-          {children}
-        </body>
-      </Web3Provider>
+          <body className={roboto.className}>
+            <header className={styles.header}>
+              <Image src={logo} alt="logo" className={styles.logo} />
+              <div className={styles.connectButton}>
+                <ConnectButton />
+              </div>
+            </header>
+            {children}
+          </body>
+        </Web3Provider>
       </ApolloClientProvider>
     </html>
   );

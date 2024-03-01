@@ -33,4 +33,4 @@ export const client = new ApolloClient({
   ssrMode: true,
   link: splitLink,
   cache: new InMemoryCache(),
-})
+});

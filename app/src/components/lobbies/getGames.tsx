@@ -1,6 +1,6 @@
-import { client } from "@/src/clients/apollo";
-import { Game } from "@/src/types/Game";
-import { gql } from "@apollo/client";
+import { client } from '@/src/clients/apollo';
+import { Game } from '@/src/types/Game';
+import { gql } from '@apollo/client';
 
 const GAMES_QUERY = gql`
   query {
@@ -18,7 +18,7 @@ const GAMES_QUERY = gql`
 `;
 
 export async function getGames() {
-  const {data} = await client.query({query: GAMES_QUERY})
+  const { data } = await client.query({ query: GAMES_QUERY });
   const games = data.games as Game[];
-  return games
+  return games;
 }

@@ -13,7 +13,6 @@ export async function Lobbies() {
         <CreateGame />
       </div>
       <GamesTable firstGames={games} />
-      
     </div>
   );
 }

@@ -21,9 +21,7 @@
       { "name": "interval", "type": "uint8", "internalType": "uint8" },
       { "name": "numberOfTurns", "type": "uint16", "internalType": "uint16" }
     ],
-    "outputs": [
-      { "name": "id", "type": "uint256", "internalType": "uint256" }
-    ],
+    "outputs": [{ "name": "id", "type": "uint256", "internalType": "uint256" }],
     "stateMutability": "payable"
   },
   {
@@ -89,18 +87,14 @@
   {
     "type": "function",
     "name": "joinGame",
-    "inputs": [
-      { "name": "id", "type": "uint256", "internalType": "uint256" }
-    ],
+    "inputs": [{ "name": "id", "type": "uint256", "internalType": "uint256" }],
     "outputs": [],
     "stateMutability": "payable"
   },
   {
     "type": "function",
     "name": "resolveGame",
-    "inputs": [
-      { "name": "id", "type": "uint256", "internalType": "uint256" }
-    ],
+    "inputs": [{ "name": "id", "type": "uint256", "internalType": "uint256" }],
     "outputs": [],
     "stateMutability": "nonpayable"
   },
@@ -118,9 +112,7 @@
   {
     "type": "function",
     "name": "selectPuzzle",
-    "inputs": [
-      { "name": "id", "type": "uint256", "internalType": "uint256" }
-    ],
+    "inputs": [{ "name": "id", "type": "uint256", "internalType": "uint256" }],
     "outputs": [
       {
         "name": "roundBlockNumber",
