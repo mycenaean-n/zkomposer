@@ -1,4 +1,4 @@
-import { Lobbies } from '@/src/components/lobbies/Lobbies';
+import { Lobbies } from '@/src/components/lobbies/Games';
 
 export default function Home() {
   return (
