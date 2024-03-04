@@ -52,9 +52,10 @@ ZKube --> ZKubeVerifier: validateProof
 
 The contracts are deployed to Arbitrum Sepolia at these addresses:
 
-- `ZKubeVerifier`: [0xCD16264739Be32Fb2A170ba87ba3a6a21A82D4bc.](https://sepolia.arbiscan.io/address/0xCD16264739Be32Fb2A170ba87ba3a6a21A82D4bc)
-- `ZKube`: [0x813678bE2b736e0027B42276ACF4D8b032c6885e..](https://sepolia.arbiscan.io/address/0x813678bE2b736e0027B42276ACF4D8b032c6885e)
-- `ZKubePuzzleSet`: [0x31D234a75Fdc64ca43b2600c0a85B79A9ED3E3F7.](https://sepolia.arbiscan.io/address/0x31D234a75Fdc64ca43b2600c0a85B79A9ED3E3F7)
+- `ZKubeVerifier`: [0xCD16264739Be32Fb2A170ba87ba3a6a21A82D4bc](https://sepolia.arbiscan.io/address/0xCD16264739Be32Fb2A170ba87ba3a6a21A82D4bc)
+- `ZKube`: [0x813678bE2b736e0027B42276ACF4D8b032c6885e](https://sepolia.arbiscan.io/address/0x813678bE2b736e0027B42276ACF4D8b032c6885e)
+- `ZKubePuzzleSet`: [0x31D234a75Fdc64ca43b2600c0a85B79A9ED3E3F7](https://sepolia.arbiscan.io/address/0x31D234a75Fdc64ca43b2600c0a85B79A9ED3E3F7)
+
 
 The **ZKube** contract is the only contract players will interact with. The first player will create a game using `createGame` and the second player will join using `joinGame`, the game will start X blocks after this. The players will get the puzzle by calling `selectPuzzle` and they will submit the proof of their solution using `submitProof`. The game can be resolved when it is finished by calling `resolveGame`
 
