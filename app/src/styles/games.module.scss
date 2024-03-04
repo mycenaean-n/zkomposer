@@ -1,4 +1,4 @@
-.lobbies {
+.games {
   height: 80vh;
   color: black;
   margin-top: 15vh;
@@ -8,17 +8,17 @@
   text-align: center;
 }
 
-.lobbies h1 {
+.games h1 {
   color: black;
 }
 
-.createLobby {
+.createGame {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.availableLobbies {
+.availableGames {
   margin: 3rem;
   padding-left: 1rem;
   padding-right: 1.5rem;

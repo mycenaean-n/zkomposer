@@ -15,7 +15,7 @@ const processor = new EvmBatchProcessor()
     rateLimit: 10,
   })
   .setFinalityConfirmation(3)
-  .setBlockRange({from: 18437053})
+  .setBlockRange({ from: 18437053 })
   .addLog({
     address: [ZKUBE_ADDRESS],
     topic0: [
@@ -27,7 +27,7 @@ const processor = new EvmBatchProcessor()
   });
 
 processor.run(db, async (ctx) => {
-  const games: Map<bigint, Game> = new Map();   // map for caching games in the current batch
+  const games: Map<bigint, Game> = new Map(); // map for caching games in the current batch
   for (const block of ctx.blocks) {
     for (const log of block.logs) {
       switch (log.topics[0]) {
@@ -35,7 +35,8 @@ processor.run(db, async (ctx) => {
       }
       const { gameId, player1, puzzleSet, stake, interval, numberOfTurns } =
         zKube.events.GameCreated.decode(log);
-      games.set(gameId, 
+      games.set(
+        gameId,
         new Game({
           id: gameId.toString(),
           puzzleSet,
@@ -47,5 +48,5 @@ processor.run(db, async (ctx) => {
       );
     }
   }
-  ctx.store.insert([...games.values()])
+  ctx.store.insert([...games.values()]);
 });

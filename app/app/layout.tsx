@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
-import './globals.css';
-import styles from './layout.module.css';
+import './globals.scss';
+import styles from '../src/styles/layout.module.scss';
 import { Roboto } from 'next/font/google';
 import Image from 'next/image';
-import logo from './zKubeLogo.svg';
-import { AccountProvider } from './providers/AccountProvider';
-import { ConnectButton } from './ConnectButton';
+import logo from '../src/assets/zKubeLogo.svg';
+import { Web3Provider } from '../src/providers/Web3Provider';
+import { ConnectButton } from '../src/components/ConnectButton';
+import { ApolloClientProvider } from '../src/providers/ApolloClientProvider';
 
 const roboto = Roboto({
   weight: '400',
@@ -24,17 +25,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <AccountProvider>
-        <body className={roboto.className}>
-          <header className={styles.header}>
-            <Image src={logo} alt="logo" className={styles.logo} />
-            <div className={styles.connectButton}>
-              <ConnectButton />
-            </div>
-          </header>
-          {children}
-        </body>
-      </AccountProvider>
+      <ApolloClientProvider>
+        <Web3Provider>
+          <body className={roboto.className}>
+            <header className={styles.header}>
+              <Image src={logo} alt="logo" className={styles.logo} />
+              <div className={styles.connectButton}>
+                <ConnectButton />
+              </div>
+            </header>
+            {children}
+          </body>
+        </Web3Provider>
+      </ApolloClientProvider>
     </html>
   );
 }

@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { Proof } from '../types';
+import { Proof } from '../types/Proof';
 import { exportCalldataGroth16 } from 'circuits';
 import { Hex } from 'viem';
 import { InputSignals } from 'circuits/types/proof.types';
