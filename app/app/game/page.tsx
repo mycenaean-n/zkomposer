@@ -1,8 +1,8 @@
 'use client';
 import { useState } from 'react';
-import styles from './styles/page.module.css';
-import { Game } from './components/Game';
-import { Proof } from './zk/types';
+import styles from '../../src/styles/game.module.scss';
+import { Game } from '../../src/components/game/Game';
+import { Proof } from '../../src/types/Proof';
 
 export default function Page() {
   const [proof, setProof] = useState<Proof>();

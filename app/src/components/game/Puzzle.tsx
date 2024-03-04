@@ -1,12 +1,12 @@
 'use client';
 import { createContext, useState } from 'react';
-import styles from '../styles/puzzle.module.scss';
+import styles from '../../styles/puzzle.module.scss';
 import { Actions } from './Actions';
 import {
   PuzzleFunctions,
   PuzzleContext as PuzzleContextType,
   PuzzleInit,
-} from '@/types/Puzzle';
+} from '@/src/types/Puzzle';
 import { Scene } from './Scene';
 
 export const PuzzleContext = createContext<PuzzleContextType>({

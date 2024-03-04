@@ -1,6 +1,6 @@
 import { getCircuitFunctionName } from 'circuits';
 import { mapGrid } from '../../utils';
-import { puzzleMapping } from '../Puzzles';
+import { puzzleMapping } from '../../mocks/puzzles';
 import { Puzzle } from './Puzzle';
 
 const mockPuzzle = puzzleMapping[0];

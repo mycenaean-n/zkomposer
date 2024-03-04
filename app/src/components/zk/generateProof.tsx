@@ -1,6 +1,6 @@
-import { useProof } from './hooks/useProof';
-import { Proof } from './types';
-import styles from '../styles/actions.module.scss';
+import { useProof } from '../../hooks/useProof';
+import { Proof } from '../../types/Proof';
+import styles from '../../styles/actions.module.scss';
 import { InputSignals } from 'circuits/types/proof.types';
 
 export function GenerateProof({

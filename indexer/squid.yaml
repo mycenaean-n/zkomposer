@@ -4,14 +4,14 @@ version: 1
 description: |-
   Squid indexing game data for ZKube.
 
-build: 
+build:
 
 deploy:
   addons:
-    postgres: 
+    postgres:
   processor:
-    cmd: [ "sqd", "process:prod" ]
-    env: 
+    cmd: ['sqd', 'process:prod']
+    env:
       RPC_URL: ${{secrets.RPC_URL}}
   api:
-    cmd: [ "sqd", "serve:prod" ]
+    cmd: ['sqd', 'serve:prod']

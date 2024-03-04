@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { PuzzleContext } from './Puzzle';
-import { Proof } from '../zk/types';
-import styles from '../styles/actions.module.scss';
+import { Proof } from '../../types/Proof';
+import styles from '../../styles/actions.module.scss';
 import { GenerateProof } from '../zk/generateProof';
 import {
   DragDropContext,
@@ -10,7 +10,7 @@ import {
   Droppable,
   ResponderProvided,
 } from 'react-beautiful-dnd';
-import { PuzzleFunctionState } from '@/types/Puzzle';
+import { PuzzleFunctionState } from '@/src/types/Puzzle';
 import { useAccount } from 'wagmi';
 import { getCircuitFunctionIndex } from 'circuits';
 import { InputSignals } from 'circuits/types/proof.types';

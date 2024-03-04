@@ -6,6 +6,7 @@ const nextConfig = {
       config.resolve.fallback.fs = false;
     }
     config.experiments = { layers: true, asyncWebAssembly: true };
+    config.externals.push('pino-pretty');
     return config;
   },
 };

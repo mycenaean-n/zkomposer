@@ -1,15 +1,18 @@
-import { puzzleMapping } from "app/app/game/Puzzles"
-import fs from "fs"
-import { convertPuzzleToHex, padPuzzle } from "./hexConversion"
+import { puzzleMapping } from 'app/app/game/Puzzles';
+import fs from 'fs';
+import { convertPuzzleToHex, padPuzzle } from './hexConversion';
 
-function main () {
-  const base4Puzzles = Object.values(puzzleMapping)
+function main() {
+  const base4Puzzles = Object.values(puzzleMapping);
   const hexPuzzles = base4Puzzles.map((puzzle) => {
-    puzzle = padPuzzle(puzzle)
-    return convertPuzzleToHex(puzzle)
-  })
+    puzzle = padPuzzle(puzzle);
+    return convertPuzzleToHex(puzzle);
+  });
 
-  fs.writeFileSync("../../../contracts/script/data/puzzles.json", JSON.stringify(hexPuzzles))  
+  fs.writeFileSync(
+    '../../../contracts/script/data/puzzles.json',
+    JSON.stringify(hexPuzzles)
+  );
 }
 
-main()
+main();

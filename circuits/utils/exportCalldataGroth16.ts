@@ -1,5 +1,5 @@
-import { groth16 } from "snarkjs";
-import { InputSignals } from "../types/proof.types";
+import { groth16 } from 'snarkjs';
+import { InputSignals } from '../types/proof.types';
 
 export async function exportCalldataGroth16(
   input: InputSignals,
@@ -15,7 +15,7 @@ export async function exportCalldataGroth16(
     ));
   } catch (err) {
     console.error(err);
-    throw new Error("Wrong answer!");
+    throw new Error('Wrong answer!');
   }
 
   return await groth16.exportSolidityCallData(_proof, _publicSignals);

@@ -2,4 +2,5 @@
   "solidity.monoRepoSupport": true,
   "solidity.compileUsingRemoteVersion": "v0.8.22+commit.4fc1097e",
   "solidity.defaultCompiler": "remote",
+  "git.detectSubmodules": false
 }

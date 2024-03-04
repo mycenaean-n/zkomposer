@@ -8,4 +8,3 @@ type Game @entity {
   player1: String! @index
   player2: String @index
 }
-
