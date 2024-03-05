@@ -46,27 +46,21 @@ contract ZKube is IZKube {
     }
 
     // When a game is created, the blockstart is defined. Each turn must be made within a blockinterval no greater than 256 blocks.
-    function createGame(address puzzleSet, uint8 interval, uint16 numberOfTurns)
-        external
-        payable
-        returns (uint256 id)
-    {
+    function createGame(address puzzleSet, uint8 interval, uint16 numberOfTurns) external returns (uint256 id) {
         if (interval > 256) revert IntervalTooBig();
 
         id = ++gameId;
-        games[id] =
-            Game(Player(msg.sender, 0, 0), Player(address(0), 0, 0), puzzleSet, interval, numberOfTurns, 0, msg.value);
-        emit GameCreated(id, puzzleSet, msg.sender, interval, numberOfTurns, msg.value);
+        games[id] = Game(Player(msg.sender, 0, 0), Player(address(0), 0, 0), puzzleSet, interval, numberOfTurns, 0);
+        emit GameCreated(id, puzzleSet, msg.sender, interval, numberOfTurns);
     }
 
-    function joinGame(uint256 id) external payable ifGameNotStarted(id) {
+    function joinGame(uint256 id) external ifGameNotStarted(id) {
         Game memory game = games[id];
         if (msg.sender == game.player1.address_) revert JoiningYourOwnGame();
-        if (msg.value != game.stake) revert StakeNotMet();
         game.player2.address_ = msg.sender;
         game.startingBlock = uint72(block.number) + BLOCKS_UNTIL_START;
         games[id] = game;
-        emit GameJoined(id, msg.sender, game.startingBlock);
+        emit GameJoined(id, game.player1.address_, msg.sender, game.startingBlock);
     }
 
     // The selectPuzzle view function uses previous block.hash to select the same puzzle for both players deterministically
@@ -89,7 +83,7 @@ contract ZKube is IZKube {
         if (roundSubmitted[id][sender][roundBlockNumber]) revert AlreadySubmitted();
         roundSubmitted[id][sender][roundBlockNumber] = true;
 
-        //TODO: add msg.sender check in here, in verifier function?? Is it a publicSignal we hardcode as msg.sender? call selectPuzzle here to get publicSignals??
+        //TODO: add msg.sender and puzzle check in here, in verifier function?? Is it a publicSignal we hardcode as msg.sender? call selectPuzzle here to get publicSignals??
         if (!IZKubeVerifier(verifier).verifyProof(proof.a, proof.b, proof.c, proof.input)) revert InvalidProof();
 
         if (sender == game.player1.address_) {
@@ -123,19 +117,18 @@ contract ZKube is IZKube {
         ifGameFinished(game.interval, game.startingBlock, game.numberOfRounds);
 
         if (game.player1.score > game.player2.score) {
-            payoutPlayer1(game);
+            emit GameResolved(id, game.player1.address_);
         } else if (game.player2.score > game.player1.score) {
-            payoutPlayer2(game);
+            emit GameResolved(id, game.player2.address_);
         } else if (game.player1.score == game.player2.score) {
             if (game.player1.totalBlocks < game.player2.totalBlocks) {
-                payoutPlayer1(game);
+                emit GameResolved(id, game.player1.address_);
             } else if (game.player2.totalBlocks < game.player1.totalBlocks) {
-                payoutPlayer2(game);
-            } else if (game.player2.totalBlocks == game.player1.totalBlocks) {
-                payoutTie(game);
+                emit GameResolved(id, game.player2.address_);
+            } else {
+                emit GameResolved(id, address(0));
             }
         }
-        emit GameResolved(id, game.player1.address_, game.stake);
     }
 
     function getBlock(uint8 interval, uint72 startingBlock, uint16 numberOfRounds)
@@ -147,21 +140,5 @@ contract ZKube is IZKube {
         uint256 currentBlock = block.number;
         if (currentBlock < startingBlock) revert GameNotStarted();
         blockNumber = currentBlock - (currentBlock % interval);
-    }
-
-    function payoutPlayer1(Game memory game) private {
-        payable(game.player1.address_).transfer(2 * game.stake);
-        emit GameResolved(gameId, game.player1.address_, 2 * game.stake);
-    }
-
-    function payoutPlayer2(Game memory game) private {
-        payable(game.player2.address_).transfer(2 * game.stake);
-        emit GameResolved(gameId, game.player2.address_, 2 * game.stake);
-    }
-
-    function payoutTie(Game memory game) private {
-        payable(game.player1.address_).transfer(game.stake);
-        payable(game.player2.address_).transfer(game.stake);
-        emit GameResolved(gameId, address(0), game.stake);
     }
 }
