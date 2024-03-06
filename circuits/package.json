@@ -15,7 +15,7 @@
     "mocha": "^10.2.0"
   },
   "scripts": {
-    "test": "mocha -r ts-node/register 'test/**/*.ts'",
+    "test": "ts-node ./run-tests.ts",
     "compile": "circom circuits/zkube.circom --r1cs --sym --wasm -o zk/ ",
     "setup:sample-zkey": "snarkjs groth16 setup zk/zkube.r1cs powersOfTau28_hez_final_15.ptau zk/zkube.zkey",
     "contribute:deterministic": "snarkjs zkey beacon ./zk/zkube.zkey ./zk/zkube_final.zkey CAFE 10 -n='Final Beacon phase2'",
