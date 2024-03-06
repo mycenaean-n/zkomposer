@@ -3,6 +3,7 @@ import { Game } from '@/src/types/Game';
 import { gql, useSubscription } from '@apollo/client';
 import styles from '../../styles/games.module.scss';
 import { useEffect, useState } from 'react';
+import { useContract } from '@/src/hooks/useContract';
 
 const GAMES_SUBSCRIPTION = gql`
   subscription OnGameUpdate {
@@ -18,15 +19,16 @@ const GAMES_SUBSCRIPTION = gql`
   }
 `;
 
-export function GamesTable({ firstGames }: { firstGames: Game[] }) {
-  const [games, setGames] = useState<Game[]>(firstGames);
-  const { data, loading, error } = useSubscription(GAMES_SUBSCRIPTION);
+export function GamesTable({ games }: { games: Game[] }) {
+  const { data } = useSubscription<{games: Game[]}>(GAMES_SUBSCRIPTION);
 
-  useEffect(() => {
-    if (!loading && data) {
-      setGames(data.games);
-    }
-  }, [data, loading]);
+  const { joinGame } = useContract();
+
+  if (data) {
+    games = data.games;
+  }
+
+  const availableGames = games.filter(game => game.player2 == null)
 
   return (
     <table className={styles.availableGames}>
@@ -39,7 +41,7 @@ export function GamesTable({ firstGames }: { firstGames: Game[] }) {
           <th>Number of Puzzles</th>
           <th></th>
         </tr>
-        {games.map((game) => (
+        {availableGames.map((game) => (
           <tr key={game.id} className={styles.game}>
             <td>{game.id}</td>
             <td>{game.player1}</td>
@@ -47,7 +49,14 @@ export function GamesTable({ firstGames }: { firstGames: Game[] }) {
             <td>{game.interval}</td>
             <td>{game.numberOfTurns}</td>
             <td>
-              <button>join</button>
+              <button onClick={async () => {
+                const result = await joinGame(BigInt(game.id));
+                if (result.success) {
+                  alert('joined game');
+                } else {
+                  alert('failed to join game');
+                }
+              }}>join</button>
             </td>
           </tr>
         ))}

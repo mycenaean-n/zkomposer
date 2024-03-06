@@ -12,7 +12,7 @@ export async function Lobbies() {
       <div className={styles.createGame}>
         <CreateGame />
       </div>
-      <GamesTable firstGames={games} />
+      <GamesTable games={games} />
     </div>
   );
 }
