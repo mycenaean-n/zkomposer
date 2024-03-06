@@ -11,7 +11,6 @@ const GAMES_QUERY = gql`
       player1
       player2
       puzzleSet
-      stake
       startingBlock
     }
   }
@@ -20,5 +19,6 @@ const GAMES_QUERY = gql`
 export async function getGames() {
   const { data } = await client.query({ query: GAMES_QUERY });
   const games = data.games as Game[];
+  console.log(data)
   return games;
 }

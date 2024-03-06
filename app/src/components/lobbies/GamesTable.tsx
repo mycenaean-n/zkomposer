@@ -13,7 +13,6 @@ const GAMES_SUBSCRIPTION = gql`
       player1
       player2
       puzzleSet
-      stake
       startingBlock
     }
   }
@@ -37,7 +36,7 @@ export function GamesTable({ firstGames }: { firstGames: Game[] }) {
           <th>Player 1</th>
           <th>Puzzle Set</th>
           <th>Interval (blocks)</th>
-          <th>Stake</th>
+          <th>Number of Puzzles</th>
           <th></th>
         </tr>
         {games.map((game) => (
@@ -46,7 +45,7 @@ export function GamesTable({ firstGames }: { firstGames: Game[] }) {
             <td>{game.player1}</td>
             <td>{game.puzzleSet}</td>
             <td>{game.interval}</td>
-            <td>{game.stake}</td>
+            <td>{game.numberOfTurns}</td>
             <td>
               <button>join</button>
             </td>
