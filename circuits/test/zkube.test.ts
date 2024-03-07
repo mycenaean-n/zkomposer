@@ -14,6 +14,9 @@ describe.only('zkube circuit', () => {
   const sanityCheck = true;
   const address = '0x123';
   const initialGrid = puzzles[0.3].initial;
+  const availableFunctionsCircuit = getCircuitFunctionIndex(
+    puzzles[0.3].availableFunctions
+  );
   const levels: { lvl: string; args: CircuitFunctions[] }[] = [
     {
       lvl: '0.1',
@@ -61,6 +64,7 @@ describe.only('zkube circuit', () => {
       {
         initialGrid: initialGrid,
         finalGrid: targetGrid,
+        availableFunctions: availableFunctionsCircuit,
         account: address,
         selectedFunctionsIndexes: circuitFunctionArguments,
       },
@@ -87,6 +91,7 @@ describe.only('zkube circuit', () => {
       {
         initialGrid: initialGrid,
         finalGrid: targetGrid,
+        availableFunctions: availableFunctionsCircuit,
         account: address,
         selectedFunctionsIndexes: circuitFunctionArguments,
       },
@@ -122,6 +127,7 @@ describe.only('zkube circuit', () => {
       {
         initialGrid: initialGrid,
         finalGrid: targetGrid,
+        availableFunctions: availableFunctionsCircuit,
         account: address,
         selectedFunctionsIndexes: circuitFunctionArguments,
       },
@@ -148,6 +154,7 @@ describe.only('zkube circuit', () => {
         initialGrid: initialGrid,
         finalGrid: targetGrid,
         account: address,
+        availableFunctions: availableFunctionsCircuit,
         selectedFunctionsIndexes: [
           [0, 0, 45],
           [1, 0, 0],
@@ -178,6 +185,7 @@ describe.only('zkube circuit', () => {
       {
         initialGrid: initialGrid,
         finalGrid: targetGrid,
+        availableFunctions: availableFunctionsCircuit,
         account: address,
         selectedFunctionsIndexes: [
           [1, 0, 0],
@@ -209,6 +217,7 @@ describe.only('zkube circuit', () => {
         {
           initialGrid,
           finalGrid: targetGrid,
+          availableFunctions: availableFunctionsCircuit,
           account: address,
           selectedFunctionsIndexes: circuitFunctionArguments,
         },

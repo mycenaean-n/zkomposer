@@ -15,7 +15,7 @@ struct Proof {
     uint256[2] a;
     uint256[2][2] b;
     uint256[2] c;
-    uint256[193] input;
+    uint256[138] input;
 }
 
 struct Puzzle {
@@ -57,7 +57,7 @@ interface IZKube {
 
 // Please note that you should adjust the length of the inputs
 interface IZKubeVerifier {
-    function verifyProof(uint256[2] memory a, uint256[2][2] memory b, uint256[2] memory c, uint256[193] memory input)
+    function verifyProof(uint256[2] memory a, uint256[2][2] memory b, uint256[2] memory c, uint256[138] memory input)
         external
         view
         returns (bool r);

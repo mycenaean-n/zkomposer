@@ -3,7 +3,7 @@ const ARGUMENT_VALUE = ['zkube', 'stack', 'transformTwo', 'transform'];
 
 const argumentValue = process.argv[2];
 
-if (!ARGUMENT_VALUE.includes(argumentValue))
+if (argumentValue && !ARGUMENT_VALUE.includes(argumentValue))
   throw new Error(`Invalid argument value: ${argumentValue}`);
 
 const mochaConfig = new Mocha({
@@ -12,7 +12,14 @@ const mochaConfig = new Mocha({
   require: ['ts-node/register'],
 });
 
-mochaConfig.addFile(`./test/${argumentValue}.test.ts`);
+if (!argumentValue) {
+  mochaConfig.addFile('./test/stack.test.ts');
+  mochaConfig.addFile('./test/transformTwo.test.ts');
+  mochaConfig.addFile('./test/transform.test.ts');
+  mochaConfig.addFile('./test/zkube.test.ts');
+} else {
+  mochaConfig.addFile(`./test/${argumentValue}.test.ts`);
+}
 
 // Run the tests
 mochaConfig.run((failures) => {

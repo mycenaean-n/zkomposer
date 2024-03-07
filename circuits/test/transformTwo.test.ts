@@ -1,6 +1,5 @@
 import { assert } from 'chai';
 import config from '../config';
-import { transformTwo } from '../utils/transformTwo';
 import { argumentBuilder } from '../utils/circuitFunctions';
 import { WasmTester, wasm } from 'circom_tester';
 import path from 'path';

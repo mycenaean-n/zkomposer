@@ -13,6 +13,7 @@ export enum Colors {
 export interface Puzzles {
   [lvl: string]: {
     initial: Colors[][];
+    availableFunctions: CircuitFunctions[];
     target: Colors[][];
     transform: Colors[][];
     stack: Colors[][];

@@ -19,11 +19,15 @@ export function generateCircuitInput() {
     'TRANSFORMTWO_RED_BLUE_YELLOW',
   ]);
 
+  const availableFunctionsCircuit = getCircuitFunctionIndex(
+    puzzles[0.3].availableFunctions
+  );
   const address = '0x123';
 
   const input = {
     initialGrid,
     finalGrid: targetGrid,
+    availableFunctions: availableFunctionsCircuit,
     account: address,
     selectedFunctionsIndexes: circuitFunctionArguments,
   };
