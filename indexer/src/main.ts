@@ -1,6 +1,5 @@
 import { EvmBatchProcessor } from '@subsquid/evm-processor';
 import { TypeormDatabase } from '@subsquid/typeorm-store';
-import { lookupArchive } from '@subsquid/archive-registry';
 import * as zKube from './abi/ZKube';
 import { Game } from './model';
 import { RPC_URL, ZKUBE_ADDRESS } from './config';
@@ -8,13 +7,12 @@ import { RPC_URL, ZKUBE_ADDRESS } from './config';
 const db = new TypeormDatabase();
 
 const processor = new EvmBatchProcessor()
-  .setGateway(lookupArchive('arbitrum-sepolia'))
   .setRpcEndpoint({
     url: RPC_URL,
-    rateLimit: 10,
+    rateLimit: 100
   })
   .setFinalityConfirmation(3)
-  .setBlockRange({ from: 20273452 })
+  .setBlockRange({ from: 3167802 })
   .addLog({
     address: [ZKUBE_ADDRESS],
     topic0: [
