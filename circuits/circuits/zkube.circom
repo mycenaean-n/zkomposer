@@ -101,12 +101,10 @@ template ZKube(W, H, F) {
     // public
     signal input initialGrid[W][H];
     signal input finalGrid[W][H];
-    // TODO: include address to prevent frontrunning
-    signal input account;
-    // private
-    // F rounds of F available functions with 3 args
     signal input selectedFunctionsIndexes[F][F];
-    signal output finalGridForPlayer[W][H];
+    signal input availableFunctions[F][F];
+    signal input account;
+    signal finalGridForPlayer[W][H];
     // F rounds for each of the Function
     component transform[F];
     component stack[F];
@@ -177,4 +175,4 @@ template ZKube(W, H, F) {
     eqCheck.in[1] <== W*H;
 }
 
-component main { public [initialGrid, finalGrid, account] } = ZKube(8, 8, 3);
+component main { public [initialGrid, finalGrid, availableFunctions, account] } = ZKube(8, 8, 3);
