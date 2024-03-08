@@ -1,7 +1,7 @@
 'use client';
 import { WagmiProvider, createConfig } from 'wagmi';
 import { ConnectKitProvider, getDefaultConfig } from 'connectkit';
-import { arbitrumSepolia } from 'wagmi/chains';
+import { scroll, scrollSepolia } from 'wagmi/chains';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const queryClient = new QueryClient();
@@ -11,7 +11,7 @@ export const config = createConfig(
     // Required API Keys
     walletConnectProjectId: process.env.WALLETCONNECT_PROJECT_ID!,
 
-    chains: [arbitrumSepolia],
+    chains: [scroll, scrollSepolia],
     ssr: true,
     // Required
     appName: 'zKubes',
