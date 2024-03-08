@@ -2,9 +2,9 @@ export type Game = {
   id: number;
   interval: number;
   numberOfTurns: number;
-  player1: string;
-  player2: string;
-  puzzleSet: string;
+  player1: `0x${string}`;
+  player2: `0x${string}`;
+  puzzleSet: `0x${string}`;
   stake: string;
-  startingBlock: number;
+  startingBlock: bigint;
 };

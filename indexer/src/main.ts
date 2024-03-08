@@ -59,5 +59,5 @@ processor.run(db, async (ctx) => {
       }
     }
   }
-  ctx.store.upsert([...games.values()]);
+  await ctx.store.upsert([...games.values()]);
 });

@@ -1,5 +1,6 @@
 import styles from '../../styles/games.module.scss';
 import { CreateGame } from './CreateGame';
+import { GameStarting } from './GameStarting';
 import { GamesTable } from './GamesTable';
 import { getGames } from './getGames';
 
@@ -12,7 +13,8 @@ export async function Lobbies() {
       <div className={styles.createGame}>
         <CreateGame />
       </div>
-      <GamesTable games={games} />
+      <GameStarting/>
+      <GamesTable prefetchedGames={games} />
     </div>
   );
 }

@@ -1,31 +1,18 @@
 'use client';
 import { Game } from '@/src/types/Game';
-import { gql, useSubscription } from '@apollo/client';
 import styles from '../../styles/games.module.scss';
-import { useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { useContract } from '@/src/hooks/useContract';
+import { GamesContext } from '@/src/context/GamesContext';
+import { truncateAddress } from '@/src/utils/truncateAddress';
 
-const GAMES_SUBSCRIPTION = gql`
-  subscription OnGameUpdate {
-    games {
-      id
-      interval
-      numberOfTurns
-      player1
-      player2
-      puzzleSet
-      startingBlock
-    }
-  }
-`;
-
-export function GamesTable({ games }: { games: Game[] }) {
-  const { data } = useSubscription<{games: Game[]}>(GAMES_SUBSCRIPTION);
+export function GamesTable({ prefetchedGames }: { prefetchedGames: Game[] }) {
+  let { games } = useContext(GamesContext);
 
   const { joinGame } = useContract();
 
-  if (data) {
-    games = data.games;
+  if (games.length === 0) {
+    games = prefetchedGames;
   }
 
   const availableGames = games.filter(game => game.player2 == null)
@@ -44,8 +31,8 @@ export function GamesTable({ games }: { games: Game[] }) {
         {availableGames.map((game) => (
           <tr key={game.id} className={styles.game}>
             <td>{game.id}</td>
-            <td>{game.player1}</td>
-            <td>{game.puzzleSet}</td>
+            <td>{truncateAddress(game.player1)}</td>
+            <td>{truncateAddress(game.puzzleSet)}</td>
             <td>{game.interval}</td>
             <td>{game.numberOfTurns}</td>
             <td>
