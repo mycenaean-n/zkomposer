@@ -19,8 +19,6 @@ export function GameStarting() {
   if (!blockNumber) return;
 
   function isGameStarting(game: Game): boolean {
-    
-
     if (!blockNumber) throw new Error('blockNumber is not available');
 
     if (game.player2 == null || game.startingBlock == null) {
@@ -35,7 +33,7 @@ export function GameStarting() {
       return false;
     }
 
-    return true
+    return true;
   }
 
   const startingGames = games.filter((game) => isGameStarting(game));

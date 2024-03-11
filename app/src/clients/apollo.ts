@@ -9,9 +9,9 @@ const GRAPHQL_API_WS_URL = 'wss://squid.subsquid.io/zkube-squid/v/v1/graphql';
 
 const httpLink = new HttpLink({
   uri: GRAPHQL_API_HTTP_URL,
-  fetchOptions: { 
-    next: { revalidate: 0 }
-  }
+  fetchOptions: {
+    next: { revalidate: 0 },
+  },
 });
 
 const wsLink = new GraphQLWsLink(
@@ -34,10 +34,10 @@ const splitLink = split(
 
 export const client = new ApolloClient({
   link: splitLink,
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
 });
 
 export const serverClient = new ApolloClient({
   link: httpLink,
-  cache: new InMemoryCache()
-})
+  cache: new InMemoryCache(),
+});

@@ -9,7 +9,7 @@ const db = new TypeormDatabase();
 const processor = new EvmBatchProcessor()
   .setRpcEndpoint({
     url: RPC_URL,
-    rateLimit: 100
+    rateLimit: 100,
   })
   .setFinalityConfirmation(3)
   .setBlockRange({ from: 3167802 })
@@ -22,7 +22,6 @@ const processor = new EvmBatchProcessor()
       zKube.events.GameResolved.topic,
     ],
   });
-  
 
 processor.run(db, async (ctx) => {
   const games: Map<bigint, Game> = new Map(); // map for caching games in the current batch
@@ -46,9 +45,10 @@ processor.run(db, async (ctx) => {
           break;
         }
         case zKube.events.GameJoined.topic: {
-          const { gameId, player2, startingBlock } = zKube.events.GameJoined.decode(log);
+          const { gameId, player2, startingBlock } =
+            zKube.events.GameJoined.decode(log);
           let game = games.get(gameId);
-          if(!game) {
+          if (!game) {
             game = await ctx.store.get(Game, gameId.toString());
             games.set(gameId, game);
           }

@@ -17,7 +17,10 @@ const GAMES_QUERY = gql`
 `;
 
 export async function getGames() {
-  const { data } = await serverClient.query<{games: Game[]}>({ query: GAMES_QUERY, fetchPolicy: "no-cache" });
-  const games = data.games
+  const { data } = await serverClient.query<{ games: Game[] }>({
+    query: GAMES_QUERY,
+    fetchPolicy: 'no-cache',
+  });
+  const games = data.games;
   return games;
 }

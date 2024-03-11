@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { createContext } from 'react';
 import { gql, useSubscription } from '@apollo/client';
 import { Game } from '../types/Game';
@@ -17,17 +17,15 @@ const GAMES_SUBSCRIPTION = gql`
   }
 `;
 
-export const GamesContext = createContext<{games: Game[]}>({games: []});
+export const GamesContext = createContext<{ games: Game[] }>({ games: [] });
 
-export const GamesProvider = ({ children } : {children: React.ReactNode}) => {
-  let games: Game[] = []
-  const { data } = useSubscription<{games: Game[]}>(GAMES_SUBSCRIPTION);
+export const GamesProvider = ({ children }: { children: React.ReactNode }) => {
+  let games: Game[] = [];
+  const { data } = useSubscription<{ games: Game[] }>(GAMES_SUBSCRIPTION);
   if (data) {
     games = data.games;
   }
   return (
-    <GamesContext.Provider value={{games}}>
-      {children}
-    </GamesContext.Provider>
+    <GamesContext.Provider value={{ games }}>{children}</GamesContext.Provider>
   );
 };
