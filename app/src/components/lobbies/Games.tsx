@@ -4,17 +4,20 @@ import { GameStarting } from './GameStarting';
 import { GamesTable } from './GamesTable';
 import { getGames } from './getGames';
 
-export async function Lobbies() {
+export async function Games() {
   const games = await getGames();
 
   return (
     <div id="games" className={styles.games}>
-      <h1>Lobbies</h1>
+      <h1>Available Games</h1>
       <div className={styles.createGame}>
         <CreateGame />
       </div>
+      <div className={styles.tableContainer}>
+        <GamesTable prefetchedGames={games} />
+      </div>
       <GameStarting/>
-      <GamesTable prefetchedGames={games} />
+      
     </div>
   );
 }

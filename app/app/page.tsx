@@ -1,9 +1,9 @@
-import { Lobbies } from '@/src/components/lobbies/Games';
+import { Games } from '@/src/components/lobbies/Games';
 
 export default function Home() {
   return (
     <div>
-      <Lobbies />
+      <Games />
     </div>
   );
 }

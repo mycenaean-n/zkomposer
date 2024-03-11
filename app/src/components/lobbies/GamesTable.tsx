@@ -15,11 +15,11 @@ export function GamesTable({ prefetchedGames }: { prefetchedGames: Game[] }) {
     games = prefetchedGames;
   }
 
-  const availableGames = games.filter(game => game.player2 == null)
+  const availableGames = games.filter((game) => game.player2 == null);
 
   return (
     <table className={styles.availableGames}>
-      <tbody>
+      <thead>
         <tr>
           <th>ID</th>
           <th>Player 1</th>
@@ -28,6 +28,8 @@ export function GamesTable({ prefetchedGames }: { prefetchedGames: Game[] }) {
           <th>Number of Puzzles</th>
           <th></th>
         </tr>
+      </thead>
+      <tbody>
         {availableGames.map((game) => (
           <tr key={game.id} className={styles.game}>
             <td>{game.id}</td>
@@ -36,14 +38,18 @@ export function GamesTable({ prefetchedGames }: { prefetchedGames: Game[] }) {
             <td>{game.interval}</td>
             <td>{game.numberOfTurns}</td>
             <td>
-              <button onClick={async () => {
-                const result = await joinGame(BigInt(game.id));
-                if (result.success) {
-                  alert('joined game');
-                } else {
-                  alert('failed to join game');
-                }
-              }}>join</button>
+              <button
+                onClick={async () => {
+                  const result = await joinGame(BigInt(game.id));
+                  if (result.success) {
+                    alert('joined game');
+                  } else {
+                    alert('failed to join game');
+                  }
+                }}
+              >
+                join
+              </button>
             </td>
           </tr>
         ))}
