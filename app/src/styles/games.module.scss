@@ -16,9 +16,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 2rem;
 }
 .tableContainer {
-  margin-top: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,20 +28,17 @@
 
 .availableGames {
   display: table; /* Ensure it's recognized as a table */
-  margin: 3rem;
-  padding: 1rem;
-  width: 100%;
+  margin-left: 3rem;
+  margin-right: 3rem;
+  margin-top: 3rem;
   width: 100%;
   text-align: center;
   border-collapse: separate; /* Don't collapse */
   border-spacing: 0;
   table-layout: fixed;
 
-  tr,
-  th,
-  td {
-    height: 1rem;
-    padding: 1rem;
+  tr {
+    height: 2rem;
   }
 
   td {
@@ -58,9 +55,10 @@
     z-index: 2;
   }
   thead th {
+    height: 2rem;
     z-index: 2;
     position: sticky;
-    top: 0;
+    top: 0rem;
     background-color: #edecec;
   }
 

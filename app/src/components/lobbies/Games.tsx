@@ -16,7 +16,7 @@ export async function Games() {
       <div className={styles.tableContainer}>
         <GamesTable prefetchedGames={games} />
       </div>
-      <GameStarting />
+      {/* <GameStarting /> */}
     </div>
   );
 }
