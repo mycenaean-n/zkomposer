@@ -1,12 +1,12 @@
 'use client';
-import { Address, createWalletClient, custom, getContract, isAddress } from 'viem';
+import { Hash, createWalletClient, custom, getContract, isAddress } from 'viem';
 import { abi } from '../abis/zKube';
 import { useAccount, useClient } from 'wagmi';
 import { ZKUBE_ADDRESS } from '../config';
 import { waitForTransactionReceipt } from 'viem/actions';
 
 type WriteResult = {
-  txHash: Address;
+  txHash: Hash;
   success: boolean;
 };
 
