@@ -1,4 +1,4 @@
-import { Address } from "viem";
+import { Address } from 'viem';
 
 export const ZKUBE_ADDRESS: Address =
   '0xC099fEd4f3358451faE9D0c9B71E6B4C0499078A';

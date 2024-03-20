@@ -236,9 +236,7 @@ export class Contract extends ContractBase {
     return this.eth_call(functions.gameId, []);
   }
 
-  games(
-    arg0: bigint
-  ): Promise<
+  games(arg0: bigint): Promise<
     [
       player1: [address_: string, score: number, totalBlocks: bigint] & {
         address_: string;
@@ -278,9 +276,7 @@ export class Contract extends ContractBase {
     return this.eth_call(functions.roundSubmitted, [arg0, arg1, arg2]);
   }
 
-  selectPuzzle(
-    id: bigint
-  ): Promise<
+  selectPuzzle(id: bigint): Promise<
     [
       roundBlockNumber: bigint,
       game: [
