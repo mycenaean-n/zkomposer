@@ -11,7 +11,7 @@ contract ZKube is IZKube {
 
     uint96 public gameId;
 
-    uint72 public constant BLOCKS_UNTIL_START = 90; // approx 30 secs on arb-sepolia
+    uint72 public constant BLOCKS_UNTIL_START = 10; // approx 30 seconds scroll
 
     mapping(uint256 => Game) public games;
 

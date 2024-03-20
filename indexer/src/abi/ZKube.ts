@@ -12,30 +12,30 @@ export const events = {
       player1: string,
       interval: bigint,
       numberOfTurns: bigint,
-      stake: bigint,
     ] & {
       gameId: bigint;
       puzzleSet: string;
       player1: string;
       interval: bigint;
       numberOfTurns: bigint;
-      stake: bigint;
     }
-  >(abi, '0xa726636a92f9d670950bc4b7a039d109aa3031f117f1c49f8d01503da0dd8d28'),
+  >(abi, '0x87eba3a7460154c2af109dd99d6e57241a454feab681feb7ad514ea5c7f3e112'),
   GameJoined: new LogEvent<
-    [gameId: bigint, player2: string, startingBlock: bigint] & {
+    [
+      gameId: bigint,
+      player1: string,
+      player2: string,
+      startingBlock: bigint,
+    ] & {
       gameId: bigint;
+      player1: string;
       player2: string;
       startingBlock: bigint;
     }
-  >(abi, '0x48bba6a72d4a9fae48e2469ce99518c38afec785fa4f3df38a1a76b03a979537'),
+  >(abi, '0xb1ac9c5d841dda39836a3b9dc15b1f0081b3dbbd0eeebca5667f8efe05af38da'),
   GameResolved: new LogEvent<
-    [gameId: bigint, winner: string, prize: bigint] & {
-      gameId: bigint;
-      winner: string;
-      prize: bigint;
-    }
-  >(abi, '0x36e33eea5df2e6c873949c5c856feb597f250ea8a329ed5ac38c39ab96905359'),
+    [gameId: bigint, winner: string] & { gameId: bigint; winner: string }
+  >(abi, '0xe1bef002fde33ebfa1c25a643ad667aa6dc80f7c8efb4b4161991251f8b4563a'),
   PlayerSubmitted: new LogEvent<
     [
       gameId: bigint,
@@ -81,7 +81,6 @@ export const functions = {
       interval: number,
       numberOfRounds: number,
       startingBlock: bigint,
-      stake: bigint,
     ] & {
       player1: [address_: string, score: number, totalBlocks: bigint] & {
         address_: string;
@@ -97,7 +96,6 @@ export const functions = {
       interval: number;
       numberOfRounds: number;
       startingBlock: bigint;
-      stake: bigint;
     }
   >(abi, '0x117a5b90'),
   joinGame: new Func<[id: bigint], { id: bigint }, []>(abi, '0xefaa55a0'),
@@ -126,7 +124,6 @@ export const functions = {
         interval: number,
         numberOfRounds: number,
         startingBlock: bigint,
-        stake: bigint,
       ] & {
         player1: [address_: string, score: number, totalBlocks: bigint] & {
           address_: string;
@@ -142,7 +139,6 @@ export const functions = {
         interval: number;
         numberOfRounds: number;
         startingBlock: bigint;
-        stake: bigint;
       },
       puzzle: [
         availableFunctions: Array<number>,
@@ -170,7 +166,6 @@ export const functions = {
         interval: number,
         numberOfRounds: number,
         startingBlock: bigint,
-        stake: bigint,
       ] & {
         player1: [address_: string, score: number, totalBlocks: bigint] & {
           address_: string;
@@ -186,7 +181,6 @@ export const functions = {
         interval: number;
         numberOfRounds: number;
         startingBlock: bigint;
-        stake: bigint;
       };
       puzzle: [
         availableFunctions: Array<number>,
@@ -242,9 +236,7 @@ export class Contract extends ContractBase {
     return this.eth_call(functions.gameId, []);
   }
 
-  games(
-    arg0: bigint
-  ): Promise<
+  games(arg0: bigint): Promise<
     [
       player1: [address_: string, score: number, totalBlocks: bigint] & {
         address_: string;
@@ -260,7 +252,6 @@ export class Contract extends ContractBase {
       interval: number,
       numberOfRounds: number,
       startingBlock: bigint,
-      stake: bigint,
     ] & {
       player1: [address_: string, score: number, totalBlocks: bigint] & {
         address_: string;
@@ -276,7 +267,6 @@ export class Contract extends ContractBase {
       interval: number;
       numberOfRounds: number;
       startingBlock: bigint;
-      stake: bigint;
     }
   > {
     return this.eth_call(functions.games, [arg0]);
@@ -286,9 +276,7 @@ export class Contract extends ContractBase {
     return this.eth_call(functions.roundSubmitted, [arg0, arg1, arg2]);
   }
 
-  selectPuzzle(
-    id: bigint
-  ): Promise<
+  selectPuzzle(id: bigint): Promise<
     [
       roundBlockNumber: bigint,
       game: [
@@ -306,7 +294,6 @@ export class Contract extends ContractBase {
         interval: number,
         numberOfRounds: number,
         startingBlock: bigint,
-        stake: bigint,
       ] & {
         player1: [address_: string, score: number, totalBlocks: bigint] & {
           address_: string;
@@ -322,7 +309,6 @@ export class Contract extends ContractBase {
         interval: number;
         numberOfRounds: number;
         startingBlock: bigint;
-        stake: bigint;
       },
       puzzle: [
         availableFunctions: Array<number>,
@@ -350,7 +336,6 @@ export class Contract extends ContractBase {
         interval: number,
         numberOfRounds: number,
         startingBlock: bigint,
-        stake: bigint,
       ] & {
         player1: [address_: string, score: number, totalBlocks: bigint] & {
           address_: string;
@@ -366,7 +351,6 @@ export class Contract extends ContractBase {
         interval: number;
         numberOfRounds: number;
         startingBlock: bigint;
-        stake: bigint;
       };
       puzzle: [
         availableFunctions: Array<number>,

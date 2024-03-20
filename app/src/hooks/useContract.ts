@@ -1,22 +1,22 @@
 'use client';
-import { createWalletClient, custom, getContract, isAddress } from 'viem';
+import { Hash, createWalletClient, custom, getContract, isAddress } from 'viem';
 import { abi } from '../abis/zKube';
 import { useAccount, useClient } from 'wagmi';
 import { ZKUBE_ADDRESS } from '../config';
-import { getTransactionReceipt, waitForTransactionReceipt } from 'viem/actions';
+import { waitForTransactionReceipt } from 'viem/actions';
 
 type WriteResult = {
-  txHash: `0x${string}`;
+  txHash: Hash;
   success: boolean;
 };
 
 type ContractActions = {
-  zKube: any;
   createGame: (
     targetPuzzleSet: string,
     interval: number,
     numberOfTurns: number
   ) => Promise<WriteResult>;
+  joinGame: (gameId: bigint) => Promise<WriteResult>;
 };
 
 export function useContract(): ContractActions {
@@ -64,5 +64,20 @@ export function useContract(): ContractActions {
     }
   }
 
-  return { zKube, createGame };
+  async function joinGame(gameId: bigint): Promise<WriteResult> {
+    if (!address) {
+      throw new Error('No address found');
+    }
+    const txHash = await zKube.write.joinGame([gameId], {
+      account: address,
+      chain: walletClient.chain,
+    });
+
+    const receipt = await waitForTransactionReceipt(publicClient!, {
+      hash: txHash,
+    });
+    return { txHash, success: receipt.status === 'success' };
+  }
+
+  return { createGame, joinGame };
 }
