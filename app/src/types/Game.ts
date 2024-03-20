@@ -1,10 +1,12 @@
+import { Address, Hash } from "viem";
+
 export type Game = {
   id: number;
   interval: number;
   numberOfTurns: number;
-  player1: `0x${string}`;
-  player2: `0x${string}`;
-  puzzleSet: `0x${string}`;
+  player1: Address;
+  player2: Address | null;
+  puzzleSet: Hash;
   stake: string;
   startingBlock: bigint;
 };
