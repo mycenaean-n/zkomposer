@@ -1,21 +1,18 @@
 import { EvmBatchProcessor } from '@subsquid/evm-processor';
 import { TypeormDatabase } from '@subsquid/typeorm-store';
-import { lookupArchive } from '@subsquid/archive-registry';
 import * as zKube from './abi/ZKube';
 import { Game } from './model';
-
-const ZKUBE_ADDRESS = '0x813678bE2b736e0027B42276ACF4D8b032c6885e';
+import { RPC_URL, ZKUBE_ADDRESS } from './config';
 
 const db = new TypeormDatabase();
 
 const processor = new EvmBatchProcessor()
-  .setGateway(lookupArchive('arbitrum-sepolia'))
   .setRpcEndpoint({
-    url: process.env.RPC_URL,
-    rateLimit: 10,
+    url: RPC_URL,
+    rateLimit: 100,
   })
   .setFinalityConfirmation(3)
-  .setBlockRange({ from: 18437053 })
+  .setBlockRange({ from: 3167802 })
   .addLog({
     address: [ZKUBE_ADDRESS],
     topic0: [
@@ -28,25 +25,39 @@ const processor = new EvmBatchProcessor()
 
 processor.run(db, async (ctx) => {
   const games: Map<bigint, Game> = new Map(); // map for caching games in the current batch
+
   for (const block of ctx.blocks) {
     for (const log of block.logs) {
       switch (log.topics[0]) {
-        case zKube.events.GameCreated.topic:
+        case zKube.events.GameCreated.topic: {
+          const { gameId, player1, puzzleSet, interval, numberOfTurns } =
+            zKube.events.GameCreated.decode(log);
+          games.set(
+            gameId,
+            new Game({
+              id: gameId.toString(),
+              puzzleSet,
+              player1,
+              interval: Number(interval),
+              numberOfTurns: Number(numberOfTurns),
+            })
+          );
+          break;
+        }
+        case zKube.events.GameJoined.topic: {
+          const { gameId, player2, startingBlock } =
+            zKube.events.GameJoined.decode(log);
+          let game = games.get(gameId);
+          if (!game) {
+            game = await ctx.store.get(Game, gameId.toString());
+            games.set(gameId, game);
+          }
+          game.player2 = player2;
+          game.startingBlock = startingBlock;
+          break;
+        }
       }
-      const { gameId, player1, puzzleSet, stake, interval, numberOfTurns } =
-        zKube.events.GameCreated.decode(log);
-      games.set(
-        gameId,
-        new Game({
-          id: gameId.toString(),
-          puzzleSet,
-          player1,
-          stake,
-          interval: Number(interval),
-          numberOfTurns: Number(numberOfTurns),
-        })
-      );
     }
   }
-  ctx.store.insert([...games.values()]);
+  await ctx.store.upsert([...games.values()]);
 });

@@ -7,6 +7,7 @@ import logo from '../src/assets/zKubeLogo.svg';
 import { Web3Provider } from '../src/providers/Web3Provider';
 import { ConnectButton } from '../src/components/ConnectButton';
 import { ApolloClientProvider } from '../src/providers/ApolloClientProvider';
+import { GamesProvider } from '@/src/context/GamesContext';
 
 const roboto = Roboto({
   weight: '400',
@@ -27,15 +28,17 @@ export default function RootLayout({
     <html lang="en">
       <ApolloClientProvider>
         <Web3Provider>
-          <body className={roboto.className}>
-            <header className={styles.header}>
-              <Image src={logo} alt="logo" className={styles.logo} />
-              <div className={styles.connectButton}>
-                <ConnectButton />
-              </div>
-            </header>
-            {children}
-          </body>
+          <GamesProvider>
+            <body className={roboto.className}>
+              <header className={styles.header}>
+                <Image src={logo} alt="logo" className={styles.logo} />
+                <div className={styles.connectButton}>
+                  <ConnectButton />
+                </div>
+              </header>
+              {children}
+            </body>
+          </GamesProvider>
         </Web3Provider>
       </ApolloClientProvider>
     </html>

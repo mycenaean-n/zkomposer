@@ -28,8 +28,7 @@ export const ABI_JSON = [
     type: 'function',
     name: 'createGame',
     constant: false,
-    stateMutability: 'payable',
-    payable: true,
+    payable: false,
     inputs: [
       {
         type: 'address',
@@ -130,18 +129,13 @@ export const ABI_JSON = [
         type: 'uint72',
         name: 'startingBlock',
       },
-      {
-        type: 'uint256',
-        name: 'stake',
-      },
     ],
   },
   {
     type: 'function',
     name: 'joinGame',
     constant: false,
-    stateMutability: 'payable',
-    payable: true,
+    payable: false,
     inputs: [
       {
         type: 'uint256',
@@ -263,10 +257,6 @@ export const ABI_JSON = [
             type: 'uint72',
             name: 'startingBlock',
           },
-          {
-            type: 'uint256',
-            name: 'stake',
-          },
         ],
       },
       {
@@ -368,11 +358,6 @@ export const ABI_JSON = [
         name: 'numberOfTurns',
         indexed: false,
       },
-      {
-        type: 'uint256',
-        name: 'stake',
-        indexed: false,
-      },
     ],
   },
   {
@@ -383,6 +368,11 @@ export const ABI_JSON = [
       {
         type: 'uint256',
         name: 'gameId',
+        indexed: true,
+      },
+      {
+        type: 'address',
+        name: 'player1',
         indexed: true,
       },
       {
@@ -411,11 +401,6 @@ export const ABI_JSON = [
         type: 'address',
         name: 'winner',
         indexed: true,
-      },
-      {
-        type: 'uint256',
-        name: 'prize',
-        indexed: false,
       },
     ],
   },
@@ -493,11 +478,6 @@ export const ABI_JSON = [
   {
     type: 'error',
     name: 'NotValidPlayer',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'StakeNotMet',
     inputs: [],
   },
 ];

@@ -1,4 +1,4 @@
-import { client } from '@/src/clients/apollo';
+import { serverClient } from '@/src/clients/apollo';
 import { Game } from '@/src/types/Game';
 import { gql } from '@apollo/client';
 
@@ -9,16 +9,18 @@ const GAMES_QUERY = gql`
       interval
       numberOfTurns
       player1
-      player2
       puzzleSet
-      stake
       startingBlock
+      player2
     }
   }
 `;
 
 export async function getGames() {
-  const { data } = await client.query({ query: GAMES_QUERY });
-  const games = data.games as Game[];
+  const { data } = await serverClient.query<{ games: Game[] }>({
+    query: GAMES_QUERY,
+    fetchPolicy: 'no-cache',
+  });
+  const games = data.games;
   return games;
 }

@@ -3,8 +3,7 @@ type Game @entity {
   puzzleSet: String! @index
   interval: Int!
   numberOfTurns: Int!
-  startingBlock: Int
-  stake: BigInt!
+  startingBlock: BigInt
   player1: String! @index
   player2: String @index
 }

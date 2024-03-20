@@ -25,14 +25,11 @@ export class Game {
   @Column_('int4', { nullable: false })
   numberOfTurns!: number;
 
-  @Column_('int4', { nullable: true })
-  startingBlock!: number | undefined | null;
-
   @Column_('numeric', {
     transformer: marshal.bigintTransformer,
-    nullable: false,
+    nullable: true,
   })
-  stake!: bigint;
+  startingBlock!: bigint | undefined | null;
 
   @Index_()
   @Column_('text', { nullable: false })
