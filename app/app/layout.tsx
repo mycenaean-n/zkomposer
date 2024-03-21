@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
-import './globals.scss';
-import styles from '../src/styles/layout.module.scss';
+import './globals.css';
 import { Roboto } from 'next/font/google';
 import Image from 'next/image';
 import logo from '../src/assets/zKubeLogo.svg';
@@ -30,11 +29,9 @@ export default function RootLayout({
         <Web3Provider>
           <GamesProvider>
             <body className={roboto.className}>
-              <header className={styles.header}>
-                <Image src={logo} alt="logo" className={styles.logo} />
-                <div className={styles.connectButton}>
-                  <ConnectButton />
-                </div>
+              <header className="flex justify-between items-center bg-black p-3 px-6">
+                <Image src={logo} alt="logo" className="h-16 w-auto" />
+                <ConnectButton />
               </header>
               {children}
             </body>
