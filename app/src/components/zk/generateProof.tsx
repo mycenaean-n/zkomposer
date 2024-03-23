@@ -10,7 +10,7 @@ export function GenerateProof({
   inputSignals?: InputSignals;
   onResult: (proof: Proof) => void;
 }) {
-  const proofCallback = useProof('./zk/zkube.wasm', './zk/zkube_final.zkey');
+  const proofCallback = useProof('/zk/zkube.wasm', '/zk/zkube_final.zkey');
 
   if (!inputSignals)
     return (
