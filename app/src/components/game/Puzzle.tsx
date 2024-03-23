@@ -1,6 +1,5 @@
 'use client';
 import { createContext, useState } from 'react';
-import styles from '../../styles/puzzle.module.scss';
 import { Actions } from './Actions';
 import {
   PuzzleFunctions,
@@ -26,10 +25,10 @@ export function Puzzle(initConfig: PuzzleInit) {
       value={{
         initConfig,
         functions,
-        setFunctions,
+        setFunctions
       }}
     >
-      <div className={styles.Puzzle}>
+      <div className="flex flex-col flex-grow w-full h-full">
         <Scene />
         <Actions />
       </div>

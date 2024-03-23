@@ -28,9 +28,9 @@ export default function RootLayout({
       <ApolloClientProvider>
         <Web3Provider>
           <GamesProvider>
-            <body className={roboto.className}>
-              <header className="flex justify-between items-center bg-black p-3 px-6">
-                <Image src={logo} alt="logo" className="h-16 w-auto" />
+            <body className={`${roboto.className} flex flex-col min-h-screen`}>
+              <header className="flex justify-between items-center bg-black h-20 p-4">
+                <Image src={logo} alt="logo" className="h-14 w-auto" />
                 <ConnectButton />
               </header>
               {children}
