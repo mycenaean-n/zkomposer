@@ -46,7 +46,6 @@ export function Grid(props: GridProps) {
           position={new Vector3(xOffset, yOffset, zOffset)}
         />
       );
-      console.log("yOffset", yOffset)
       yOffset += y / column.length;
     }
     yOffset = props.position.y;

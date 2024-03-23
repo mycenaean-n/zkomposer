@@ -6,7 +6,6 @@ import { Puzzle } from './Puzzle';
 const mockPuzzle = puzzleMapping[0];
 
 export function Game() {
-
   return (
     <Puzzle
       initialGrid={mapGrid(mockPuzzle.startingGrid)}

@@ -25,7 +25,7 @@ export function Puzzle(initConfig: PuzzleInit) {
       value={{
         initConfig,
         functions,
-        setFunctions
+        setFunctions,
       }}
     >
       <div className="flex flex-col flex-grow w-full h-full">

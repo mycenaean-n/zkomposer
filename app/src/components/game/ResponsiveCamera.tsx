@@ -9,5 +9,5 @@ export function ResponsiveCamera() {
     camera.updateProjectionMatrix();
   }, [size.height, camera]);
 
-  return null
+  return null;
 }

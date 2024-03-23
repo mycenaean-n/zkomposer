@@ -19,7 +19,9 @@ export function Scene() {
   let xPos = -2.5;
   const gridElements = grids.map((grid, index) => {
     xPos += xGap;
-    return <Grid key={index} grid={grid} position={{ x: xPos, y: -0.5, z: 0 }} />;
+    return (
+      <Grid key={index} grid={grid} position={{ x: xPos, y: -0.5, z: 0 }} />
+    );
   });
 
   useEffect(() => {
@@ -38,24 +40,24 @@ export function Scene() {
   }, [functions]);
 
   return (
-      <Canvas
-        orthographic
-        camera={{
-          position: new Vector3(2, 2, 5),
-          left: -10,
-          right: 10,
-          top: 10,
-          bottom: -10,
-          zoom: 60,
-          near: -10,
-          far: 1000,
-        }}
-      >
-        <ambientLight intensity={Math.PI} />1
-        <Grid grid={startingGrid} position={{ x: -2.5, y: -0.5, z: 0 }} />
-        {gridElements}
-        <Grid grid={finalGrid} position={{ x: 2.5, y: -0.5, z: 0 }} />
-        <ResponsiveCamera />
-      </Canvas>
+    <Canvas
+      orthographic
+      camera={{
+        position: new Vector3(2, 2, 5),
+        left: -10,
+        right: 10,
+        top: 10,
+        bottom: -10,
+        zoom: 60,
+        near: -10,
+        far: 1000,
+      }}
+    >
+      <ambientLight intensity={Math.PI} />
+      <Grid grid={startingGrid} position={{ x: -2.5, y: -0.5, z: 0 }} />
+      {gridElements}
+      <Grid grid={finalGrid} position={{ x: 2.5, y: -0.5, z: 0 }} />
+      <ResponsiveCamera />
+    </Canvas>
   );
 }
