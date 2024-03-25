@@ -1,60 +1,79 @@
 'use client';
-import { getCircuitFunctionName } from 'circuits';
-import { mapGrid } from '../../utils';
-import { puzzleMapping } from '../../mocks/puzzles';
 import { Puzzle } from './Puzzle';
-import { createContext, useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { GamesContext } from '@/src/context/GamesContext';
-import { useAccount, useBlockNumber } from 'wagmi';
+import { useBlockNumber } from '../../hooks/useBlockNumber';
 import { CircuitFunctions } from 'circuits/types/circuitFunctions.types';
-
-const mockPuzzle = puzzleMapping[0];
-
-export const GameContext = createContext({
-  puzzle: {
-    initConfig: { initialGrid: [], finalGrid: [], availableFunctions: [] },
-    functions: { remaining: [], chosen: [] },
-    setFunctions: () => {},
-  },
-  game: Game,
-});
+import { useContract } from '@/src/hooks/useContract';
+import { Game } from '@/src/types/Game';
 
 export function Game({ id }: { id: string }) {
-  const [initialGrid, setInitialGrid] = useState<number[][]>(
-    mapGrid(mockPuzzle.startingGrid)
-  );
-  const [finalGrid, setFinalGrid] = useState<number[][]>(
-    mapGrid(mockPuzzle.finalGrid)
-  );
+  const [initialGrid, setInitialGrid] = useState<number[][]>([]);
+  const [finalGrid, setFinalGrid] = useState<number[][]>([]);
   const [availableFunctions, setAvailableFunctions] = useState<
     CircuitFunctions[]
-  >(
-    mockPuzzle.availableFunctions.map((funcIndex) =>
-      getCircuitFunctionName(funcIndex)
-    )
-  );
-  const { address } = useAccount();
-  const { data: blockNumber } = useBlockNumber();
+  >([]);
+  const blockNumber = useBlockNumber();
   const { games, loading } = useContext(GamesContext);
+  const { getPuzzle } = useContract();
   const game = games.find((game) => game.id == id);
 
+  async function fetchPuzzle() {
+    if (!game) throw new Error('Game not found');
+    const { puzzle } = await getPuzzle(BigInt(game.id));
+    console.log(puzzle.availableFunctions);
+    setInitialGrid(puzzle.initialGrid);
+    setFinalGrid(puzzle.finalGrid);
+    setAvailableFunctions(puzzle.availableFunctions);
+  }
+
+  function isGameFinished(game: Game) {
+    return (
+      blockNumber! >
+      BigInt(Number(game.startingBlock) + game.interval * game.numberOfTurns)
+    );
+  }
+
+  function hasGameStarted(game: Game) {
+    return blockNumber! > BigInt(game.startingBlock);
+  }
+
+  useEffect(() => {
+    if (game) {
+      if (hasGameStarted(game) && !isGameFinished(game)) {
+        // first fetch
+        if (initialGrid.length === 0) {
+          fetchPuzzle();
+        }
+        // only fetch puzzle if new turn
+        else if (
+          Number(game.startingBlock) -
+            (Number(blockNumber!) % game.interval) ===
+          0
+        ) {
+          fetchPuzzle();
+        }
+      }
+    }
+  }, [loading, blockNumber]);
+
+  const style = 'flex justify-center items-center text-align-center w-screen h-full';
+  const LoadingState = (text: string) => <div className={style}><h1>{text}</h1></div>;
+
   if (loading) {
-    return <div>Loading...</div>;
+    return LoadingState('Loading...');
   }
   if (!game) {
-    return <div>Game not found</div>;
+    return LoadingState('Game not found');
   }
 
-
-  const isGameFinished =
-    blockNumber! >
-    game.startingBlock + BigInt(game.interval * game.numberOfTurns);
-  if (isGameFinished) {
-    return <div>Game is finished</div>;
+  if (isGameFinished(game)) {
+    return LoadingState('Game is finished');
   }
 
-  // if (address !== game.player1 && address !== game.player2) {
-  // }
+  if (!hasGameStarted(game)) {
+    return LoadingState(`Game starts in ${Number(game.startingBlock) - Number(blockNumber!)} blocks`);
+  }
 
   return (
     <Puzzle

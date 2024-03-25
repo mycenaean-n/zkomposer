@@ -1,5 +1,5 @@
 'use client';
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { Actions } from './Actions';
 import {
   PuzzleFunctions,
@@ -19,6 +19,13 @@ export function Puzzle(initConfig: Puzzle) {
     remaining: initConfig.availableFunctions,
     chosen: [],
   });
+
+  useEffect(() => {
+    setFunctions({
+      remaining: initConfig.availableFunctions,
+      chosen: [],
+    });
+  }, [initConfig])
 
   return (
     <PuzzleContext.Provider

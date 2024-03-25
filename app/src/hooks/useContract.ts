@@ -1,14 +1,14 @@
 'use client';
 import { Hash, createWalletClient, custom, getContract, isAddress } from 'viem';
 import { abi } from '../abis/zKube';
-import { useAccount, useClient, usePublicClient } from 'wagmi';
+import { useAccount, usePublicClient } from 'wagmi';
 import { ZKUBE_ADDRESS } from '../config';
 import { waitForTransactionReceipt } from 'viem/actions';
-import { Proof } from '../types/Proof';
 import { OnChainPuzzle, Puzzle } from '../types/Puzzle';
-import { Game } from '../types/Game';
-import { convertPuzzleToBase4 } from 'circuits/utils/contracts/hexConversion';
-import { stringToGrid } from '../utils/stringToGrid';
+import { Game, OnChainGame } from '../types/Game';
+import { convertPuzzleToBase4FromHex, padPuzzle } from 'circuits/utils/contracts/hexConversion';
+import { mapGrid } from '../utils';
+import { circuitFunctionsArray } from 'circuits/types/circuitFunctions.types';
 
 type WriteResult = {
   txHash: Hash;
@@ -24,7 +24,7 @@ type ContractActions = {
   joinGame: (gameId: bigint) => Promise<WriteResult>;
   getPuzzle(gameId: bigint): Promise<{
     roundBlock: bigint;
-    game: Partial<Game>;
+    game: OnChainGame;
     puzzle: Puzzle;
   }>;
 };
@@ -91,7 +91,7 @@ export function useContract(): ContractActions {
 
   async function getPuzzle(
     gameId: bigint
-  ): Promise<{ roundBlock: bigint; game: Partial<Game>; puzzle: Puzzle }> {
+  ): Promise<{ roundBlock: bigint; game: OnChainGame; puzzle: Puzzle }> {
     const result = await publicClient?.readContract({
       abi,
       address: ZKUBE_ADDRESS,
@@ -99,11 +99,11 @@ export function useContract(): ContractActions {
       args: [gameId],
     });
     const [roundBlock, game, hexPuzzle] = result!;
-    const base4Puzzle = convertPuzzleToBase4(hexPuzzle as OnChainPuzzle);
+    const base4Puzzle = convertPuzzleToBase4FromHex(hexPuzzle as OnChainPuzzle);
     const puzzle: Puzzle = {
-      initialGrid: stringToGrid(base4Puzzle.startingGrid),
-      finalGrid: stringToGrid(base4Puzzle.finalGrid),
-      availableFunctions: base4Puzzle.availableFunctions as any,
+      initialGrid: mapGrid(base4Puzzle.startingGrid),
+      finalGrid: mapGrid(base4Puzzle.finalGrid),
+      availableFunctions: base4Puzzle.availableFunctions.map((functionId) => circuitFunctionsArray[functionId]),
     };
     return { roundBlock, game, puzzle };
   }
