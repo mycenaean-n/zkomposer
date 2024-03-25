@@ -54,7 +54,7 @@ The contracts are deployed to Scroll Sepolia at these addresses:
 
 - `ZKubeVerifier`: [0x31D234a75Fdc64ca43b2600c0a85B79A9ED3E3F7](https://sepolia.scrollscan.com/address/0x31D234a75Fdc64ca43b2600c0a85B79A9ED3E3F7)
 - `ZKube`: [0xa63E564bEe5Ab70aDc3929d098d89CB55E1dEb57](https://sepolia.scrollscan.com/address/0xa63E564bEe5Ab70aDc3929d098d89CB55E1dEb57)
-- `ZKubePuzzleSet`: [0x1F7Ca0c2243A2DE388Af4Fd5d40DBA513f0E2286](https://sepolia.scrollscan.com/address/0x1F7Ca0c2243A2DE388Af4Fd5d40DBA513f0E2286)
+- `ZKubePuzzleSet`: [0x1625956d2017fED96eaA53d1B1b1311eC61963B4](https://sepolia.scrollscan.com/address/0x1625956d2017fED96eaA53d1B1b1311eC61963B4)
 
 The **ZKube** contract is the only contract players will interact with. The first player will create a game using `createGame` and the second player will join using `joinGame`, the game will start X blocks after this. The players will get the puzzle by calling `selectPuzzle` and they will submit the proof of their solution using `submitProof`. The game can be resolved when it is finished by calling `resolveGame`
 
