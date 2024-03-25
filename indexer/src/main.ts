@@ -12,7 +12,7 @@ const processor = new EvmBatchProcessor()
     rateLimit: 100,
   })
   .setFinalityConfirmation(3)
-  .setBlockRange({ from: 3167802 })
+  .setBlockRange({ from: 3397263 })
   .addLog({
     address: [ZKUBE_ADDRESS],
     topic0: [
