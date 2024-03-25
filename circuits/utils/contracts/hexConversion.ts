@@ -51,16 +51,16 @@ export function padPuzzle(puzzle: OnChainPuzzle): OnChainPuzzle {
   };
 }
 
-function checkLength(puzzle: OnChainPuzzle) {
-  if (puzzle.startingGrid.length != 64 || puzzle.finalGrid.length != 64) {
-    throw new Error('Grid must be length 64.');
+function checkLength(puzzle: OnChainPuzzle, length: number) {
+  if (puzzle.startingGrid.length != length || puzzle.finalGrid.length != length) {
+    throw new Error(`String must be length ${length}`);
   }
 }
 
 export function convertPuzzleToHex(puzzle: OnChainPuzzle): OnChainPuzzle {
   const { startingGrid, finalGrid, availableFunctions } = puzzle;
 
-  checkLength(puzzle);
+  checkLength(puzzle, 64);
 
   return {
     startingGrid: base4ToHex(startingGrid),
@@ -69,14 +69,12 @@ export function convertPuzzleToHex(puzzle: OnChainPuzzle): OnChainPuzzle {
   };
 }
 
-export function convertPuzzleToBase4(puzzle: OnChainPuzzle): OnChainPuzzle {
+export function convertPuzzleToBase4FromHex(puzzle: OnChainPuzzle): OnChainPuzzle {
   const { startingGrid, finalGrid, availableFunctions } = puzzle;
 
-  checkLength(puzzle);
-
   return {
-    startingGrid: hexToBase4(startingGrid),
-    finalGrid: hexToBase4(finalGrid),
+    startingGrid: hexToBase4(startingGrid.slice(2)),
+    finalGrid: hexToBase4(finalGrid.slice(2)),
     availableFunctions,
   };
 }
