@@ -139,6 +139,6 @@ contract ZKube is IZKube {
         ifGameNotFinished(interval, startingBlock, numberOfRounds);
         uint256 currentBlock = block.number;
         if (currentBlock < startingBlock) revert GameNotStarted();
-        blockNumber = currentBlock - (currentBlock % interval);
+        blockNumber = currentBlock - ((currentBlock - startingBlock) % interval);
     }
 }
