@@ -1,4 +1,4 @@
-import { Puzzle } from 'app/app/game/Puzzles';
+import { OnChainPuzzle } from 'app/src/types/Puzzle';
 
 function base4ToHex(base4: string): string {
   const base4Array = Array.from(base4);
@@ -43,7 +43,7 @@ function hexToBase4(base16: string): string {
   return base4String;
 }
 
-export function padPuzzle(puzzle: Puzzle): Puzzle {
+export function padPuzzle(puzzle: OnChainPuzzle): OnChainPuzzle {
   return {
     startingGrid: puzzle.startingGrid.padEnd(64, '0'),
     finalGrid: puzzle.finalGrid.padEnd(64, '0'),
@@ -51,13 +51,13 @@ export function padPuzzle(puzzle: Puzzle): Puzzle {
   };
 }
 
-function checkLength(puzzle: Puzzle) {
+function checkLength(puzzle: OnChainPuzzle) {
   if (puzzle.startingGrid.length != 64 || puzzle.finalGrid.length != 64) {
     throw new Error('Grid must be length 64.');
   }
 }
 
-export function convertPuzzleToHex(puzzle: Puzzle): Puzzle {
+export function convertPuzzleToHex(puzzle: OnChainPuzzle): OnChainPuzzle {
   const { startingGrid, finalGrid, availableFunctions } = puzzle;
 
   checkLength(puzzle);
@@ -69,7 +69,7 @@ export function convertPuzzleToHex(puzzle: Puzzle): Puzzle {
   };
 }
 
-export function convertPuzzleToBase4(puzzle: Puzzle): Puzzle {
+export function convertPuzzleToBase4(puzzle: OnChainPuzzle): OnChainPuzzle {
   const { startingGrid, finalGrid, availableFunctions } = puzzle;
 
   checkLength(puzzle);

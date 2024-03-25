@@ -1,9 +1,14 @@
 'use client';
 import { Hash, createWalletClient, custom, getContract, isAddress } from 'viem';
 import { abi } from '../abis/zKube';
-import { useAccount, useClient } from 'wagmi';
+import { useAccount, useClient, usePublicClient } from 'wagmi';
 import { ZKUBE_ADDRESS } from '../config';
 import { waitForTransactionReceipt } from 'viem/actions';
+import { Proof } from '../types/Proof';
+import { OnChainPuzzle, Puzzle } from '../types/Puzzle';
+import { Game } from '../types/Game';
+import { convertPuzzleToBase4 } from 'circuits/utils/contracts/hexConversion';
+import { stringToGrid } from '../utils/stringToGrid';
 
 type WriteResult = {
   txHash: Hash;
@@ -17,6 +22,11 @@ type ContractActions = {
     numberOfTurns: number
   ) => Promise<WriteResult>;
   joinGame: (gameId: bigint) => Promise<WriteResult>;
+  getPuzzle(gameId: bigint): Promise<{
+    roundBlock: bigint;
+    game: Partial<Game>;
+    puzzle: Puzzle;
+  }>;
 };
 
 export function useContract(): ContractActions {
@@ -24,7 +34,7 @@ export function useContract(): ContractActions {
   if (!window.ethereum) {
     alert('please connect your wallet');
   }
-  const publicClient = useClient();
+  const publicClient = usePublicClient();
   const walletClient = createWalletClient({
     chain: publicClient?.chain,
     transport: custom(window.ethereum),
@@ -79,5 +89,24 @@ export function useContract(): ContractActions {
     return { txHash, success: receipt.status === 'success' };
   }
 
-  return { createGame, joinGame };
+  async function getPuzzle(
+    gameId: bigint
+  ): Promise<{ roundBlock: bigint; game: Partial<Game>; puzzle: Puzzle }> {
+    const result = await publicClient?.readContract({
+      abi,
+      address: ZKUBE_ADDRESS,
+      functionName: 'selectPuzzle',
+      args: [gameId],
+    });
+    const [roundBlock, game, hexPuzzle] = result!;
+    const base4Puzzle = convertPuzzleToBase4(hexPuzzle as OnChainPuzzle);
+    const puzzle: Puzzle = {
+      initialGrid: stringToGrid(base4Puzzle.startingGrid),
+      finalGrid: stringToGrid(base4Puzzle.finalGrid),
+      availableFunctions: base4Puzzle.availableFunctions as any,
+    };
+    return { roundBlock, game, puzzle };
+  }
+
+  return { createGame, joinGame, getPuzzle };
 }

@@ -4,7 +4,7 @@ import { Actions } from './Actions';
 import {
   PuzzleFunctions,
   PuzzleContext as PuzzleContextType,
-  PuzzleInit,
+  Puzzle,
 } from '@/src/types/Puzzle';
 import { Scene } from './Scene';
 
@@ -14,7 +14,7 @@ export const PuzzleContext = createContext<PuzzleContextType>({
   setFunctions: () => {},
 });
 
-export function Puzzle(initConfig: PuzzleInit) {
+export function Puzzle(initConfig: Puzzle) {
   const [functions, setFunctions] = useState<PuzzleFunctions>({
     remaining: initConfig.availableFunctions,
     chosen: [],

@@ -1,10 +1,11 @@
 import { Game } from '../../../src/components/game/Game';
 
-export default function Page({ id }: { id: string }) {
+export default function Page({ params }: { params: {id: string} }) {
+
   return (
     <div className="flex flex-col flex-grow">
       <div className="flex-grow h-96">
-        <Game />
+        <Game id={params.id} />
       </div>
       <footer className="bg-black h-20 mt-auto">
         <div className="text-white flex justify-between items-center h-full p-6">

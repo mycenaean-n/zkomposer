@@ -17,15 +17,15 @@ const GAMES_SUBSCRIPTION = gql`
   }
 `;
 
-export const GamesContext = createContext<{ games: Game[] }>({ games: [] });
+export const GamesContext = createContext<{ games: Game[], loading: boolean }>({ games: [], loading: false });
 
 export const GamesProvider = ({ children }: { children: React.ReactNode }) => {
   let games: Game[] = [];
-  const { data } = useSubscription<{ games: Game[] }>(GAMES_SUBSCRIPTION);
+  const { data, loading } = useSubscription<{ games: Game[] }>(GAMES_SUBSCRIPTION);
   if (data) {
     games = data.games;
   }
   return (
-    <GamesContext.Provider value={{ games }}>{children}</GamesContext.Provider>
+    <GamesContext.Provider value={{ games, loading }}>{children}</GamesContext.Provider>
   );
 };
