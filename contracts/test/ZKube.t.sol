@@ -112,27 +112,34 @@ contract ZKubeTest is Test {
     function testConcrete_getBlock() public {
         uint8 interval = 10;
         uint16 numberOfRounds = 20;
+        uint256 randomBlock = 21382132;
+        vm.roll(randomBlock);
         uint256 id = _createGame(player1, interval, numberOfRounds);
 
         uint256 startingBlock = _joinGame(player2, id);
+        assertEq(randomBlock + zKube.BLOCKS_UNTIL_START(), startingBlock);
         vm.roll(startingBlock);
-        assertEq(zKube.exposed_getBlock(interval, uint72(startingBlock), numberOfRounds), zKube.BLOCKS_UNTIL_START());
+        assertEq(zKube.exposed_getBlock(interval, uint72(startingBlock), numberOfRounds), startingBlock);
+        vm.roll(startingBlock + interval + 5);
+        assertEq(zKube.exposed_getBlock(interval, uint72(startingBlock), numberOfRounds), startingBlock + interval);
     }
 
-    function testFuzz_getBlock(uint256 jump) public {
+    function testFuzz_getBlock(uint256 startingBlock, uint256 jump) public {
         uint8 interval = 10;
         uint16 numberOfTurns = 20;
 
         vm.assume(jump < interval * numberOfTurns);
+        vm.assume(startingBlock < type(uint64).max);
+        vm.roll(startingBlock);
         uint256 id = _createGame(player1, interval, 20);
 
-        uint256 startingBlock = _joinGame(player2, id);
+        _joinGame(player2, id);
         vm.roll(startingBlock + jump);
 
-        uint256 expectedBlockNumber = block.number - (block.number % interval);
+        uint256 expectedBlockNumber = block.number - ((block.number - startingBlock) % interval);
 
         assertEq(zKube.exposed_getBlock(interval, uint72(startingBlock), numberOfTurns), expectedBlockNumber);
-        assertTrue(zKube.exposed_getBlock(interval, uint72(startingBlock), numberOfTurns) % interval == 0);
+        assertTrue((zKube.exposed_getBlock(interval, uint72(startingBlock), numberOfTurns) - startingBlock) % interval == 0);
     }
 
     function testFuzz_getBlock_reverts_ifGameFinished(uint256 jump) public {
