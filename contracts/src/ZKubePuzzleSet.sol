@@ -21,7 +21,7 @@ contract ZKubePuzzleSet is IZKubePuzzleSet, ERC721, Ownable {
     }
 
     function getPuzzle(uint256 randomNumber) external view returns (Puzzle memory puzzle) {
-        puzzle = puzzles[1 + (randomNumber % numberOfPuzzles)];
+        puzzle = puzzles[randomNumber % numberOfPuzzles];
     }
 
     function _baseURI() internal view override returns (string memory) {
