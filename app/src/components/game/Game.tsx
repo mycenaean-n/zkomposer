@@ -1,6 +1,6 @@
 'use client';
 import { PuzzleMemoized } from './Puzzle';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { GamesContext } from '@/src/context/GamesContext';
 import { useBlockNumber } from '../../hooks/useBlockNumber';
 import { CircuitFunctions } from 'circuits/types/circuitFunctions.types';
@@ -60,6 +60,12 @@ export function Game({ id }: { id: string }) {
     }
   }, [loading, blockNumber]);
 
+  const initConfig = useMemo(() => ({
+    initialGrid,
+    finalGrid,
+    availableFunctions,
+  }), [initialGrid, finalGrid, availableFunctions]);
+
   const style =
     'flex flex-grow justify-center items-center text-align-center w-screen h-full text-2xl';
   const LoadingState = (text: string) => (
@@ -89,11 +95,7 @@ export function Game({ id }: { id: string }) {
     <div className="flex flex-col flex-grow h-full">
       <div className="flex-grow h-96">
         <PuzzleMemoized
-          initConfig={{
-            initialGrid,
-            finalGrid,
-            availableFunctions,
-          }}
+          initConfig={initConfig}
           gameId={id}
         />
       </div>

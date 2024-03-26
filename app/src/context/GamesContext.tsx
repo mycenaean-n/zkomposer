@@ -17,7 +17,7 @@ const GAMES_SUBSCRIPTION = gql`
   }
 `;
 
-export const GamesContext = createContext<{ games: Game[], loading: boolean }>({ games: [], loading: false });
+export const GamesContext = createContext<{ games: Game[], loading: boolean}>({ games: [], loading: false });
 
 export const GamesProvider = ({ children }: { children: React.ReactNode }) => {
   let games: Game[] = [];
