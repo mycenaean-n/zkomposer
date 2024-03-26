@@ -25,7 +25,7 @@ export function GameStarting() {
       return false;
     }
 
-    if (blockNumber > game.startingBlock) {
+    if (blockNumber > Number(game.startingBlock)) {
       return false;
     }
 
