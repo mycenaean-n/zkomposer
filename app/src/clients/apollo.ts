@@ -10,7 +10,7 @@ const GRAPHQL_API_WS_URL = 'wss://squid.subsquid.io/zkube-squid/v/v1/graphql';
 const httpLink = new HttpLink({
   uri: GRAPHQL_API_HTTP_URL,
   fetchOptions: {
-    next: { revalidate: 0 },
+    next: { revalidate: 30 },
   },
 });
 

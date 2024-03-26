@@ -1,5 +1,5 @@
 'use client';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, memo, useEffect, useState } from 'react';
 import { Actions } from './Actions';
 import {
   PuzzleFunctions,
@@ -14,18 +14,20 @@ export const PuzzleContext = createContext<PuzzleContextType>({
   setFunctions: () => {},
 });
 
-export function Puzzle(initConfig: Puzzle) {
+function Puzzle(initConfig: Puzzle) {
   const [functions, setFunctions] = useState<PuzzleFunctions>({
     remaining: initConfig.availableFunctions,
     chosen: [],
   });
 
   useEffect(() => {
-    setFunctions({
-      remaining: initConfig.availableFunctions,
-      chosen: [],
-    });
+      setFunctions({
+        remaining: initConfig.availableFunctions,
+        chosen: [],
+      });
   }, [initConfig])
+
+  console.log(initConfig)
 
   return (
     <PuzzleContext.Provider
@@ -42,3 +44,5 @@ export function Puzzle(initConfig: Puzzle) {
     </PuzzleContext.Provider>
   );
 }
+
+export const PuzzleMemoized = memo(Puzzle);

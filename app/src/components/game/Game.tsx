@@ -1,11 +1,11 @@
 'use client';
-import { Puzzle } from './Puzzle';
+import { PuzzleMemoized } from './Puzzle';
 import { useContext, useEffect, useState } from 'react';
 import { GamesContext } from '@/src/context/GamesContext';
 import { useBlockNumber } from '../../hooks/useBlockNumber';
 import { CircuitFunctions } from 'circuits/types/circuitFunctions.types';
 import { useContract } from '@/src/hooks/useContract';
-import { Game } from '@/src/types/Game';
+import { hasGameStarted, isGameFinished } from '@/src/utils/game';
 
 export function Game({ id }: { id: string }) {
   const [initialGrid, setInitialGrid] = useState<number[][]>([]);
@@ -19,36 +19,27 @@ export function Game({ id }: { id: string }) {
   const game = games.find((game) => game.id == id);
 
   async function fetchPuzzle() {
+    console.log('fetching puzzle')
     if (!game) throw new Error('Game not found');
     const { puzzle } = await getPuzzle(BigInt(game.id));
-    console.log(puzzle.availableFunctions);
     setInitialGrid(puzzle.initialGrid);
     setFinalGrid(puzzle.finalGrid);
     setAvailableFunctions(puzzle.availableFunctions);
   }
 
-  function isGameFinished(game: Game) {
-    return (
-      blockNumber! >
-      BigInt(Number(game.startingBlock) + game.interval * game.numberOfTurns)
-    );
-  }
-
-  function hasGameStarted(game: Game) {
-    return blockNumber! > BigInt(game.startingBlock);
-  }
-
   useEffect(() => {
     if (game) {
-      if (hasGameStarted(game) && !isGameFinished(game)) {
+      if (
+        hasGameStarted(blockNumber!, game) &&
+        !isGameFinished(blockNumber!, game)
+      ) {
         // first fetch
         if (initialGrid.length === 0) {
           fetchPuzzle();
         }
         // only fetch puzzle if new turn
         else if (
-          Number(game.startingBlock) -
-            (Number(blockNumber!) % game.interval) ===
+          (Number(blockNumber) - Number(game.startingBlock)) % game.interval ===
           0
         ) {
           fetchPuzzle();
@@ -57,8 +48,13 @@ export function Game({ id }: { id: string }) {
     }
   }, [loading, blockNumber]);
 
-  const style = 'flex justify-center items-center text-align-center w-screen h-full';
-  const LoadingState = (text: string) => <div className={style}><h1>{text}</h1></div>;
+  const style =
+    'flex justify-center items-center text-align-center w-screen h-full text-2xl';
+  const LoadingState = (text: string) => (
+    <div className={style}>
+      <h1>{text}</h1>
+    </div>
+  );
 
   if (loading) {
     return LoadingState('Loading...');
@@ -67,16 +63,18 @@ export function Game({ id }: { id: string }) {
     return LoadingState('Game not found');
   }
 
-  if (isGameFinished(game)) {
+  if (isGameFinished(blockNumber!, game)) {
     return LoadingState('Game is finished');
   }
 
-  if (!hasGameStarted(game)) {
-    return LoadingState(`Game starts in ${Number(game.startingBlock) - Number(blockNumber!)} blocks`);
+  if (!hasGameStarted(blockNumber!, game)) {
+    return LoadingState(
+      `Game starts in ${Number(game.startingBlock) - Number(blockNumber!)} blocks`
+    );
   }
 
   return (
-    <Puzzle
+    <PuzzleMemoized
       initialGrid={initialGrid}
       finalGrid={finalGrid}
       availableFunctions={availableFunctions}
