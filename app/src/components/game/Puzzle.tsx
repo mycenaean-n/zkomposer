@@ -14,7 +14,7 @@ export const PuzzleContext = createContext<PuzzleContextType>({
   setFunctions: () => {},
 });
 
-function Puzzle(initConfig: Puzzle) {
+function Puzzle({initConfig, gameId}: {initConfig: Puzzle, gameId: string}) {
   const [functions, setFunctions] = useState<PuzzleFunctions>({
     remaining: initConfig.availableFunctions,
     chosen: [],
@@ -27,8 +27,6 @@ function Puzzle(initConfig: Puzzle) {
       });
   }, [initConfig])
 
-  console.log(initConfig)
-
   return (
     <PuzzleContext.Provider
       value={{
@@ -39,7 +37,7 @@ function Puzzle(initConfig: Puzzle) {
     >
       <div className="flex flex-col flex-grow w-full h-full">
         <Scene />
-        <Actions />
+        <Actions gameId={gameId}/>
       </div>
     </PuzzleContext.Provider>
   );

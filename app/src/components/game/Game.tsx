@@ -20,7 +20,7 @@ export function Game({ id }: { id: string }) {
   const blockNumber = useBlockNumber();
   const { games, loading } = useContext(GamesContext);
   const { getPuzzle } = useContract();
-  const {address} = useAccount()
+  const { address } = useAccount();
   const game = games.find((game) => game.id == id);
 
   async function fetchPuzzle() {
@@ -33,8 +33,7 @@ export function Game({ id }: { id: string }) {
     if (address == onChainGame.player1.address_) {
       setYourScore(onChainGame.player1.score);
       setOpponentScore(onChainGame.player2!.score);
-    }
-    else if (address == onChainGame.player2!.address_) {
+    } else if (address == onChainGame.player2!.address_) {
       setYourScore(onChainGame.player2!.score);
       setOpponentScore(onChainGame.player1.score);
     }
@@ -90,12 +89,15 @@ export function Game({ id }: { id: string }) {
     <div className="flex flex-col flex-grow h-full">
       <div className="flex-grow h-96">
         <PuzzleMemoized
-          initialGrid={initialGrid}
-          finalGrid={finalGrid}
-          availableFunctions={availableFunctions}
+          initConfig={{
+            initialGrid,
+            finalGrid,
+            availableFunctions,
+          }}
+          gameId={id}
         />
       </div>
-      <Footer gameId={id} yourScore={yourScore} opponentScore={opponentScore}/>
+      <Footer gameId={id} yourScore={yourScore} opponentScore={opponentScore} />
     </div>
   );
 }

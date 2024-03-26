@@ -1,5 +1,5 @@
 import { useProof } from '../../hooks/useProof';
-import { Proof } from '../../types/Proof';
+import { Proof, ZKProof } from '../../types/Proof';
 import styles from '../../styles/actions.module.scss';
 import { InputSignals } from 'circuits/types/proof.types';
 
@@ -8,7 +8,7 @@ export function GenerateProof({
   onResult,
 }: {
   inputSignals?: InputSignals;
-  onResult: (proof: Proof) => void;
+  onResult: (proof: ZKProof) => void;
 }) {
   const proofCallback = useProof('/zk/zkube.wasm', '/zk/zkube_final.zkey');
 
@@ -41,7 +41,8 @@ export function GenerateProof({
             account,
             selectedFunctionsIndexes,
           }).then((res) => {
-            onResult(res);
+            console.log(res)
+            onResult(res as unknown as ZKProof);
           });
         }
       }}

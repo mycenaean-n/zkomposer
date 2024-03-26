@@ -5,10 +5,11 @@ import { useAccount, usePublicClient } from 'wagmi';
 import { ZKUBE_ADDRESS } from '../config';
 import { waitForTransactionReceipt } from 'viem/actions';
 import { OnChainPuzzle, Puzzle } from '../types/Puzzle';
-import { Game, OnChainGame } from '../types/Game';
-import { convertPuzzleToBase4FromHex, padPuzzle } from 'circuits/utils/contracts/hexConversion';
+import { OnChainGame } from '../types/Game';
+import { convertPuzzleToBase4FromHex } from 'circuits/utils/contracts/hexConversion';
 import { mapGrid } from '../utils';
 import { circuitFunctionsArray } from 'circuits/types/circuitFunctions.types';
+import { ZKProof } from '../types/Proof';
 
 type WriteResult = {
   txHash: Hash;
@@ -27,6 +28,7 @@ type ContractActions = {
     game: OnChainGame;
     puzzle: Puzzle;
   }>;
+  submitPuzzle(gameId: bigint, proof: ZKProof): Promise<WriteResult>;
 };
 
 export function useContract(): ContractActions {
@@ -103,10 +105,30 @@ export function useContract(): ContractActions {
     const puzzle: Puzzle = {
       initialGrid: mapGrid(base4Puzzle.startingGrid),
       finalGrid: mapGrid(base4Puzzle.finalGrid),
-      availableFunctions: base4Puzzle.availableFunctions.map((functionId) => circuitFunctionsArray[functionId]),
+      availableFunctions: base4Puzzle.availableFunctions.map(
+        (functionId) => circuitFunctionsArray[functionId]
+      ),
     };
     return { roundBlock, game, puzzle };
   }
 
-  return { createGame, joinGame, getPuzzle };
+  async function submitPuzzle(
+    gameId: bigint,
+    proof: ZKProof
+  ): Promise<WriteResult> {
+    if (!address) {
+      throw new Error('No address found');
+    }
+    const txHash = await zKube.write.submitPuzzle([gameId, proof], {
+      account: address,
+      chain: walletClient.chain,
+    });
+
+    const receipt = await waitForTransactionReceipt(publicClient!, {
+      hash: txHash,
+    });
+    return { txHash, success: receipt.status === 'success' };
+  }
+
+  return { createGame, joinGame, getPuzzle, submitPuzzle };
 }
