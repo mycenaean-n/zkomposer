@@ -5,6 +5,7 @@ const ARGUMENT_VALUE = [
   'transformTwo',
   'transform',
   'removeAirBubbles',
+  'removeColumnWithLeadingZero',
 ];
 
 const argumentValue = process.argv[2];
@@ -24,6 +25,8 @@ if (!argumentValue) {
   mochaConfig.addFile('./test/transform.test.ts');
   mochaConfig.addFile('./test/removeAirBubbles.test.ts');
   mochaConfig.addFile('./test/zkube.test.ts');
+  mochaConfig.addFile('./test/reject.test.ts');
+  mochaConfig.addFile('./test/removeColumnWithLeadingZero.test.ts');
 } else {
   mochaConfig.addFile(`./test/${argumentValue}.test.ts`);
 }

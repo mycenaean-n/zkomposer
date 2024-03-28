@@ -87,7 +87,7 @@ describe.only('removecolumnwithleadingzero circuit', () => {
     circuit = await wasm(
       path.join(
         __dirname,
-        '../circuits/test/removecolumnwithleadingzero_test.circom'
+        '../circuits/test/removecolumnswithleadingzero_test.circom'
       )
     );
   });
