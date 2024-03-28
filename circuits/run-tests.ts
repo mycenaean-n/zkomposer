@@ -1,5 +1,11 @@
 import Mocha from 'mocha';
-const ARGUMENT_VALUE = ['zkube', 'stack', 'transformTwo', 'transform'];
+const ARGUMENT_VALUE = [
+  'zkube',
+  'stack',
+  'transformTwo',
+  'transform',
+  'removeAirBubbles',
+];
 
 const argumentValue = process.argv[2];
 
@@ -16,6 +22,7 @@ if (!argumentValue) {
   mochaConfig.addFile('./test/stack.test.ts');
   mochaConfig.addFile('./test/transformTwo.test.ts');
   mochaConfig.addFile('./test/transform.test.ts');
+  mochaConfig.addFile('./test/removeAirBubbles.test.ts');
   mochaConfig.addFile('./test/zkube.test.ts');
 } else {
   mochaConfig.addFile(`./test/${argumentValue}.test.ts`);
