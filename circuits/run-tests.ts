@@ -6,6 +6,7 @@ const ARGUMENT_VALUE = [
   'transform',
   'removeAirBubbles',
   'removeColumnWithLeadingZero',
+  'reject',
 ];
 
 const argumentValue = process.argv[2];
@@ -17,6 +18,7 @@ const mochaConfig = new Mocha({
   ui: 'bdd',
   color: true,
   require: ['ts-node/register'],
+  timeout: 10000,
 });
 
 if (!argumentValue) {
