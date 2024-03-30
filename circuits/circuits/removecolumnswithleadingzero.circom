@@ -23,6 +23,8 @@ template RemoveColumnsWithLeadingZero(W,H) {
     // columnSortingOdd[0] <== column;
     signal output out[W][H];
 
+    assert(onOff == 0 || onOff == 1);
+
     columnSortingOdd[0] <== grid;
     for(var i = 1; i < 5; i++) {
         for(var j = 0; j < W; j+=2) {

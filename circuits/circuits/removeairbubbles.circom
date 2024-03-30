@@ -23,6 +23,8 @@ template RemoveAirBubbles(W,H) {
     // columnSortingOdd[0] <== column;
     signal output out[W][H];
 
+    assert(onOff == 0 || onOff == 1);
+
     for(var i = 0; i < W; i++) {
         columnSortingOdd[i][0] <== grid[i];
         for(var j = 1; j < 5; j++) {
