@@ -5,6 +5,7 @@ import { calculateLabeledWitness } from './utils/calculateLabeledWitness';
 import path from 'path';
 import { Puzzles } from '../types/circuitFunctions.types';
 import { gridMutator } from '../utils/gridMutator';
+import { argumentBuilder } from '../utils/circuitFunctions';
 // import { calculateLabeledWitness } from "./calculateLabeledWitness";
 const puzzles: Puzzles = require('./data/puzzles.json');
 
@@ -62,13 +63,24 @@ describe.only('stack circuit', () => {
 
   ['0.1', '0.2', '0.3', '0.4'].forEach((lvl: string) => {
     it(`stack witness values for level ${lvl} equals stack function return values`, async () => {
+      const argument =
+        lvl === '0.1'
+          ? 'STACK_RED'
+          : lvl === '0.2'
+            ? 'STACK_BLUE'
+            : lvl === '0.3'
+              ? 'STACK_YELLOW'
+              : 'STACK_YELLOW';
+
+      const [onOff, color] = argumentBuilder(argument);
+
       const witness = await calculateLabeledWitness(
         circuit,
-        { grid: puzzles[lvl].initial, onOff: 1, color: 1 },
+        { grid: puzzles[lvl].initial, onOff, color },
         sanityCheck
       );
 
-      const targetGrid = gridMutator(initialGrid, ['STACK_YELLOW']);
+      const targetGrid = gridMutator(initialGrid, [argument]);
 
       for (let i = 0; i < config.gridWidth; i++) {
         for (let j = 0; j < config.gridHeight; j++) {
