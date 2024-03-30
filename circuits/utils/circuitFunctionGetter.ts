@@ -17,7 +17,7 @@ export function getCircuitFunctionIndex<
 >(funcName: T): T extends CircuitFunctions[] ? number[][] : number {
   if (Array.isArray(funcName)) {
     return funcName.map((name) => {
-      const functionArray = [0, 0, 0];
+      const functionArray = [0, 0, 0, 0];
       const funcIndex = getCircuitFunctionIndexByName(name);
       const functPreponent = name.split('_')[0] as AvailableFunctions;
       if (functPreponent !== 'EMPTY') {
