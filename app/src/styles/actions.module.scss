@@ -3,6 +3,7 @@
   align-items: center;
   justify-content: center;
   transition: 0s !important;
+  margin-bottom: 1rem;
 }
 
 .gameUI {
@@ -27,12 +28,12 @@
 }
 
 .function {
-  background-color: grey;
+  background-color: rgb(128, 128, 128);
   color: white;
-  width: 16vw;
-  margin-left: 8vw;
-  margin-top: 1rem;
-  font-size: 1.1rem;
+  width: 14rem;
+  margin-left: 5vw;
+  margin-top: 0.2rem;
+  font-size: 1rem;
   cursor: pointer;
   text-align: center;
 }
@@ -42,12 +43,20 @@
 }
 
 .submitButton {
+  background-color: rgb(128, 128, 128);
+  color: white;
   width: 16vw;
   position: relative;
   bottom: 0;
   font-size: 1.1rem;
   cursor: pointer;
   text-align: center;
+  
+}
+
+.submitButton:hover {
+  background-color: rgb(100, 100, 100);
+  transition-duration: 0.3s;
 }
 
 .disabledButton {

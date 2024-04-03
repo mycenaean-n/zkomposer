@@ -1,4 +1,4 @@
-import { puzzleMapping } from 'app/app/game/Puzzles';
+import { puzzleMapping } from 'app/src/mocks/Puzzles';
 import fs from 'fs';
 import { convertPuzzleToHex, padPuzzle } from './hexConversion';
 

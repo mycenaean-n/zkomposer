@@ -5,3 +5,10 @@ export interface Proof {
   b: [[Hex, Hex], [Hex, Hex]];
   c: [Hex, Hex];
 }
+
+export type ZKProof = {
+  a: readonly [bigint, bigint];
+  b: readonly [readonly [bigint, bigint], readonly [bigint, bigint]];
+  c: readonly [bigint, bigint];
+  input: bigint[];
+};

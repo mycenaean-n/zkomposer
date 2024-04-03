@@ -39,16 +39,18 @@ export function Grid(props: GridProps) {
   ];
   for (const [columnIndex, column] of props.grid.entries()) {
     for (const [cubeIndex, cube] of column.entries()) {
-      cubeElements.push(
-        <Cube
-          key={`[${columnIndex}, ${cubeIndex}]`}
-          colour={new Color(numberToColour(cube))}
-          position={new Vector3(xOffset, yOffset, zOffset)}
-        />
-      );
+      if (cube != 0) {
+        cubeElements.push(
+          <Cube
+            key={`[${columnIndex}, ${cubeIndex}]`}
+            colour={new Color(numberToColour(cube))}
+            position={new Vector3(xOffset, yOffset, zOffset)}
+          />
+        );
+      }
       yOffset += y / column.length;
     }
-    yOffset = 0;
+    yOffset = props.position.y;
     zOffset += z / column.length;
   }
   return (

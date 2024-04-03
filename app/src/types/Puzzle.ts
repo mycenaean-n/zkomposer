@@ -12,13 +12,19 @@ export enum PuzzleFunctionState {
 export type PuzzleFunctions = Record<PuzzleFunctionState, CircuitFunctions[]>;
 
 export type PuzzleContext = {
-  initConfig: PuzzleInit;
+  initConfig: Puzzle;
   functions: PuzzleFunctions;
   setFunctions: Dispatch<SetStateAction<PuzzleFunctions>>;
 };
 
-export type PuzzleInit = {
+export type Puzzle = {
   initialGrid: Colors[][];
   finalGrid: Colors[][];
   availableFunctions: CircuitFunctions[];
+};
+
+export type OnChainPuzzle = {
+  startingGrid: string;
+	finalGrid: string;
+	availableFunctions: number[];
 };
