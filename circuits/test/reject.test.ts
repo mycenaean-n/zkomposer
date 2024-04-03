@@ -1,15 +1,14 @@
+import { assert } from 'chai';
 import config from '../config';
 import { argumentBuilder } from '../utils/circuitFunctions';
 import { WasmTester, wasm } from 'circom_tester';
-import { calculateLabeledWitness } from './utils/calculateLabeledWitness';
-import { assert } from 'chai';
 import path from 'path';
+import { calculateLabeledWitness } from './utils/calculateLabeledWitness';
 import { Puzzles } from '../types/circuitFunctions.types';
 import { gridMutator } from '../utils/gridMutator';
-
 const puzzles: Puzzles = require('./data/puzzles.json');
 
-describe.only('transform circuit', () => {
+describe.only('transformtwo circuit', () => {
   let circuit: WasmTester;
 
   const sanityCheck = true;
@@ -17,15 +16,15 @@ describe.only('transform circuit', () => {
 
   before(async () => {
     circuit = await wasm(
-      path.join(__dirname, '../circuits/test/transform_test.circom')
+      path.join(__dirname, '../circuits/test/reject_test.circom')
     );
   });
 
   it('produces a witness with valid constraints', async () => {
-    const [onOff, inColor, outColor] = argumentBuilder('TRANSFORM_YELLOW_RED');
+    const [onOff, color] = argumentBuilder('REJECT_YELLOW');
 
     const witness = await circuit.calculateWitness(
-      { grid: initialGrid, onOff, inColor, outColor },
+      { grid: initialGrid, onOff, color },
       sanityCheck
     );
 
@@ -33,11 +32,11 @@ describe.only('transform circuit', () => {
   });
 
   it('has expected witness values for onOff == 1', async () => {
-    const [onOff, inColor, outColor] = argumentBuilder('TRANSFORM_YELLOW_RED');
+    const [onOff, color] = argumentBuilder('REJECT_YELLOW');
 
     const witness = await calculateLabeledWitness(
       circuit,
-      { grid: initialGrid, onOff, inColor, outColor },
+      { grid: initialGrid, onOff, color },
       sanityCheck
     );
 
@@ -46,18 +45,18 @@ describe.only('transform circuit', () => {
         assert.propertyVal(
           witness,
           `main.out[${i}][${j}]`,
-          String(puzzles[0.1].target[i][j])
+          String(puzzles[0.2].reject[i][j])
         );
       }
     }
   });
 
   it('has expected witness values for onOff == 0', async () => {
-    const [inColor, outColor] = argumentBuilder('TRANSFORM_YELLOW_RED');
+    const [onOff, color] = argumentBuilder('REJECT_YELLOW');
 
     const witness = await calculateLabeledWitness(
       circuit,
-      { grid: initialGrid, onOff: 0, inColor, outColor },
+      { grid: initialGrid, onOff: 0, color },
       sanityCheck
     );
 
@@ -73,11 +72,11 @@ describe.only('transform circuit', () => {
   });
 
   it('produces expected witness values', async () => {
-    const [onOff, inColor, outColor] = argumentBuilder('TRANSFORM_YELLOW_BLUE');
+    const [onOff, color] = argumentBuilder('REJECT_YELLOW');
 
     const witness = await calculateLabeledWitness(
       circuit,
-      { grid: initialGrid, onOff, inColor, outColor },
+      { grid: initialGrid, onOff: 0, color },
       sanityCheck
     );
 
@@ -92,18 +91,22 @@ describe.only('transform circuit', () => {
     it(`transform witness values for level ${lvl} equals transform function return values`, async () => {
       const argument =
         lvl === '0.1'
-          ? 'TRANSFORM_RED_YELLOW'
+          ? 'REJECT_YELLOW'
           : lvl === '0.2'
-            ? 'TRANSFORM_YELLOW_BLUE'
+            ? 'REJECT_RED'
             : lvl === '0.3'
-              ? 'TRANSFORM_BLUE_RED'
-              : 'TRANSFORM_YELLOW_RED';
+              ? 'REJECT_BLUE'
+              : 'REJECT_YELLOW';
 
-      const [onOff, inColor, outColor] = argumentBuilder(argument);
+      const [onOff, color] = argumentBuilder(argument);
 
       const witness = await calculateLabeledWitness(
         circuit,
-        { grid: puzzles[lvl].initial, onOff, inColor, outColor },
+        {
+          grid: puzzles[lvl].initial,
+          onOff,
+          color,
+        },
         sanityCheck
       );
 

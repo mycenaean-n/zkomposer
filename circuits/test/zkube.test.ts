@@ -20,18 +20,29 @@ describe.only('zkube circuit', () => {
   const levels: { lvl: string; args: CircuitFunctions[] }[] = [
     {
       lvl: '0.1',
-      args: ['TRANSFORM_YELLOW_RED', 'STACK_RED', 'TRANSFORMTWO_RED_BLUE_RED'],
+      args: [
+        'TRANSFORM_YELLOW_RED',
+        'STACK_RED',
+        'TRANSFORMTWO_RED_BLUE_RED',
+        'REJECT_RED',
+      ],
     },
     {
       lvl: '0.2',
-      args: ['STACK_RED', 'EMPTY', 'EMPTY'],
+      args: [
+        'REJECT_RED',
+        'TRANSFORM_YELLOW_RED',
+        'STACK_RED',
+        'TRANSFORMTWO_RED_BLUE_RED',
+      ],
     },
     {
       lvl: '0.3',
       args: [
-        'STACK_RED',
+        'TRANSFORMTWO_RED_BLUE_RED',
+        'REJECT_RED',
         'TRANSFORM_YELLOW_RED',
-        'TRANSFORMTWO_RED_RED_YELLOW',
+        'STACK_RED',
       ],
     },
     {
@@ -40,7 +51,16 @@ describe.only('zkube circuit', () => {
         'TRANSFORM_YELLOW_BLUE',
         'STACK_RED',
         'TRANSFORMTWO_BLUE_RED_YELLOW',
+        'EMPTY',
       ],
+    },
+    {
+      lvl: '0.1',
+      args: ['EMPTY', 'EMPTY', 'EMPTY', 'EMPTY'],
+    },
+    {
+      lvl: '0.2',
+      args: ['TRANSFORM_RED_BLUE', 'STACK_RED', 'EMPTY', 'EMPTY'],
     },
   ];
 
@@ -53,11 +73,13 @@ describe.only('zkube circuit', () => {
       'TRANSFORM_YELLOW_RED',
       'STACK_RED',
       'TRANSFORMTWO_RED_BLUE_RED',
+      'EMPTY',
     ]);
     const circuitFunctionArguments = getCircuitFunctionIndex([
       'TRANSFORM_YELLOW_RED',
       'STACK_RED',
       'TRANSFORMTWO_RED_BLUE_RED',
+      'EMPTY',
     ]);
 
     const witness = await circuit.calculateWitness(
@@ -79,10 +101,12 @@ describe.only('zkube circuit', () => {
       'TRANSFORM_YELLOW_RED',
       'STACK_RED',
       'EMPTY',
+      'EMPTY',
     ]);
     const circuitFunctionArguments = getCircuitFunctionIndex([
       'TRANSFORM_YELLOW_RED',
       'STACK_RED',
+      'EMPTY',
       'EMPTY',
     ]);
 
@@ -114,12 +138,14 @@ describe.only('zkube circuit', () => {
       'TRANSFORM_YELLOW_RED',
       'STACK_RED',
       'TRANSFORMTWO_RED_BLUE_RED',
+      'REJECT_RED',
     ]);
 
     const circuitFunctionArguments = getCircuitFunctionIndex([
       'TRANSFORM_YELLOW_RED',
       'STACK_RED',
       'TRANSFORMTWO_RED_BLUE_RED',
+      'REJECT_RED',
     ]);
 
     const witness = await calculateLabeledWitness(
@@ -136,12 +162,12 @@ describe.only('zkube circuit', () => {
 
     assert.notPropertyVal(
       witness,
-      'main.finalGridForPlayer[0][4]',
-      String(targetGrid[0][3])
+      'main.finalGridForPlayer[0][2]',
+      String(targetGrid[0][4])
     );
   });
 
-  it('reverts for selectedFunctionIndexes greater than 27', async () => {
+  it('reverts for selectedFunctionIndexes greater than 30', async () => {
     const targetGrid = gridMutator(initialGrid, [
       'TRANSFORM_YELLOW_RED',
       'STACK_RED',
@@ -156,9 +182,10 @@ describe.only('zkube circuit', () => {
         account: address,
         availableFunctions: availableFunctionsCircuit,
         selectedFunctionsIndexes: [
-          [0, 0, 45],
-          [1, 0, 0],
-          [2, 0, 0],
+          [0, 0, 31, 0],
+          [1, 0, 0, 0],
+          [2, 0, 0, 0],
+          [2, 0, 0, 0],
         ],
       },
       sanityCheck
@@ -188,9 +215,10 @@ describe.only('zkube circuit', () => {
         availableFunctions: availableFunctionsCircuit,
         account: address,
         selectedFunctionsIndexes: [
-          [1, 0, 0],
-          [1, 0, 0],
-          [-1, 0, 0],
+          [1, 0, 0, 0],
+          [1, 0, 0, 0],
+          [-1, 0, 0, 0],
+          [-1, 0, 0, 0],
         ],
       },
       sanityCheck

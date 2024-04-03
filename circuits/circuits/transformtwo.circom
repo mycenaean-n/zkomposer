@@ -54,6 +54,8 @@ template TransformTwo(W, H) {
     signal input outColorTop;
     signal output out[W][H];
 
+    assert(onOff == 0 || onOff == 1);
+
     signal inColoring <== (onOff * inColor) - (1 - onOff );
     signal outColoringBot <== (onOff * outColorBot) - (1 - onOff);
     signal outColoringTop <== (onOff * outColorTop) - (1 - onOff);
@@ -72,6 +74,9 @@ template TransformTwo(W, H) {
 
     signal changeFlags[W][H];
     signal isEqOut[W][H];
+
+    signal lastElOn[W];
+    signal lastElOff[W];
 
     for (var i = 0; i < W; i++) {
         var noTransformations = 0;
@@ -105,9 +110,10 @@ template TransformTwo(W, H) {
 
             changeFlags[i][j] <== isEqOut[i][j];
             noTransformations += isEqOut[i][j];
-
             out[i][j-1] <== tupleList[i][j][0];
         }
-        out[i][H-1] <== tupleList[i][H-1][1];
+        lastElOn[i] <== onOff * tupleList[i][7][1];
+        lastElOff[i] <== (1 - onOff) * grid[i][7];
+        out[i][H-1] <== lastElOn[i] + lastElOff[i];
     }
 }

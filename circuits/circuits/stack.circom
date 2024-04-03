@@ -32,5 +32,6 @@ template Stack(W, H) {
             stack[i][j] <== isZeroStack[i][j].out * gtZeroStack[i][j].out;
             out[i][prevIndex] <== grid[i][prevIndex] + stack[i][prevIndex]  * stackColoring;
         }
+        out[i][H - 1] <== grid[i][H - 1] + stack[i][H - 1] * stackColoring;
     }
 }

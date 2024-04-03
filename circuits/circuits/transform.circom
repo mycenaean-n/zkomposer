@@ -17,7 +17,7 @@ template Transform(W, H) {
     signal margin[W][H];
     signal mask[W][H];
 
-    component isOneTransform[W][H];
+    component isEq[W][H];
     
     for (var i = 0; i < W; i++) {
         for (var j = 0; j < H; j++) {
@@ -25,11 +25,11 @@ template Transform(W, H) {
             // 1st step
             margin[i][j] <== transformOutColoring - grid[i][j];
             // 2nd step
-            isOneTransform[i][j] = IsEqual();
-            isOneTransform[i][j].in[0] <== grid[i][j];
-            isOneTransform[i][j].in[1] <== transformInColoring;
+            isEq[i][j] = IsEqual();
+            isEq[i][j].in[0] <== grid[i][j];
+            isEq[i][j].in[1] <== transformInColoring;
             // 3rd step
-            mask[i][j] <== isOneTransform[i][j].out * margin[i][j];
+            mask[i][j] <== isEq[i][j].out * margin[i][j];
             // 4th step
             out[i][j] <== grid[i][j] + mask[i][j];
         }
