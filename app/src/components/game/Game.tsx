@@ -1,18 +1,105 @@
-import { getCircuitFunctionName } from 'circuits';
-import { mapGrid } from '../../utils';
-import { puzzleMapping } from '../../mocks/puzzles';
-import { Puzzle } from './Puzzle';
+'use client';
+import { PuzzleMemoized } from './Puzzle';
+import { useContext, useEffect, useMemo, useState } from 'react';
+import { GamesContext } from '@/src/context/GamesContext';
+import { useBlockNumber } from '../../hooks/useBlockNumber';
+import { CircuitFunctions } from 'circuits/types/circuitFunctions.types';
+import { useContract } from '@/src/hooks/useContract';
+import { hasGameStarted, isGameFinished } from '@/src/utils/game';
+import { Footer } from './Footer';
+import { useAccount } from 'wagmi';
 
-const mockPuzzle = puzzleMapping[0];
+export function Game({ id }: { id: string }) {
+  const [initialGrid, setInitialGrid] = useState<number[][]>([]);
+  const [finalGrid, setFinalGrid] = useState<number[][]>([]);
+  const [availableFunctions, setAvailableFunctions] = useState<
+    CircuitFunctions[]
+  >([]);
+  const [yourScore, setYourScore] = useState<number>(0);
+  const [opponentScore, setOpponentScore] = useState<number>(0);
+  const blockNumber = useBlockNumber();
+  const { games, loading } = useContext(GamesContext);
+  const { getPuzzle } = useContract();
+  const { address } = useAccount();
+  const game = games.find((game) => game.id == id);
 
-export function Game() {
+  async function fetchPuzzle() {
+    console.log('fetching puzzle');
+    if (!game) throw new Error('Game not found');
+    const { puzzle, game: onChainGame } = await getPuzzle(BigInt(game.id));
+    setInitialGrid(puzzle.initialGrid);
+    setFinalGrid(puzzle.finalGrid);
+    setAvailableFunctions(puzzle.availableFunctions);
+    if (address == onChainGame.player1.address_) {
+      setYourScore(onChainGame.player1.score);
+      setOpponentScore(onChainGame.player2!.score);
+    } else if (address == onChainGame.player2!.address_) {
+      setYourScore(onChainGame.player2!.score);
+      setOpponentScore(onChainGame.player1.score);
+    }
+  }
+
+  useEffect(() => {
+    if (game) {
+      if (
+        hasGameStarted(blockNumber!, game) &&
+        !isGameFinished(blockNumber!, game)
+      ) {
+        // first fetch
+        if (initialGrid.length === 0) {
+          fetchPuzzle();
+        }
+        // only fetch puzzle if new turn
+        else if (
+          (Number(blockNumber) - Number(game.startingBlock)) % game.interval ===
+          0
+        ) {
+          fetchPuzzle();
+        }
+      }
+    }
+  }, [loading, blockNumber]);
+
+  const initConfig = useMemo(() => ({
+    initialGrid,
+    finalGrid,
+    availableFunctions,
+  }), [initialGrid, finalGrid, availableFunctions]);
+
+  const style =
+    'flex flex-grow justify-center items-center text-align-center w-screen h-full text-2xl';
+  const LoadingState = (text: string) => (
+    <div className={style}>
+      <h1>{text}</h1>
+    </div>
+  );
+
+  if (loading) {
+    return LoadingState('Loading...');
+  }
+  if (!game) {
+    return LoadingState('Game not found');
+  }
+
+  if (isGameFinished(blockNumber!, game)) {
+    return LoadingState('Game is finished');
+  }
+
+  if (!hasGameStarted(blockNumber!, game)) {
+    return LoadingState(
+      `Game starts in ${Number(game.startingBlock) - Number(blockNumber!)} blocks`
+    );
+  }
+
   return (
-    <Puzzle
-      initialGrid={mapGrid(mockPuzzle.startingGrid)}
-      finalGrid={mapGrid(mockPuzzle.finalGrid)}
-      availableFunctions={mockPuzzle.availableFunctions.map((funcIndex) =>
-        getCircuitFunctionName(funcIndex)
-      )}
-    />
+    <div className="flex flex-col flex-grow h-full">
+      <div className="flex-grow h-96">
+        <PuzzleMemoized
+          initConfig={initConfig}
+          gameId={id}
+        />
+      </div>
+      <Footer gameId={id} yourScore={yourScore} opponentScore={opponentScore} />
+    </div>
   );
 }

@@ -1,11 +1,10 @@
 'use client';
-import { createContext, useState } from 'react';
-import styles from '../../styles/puzzle.module.scss';
+import { createContext, memo, useEffect, useState } from 'react';
 import { Actions } from './Actions';
 import {
   PuzzleFunctions,
   PuzzleContext as PuzzleContextType,
-  PuzzleInit,
+  Puzzle,
 } from '@/src/types/Puzzle';
 import { Scene } from './Scene';
 
@@ -15,11 +14,18 @@ export const PuzzleContext = createContext<PuzzleContextType>({
   setFunctions: () => {},
 });
 
-export function Puzzle(initConfig: PuzzleInit) {
+function Puzzle({initConfig, gameId}: {initConfig: Puzzle, gameId: string}) {
   const [functions, setFunctions] = useState<PuzzleFunctions>({
     remaining: initConfig.availableFunctions,
     chosen: [],
   });
+
+  useEffect(() => {
+      setFunctions({
+        remaining: initConfig.availableFunctions,
+        chosen: [],
+      });
+  }, [initConfig])
 
   return (
     <PuzzleContext.Provider
@@ -29,10 +35,12 @@ export function Puzzle(initConfig: PuzzleInit) {
         setFunctions,
       }}
     >
-      <div className={styles.Puzzle}>
+      <div className="flex flex-col flex-grow w-full h-full">
         <Scene />
-        <Actions />
+        <Actions gameId={gameId}/>
       </div>
     </PuzzleContext.Provider>
   );
 }
+
+export const PuzzleMemoized = memo(Puzzle);

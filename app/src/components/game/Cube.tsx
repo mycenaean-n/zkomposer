@@ -23,7 +23,7 @@ export function Cube(props: CubeProps) {
         <boxGeometry args={[0.5, 0.5, 0.5]} />
         <meshBasicMaterial color={props.colour} />
         <primitive object={lineSegments} position={[0.001, 0.001, 0.001]}>
-          <lineBasicMaterial color={'black'} linewidth={1} />
+          <lineBasicMaterial color={'black'} linewidth={6} />
         </primitive>
       </mesh>
     </group>

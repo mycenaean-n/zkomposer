@@ -14,12 +14,14 @@ import { PuzzleFunctionState } from '@/src/types/Puzzle';
 import { useAccount } from 'wagmi';
 import { getCircuitFunctionIndex } from 'circuits';
 import { InputSignals } from 'circuits/types/proof.types';
+import { useContract } from '@/src/hooks/useContract';
 
-export function Actions() {
+export function Actions({gameId}: {gameId: string}) {
   const { functions, setFunctions, initConfig } = useContext(PuzzleContext);
   const { address } = useAccount();
   const [inputSignals, setInputSignals] = useState<InputSignals>();
   const [proof, setProof] = useState<Proof>();
+  const {submitPuzzle} = useContract();
 
   useEffect(() => {
     if (!address) return;
@@ -151,7 +153,9 @@ export function Actions() {
         <div className={styles.submit}>
           <GenerateProof
             inputSignals={inputSignals}
-            onResult={(result) => setProof(result)}
+            onResult={async (result) => {
+              await submitPuzzle(BigInt(gameId), result);
+            }}
           />
         </div>
       </div>
