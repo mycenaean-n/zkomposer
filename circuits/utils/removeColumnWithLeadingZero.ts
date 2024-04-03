@@ -1,4 +1,4 @@
-import { Colors, Puzzles } from '../types/circuitFunctions.types';
+import { Colors } from '../types/circuitFunctions.types';
 
 export function removeColumnWithLeadingZero(
   grid: Array<Array<Colors>>

@@ -10,8 +10,8 @@ export enum Colors {
   Blue = 3,
 }
 
-export interface Puzzles {
-  [lvl: string]: {
+export type Puzzle = {
+  [lvl in '0.1' | '1.1' | '1.2' | '1.3' | '1.4']: {
     initial: Colors[][];
     availableFunctions: CircuitFunctions[];
     target: Colors[][];
@@ -22,7 +22,7 @@ export interface Puzzles {
     reject: Colors[][];
     filter: Colors[][];
   };
-}
+};
 
 export type AvailableFunctions =
   | 'EMPTY'
