@@ -1,68 +1,142 @@
 import { assert } from 'chai';
 import { gridMutator } from '../utils/gridMutator';
-import { CircuitFunctions, Puzzles } from '../types/circuitFunctions.types';
+import {
+  CircuitFunctions,
+  circuitFunctionsArray,
+  Puzzle,
+} from '../types/circuitFunctions.types';
 import { WasmTester, wasm } from 'circom_tester';
 import path from 'path';
 import { calculateLabeledWitness } from './utils/calculateLabeledWitness';
 import config from '../config';
 import { getCircuitFunctionIndex } from '../utils/circuitFunctionGetter';
-const puzzles: Puzzles = require('./data/puzzles.json');
+const puzzles: Puzzle = require('./data/puzzles.json');
+
+type Level = {
+  lvl: '0.1';
+  args: CircuitFunctions[];
+  availableFunctions: CircuitFunctions[];
+};
+const levels: Level[] = [
+  {
+    lvl: '0.1',
+    args: [
+      'STACK_RED',
+      'STACK_YELLOW',
+      'TRANSFORMTWO_RED_BLUE_RED',
+      'REJECT_RED',
+      'FILTER_RED',
+    ],
+    availableFunctions: [
+      'STACK_RED',
+      'STACK_YELLOW',
+      'TRANSFORMTWO_RED_BLUE_RED',
+      'REJECT_RED',
+      'FILTER_RED',
+      'EMPTY',
+      'EMPTY',
+      'EMPTY',
+    ],
+  },
+  {
+    lvl: '0.1',
+    args: [
+      'FILTER_BLUE',
+      'REJECT_RED',
+      'TRANSFORM_YELLOW_RED',
+      'STACK_RED',
+      'TRANSFORMTWO_RED_BLUE_RED',
+    ],
+    availableFunctions: [
+      'FILTER_BLUE',
+      'REJECT_RED',
+      'TRANSFORM_YELLOW_RED',
+      'STACK_RED',
+      'TRANSFORMTWO_RED_BLUE_RED',
+      'EMPTY',
+      'EMPTY',
+      'EMPTY',
+    ],
+  },
+  {
+    lvl: '0.1',
+    args: [
+      'TRANSFORMTWO_RED_BLUE_RED',
+      'FILTER_BLUE',
+      'REJECT_RED',
+      'TRANSFORM_YELLOW_RED',
+      'FILTER_RED',
+    ],
+    availableFunctions: [
+      'TRANSFORMTWO_RED_BLUE_RED',
+      'FILTER_BLUE',
+      'REJECT_RED',
+      'TRANSFORM_YELLOW_RED',
+      'FILTER_RED',
+      'EMPTY',
+      'EMPTY',
+      'EMPTY',
+    ],
+  },
+  {
+    lvl: '0.1',
+    args: [
+      'FILTER_RED',
+      'TRANSFORMTWO_RED_BLUE_RED',
+      'FILTER_BLUE',
+      'REJECT_RED',
+      'TRANSFORM_YELLOW_RED',
+    ],
+    availableFunctions: [
+      'TRANSFORMTWO_RED_BLUE_RED',
+      'FILTER_BLUE',
+      'REJECT_RED',
+      'TRANSFORM_YELLOW_RED',
+      'FILTER_RED',
+      'EMPTY',
+      'EMPTY',
+      'EMPTY',
+    ],
+  },
+  {
+    lvl: '0.1',
+    args: ['EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY'],
+    availableFunctions: [
+      'STACK_RED',
+      'STACK_RED',
+      'TRANSFORMTWO_RED_BLUE_RED',
+      'REJECT_RED',
+      'FILTER_RED',
+      'EMPTY',
+      'EMPTY',
+      'EMPTY',
+    ],
+  },
+  {
+    lvl: '0.1',
+    args: ['TRANSFORM_RED_BLUE', 'STACK_RED', 'EMPTY', 'EMPTY', 'EMPTY'],
+    availableFunctions: [
+      'TRANSFORM_RED_BLUE',
+      'STACK_RED',
+      'EMPTY',
+      'EMPTY',
+      'EMPTY',
+      'EMPTY',
+      'EMPTY',
+      'EMPTY',
+    ],
+  },
+];
 
 describe.only('zkube circuit', () => {
   let circuit: WasmTester;
 
   const sanityCheck = true;
   const address = '0x123';
-  const initialGrid = puzzles[0.3].initial;
-  const availableFunctionsCircuit = getCircuitFunctionIndex(
-    puzzles[0.3].availableFunctions
+  const initialGrid = puzzles[0.1].initial;
+  const availableFunctionsIndexesDefault = getCircuitFunctionIndex(
+    puzzles[0.1].availableFunctions
   );
-  const levels: { lvl: string; args: CircuitFunctions[] }[] = [
-    {
-      lvl: '0.1',
-      args: [
-        'TRANSFORM_YELLOW_RED',
-        'STACK_RED',
-        'TRANSFORMTWO_RED_BLUE_RED',
-        'REJECT_RED',
-      ],
-    },
-    {
-      lvl: '0.2',
-      args: [
-        'REJECT_RED',
-        'TRANSFORM_YELLOW_RED',
-        'STACK_RED',
-        'TRANSFORMTWO_RED_BLUE_RED',
-      ],
-    },
-    {
-      lvl: '0.3',
-      args: [
-        'TRANSFORMTWO_RED_BLUE_RED',
-        'REJECT_RED',
-        'TRANSFORM_YELLOW_RED',
-        'STACK_RED',
-      ],
-    },
-    {
-      lvl: '0.4',
-      args: [
-        'TRANSFORM_YELLOW_BLUE',
-        'STACK_RED',
-        'TRANSFORMTWO_BLUE_RED_YELLOW',
-        'EMPTY',
-      ],
-    },
-    {
-      lvl: '0.1',
-      args: ['EMPTY', 'EMPTY', 'EMPTY', 'EMPTY'],
-    },
-    {
-      lvl: '0.2',
-      args: ['TRANSFORM_RED_BLUE', 'STACK_RED', 'EMPTY', 'EMPTY'],
-    },
-  ];
 
   before(async () => {
     circuit = await wasm(path.join(__dirname, '../circuits/zkube.circom'));
@@ -74,11 +148,24 @@ describe.only('zkube circuit', () => {
       'STACK_RED',
       'TRANSFORMTWO_RED_BLUE_RED',
       'EMPTY',
+      'EMPTY',
     ]);
-    const circuitFunctionArguments = getCircuitFunctionIndex([
+    const selectedFunctionsIndexes = getCircuitFunctionIndex([
       'TRANSFORM_YELLOW_RED',
       'STACK_RED',
       'TRANSFORMTWO_RED_BLUE_RED',
+      'EMPTY',
+      'EMPTY',
+    ]);
+
+    const availableFunctionsIndexes = getCircuitFunctionIndex([
+      'TRANSFORM_YELLOW_RED',
+      'STACK_RED',
+      'TRANSFORMTWO_RED_BLUE_RED',
+      'EMPTY',
+      'EMPTY',
+      'EMPTY',
+      'EMPTY',
       'EMPTY',
     ]);
 
@@ -86,9 +173,9 @@ describe.only('zkube circuit', () => {
       {
         initialGrid: initialGrid,
         finalGrid: targetGrid,
-        availableFunctions: availableFunctionsCircuit,
+        availableFunctionsIndexes,
         account: address,
-        selectedFunctionsIndexes: circuitFunctionArguments,
+        selectedFunctionsIndexes,
       },
       sanityCheck
     );
@@ -102,10 +189,23 @@ describe.only('zkube circuit', () => {
       'STACK_RED',
       'EMPTY',
       'EMPTY',
+      'EMPTY',
     ]);
-    const circuitFunctionArguments = getCircuitFunctionIndex([
+    const selectedFunctionsIndexes = getCircuitFunctionIndex([
       'TRANSFORM_YELLOW_RED',
       'STACK_RED',
+      'EMPTY',
+      'EMPTY',
+      'EMPTY',
+    ]);
+
+    const availableFunctionsIndexes = getCircuitFunctionIndex([
+      'TRANSFORM_YELLOW_RED',
+      'STACK_RED',
+      'EMPTY',
+      'EMPTY',
+      'EMPTY',
+      'EMPTY',
       'EMPTY',
       'EMPTY',
     ]);
@@ -115,9 +215,9 @@ describe.only('zkube circuit', () => {
       {
         initialGrid: initialGrid,
         finalGrid: targetGrid,
-        availableFunctions: availableFunctionsCircuit,
+        availableFunctionsIndexes,
         account: address,
-        selectedFunctionsIndexes: circuitFunctionArguments,
+        selectedFunctionsIndexes,
       },
       sanityCheck
     );
@@ -139,13 +239,26 @@ describe.only('zkube circuit', () => {
       'STACK_RED',
       'TRANSFORMTWO_RED_BLUE_RED',
       'REJECT_RED',
+      'FILTER_BLUE',
     ]);
 
-    const circuitFunctionArguments = getCircuitFunctionIndex([
+    const selectedFunctionsIndexes = getCircuitFunctionIndex([
       'TRANSFORM_YELLOW_RED',
       'STACK_RED',
       'TRANSFORMTWO_RED_BLUE_RED',
       'REJECT_RED',
+      'FILTER_BLUE',
+    ]);
+
+    const availableFunctionsIndexes = getCircuitFunctionIndex([
+      'TRANSFORM_YELLOW_RED',
+      'STACK_RED',
+      'TRANSFORMTWO_RED_BLUE_RED',
+      'REJECT_RED',
+      'FILTER_BLUE',
+      'EMPTY',
+      'EMPTY',
+      'EMPTY',
     ]);
 
     const witness = await calculateLabeledWitness(
@@ -153,25 +266,23 @@ describe.only('zkube circuit', () => {
       {
         initialGrid: initialGrid,
         finalGrid: targetGrid,
-        availableFunctions: availableFunctionsCircuit,
+        availableFunctionsIndexes,
         account: address,
-        selectedFunctionsIndexes: circuitFunctionArguments,
+        selectedFunctionsIndexes,
       },
       sanityCheck
     );
 
-    assert.notPropertyVal(
-      witness,
-      'main.finalGridForPlayer[0][2]',
-      String(targetGrid[0][4])
-    );
+    assert.notPropertyVal(witness, 'main.finalGridForPlayer[0][2]', 2);
   });
 
-  it('reverts for selectedFunctionIndexes greater than 30', async () => {
+  it('reverts for selectedFunctionIndexes greater than 33', async () => {
     const targetGrid = gridMutator(initialGrid, [
       'TRANSFORM_YELLOW_RED',
       'STACK_RED',
       'TRANSFORMTWO_RED_BLUE_RED',
+      'FILTER_BLUE',
+      'EMPTY',
     ]);
 
     const witnessPromise = calculateLabeledWitness(
@@ -180,13 +291,8 @@ describe.only('zkube circuit', () => {
         initialGrid: initialGrid,
         finalGrid: targetGrid,
         account: address,
-        availableFunctions: availableFunctionsCircuit,
-        selectedFunctionsIndexes: [
-          [0, 0, 31, 0],
-          [1, 0, 0, 0],
-          [2, 0, 0, 0],
-          [2, 0, 0, 0],
-        ],
+        availableFunctionsIndexes: availableFunctionsIndexesDefault,
+        selectedFunctionsIndexes: [37, 1, 2, 2, 0],
       },
       sanityCheck
     );
@@ -212,14 +318,9 @@ describe.only('zkube circuit', () => {
       {
         initialGrid: initialGrid,
         finalGrid: targetGrid,
-        availableFunctions: availableFunctionsCircuit,
+        availableFunctionsIndexes: availableFunctionsIndexesDefault,
         account: address,
-        selectedFunctionsIndexes: [
-          [1, 0, 0, 0],
-          [1, 0, 0, 0],
-          [-1, 0, 0, 0],
-          [-1, 0, 0, 0],
-        ],
+        selectedFunctionsIndexes: [1, 1, -1, -1, 0],
       },
       sanityCheck
     );
@@ -233,21 +334,126 @@ describe.only('zkube circuit', () => {
     }
   });
 
-  levels.forEach(({ lvl, args }) => {
-    it(`witness values for level ${lvl} equals values returned for arguments ${args}`, async () => {
+  it('reverts if selected availableFunctionIndex is not an element of availableFunctionsIndexes', async () => {
+    const targetGrid = gridMutator(initialGrid, [
+      'TRANSFORM_YELLOW_RED',
+      'STACK_RED',
+      'TRANSFORMTWO_RED_YELLOW_BLUE',
+      'EMPTY',
+      'EMPTY',
+    ]);
+
+    const availableFunctionsIndexes = getCircuitFunctionIndex([
+      'TRANSFORM_YELLOW_RED',
+      'STACK_RED',
+      // false element
+      'TRANSFORMTWO_RED_YELLOW_RED',
+      'EMPTY',
+      'EMPTY',
+      'EMPTY',
+      'EMPTY',
+      'EMPTY',
+    ]);
+
+    const selectedFunctionsIndexes = getCircuitFunctionIndex([
+      'TRANSFORM_YELLOW_RED',
+      'STACK_RED',
+      // false element
+      'TRANSFORMTWO_RED_YELLOW_BLUE',
+      'EMPTY',
+      'EMPTY',
+    ]);
+
+    const witnessPromise = calculateLabeledWitness(
+      circuit,
+      {
+        initialGrid: initialGrid,
+        finalGrid: targetGrid,
+        availableFunctionsIndexes,
+        account: address,
+        selectedFunctionsIndexes,
+      },
+      sanityCheck
+    );
+
+    try {
+      await witnessPromise;
+      assert.fail('Expected an error but did not get one');
+    } catch (error: any) {
+      const expectedPattern = /Error in template ZKube/;
+      assert.match(error.message, expectedPattern);
+    }
+  });
+
+  it('reverts for duplicated use of availableFunction', async () => {
+    const targetGrid = gridMutator(initialGrid, [
+      'TRANSFORMTWO_RED_BLUE_RED',
+      'TRANSFORM_YELLOW_RED',
+      'STACK_RED',
+      // Duplicated
+      'TRANSFORMTWO_RED_BLUE_RED',
+    ]);
+
+    const selectedFunctionsIndexes = getCircuitFunctionIndex([
+      'TRANSFORMTWO_RED_BLUE_RED',
+      'TRANSFORM_YELLOW_RED',
+      'STACK_RED',
+      // Duplicated
+      'TRANSFORMTWO_RED_BLUE_RED',
+      'EMPTY',
+    ]);
+
+    const availableFunctionsIndexes = getCircuitFunctionIndex([
+      'TRANSFORM_YELLOW_RED',
+      'STACK_RED',
+      'TRANSFORMTWO_RED_BLUE_RED',
+      'REJECT_RED',
+      'FILTER_BLUE',
+      'EMPTY',
+      'EMPTY',
+      'EMPTY',
+    ]);
+
+    const witnessPromise = calculateLabeledWitness(
+      circuit,
+      {
+        initialGrid: initialGrid,
+        finalGrid: targetGrid,
+        availableFunctionsIndexes,
+        account: address,
+        selectedFunctionsIndexes,
+      },
+      sanityCheck
+    );
+
+    try {
+      await witnessPromise;
+      assert.fail('Expected an error but did not get one');
+    } catch (error: any) {
+      const expectedPattern = /Error in template ZKube/;
+      assert.match(error.message, expectedPattern);
+    }
+  });
+
+  levels.forEach(({ lvl, args, availableFunctions }: Level, i) => {
+    it(`witness values for iteraiton ${i + 1} and level ${lvl} equals values returned for arguments ${args}`, async () => {
       const initialGrid = puzzles[lvl].initial;
       const targetGrid = gridMutator(initialGrid, [...args]);
 
-      const circuitFunctionArguments = getCircuitFunctionIndex([...args]);
+      const selectedFunctionsIndexes = getCircuitFunctionIndex([...args]);
+
+      const availableFunctionsIndexes = [...availableFunctions].map((f) =>
+        circuitFunctionsArray.indexOf(f)
+      );
 
       const witness = await calculateLabeledWitness(
         circuit,
         {
           initialGrid,
           finalGrid: targetGrid,
-          availableFunctions: availableFunctionsCircuit,
+          availableFunctionsIndexes,
           account: address,
-          selectedFunctionsIndexes: circuitFunctionArguments,
+          selectedFunctionsIndexes,
         },
         sanityCheck
       );
