@@ -1,7 +1,4 @@
-import { writeFileSync } from 'fs';
-import path from 'path';
-import { Colors, Puzzles } from '../types/circuitFunctions.types';
-const puzzles: Puzzles = require('../test/data/puzzles.json');
+import { Colors } from '../types/circuitFunctions.types';
 
 export function stack(column: Array<Colors>, color: Colors): Array<Colors> {
   // Find the index of the first zero element

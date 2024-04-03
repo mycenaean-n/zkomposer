@@ -3,16 +3,16 @@ import config from '../config';
 import { WasmTester, wasm } from 'circom_tester';
 import { calculateLabeledWitness } from './utils/calculateLabeledWitness';
 import path from 'path';
-import { Puzzles } from '../types/circuitFunctions.types';
+import { Puzzle } from '../types/circuitFunctions.types';
 import { gridMutator } from '../utils/gridMutator';
 import { argumentBuilder } from '../utils/circuitFunctions';
 // import { calculateLabeledWitness } from "./calculateLabeledWitness";
-const puzzles: Puzzles = require('./data/puzzles.json');
+const puzzles: Puzzle = require('./data/puzzles.json');
 
 describe.only('stack circuit', () => {
   let circuit: WasmTester;
   const sanityCheck = true;
-  const initialGrid = puzzles[0.2].initial;
+  const initialGrid = puzzles[0.1].initial;
 
   before(async () => {
     circuit = await wasm(
@@ -41,7 +41,7 @@ describe.only('stack circuit', () => {
         assert.propertyVal(
           witness,
           `main.out[${i}][${j}]`,
-          String(puzzles[0.2].stack[i][j])
+          String(puzzles[0.1].stack[i][j])
         );
       }
     }
@@ -57,18 +57,18 @@ describe.only('stack circuit', () => {
     assert.notPropertyVal(
       witness,
       'main.out[0][0]',
-      String(puzzles[0.2].target[0][3])
+      String(puzzles[0.1].target[0][3])
     );
   });
 
-  ['0.1', '0.2', '0.3', '0.4'].forEach((lvl: string) => {
-    it(`stack witness values for level ${lvl} equals stack function return values`, async () => {
+  [1, 2, 3, 4].forEach((i: number) => {
+    it(`stack witness values for iteration ${i} equals stack function return values`, async () => {
       const argument =
-        lvl === '0.1'
+        i === 1
           ? 'STACK_RED'
-          : lvl === '0.2'
+          : i === 2
             ? 'STACK_BLUE'
-            : lvl === '0.3'
+            : i === 3
               ? 'STACK_YELLOW'
               : 'STACK_YELLOW';
 
@@ -76,7 +76,7 @@ describe.only('stack circuit', () => {
 
       const witness = await calculateLabeledWitness(
         circuit,
-        { grid: puzzles[lvl].initial, onOff, color },
+        { grid: puzzles[0.1].initial, onOff, color },
         sanityCheck
       );
 
