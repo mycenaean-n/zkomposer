@@ -96,20 +96,32 @@ describe.only('transformtwo circuit', () => {
   });
 
   ['0.1', '0.2', '0.3', '0.4'].forEach((lvl: string) => {
-    it(`transform witness values for level ${lvl} equals transform function return values`, async () => {
-      const [onOff, inColor, outColorBot, outColorTop] = argumentBuilder(
-        'TRANSFORMTWO_YELLOW_RED_YELLOW'
-      );
+    it(`transformTwo witness values for level ${lvl} equals transformTwo function return values`, async () => {
+      const argument =
+        lvl === '0.1'
+          ? 'TRANSFORMTWO_YELLOW_RED_YELLOW'
+          : lvl === '0.2'
+            ? 'TRANSFORMTWO_BLUE_YELLOW_RED'
+            : lvl === '0.3'
+              ? 'TRANSFORMTWO_RED_BLUE_YELLOW'
+              : 'TRANSFORMTWO_YELLOW_RED_BLUE';
+
+      const [onOff, inColor, outColorBot, outColorTop] =
+        argumentBuilder(argument);
 
       const witness = await calculateLabeledWitness(
         circuit,
-        { grid: initialGrid, onOff, inColor, outColorBot, outColorTop },
+        {
+          grid: puzzles[lvl].initial,
+          onOff,
+          inColor,
+          outColorBot,
+          outColorTop,
+        },
         sanityCheck
       );
 
-      const targetGrid = gridMutator(initialGrid, [
-        'TRANSFORMTWO_YELLOW_RED_YELLOW',
-      ]);
+      const targetGrid = gridMutator(puzzles[lvl].initial, [argument]);
 
       for (let i = 0; i < config.gridWidth; i++) {
         for (let j = 0; j < config.gridHeight; j++) {

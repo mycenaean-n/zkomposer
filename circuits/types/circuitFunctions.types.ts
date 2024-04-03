@@ -19,6 +19,7 @@ export interface Puzzles {
     stack: Colors[][];
     transformTwo: Colors[][];
     reverse: Colors[][];
+    reject: Colors[][];
   };
 }
 
@@ -26,12 +27,14 @@ export type AvailableFunctions =
   | 'EMPTY'
   | 'TRANSFORM'
   | 'STACK'
-  | 'TRANSFORMTWO';
+  | 'TRANSFORMTWO'
+  | 'REJECT';
 
 export const FUNCTION_ORDER = {
   TRANSFORM: 0,
   STACK: 1,
   TRANSFORMTWO: 2,
+  REJECT: 3,
 } as const;
 
 export const circuitFunctionsArray = [
@@ -66,6 +69,10 @@ export const circuitFunctionsArray = [
   'TRANSFORMTWO_BLUE_YELLOW_RED',
   'TRANSFORMTWO_BLUE_RED_YELLOW',
   'TRANSFORMTWO_BLUE_RED_BLUE',
+  // position 3
+  'REJECT_YELLOW',
+  'REJECT_RED',
+  'REJECT_BLUE',
 ] as const;
 
 export type CircuitFunctions = (typeof circuitFunctionsArray)[number];

@@ -1,5 +1,13 @@
 import Mocha from 'mocha';
-const ARGUMENT_VALUE = ['zkube', 'stack', 'transformTwo', 'transform'];
+const ARGUMENT_VALUE = [
+  'zkube',
+  'stack',
+  'transformTwo',
+  'transform',
+  'removeAirBubbles',
+  'removeColumnWithLeadingZero',
+  'reject',
+];
 
 const argumentValue = process.argv[2];
 
@@ -10,13 +18,17 @@ const mochaConfig = new Mocha({
   ui: 'bdd',
   color: true,
   require: ['ts-node/register'],
+  timeout: 10000,
 });
 
 if (!argumentValue) {
   mochaConfig.addFile('./test/stack.test.ts');
   mochaConfig.addFile('./test/transformTwo.test.ts');
   mochaConfig.addFile('./test/transform.test.ts');
+  mochaConfig.addFile('./test/removeAirBubbles.test.ts');
   mochaConfig.addFile('./test/zkube.test.ts');
+  mochaConfig.addFile('./test/reject.test.ts');
+  mochaConfig.addFile('./test/removeColumnWithLeadingZero.test.ts');
 } else {
   mochaConfig.addFile(`./test/${argumentValue}.test.ts`);
 }
