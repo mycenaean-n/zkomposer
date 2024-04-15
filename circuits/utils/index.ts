@@ -1,4 +1,4 @@
-export { gridMutator } from './gridMutator';
+export { gridMutator } from './mutators/gridMutator';
 export { Colors } from '../types/circuitFunctions.types';
 export {
   getCircuitFunctionIndex,
