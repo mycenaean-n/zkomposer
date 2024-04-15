@@ -3,8 +3,8 @@ import { PuzzleContext } from './Puzzle';
 import { Grid } from './Grid';
 import { Canvas } from '@react-three/fiber';
 import { Vector3 } from 'three';
-import { gridMutator } from 'circuits';
 import { ResponsiveCamera } from './ResponsiveCamera';
+import { gridMutator } from 'circuits';
 
 export function Scene() {
   const [grids, setGrids] = useState<number[][][]>([]);
@@ -40,24 +40,26 @@ export function Scene() {
   }, [functions]);
 
   return (
-    <Canvas
-      orthographic
-      camera={{
-        position: new Vector3(2, 2, 5),
-        left: -10,
-        right: 10,
-        top: 10,
-        bottom: -10,
-        zoom: 60,
-        near: -10,
-        far: 1000,
-      }}
-    >
-      <ambientLight intensity={Math.PI} />
-      <Grid grid={startingGrid} position={{ x: -2.5, y: -0.5, z: 0 }} />
-      {gridElements}
-      <Grid grid={finalGrid} position={{ x: 2.5, y: -0.5, z: 0 }} />
-      <ResponsiveCamera />
-    </Canvas>
+    <div style={{ height: '600px' }}>
+      <Canvas
+        orthographic
+        camera={{
+          position: new Vector3(2, 2, 5),
+          left: -10,
+          right: 10,
+          top: 10,
+          bottom: -10,
+          zoom: 60,
+          near: -10,
+          far: 1000,
+        }}
+      >
+        <ambientLight intensity={Math.PI} />
+        <Grid grid={startingGrid} position={{ x: -2.5, y: -0.5, z: 0 }} />
+        {gridElements}
+        <Grid grid={finalGrid} position={{ x: 2.5, y: -0.5, z: 0 }} />
+        <ResponsiveCamera />
+      </Canvas>
+    </div>
   );
 }

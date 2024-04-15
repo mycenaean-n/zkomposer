@@ -1,8 +1,8 @@
 import { useCallback } from 'react';
 import { Proof } from '../types/Proof';
-import { exportCalldataGroth16 } from 'circuits';
-import { Hex, hexToBigInt } from 'viem';
+import { Hex } from 'viem';
 import { InputSignals } from 'circuits/types/proof.types';
+import { exportCalldataGroth16 } from 'circuits';
 
 async function exportCallDataGroth16(
   input: InputSignals,
@@ -40,7 +40,7 @@ export function useProof(wasmPath: string, zkeyPath: string) {
         b: calldata.b.map((x) => x.map((y) => BigInt(y))),
         c: calldata.c.map((x) => BigInt(x)),
         input: calldata.Input.map((x) => BigInt(x)),
-      }
+      };
     },
     [wasmPath, zkeyPath]
   );
