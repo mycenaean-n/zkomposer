@@ -11,7 +11,7 @@ export enum Colors {
 }
 
 export type Puzzle = {
-  [lvl in '0.1' | '1.1' | '1.2' | '1.3' | '1.4']: {
+  [lvl in '0.1' | '1.1' | '1.2']: {
     initial: Colors[][];
     availableFunctions: CircuitFunctions[];
     target: Colors[][];
