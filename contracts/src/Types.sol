@@ -60,5 +60,6 @@ interface IZKubeVerifier {
 }
 
 interface IZKubePuzzleSet {
-    function getPuzzle(uint256 randomNumber) external view returns (Puzzle memory puzzle);
+    function getRandomPuzzle(uint256 randomNumber) external view returns (Puzzle memory puzzle);
+    function getPuzzle(uint256 puzzleId) external view returns (Puzzle calldata puzzle);
 }

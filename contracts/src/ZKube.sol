@@ -73,10 +73,10 @@ contract ZKube is IZKube {
         game = games[id];
         roundBlockNumber = getBlock(game.interval, game.startingBlock, game.numberOfRounds);
         uint256 randomNumber = getRandomNumber(roundBlockNumber);
-        puzzle = IZKubePuzzleSet(game.puzzleSet).getPuzzle(randomNumber);
+        puzzle = IZKubePuzzleSet(game.puzzleSet).getRandomPuzzle(randomNumber);
     }
 
-    function parseInputSignals(Puzzle memory puzzle) public view returns(uint256[137] memory inputSignals) {
+    function parseInputSignals(Puzzle memory puzzle, address sender) public pure returns(uint256[137] memory inputSignals) {
         uint[] memory base4StartingGrid = puzzle.startingGrid.hexToBase4();
         uint[] memory base4FinalGrid = puzzle.finalGrid.hexToBase4();
 
@@ -87,16 +87,16 @@ contract ZKube is IZKube {
         for (uint256 j = 0; j < 8; j++) {
             inputSignals[j+128] = puzzle.availableFunctions[j];
         }
-        inputSignals[136] = uint160(msg.sender);
+        inputSignals[136] = uint160(sender);
     }
 
-    function verifySolution(Puzzle memory puzzle, Proof calldata proof) public view returns (bool) {
-        return IZKubeVerifier(verifier).verifyProof(proof.a, proof.b, proof.c, parseInputSignals(puzzle));
+    function verifySolution(Puzzle memory puzzle, Proof calldata proof, address sender) public view returns (bool) {
+        return IZKubeVerifier(verifier).verifyProof(proof.a, proof.b, proof.c, parseInputSignals(puzzle, sender));
     }
 
-    function verifyPuzzleSolution(address puzzleSet, uint256 puzzleId, Proof calldata proof) external view returns (bool) {
+    function verifyPuzzleSolution( address puzzleSet, uint256 puzzleId, Proof calldata proof, address sender) external view returns (bool) {
         Puzzle memory puzzle = IZKubePuzzleSet(puzzleSet).getPuzzle(puzzleId);
-        if (!verifySolution(puzzle, proof)) revert InvalidProof();
+        if (!verifySolution(puzzle, proof, sender)) revert InvalidProof();
         return true;
     }
 
@@ -109,7 +109,7 @@ contract ZKube is IZKube {
         roundSubmitted[id][sender][roundBlockNumber] = true;
 
         //TODO: add msg.sender and puzzle check in here, in verifier function?? Is it a publicSignal we hardcode as msg.sender? call selectPuzzle here to get publicSignals??
-        if (!verifySolution(puzzle, proof)) revert InvalidProof();
+        if (!verifySolution(puzzle, proof, msg.sender)) revert InvalidProof();
 
         if (sender == game.player1.address_) {
             game.player1 = Player(
