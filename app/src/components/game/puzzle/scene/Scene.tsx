@@ -5,6 +5,7 @@ import { Canvas } from '@react-three/fiber';
 import { Vector3 } from 'three';
 import { ResponsiveCamera } from './ResponsiveCamera';
 import { gridMutator } from 'circuits';
+import IntermediateGrids from './IntermediateGrids';
 
 export function Scene() {
   const [grids, setGrids] = useState<number[][][]>([]);
@@ -57,7 +58,7 @@ export function Scene() {
         >
           <ambientLight intensity={Math.PI} />
           <Grid grid={startingGrid} position={{ x: -2.5, y: -0.5, z: 0 }} />
-          {gridElements}
+          <IntermediateGrids {...{ grids, availableFunctions }} />
           <ResponsiveCamera />
         </Canvas>
       </div>
