@@ -40,26 +40,40 @@ export function Scene() {
   }, [functions]);
 
   return (
-    <div style={{ height: '600px' }}>
-      <Canvas
-        orthographic
-        camera={{
-          position: new Vector3(2, 2, 5),
-          left: -10,
-          right: 10,
-          top: 10,
-          bottom: -10,
-          zoom: 60,
-          near: -10,
-          far: 1000,
-        }}
-      >
-        <ambientLight intensity={Math.PI} />
-        <Grid grid={startingGrid} position={{ x: -2.5, y: -0.5, z: 0 }} />
-        {gridElements}
-        <Grid grid={finalGrid} position={{ x: 2.5, y: -0.5, z: 0 }} />
-        <ResponsiveCamera />
-      </Canvas>
+    <div className="flex" style={{ height: '600px' }}>
+      <div className="flex-1">
+        <Canvas
+          orthographic
+          camera={{
+            position: new Vector3(2, 2, 4),
+            left: -50,
+            right: 50,
+            top: 10,
+            bottom: -10,
+            zoom: 60,
+            near: -10,
+            far: 1000,
+          }}
+        >
+          <ambientLight intensity={Math.PI} />
+          <Grid grid={startingGrid} position={{ x: -2.5, y: -0.5, z: 0 }} />
+          {gridElements}
+          <ResponsiveCamera />
+        </Canvas>
+      </div>
+      <div className="flex-2">
+        <h3 className="b text-xl mt-8">Goal:</h3>
+        <Canvas
+          orthographic
+          camera={{
+            position: new Vector3(2, 2, 4),
+            zoom: 40,
+          }}
+        >
+          <Grid grid={finalGrid} position={{ x: 0.4, y: 1, z: 0 }} />
+          <ResponsiveCamera />
+        </Canvas>
+      </div>
     </div>
   );
 }
