@@ -1,5 +1,5 @@
 import { CircuitFunctions } from 'circuits/types/circuitFunctions.types';
-import { Grid } from './Grid';
+import { Grid } from './grid/Grid';
 
 export default function IntermediateGrids({
   grids,

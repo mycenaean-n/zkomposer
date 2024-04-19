@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { PuzzleContext } from '../Puzzle';
-import { Grid } from './Grid';
+import { Grid } from './grid/Grid';
 import { Canvas } from '@react-three/fiber';
 import { Vector3 } from 'three';
 import { ResponsiveCamera } from './ResponsiveCamera';
