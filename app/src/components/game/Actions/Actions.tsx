@@ -1,21 +1,16 @@
 import { useContext, useEffect, useState } from 'react';
-import { PuzzleContext } from './Puzzle';
-import { ZKProof } from '../../types/Proof';
-import styles from '../../styles/actions.module.scss';
-import { GenerateProof } from '../zk/generateProof';
-import {
-  DragDropContext,
-  Draggable,
-  DropResult,
-  Droppable,
-  ResponderProvided,
-} from 'react-beautiful-dnd';
+import { PuzzleContext } from '../Puzzle';
+import { ZKProof } from '../../../types/Proof';
+import styles from '../../../styles/actions.module.scss';
+import { GenerateProof } from '../../zk/generateProof';
+import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
 import { PuzzleFunctionState } from '@/src/types/Puzzle';
 import { useAccount } from 'wagmi';
 import { InputSignals } from 'circuits/types/proof.types';
-import { ZKUBE_PUZZLESET_ADDRESS } from '../../config';
-import { useZkubeContract } from '../../hooks/useContract';
+import { ZKUBE_PUZZLESET_ADDRESS } from '../../../config';
+import { useZkubeContract } from '../../../hooks/useContract';
 import { getCircuitFunctionIndex } from 'circuits';
+import Function from './Function';
 
 export function Actions({
   gameId,
@@ -41,61 +36,7 @@ export function Actions({
     });
   }, [functions, address]);
 
-  const remainingFunctionsElements = functions.remaining.map(
-    (funcName, index) => (
-      <Draggable
-        draggableId={String(funcName)}
-        key={String(funcName)}
-        index={index}
-      >
-        {(provided) => (
-          <div
-            className={styles.function}
-            key={index}
-            onClick={() => {
-              setFunctions((prev) => ({
-                remaining: prev.remaining.toSpliced(index, 1),
-                chosen: prev.chosen.concat(funcName),
-                available: prev.available,
-              }));
-            }}
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-          >
-            {funcName}
-          </div>
-        )}
-      </Draggable>
-    )
-  );
-
-  const chosenFunctionsElements = functions.chosen.map((funcName, index) => {
-    return (
-      <Draggable draggableId={String(funcName)} key={funcName} index={index}>
-        {(provided) => (
-          <div
-            className={styles.function}
-            key={index}
-            onClick={() => {
-              setFunctions((prev) => ({
-                remaining: prev.remaining.concat(funcName),
-                chosen: prev.chosen.toSpliced(index, 1),
-                available: prev.available,
-              }));
-            }}
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-          >
-            {funcName}
-          </div>
-        )}
-      </Draggable>
-    );
-  });
-
-  function onDragEnd(result: DropResult, provided: ResponderProvided) {
+  function onDragEnd(result: DropResult) {
     const { source, destination } = result;
     if (!destination) return;
     if (source.droppableId != destination.droppableId) {
@@ -123,7 +64,7 @@ export function Actions({
     }
   }
 
-  const submitPuzzleSolution = (result: ZKProof) => {
+  function submitPuzzleSolution(result: ZKProof) {
     try {
       if (gameId && submitPuzzle) {
         submitPuzzle(BigInt(gameId), result).then((res) => {
@@ -146,7 +87,7 @@ export function Actions({
     } catch (e) {
       console.error('Error submitting puzzle solution', e);
     }
-  };
+  }
 
   return (
     <div className={styles.actions}>
@@ -159,7 +100,13 @@ export function Actions({
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
-                {remainingFunctionsElements}
+                {functions.remaining.map((funcName, i) => (
+                  <Function
+                    elementType="remaining"
+                    funcName={funcName}
+                    index={i}
+                  />
+                ))}
                 {provided.placeholder}
               </div>
             )}
@@ -172,7 +119,13 @@ export function Actions({
                 className={styles.chosenFunctions}
                 {...provided.droppableProps}
               >
-                {chosenFunctionsElements}
+                {functions.chosen.map((funcName, i) => (
+                  <Function
+                    elementType="chosen"
+                    funcName={funcName}
+                    index={i}
+                  />
+                ))}
                 {provided.placeholder}
               </div>
             )}
