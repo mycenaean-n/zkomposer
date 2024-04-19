@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { PuzzleContext } from './Puzzle';
+import { PuzzleContext } from '../Puzzle';
 import { Grid } from './Grid';
 import { Canvas } from '@react-three/fiber';
 import { Vector3 } from 'three';

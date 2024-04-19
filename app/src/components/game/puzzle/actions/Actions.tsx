@@ -1,16 +1,16 @@
 import { useContext, useEffect, useState } from 'react';
 import { PuzzleContext } from '../Puzzle';
-import { ZKProof } from '../../../types/Proof';
 import styles from '../../../styles/actions.module.scss';
-import { GenerateProof } from '../../zk/generateProof';
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
 import { PuzzleFunctionState } from '@/src/types/Puzzle';
 import { useAccount } from 'wagmi';
 import { InputSignals } from 'circuits/types/proof.types';
-import { ZKUBE_PUZZLESET_ADDRESS } from '../../../config';
-import { useZkubeContract } from '../../../hooks/useContract';
+import { ZKUBE_PUZZLESET_ADDRESS } from '../../../../config';
+import { useZkubeContract } from '../../../../hooks/useContract';
 import { getCircuitFunctionIndex } from 'circuits';
 import Function from './Function';
+import { ZKProof } from '../../../../types/Proof';
+import { GenerateProof } from '../../../zk/generateProof';
 
 export function Actions({
   gameId,

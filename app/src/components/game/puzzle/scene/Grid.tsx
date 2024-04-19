@@ -1,5 +1,5 @@
-import { Cube } from './Cube';
 import { Vector3, ColorRepresentation, Color } from 'three';
+import { Cube } from './Cube';
 
 type GridProps = {
   grid: number[][];

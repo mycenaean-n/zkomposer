@@ -1,5 +1,5 @@
 'use client';
-import { PuzzleMemoized } from './Puzzle';
+import { PuzzleMemoized } from './puzzle/Puzzle';
 import { useContext, useState } from 'react';
 import { GamesContext } from '@/src/context/GamesContext';
 import { useBlockNumber } from '../../hooks/useBlockNumber';

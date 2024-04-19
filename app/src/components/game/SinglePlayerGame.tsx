@@ -1,5 +1,5 @@
 'use client';
-import { PuzzleMemoized } from './Puzzle';
+import { PuzzleMemoized } from './puzzle/Puzzle';
 import { useFetchPuzzleByPuzzleId } from '../../hooks/usePuzzleData';
 
 export function SinglePlayerGame({ id }: { id: string }) {
