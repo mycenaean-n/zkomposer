@@ -7,6 +7,9 @@ module.exports = {
         800: '800px', // This adds a class named `w-800`
         1000: '1000px', // This adds a class named `w-800`
       },
+      colors: {
+        'btn-gray': '#bbb',
+      },
     },
   },
   plugins: [],

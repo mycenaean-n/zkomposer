@@ -54,8 +54,8 @@ export function Scene() {
           <ResponsiveCamera />
         </Canvas>
       </div>
-      <div className="flex-2">
-        <h3 className="b text-xl mt-8">Goal:</h3>
+      <div className="flex-2 overflow-hidden">
+        <h3 className="text-2xl font-extrabold mt-8">Target</h3>
         <Canvas
           orthographic
           camera={{

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { PuzzleContext } from '../Puzzle';
-import styles from '../../../styles/actions.module.scss';
+import styles from '../../../../styles/actions.module.scss';
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
 import { PuzzleFunctionState } from '@/src/types/Puzzle';
 import { useAccount } from 'wagmi';

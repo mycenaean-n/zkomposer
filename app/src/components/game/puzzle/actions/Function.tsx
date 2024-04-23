@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { PuzzleContext } from '../Puzzle';
-import styles from '../../../styles/actions.module.scss';
+import styles from '../../../../styles/actions.module.scss';
 import { CircuitFunctions } from 'circuits/types/circuitFunctions.types';
 
 function DisplayName({ funcName }: { funcName: CircuitFunctions }) {
@@ -27,7 +27,7 @@ function DisplayName({ funcName }: { funcName: CircuitFunctions }) {
   return (
     <>
       {colorThree ? (
-        <div className="p-1 h-10 rounded-md">
+        <div className="p-1 h-10 rounded-md bg-btn-gray">
           <div className="flex justify-center">
             <div className="flex pt-1 mr-1">
               <div className="leading-6">{displayName}</div>
@@ -47,7 +47,7 @@ function DisplayName({ funcName }: { funcName: CircuitFunctions }) {
           </div>
         </div>
       ) : (
-        <div className=" p-1 h-10 rounded-md">
+        <div className=" p-1 h-10 rounded-md bg-btn-gray">
           <div className="flex justify-center mt-1.5">
             <div className="leading-5">{displayName}</div>
             <div
@@ -86,7 +86,7 @@ export default function Function({
     >
       {(provided) => (
         <div
-          className={styles.function}
+          className="m-1 h-10 rounded-sm bg-btn-gray cursor-pointer "
           key={index}
           onClick={() => {
             elementType === 'remaining'
