@@ -19,9 +19,16 @@ function DisplayName({ funcName }: { funcName: CircuitFunctions }) {
   }
 
   function bgColor(color: string) {
-    if (color === 'YELLOW') return 'bg-yellow-500';
-    if (color === 'BLUE') return 'bg-blue-500';
-    if (color === 'RED') return 'bg-red-500';
+    switch (color) {
+      case 'YELLOW':
+        return 'bg-yellow-500';
+      case 'RED':
+        return 'bg-red-500';
+      case 'BLUE':
+        return 'bg-blue-500';
+      default:
+        throw Error('Not expected colour.');
+    }
   }
 
   return (
