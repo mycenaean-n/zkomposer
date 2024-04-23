@@ -90,54 +90,54 @@ export function Actions({
   }
 
   return (
-    <div className={styles.actions}>
-      <div className={styles.gameUI}>
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId={PuzzleFunctionState.remaining}>
-            {(provided) => (
-              <div
-                className={styles.availableFunctions}
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-              >
-                {functions.remaining.map((funcName, i) => (
-                  <Function
-                    elementType="remaining"
-                    funcName={funcName}
-                    index={i}
-                  />
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
+    <div className={styles.gameUI}>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId={PuzzleFunctionState.remaining}>
+          {(provided) => (
+            <div
+              className={styles.availableFunctions}
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              {functions.remaining.map((funcName, i) => (
+                <Function
+                  key={`${funcName}-${i}`}
+                  elementType="remaining"
+                  funcName={funcName}
+                  index={i}
+                />
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
 
-          <Droppable droppableId={PuzzleFunctionState.chosen}>
-            {(provided) => (
-              <div
-                ref={provided.innerRef}
-                className={styles.chosenFunctions}
-                {...provided.droppableProps}
-              >
-                {functions.chosen.map((funcName, i) => (
-                  <Function
-                    elementType="chosen"
-                    funcName={funcName}
-                    index={i}
-                  />
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
-        </DragDropContext>
+        <Droppable droppableId={PuzzleFunctionState.chosen}>
+          {(provided) => (
+            <div
+              ref={provided.innerRef}
+              className={styles.chosenFunctions}
+              {...provided.droppableProps}
+            >
+              {functions.chosen.map((funcName, i) => (
+                <Function
+                  key={`${funcName}-${i}`}
+                  elementType="chosen"
+                  funcName={funcName}
+                  index={i}
+                />
+              ))}
+              {provided.placeholder}
+            </div>
+          )}
+        </Droppable>
+      </DragDropContext>
 
-        <div className={styles.submit}>
-          <GenerateProof
-            inputSignals={inputSignals}
-            onResult={submitPuzzleSolution}
-          />
-        </div>
+      <div className={styles.submit}>
+        <GenerateProof
+          inputSignals={inputSignals}
+          onResult={submitPuzzleSolution}
+        />
       </div>
     </div>
   );

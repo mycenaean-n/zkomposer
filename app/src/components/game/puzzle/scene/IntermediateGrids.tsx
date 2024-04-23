@@ -4,12 +4,13 @@ import { Grid } from './grid/Grid';
 export default function IntermediateGrids({
   grids,
   availableFunctions,
+  xPos,
 }: {
   grids: number[][][];
   availableFunctions: CircuitFunctions[];
+  xPos: number;
 }) {
   const xGap = 5 / availableFunctions.length;
-  let xPos = -2.5;
   return grids.map((grid, index) => {
     xPos += xGap;
     return (

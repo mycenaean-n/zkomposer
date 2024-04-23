@@ -18,10 +18,8 @@ export function SinglePlayerGame({ id }: { id: string }) {
   }
 
   return (
-    <div className="flex flex-col flex-grow h-full">
-      <div className="flex-grow h-96">
-        {puzzleData && <PuzzleMemoized initConfig={puzzleData} puzzleId={id} />}
-      </div>
-    </div>
+    <>
+      {puzzleData && <PuzzleMemoized initConfig={puzzleData} puzzleId={id} />}
+    </>
   );
 }
