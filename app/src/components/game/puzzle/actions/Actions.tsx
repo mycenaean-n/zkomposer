@@ -95,7 +95,7 @@ export function Actions({
         <Droppable droppableId={PuzzleFunctionState.remaining}>
           {(provided) => (
             <div
-              className={styles.availableFunctions}
+              className="border border-black border-solid rounded-sm"
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
@@ -116,7 +116,7 @@ export function Actions({
           {(provided) => (
             <div
               ref={provided.innerRef}
-              className={styles.chosenFunctions}
+              className="border border-black border-dashed rounded-sm"
               {...provided.droppableProps}
             >
               {functions.chosen.map((funcName, i) => (
