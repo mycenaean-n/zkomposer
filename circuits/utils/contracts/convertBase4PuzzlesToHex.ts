@@ -4,7 +4,7 @@ import { Puzzle } from '../../types/circuitFunctions.types';
 import {getCircuitFunctionIndex} from '../circuitFunctionGetter'
 import { OnChainPuzzle } from 'app/src/types/Puzzle';
 import path from 'path';
-const puzzles: Puzzle = require('../../test/data/puzzles.json');
+const puzzles: Puzzle = require('../../data/cube-composer.puzzles.json');
 
 function main() {
   const hexPuzzles: OnChainPuzzle[] = [];
@@ -17,7 +17,7 @@ function main() {
     hexPuzzles.push(convertPuzzleToHex(puzzleMapping));
   }
   fs.writeFileSync(
-    path.join(__dirname, '../../../contracts/script/data/puzzles.json'),
+    path.join(__dirname, '../../../contracts/script/data/cube-composer.puzzles.json'),
     JSON.stringify(hexPuzzles)
   );
 }
