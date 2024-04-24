@@ -1,35 +1,46 @@
 import React, { useContext } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { PuzzleContext } from '../Puzzle';
-import styles from '../../../../styles/actions.module.scss';
-import { CircuitFunctions } from 'circuits/types/circuitFunctions.types';
+import {
+  AvailableFunctions,
+  CircuitFunctions,
+  ColorsKeys,
+} from 'circuits/types/circuitFunctions.types';
+import { parseCircuitArguments } from 'circuits';
+
+function bgColor(color: ColorsKeys) {
+  switch (color) {
+    case 'YELLOW':
+      return 'bg-yellow-500';
+    case 'RED':
+      return 'bg-red-500';
+    case 'BLUE':
+      return 'bg-blue-500';
+    default:
+      throw Error('Not expected colour.');
+  }
+}
+
+function getDisplayName(func: AvailableFunctions) {
+  switch (func) {
+    case 'TRANSFORM':
+      return 'transform';
+    case 'STACK':
+      return 'stack';
+    case 'TRANSFORMTWO':
+      return 'map';
+    case 'REJECT':
+      return 'reject';
+    case 'FILTER':
+      return 'filter';
+    default:
+      throw Error('Not expected function.');
+  }
+}
 
 function DisplayName({ funcName }: { funcName: CircuitFunctions }) {
-  const [func, colorOne, colorTwo, colorThree] = funcName.split('_');
-
-  let displayName = '';
-  if (func === 'STACK') {
-    displayName += 'stack';
-  } else if (func === 'TRANSFORM') {
-    displayName += 'transform';
-  } else if (func === 'REJECT') {
-    displayName += 'reject';
-  } else if (func === 'TRANSFORMTWO') {
-    displayName += 'map ';
-  }
-
-  function bgColor(color: string) {
-    switch (color) {
-      case 'YELLOW':
-        return 'bg-yellow-500';
-      case 'RED':
-        return 'bg-red-500';
-      case 'BLUE':
-        return 'bg-blue-500';
-      default:
-        throw Error('Not expected colour.');
-    }
-  }
+  const { func, colorOne, colorTwo, colorThree } =
+    parseCircuitArguments(funcName);
 
   return (
     <>
@@ -37,7 +48,7 @@ function DisplayName({ funcName }: { funcName: CircuitFunctions }) {
         <div className="p-1 h-10 rounded-md bg-btn-gray">
           <div className="flex justify-center">
             <div className="flex pt-1 mr-1">
-              <div className="leading-6">{displayName}</div>
+              <div className="leading-6">{getDisplayName(func)}</div>
               <div
                 className={`m-1 ml-2 mt-1.5 h-3.5 w-3.5 ${bgColor(colorOne)} border-black border`}
               ></div>
@@ -56,7 +67,7 @@ function DisplayName({ funcName }: { funcName: CircuitFunctions }) {
       ) : (
         <div className=" p-1 h-10 rounded-md bg-btn-gray">
           <div className="flex justify-center mt-1.5">
-            <div className="leading-5">{displayName}</div>
+            <div className="leading-5">{getDisplayName(func)}</div>
             <div
               className={`m-1 ml-2 h-3.5 w-3.5 ${bgColor(colorOne)} border-black border`}
             ></div>

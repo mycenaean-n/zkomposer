@@ -6,6 +6,7 @@ import { Vector3 } from 'three';
 import { ResponsiveCamera } from './ResponsiveCamera';
 import { gridMutator } from 'circuits';
 import IntermediateGrids from './IntermediateGrids';
+import { Colors } from 'circuits/types/circuitFunctions.types';
 
 const STARTING_X_POS = -2.5;
 const STARTING_Y_POS = 0.5;
@@ -21,7 +22,7 @@ export function Scene() {
 
   useEffect(() => {
     setGrids([]);
-    const mutatedGrids: number[][][] = [];
+    const mutatedGrids: Colors[][][] = [];
     functions.chosen.forEach((funcName, index) => {
       if (index == 0) {
         const grid = gridMutator(startingGrid, [funcName]);
