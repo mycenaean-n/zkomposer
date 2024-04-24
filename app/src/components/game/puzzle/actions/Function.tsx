@@ -48,7 +48,7 @@ function DisplayName({ funcName }: { funcName: CircuitFunctions }) {
         <div className="p-1 h-10 rounded-md bg-btn-gray">
           <div className="flex justify-center">
             <div className="flex pt-1 mr-1">
-              <div className="leading-6">{getDisplayName(func)}</div>
+              <div className="leading-snug">{getDisplayName(func)}</div>
               <div
                 className={`m-1 ml-2 mt-1.5 h-3.5 w-3.5 ${bgColor(colorOne)} border-black border`}
               ></div>
@@ -67,7 +67,7 @@ function DisplayName({ funcName }: { funcName: CircuitFunctions }) {
       ) : (
         <div className=" p-1 h-10 rounded-md bg-btn-gray">
           <div className="flex justify-center mt-1.5">
-            <div className="leading-5">{getDisplayName(func)}</div>
+            <div className="leading-snug">{getDisplayName(func)}</div>
             <div
               className={`m-1 ml-2 h-3.5 w-3.5 ${bgColor(colorOne)} border-black border`}
             ></div>
