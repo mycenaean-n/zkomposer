@@ -10,7 +10,7 @@ import path from 'path';
 import { calculateLabeledWitness } from './utils/calculateLabeledWitness';
 import config from '../config';
 import { getCircuitFunctionIndex } from '../utils/circuitFunctionGetter';
-const puzzles: Puzzle = require('./data/puzzles.json');
+const puzzles: Puzzle = require('../data/test.puzzles.json');
 
 type Level = {
   lvl: '0.1';
