@@ -5,7 +5,7 @@ import { calculateLabeledWitness } from './utils/calculateLabeledWitness';
 import { assert } from 'chai';
 import path from 'path';
 import { Puzzle } from '../types/circuitFunctions.types';
-import { gridMutator } from '../utils/mutators/gridMutator';
+import { gridMutator } from '../utils/transformers/gridMutator';
 const puzzles: Puzzle = require('../data/test.puzzles.json');
 
 describe.only('transform circuit', () => {

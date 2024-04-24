@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import { gridMutator } from '../utils/mutators/gridMutator';
+import { gridMutator } from '../utils/transformers/gridMutator';
 import {
   CircuitFunctions,
   circuitFunctionsArray,

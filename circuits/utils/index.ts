@@ -1,4 +1,4 @@
-export { gridMutator } from './mutators/gridMutator';
+export { gridMutator } from './transformers/gridMutator';
 export {
   getCircuitFunctionIndex,
   getCircuitFunctionName,
