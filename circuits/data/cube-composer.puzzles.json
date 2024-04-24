@@ -129,12 +129,12 @@
   },
   "1.1": {
     "availableFunctions": [
-      "TRANSFORM_YELLOW_RED",
-      "STACK_YELLOW",
       "TRANSFORMTWO_YELLOW_YELLOW_RED",
+      "TRANSFORMTWO_BLUE_RED_BLUE",
       "REJECT_YELLOW",
-      "EMPTY",
-      "EMPTY",
+      "REJECT_BLUE",
+      "FILTER_RED",
+      "STACK_RED",
       "EMPTY",
       "EMPTY"
     ],
@@ -162,7 +162,7 @@
   "1.2": {
     "availableFunctions": [
       "TRANSFORMTWO_YELLOW_YELLOW_RED",
-      "TRANSFORMTWO_BLUE_BLUE_RED",
+      "TRANSFORMTWO_BLUE_RED_BLUE",
       "REJECT_YELLOW",
       "REJECT_BLUE",
       "FILTER_RED",
@@ -185,6 +185,38 @@
       [2, 2, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0]
+    ]
+  },
+  "1.4": {
+    "availableFunctions": [
+      "TRANSFORMTWO_YELLOW_YELLOW_RED",
+      "TRANSFORMTWO_BLUE_RED_BLUE",
+      "REJECT_YELLOW",
+      "REJECT_BLUE",
+      "FILTER_RED",
+      "STACK_RED",
+      "EMPTY",
+      "EMPTY"
+    ],
+    "initial": [
+      [2, 2, 0, 0, 0, 0, 0, 0],
+      [2, 1, 0, 0, 0, 0, 0, 0],
+      [3, 1, 0, 0, 0, 0, 0, 0],
+      [3, 3, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0]
+    ],
+    "target": [
+      [2, 2, 0, 0, 0, 0, 0, 0],
+      [2, 2, 0, 0, 0, 0, 0, 0],
+      [2, 2, 0, 0, 0, 0, 0, 0],
+      [2, 2, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0],
