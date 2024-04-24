@@ -8,7 +8,7 @@ import { gridMutator } from 'circuits';
 import IntermediateGrids from './IntermediateGrids';
 import { Colors } from 'circuits/types/circuitFunctions.types';
 
-const STARTING_X_POS = -2.5;
+const STARTING_X_POS = -3;
 const STARTING_Y_POS = 0.5;
 
 export function Scene() {
