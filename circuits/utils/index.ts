@@ -5,3 +5,4 @@ export {
 } from './circuitFunctionGetter';
 export { exportCalldataGroth16 } from './exportCalldataGroth16';
 export { parseCircuitArguments } from './parseCircuitArguments';
+export type { Colors } from '../types/circuitFunctions.types';
