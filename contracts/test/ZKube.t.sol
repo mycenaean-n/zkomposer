@@ -3,7 +3,7 @@ pragma solidity ^0.8.13;
 
 import {Test, console2} from "forge-std/Test.sol";
 import {ZKubeHarness} from "./ZKube.harness.sol";
-import {Game, Player, Proof, Puzzle} from "../src/Types.sol";
+import {Game, Player, Proof, Puzzle, PuzzleJson} from "../src/Types.sol";
 import {ZKubePuzzleSet} from "../src/ZKubePuzzleSet.sol";
 import "../src/Errors.sol";
 import {ZKubeVerifier} from "../src/ZKubeVerifier.sol";
@@ -22,25 +22,46 @@ contract ZKubeTest is Test {
     address public player1 = vm.addr(2);
     address public player2 = vm.addr(3);
 
-    Proof internal proof;
+    Proof internal proofPlayerOne;
+    Proof internal proofPlayerTwo;
+    Puzzle[] public puzzles;
 
     constructor() {
         string memory root = vm.projectRoot();
-        string memory path = string.concat(root, "/test/zkube_proof.json");
-        string memory json = vm.readFile(path);
+        string memory proofPathPlayerOne = string.concat(root, "/test/zkube_proof_player_one.json");
+        string memory proofPathPlayerTwo = string.concat(root, "/test/zkube_proof_player_two.json");
+        string memory proofJsonPlayerOne = vm.readFile(proofPathPlayerOne);
+        string memory proofJsonPlayerTwo = vm.readFile(proofPathPlayerTwo);
 
-        uint256[138] memory input;
+        proofPlayerOne = parseProof(proofJsonPlayerOne);
+        proofPlayerTwo = parseProof(proofJsonPlayerTwo);
+
+        string memory puzzleFile = vm.readFile("./script/data/puzzles.json");
+        bytes memory puzzleJson = vm.parseJson(puzzleFile);
+        PuzzleJson[] memory _puzzles = abi.decode(puzzleJson, (PuzzleJson[]));
+        for (uint256 i; i < _puzzles.length; i++) {
+            Puzzle memory puzzle = Puzzle({
+                startingGrid: bytes16(_puzzles[i].startingGrid),
+                finalGrid: bytes16(_puzzles[i].finalGrid),
+                availableFunctions: _puzzles[i].availableFunctions
+            });
+            puzzles.push(puzzle);
+        }
+    }
+
+    function parseProof (string memory proofJson) public pure returns(Proof memory) {
+        uint256[137] memory input;
         for (uint256 i = 0; i < input.length; i++) {
-            input[i] = json.readUint(string.concat(string.concat(".[3].[", Strings.toString(i)), "]"));
+            input[i] = proofJson.readUint(string.concat(string.concat(".[3].[", Strings.toString(i)), "]"));
         }
 
-        proof = Proof(
-            [json.readUint(".[0].[0]"), json.readUint(".[0].[1]")],
+        return Proof(
+            [proofJson.readUint(".[0].[0]"), proofJson.readUint(".[0].[1]")],
             [
-                [json.readUint(".[1].[0].[0]"), json.readUint(".[1].[0].[1]")],
-                [json.readUint(".[1].[1].[0]"), json.readUint(".[1].[1].[1]")]
+                [proofJson.readUint(".[1].[0].[0]"), proofJson.readUint(".[1].[0].[1]")],
+                [proofJson.readUint(".[1].[1].[0]"), proofJson.readUint(".[1].[1].[1]")]
             ],
-            [json.readUint(".[2].[0]"), json.readUint(".[2].[1]")],
+            [proofJson.readUint(".[2].[0]"), proofJson.readUint(".[2].[1]")],
             input
         );
     }
@@ -53,8 +74,10 @@ contract ZKubeTest is Test {
         zKubeVerifier = address(new ZKubeVerifier());
         ZKubePuzzleSet puzzleSet = new ZKubePuzzleSet("Demo puzzle set", "ZKPuzzle");
         zKubePuzzleSet = address(puzzleSet);
-        Puzzle memory puzzle;
-        puzzleSet.addPuzzle(puzzle);
+
+         for (uint256 i; i < puzzles.length; i++) {
+            puzzleSet.addPuzzle(puzzles[i]);
+        }
         zKube = new ZKubeHarness(zKubeVerifier);
         vm.stopPrank();
     }
@@ -167,7 +190,7 @@ contract ZKubeTest is Test {
         Player memory expectedP1 = Player(player1, 1, 1);
         vm.expectEmit(true, true, true, true);
         emit PlayerSubmitted(id, expectedP1);
-        zKube.submitPuzzle(id, proof);
+        zKube.submitPuzzle(id, proofPlayerOne);
 
         (Player memory p1,,,,,) = zKube.games(id);
 
@@ -196,10 +219,10 @@ contract ZKubeTest is Test {
         vm.roll(startingBlock);
 
         vm.startPrank(player1);
-        zKube.submitPuzzle(id, proof);
+        zKube.submitPuzzle(id, proofPlayerOne);
 
         vm.expectRevert(AlreadySubmitted.selector);
-        zKube.submitPuzzle(id, proof);
+        zKube.submitPuzzle(id, proofPlayerOne);
     }
 
     function testConcrete_submitPuzzle_reverts_ifGameFinished() public {
@@ -227,7 +250,7 @@ contract ZKubeTest is Test {
         vm.roll(startingBlock);
 
         vm.startPrank(player1);
-        zKube.submitPuzzle(id, proof);
+        zKube.submitPuzzle(id, proofPlayerOne);
 
         vm.roll(startingBlock + interval * numberOfRounds);
 
@@ -245,12 +268,12 @@ contract ZKubeTest is Test {
         vm.roll(startingBlock);
 
         vm.prank(player1);
-        zKube.submitPuzzle(id, proof);
+        zKube.submitPuzzle(id, proofPlayerOne);
 
         vm.roll(block.number + interval);
 
         vm.prank(player2);
-        zKube.submitPuzzle(id, proof);
+        zKube.submitPuzzle(id, proofPlayerTwo);
 
         vm.roll(block.number + interval * numberOfRounds);
 

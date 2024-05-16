@@ -12,3 +12,5 @@ error NotValidPlayer();
 error GameFinished();
 error GameNotFinished();
 error AlreadySubmitted();
+error InvalidSolver();
+error InvalidAvailableFunction();

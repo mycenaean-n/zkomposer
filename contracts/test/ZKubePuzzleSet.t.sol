@@ -33,9 +33,9 @@ contract ZKubePuzzleSetTest is Test {
         }
     }
 
-    function test_fuzz_getPuzzle(uint256 randomNumber) public {
+    function test_fuzz_getRandomPuzzle(uint256 randomNumber) public {
         _addPuzzles();
-        Puzzle memory puzzle = puzzleSet.getPuzzle(randomNumber);
+        Puzzle memory puzzle = puzzleSet.getRandomPuzzle(randomNumber);
         assertNotEq(puzzle.availableFunctions.length, 0, "Puzzle should have functions");
         assertNotEq(puzzle.finalGrid, bytes16(0), "Puzzle should have final grid");
         assertNotEq(puzzle.startingGrid, bytes16(0), "Puzzle should have starting grid");
