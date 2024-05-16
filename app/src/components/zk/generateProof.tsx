@@ -29,6 +29,7 @@ export function GenerateProof({
 
   return (
     <button
+      className="bg-btn-gray p-2 rounded-sm w-full cursor-pointer z-100"
       disabled={
         !initialGrid ||
         !finalGrid ||
@@ -36,7 +37,6 @@ export function GenerateProof({
         !selectedFunctionsIndexes ||
         !availableFunctionsIndexes
       }
-      className={styles.submitButton}
       onClick={async () => {
         if (!initialGrid) alert('Initial grid is not ready');
         else if (!finalGrid) alert('finalGrid is not ready');

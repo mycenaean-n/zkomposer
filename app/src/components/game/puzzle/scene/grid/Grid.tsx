@@ -1,5 +1,5 @@
-import { Cube } from './Cube';
 import { Vector3, ColorRepresentation, Color } from 'three';
+import { Cube } from './Cube';
 
 type GridProps = {
   grid: number[][];
@@ -42,7 +42,7 @@ export function Grid(props: GridProps) {
       if (cube != 0) {
         cubeElements.push(
           <Cube
-            key={`[${columnIndex}, ${cubeIndex}]`}
+            key={`[${columnIndex}-${cubeIndex}]`}
             colour={new Color(numberToColour(cube))}
             position={new Vector3(xOffset, yOffset, zOffset)}
           />
