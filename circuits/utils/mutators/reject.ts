@@ -1,5 +1,5 @@
 import { removeColumnWithLeadingZero } from './removeColumnWithLeadingZero';
-import { Colors } from '../types/circuitFunctions.types';
+import { Colors } from '../../types/circuitFunctions.types';
 
 export function reject(column: Array<Colors>, color: Colors): Array<Colors> {
   if (column.length === 0) return [];

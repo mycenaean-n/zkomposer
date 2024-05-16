@@ -1,4 +1,4 @@
-import { Colors, Puzzles } from '../types/circuitFunctions.types';
+import { Colors } from '../../types/circuitFunctions.types';
 import { reject } from './reject';
 
 function removeAirBubbles(column: Array<Colors>): Array<Colors> {

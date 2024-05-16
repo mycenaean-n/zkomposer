@@ -1,4 +1,4 @@
-import { Colors } from '../types/circuitFunctions.types';
+import { Colors } from '../../types/circuitFunctions.types';
 
 type TransformTwoArguments = {
   column: Array<Colors>;

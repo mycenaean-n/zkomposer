@@ -3,7 +3,7 @@ import { transformGrid } from './transform';
 import { transformTwoGrid } from './transformTwo';
 import { rejectGrid } from './reject';
 import { filter } from './filter';
-import { CircuitFunctions, Colors } from '../types/circuitFunctions.types';
+import { CircuitFunctions, Colors } from '../../types/circuitFunctions.types';
 
 type ArgumentColor = 'YELLOW' | 'RED' | 'BLUE';
 

@@ -1,7 +1,5 @@
 import {
-  AvailableFunctions,
   CircuitFunctions,
-  FUNCTION_ORDER,
   circuitFunctionsArray,
 } from '../types/circuitFunctions.types';
 
@@ -16,9 +14,11 @@ export function getCircuitFunctionIndex<
   T extends CircuitFunctions | CircuitFunctions[],
 >(funcName: T): T extends CircuitFunctions[] ? number[] : number {
   if (Array.isArray(funcName)) {
-    return funcName.map((name) => {
-      return getCircuitFunctionIndexByName(name);
-    }) as T extends CircuitFunctions[] ? number[] : number;
+    const emptyArray: number[] = new Array(5).fill(0);
+    funcName.forEach((name, i) => {
+      emptyArray[i] = getCircuitFunctionIndexByName(name);
+    });
+    return emptyArray as T extends CircuitFunctions[] ? number[] : number;
   } else {
     return getCircuitFunctionIndexByName(
       funcName

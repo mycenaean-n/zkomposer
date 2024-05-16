@@ -1,4 +1,4 @@
-import { Colors } from '../types/circuitFunctions.types';
+import { Colors } from '../../types/circuitFunctions.types';
 
 export function filter(
   grid: Array<Array<Colors>>,

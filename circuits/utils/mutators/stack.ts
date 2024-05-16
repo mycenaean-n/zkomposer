@@ -1,4 +1,4 @@
-import { Colors } from '../types/circuitFunctions.types';
+import { Colors } from '../../types/circuitFunctions.types';
 
 export function stack(column: Array<Colors>, color: Colors): Array<Colors> {
   // Find the index of the first zero element
