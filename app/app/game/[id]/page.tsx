@@ -1,6 +1,5 @@
-import { Footer } from '@/src/components/game/Footer';
-import { Game } from '../../../src/components/game/Game';
+import { MultiplayerGame } from '../../../src/components/game/MultiplayerGame';
 
 export default function Page({ params }: { params: { id: string } }) {
-  return <Game id={params.id} />;
+  return <MultiplayerGame id={params.id} />;
 }

@@ -1,5 +1,5 @@
 import { useProof } from '../../hooks/useProof';
-import { Proof, ZKProof } from '../../types/Proof';
+import { ZKProof } from '../../types/Proof';
 import styles from '../../styles/actions.module.scss';
 import { InputSignals } from 'circuits/types/proof.types';
 
@@ -19,13 +19,22 @@ export function GenerateProof({
       </button>
     );
 
-  const { initialGrid, finalGrid, account, selectedFunctionsIndexes } =
-    inputSignals;
+  const {
+    initialGrid,
+    finalGrid,
+    account,
+    selectedFunctionsIndexes,
+    availableFunctionsIndexes,
+  } = inputSignals;
 
   return (
     <button
       disabled={
-        !initialGrid || !finalGrid || !account || !selectedFunctionsIndexes
+        !initialGrid ||
+        !finalGrid ||
+        !account ||
+        !selectedFunctionsIndexes ||
+        !availableFunctionsIndexes
       }
       className={styles.submitButton}
       onClick={async () => {
@@ -40,8 +49,8 @@ export function GenerateProof({
             finalGrid,
             account,
             selectedFunctionsIndexes,
+            availableFunctionsIndexes,
           }).then((res) => {
-            console.log(res)
             onResult(res as unknown as ZKProof);
           });
         }
