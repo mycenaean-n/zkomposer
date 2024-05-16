@@ -1,5 +1,5 @@
 import { Puzzle } from '../types/circuitFunctions.types';
-import { gridMutator } from './mutators/gridMutator';
+import { gridMutator } from './transformers/gridMutator';
 import { getCircuitFunctionIndex } from '../utils/circuitFunctionGetter';
 import { writeFileSync } from 'fs';
 const puzzles: Puzzle = require('../test/data/puzzles.json');

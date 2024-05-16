@@ -132,12 +132,16 @@ export function Actions({
           )}
         </Droppable>
       </DragDropContext>
-
       <div className={styles.submit}>
         <GenerateProof
           inputSignals={inputSignals}
           onResult={submitPuzzleSolution}
         />
+        {puzzleSolved && (
+          <div className="text-green-600 text-xl text-center p-2 rounded-sm mt-2">
+            Puzzle Solved!
+          </div>
+        )}
       </div>
     </div>
   );

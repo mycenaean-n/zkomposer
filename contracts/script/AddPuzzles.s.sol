@@ -7,11 +7,12 @@ import {ZKubePuzzleSet} from "../src/ZKubePuzzleSet.sol";
 import {ZKubeVerifier} from "../src/ZKubeVerifier.sol";
 import {Puzzle, PuzzleJson} from "../src/Types.sol";
 
-contract DeployZKube is Script {
+contract AddPuzzles is Script {
     Puzzle[] public puzzles;
+    address public constant PUZZLE_SET_CONTRACT_ADDRESS = 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0;
 
     function setUp() public {
-        string memory file = vm.readFile("./script/data/test.puzzles.json");
+        string memory file = vm.readFile("./script/data/cube-composer.puzzles.json");
         bytes memory json = vm.parseJson(file);
         PuzzleJson[] memory _puzzles = abi.decode(json, (PuzzleJson[]));
         for (uint256 i; i < _puzzles.length; i++) {
@@ -26,11 +27,8 @@ contract DeployZKube is Script {
 
     function run() public {
         vm.startBroadcast();
-        ZKubeVerifier verifier = new ZKubeVerifier();
-        new ZKube(address(verifier));
-        ZKubePuzzleSet puzzleSet = new ZKubePuzzleSet("Official ZKubePuzzleSet", "ZKPuzzle");
         for (uint256 i; i < puzzles.length; i++) {
-            puzzleSet.addPuzzle(puzzles[i]);
+            ZKubePuzzleSet(PUZZLE_SET_CONTRACT_ADDRESS).addPuzzle(puzzles[i]);
         }
         vm.stopBroadcast();
     }

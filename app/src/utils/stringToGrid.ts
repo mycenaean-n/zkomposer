@@ -1,4 +1,4 @@
-import { Colors } from "circuits";
+import { Colors } from 'circuits/types/circuitFunctions.types';
 
 export function stringToGrid(str: string): Colors[][] {
   if (str.length % 8 !== 0) {
@@ -8,7 +8,10 @@ export function stringToGrid(str: string): Colors[][] {
   const grid: Colors[][] = [];
 
   for (let i = 0; i < str.length; i += 8) {
-    const row = str.slice(i, i + 8).split('').map((char) => parseInt(char));
+    const row = str
+      .slice(i, i + 8)
+      .split('')
+      .map((char) => parseInt(char));
     grid.push(row as Colors[]);
   }
 

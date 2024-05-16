@@ -4,10 +4,9 @@ import { WasmTester, wasm } from 'circom_tester';
 import { calculateLabeledWitness } from './utils/calculateLabeledWitness';
 import path from 'path';
 import { Puzzle } from '../types/circuitFunctions.types';
-import { gridMutator } from '../utils/mutators/gridMutator';
+import { gridMutator } from '../utils/transformers/gridMutator';
 import { argumentBuilder } from '../utils/circuitFunctions';
-// import { calculateLabeledWitness } from "./calculateLabeledWitness";
-const puzzles: Puzzle = require('./data/puzzles.json');
+const puzzles: Puzzle = require('../data/test.puzzles.json');
 
 describe.only('stack circuit', () => {
   let circuit: WasmTester;
