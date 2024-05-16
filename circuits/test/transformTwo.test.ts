@@ -4,9 +4,9 @@ import { argumentBuilder } from '../utils/circuitFunctions';
 import { WasmTester, wasm } from 'circom_tester';
 import path from 'path';
 import { calculateLabeledWitness } from './utils/calculateLabeledWitness';
-import { Puzzles } from '../types/circuitFunctions.types';
+import { Puzzle } from '../types/circuitFunctions.types';
 import { gridMutator } from '../utils/gridMutator';
-const puzzles: Puzzles = require('./data/puzzles.json');
+const puzzles: Puzzle = require('./data/puzzles.json');
 
 describe.only('transformtwo circuit', () => {
   let circuit: WasmTester;
@@ -49,7 +49,7 @@ describe.only('transformtwo circuit', () => {
         assert.propertyVal(
           witness,
           `main.out[${i}][${j}]`,
-          String(puzzles[0.2].transformTwo[i][j])
+          String(puzzles[0.1].transformTwo[i][j])
         );
       }
     }
@@ -91,18 +91,18 @@ describe.only('transformtwo circuit', () => {
     assert.notPropertyVal(
       witness,
       'main.out[0][0]',
-      String(puzzles[0.2].target[0][0])
+      String(puzzles[0.1].target[0][0])
     );
   });
 
-  ['0.1', '0.2', '0.3', '0.4'].forEach((lvl: string) => {
-    it(`transformTwo witness values for level ${lvl} equals transformTwo function return values`, async () => {
+  [1, 2, 3, 4].forEach((i: number) => {
+    it(`transformTwo witness values for iteration ${i} equals transformTwo function return values`, async () => {
       const argument =
-        lvl === '0.1'
+        i === 1
           ? 'TRANSFORMTWO_YELLOW_RED_YELLOW'
-          : lvl === '0.2'
+          : i === 2
             ? 'TRANSFORMTWO_BLUE_YELLOW_RED'
-            : lvl === '0.3'
+            : i === 3
               ? 'TRANSFORMTWO_RED_BLUE_YELLOW'
               : 'TRANSFORMTWO_YELLOW_RED_BLUE';
 
@@ -112,7 +112,7 @@ describe.only('transformtwo circuit', () => {
       const witness = await calculateLabeledWitness(
         circuit,
         {
-          grid: puzzles[lvl].initial,
+          grid: puzzles[0.1].initial,
           onOff,
           inColor,
           outColorBot,
@@ -121,7 +121,7 @@ describe.only('transformtwo circuit', () => {
         sanityCheck
       );
 
-      const targetGrid = gridMutator(puzzles[lvl].initial, [argument]);
+      const targetGrid = gridMutator(puzzles[0.1].initial, [argument]);
 
       for (let i = 0; i < config.gridWidth; i++) {
         for (let j = 0; j < config.gridHeight; j++) {
