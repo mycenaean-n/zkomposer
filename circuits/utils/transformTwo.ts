@@ -1,7 +1,4 @@
-import { writeFileSync } from 'fs';
-import { Colors, Puzzles } from '../types/circuitFunctions.types';
-import path from 'path';
-const puzzles: Puzzles = require('../test/data/puzzles.json');
+import { Colors } from '../types/circuitFunctions.types';
 
 type TransformTwoArguments = {
   column: Array<Colors>;

@@ -150,7 +150,7 @@ describe.only('removeairbubbles circuit', () => {
   });
 
   [1, 2, 3].forEach((lvl: number) => {
-    it(`transform witness values for level ${lvl} equals transform function return values`, async () => {
+    it(`removeairbubbles witness values for level ${lvl} equals removeairbubbles function return values`, async () => {
       const witness = await calculateLabeledWitness(
         circuit,
         {

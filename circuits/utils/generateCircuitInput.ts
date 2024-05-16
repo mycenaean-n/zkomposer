@@ -1,8 +1,8 @@
-const puzzles: Puzzles = require('../test/data/puzzles.json');
-import { Puzzles } from '../types/circuitFunctions.types';
+import { Puzzle } from '../types/circuitFunctions.types';
 import { gridMutator } from '../utils/gridMutator';
 import { getCircuitFunctionIndex } from '../utils/circuitFunctionGetter';
 import { writeFileSync } from 'fs';
+const puzzles: Puzzle = require('../test/data/puzzles.json');
 
 export function generateCircuitInput() {
   const initialGrid = puzzles[0.3].initial;

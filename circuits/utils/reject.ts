@@ -1,8 +1,5 @@
-import { writeFileSync } from 'fs';
-import path from 'path';
 import { removeColumnWithLeadingZero } from './removeColumnWithLeadingZero';
-import { Colors, Puzzles } from '../types/circuitFunctions.types';
-const puzzles: Puzzles = require('../test/data/puzzles.json');
+import { Colors } from '../types/circuitFunctions.types';
 
 export function reject(column: Array<Colors>, color: Colors): Array<Colors> {
   if (column.length === 0) return [];

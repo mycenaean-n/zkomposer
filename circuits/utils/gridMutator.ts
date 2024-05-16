@@ -2,6 +2,7 @@ import { stackGrid } from './stack';
 import { transformGrid } from './transform';
 import { transformTwoGrid } from './transformTwo';
 import { rejectGrid } from './reject';
+import { filter } from './filter';
 import { CircuitFunctions, Colors } from '../types/circuitFunctions.types';
 
 type ArgumentColor = 'YELLOW' | 'RED' | 'BLUE';
@@ -44,6 +45,9 @@ export function gridMutator(
     }
     case 'REJECT': {
       return gridMutator(rejectGrid(grid, colorIn), args.slice(1));
+    }
+    case 'FILTER': {
+      return gridMutator(filter(grid, colorIn), args.slice(1));
     }
     default: {
       return grid;

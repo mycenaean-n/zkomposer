@@ -10,8 +10,8 @@ export enum Colors {
   Blue = 3,
 }
 
-export interface Puzzles {
-  [lvl: string]: {
+export type Puzzle = {
+  [lvl in '0.1' | '1.1' | '1.2' | '1.3' | '1.4']: {
     initial: Colors[][];
     availableFunctions: CircuitFunctions[];
     target: Colors[][];
@@ -20,21 +20,24 @@ export interface Puzzles {
     transformTwo: Colors[][];
     reverse: Colors[][];
     reject: Colors[][];
+    filter: Colors[][];
   };
-}
+};
 
 export type AvailableFunctions =
   | 'EMPTY'
   | 'TRANSFORM'
   | 'STACK'
   | 'TRANSFORMTWO'
-  | 'REJECT';
+  | 'REJECT'
+  | 'FILTER';
 
 export const FUNCTION_ORDER = {
   TRANSFORM: 0,
   STACK: 1,
   TRANSFORMTWO: 2,
   REJECT: 3,
+  FILTER: 4,
 } as const;
 
 export const circuitFunctionsArray = [
@@ -73,6 +76,10 @@ export const circuitFunctionsArray = [
   'REJECT_YELLOW',
   'REJECT_RED',
   'REJECT_BLUE',
+  // position 4
+  'FILTER_YELLOW',
+  'FILTER_RED',
+  'FILTER_BLUE',
 ] as const;
 
 export type CircuitFunctions = (typeof circuitFunctionsArray)[number];
