@@ -1,5 +1,5 @@
 'use client';
-import { PuzzleMemoized } from './Puzzle';
+import { PuzzleMemoized } from './puzzle/Puzzle';
 import { useFetchPuzzleByPuzzleId } from '../../hooks/usePuzzleData';
 
 export function SinglePlayerGame({ id }: { id: string }) {
@@ -18,10 +18,8 @@ export function SinglePlayerGame({ id }: { id: string }) {
   }
 
   return (
-    <div className="flex flex-col flex-grow h-full">
-      <div className="flex-grow h-96">
-        {puzzleData && <PuzzleMemoized initConfig={puzzleData} puzzleId={id} />}
-      </div>
-    </div>
+    <>
+      {puzzleData && <PuzzleMemoized initConfig={puzzleData} puzzleId={id} />}
+    </>
   );
 }

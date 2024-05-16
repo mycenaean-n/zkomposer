@@ -1,12 +1,12 @@
 'use client';
 import { createContext, memo, useEffect, useState } from 'react';
-import { Actions } from './Actions';
+import { Actions } from './actions/Actions';
 import {
   PuzzleFunctions,
   PuzzleContext as PuzzleContextType,
   Puzzle as PuzzleType,
 } from '@/src/types/Puzzle';
-import { Scene } from './Scene';
+import { Scene } from './scene/Scene';
 
 export const PuzzleContext = createContext<PuzzleContextType>({
   initConfig: { initialGrid: [], finalGrid: [], availableFunctions: [] },
@@ -55,16 +55,9 @@ function Puzzle({
         setPuzzleSolved,
       }}
     >
-      <div
-        className="flex flex-col flex-grow w-full"
-        style={{ height: '800px' }}
-      >
+      <div className="flex flex-col flex-grow w-1000 h-800 m-auto">
         <Scene />
-        {!puzzleSolved ? (
-          <Actions gameId={gameId} puzzleId={puzzleId} />
-        ) : (
-          <div className="m-auto ">Puzzle solved</div>
-        )}
+        <Actions gameId={gameId} puzzleId={puzzleId} />
       </div>
     </PuzzleContext.Provider>
   );
