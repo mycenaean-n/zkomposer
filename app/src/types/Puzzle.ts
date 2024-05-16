@@ -7,6 +7,7 @@ import { Dispatch, SetStateAction } from 'react';
 export enum PuzzleFunctionState {
   remaining = 'remaining',
   chosen = 'chosen',
+  available = 'available',
 }
 
 export type PuzzleFunctions = Record<PuzzleFunctionState, CircuitFunctions[]>;
@@ -15,6 +16,8 @@ export type PuzzleContext = {
   initConfig: Puzzle;
   functions: PuzzleFunctions;
   setFunctions: Dispatch<SetStateAction<PuzzleFunctions>>;
+  puzzleSolved: boolean;
+  setPuzzleSolved: Dispatch<SetStateAction<boolean>>;
 };
 
 export type Puzzle = {
@@ -25,6 +28,6 @@ export type Puzzle = {
 
 export type OnChainPuzzle = {
   startingGrid: string;
-	finalGrid: string;
-	availableFunctions: number[];
+  finalGrid: string;
+  availableFunctions: number[];
 };

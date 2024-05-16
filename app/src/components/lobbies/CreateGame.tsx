@@ -1,5 +1,5 @@
 'use client';
-import { useContract } from '@/src/hooks/useContract';
+import { useZkubeContract } from '@/src/hooks/useContract';
 import { useState } from 'react';
 import styles from '../../styles/createGame.module.scss';
 import { ZKUBE_PUZZLESET_ADDRESS } from '@/src/config';
@@ -9,7 +9,7 @@ export function CreateGame() {
   const [puzzleSet, setPuzzleSet] = useState<string>(ZKUBE_PUZZLESET_ADDRESS);
   const [interval, setInterval] = useState<number>(0);
   const [numberOfTurns, setNumberOfTurns] = useState<number>(0);
-  const { createGame } = useContract();
+  const { createGame } = useZkubeContract();
 
   function onInputContainerClick(e: React.MouseEvent<HTMLDivElement>) {
     if (e.target === e.currentTarget) {
@@ -59,6 +59,7 @@ export function CreateGame() {
 
             <button
               onClick={async () => {
+                if (!createGame) return;
                 const result = await createGame(
                   puzzleSet,
                   interval,

@@ -1,8 +1,16 @@
 'use client';
-import { Hash, createWalletClient, custom, getContract, isAddress } from 'viem';
-import { abi } from '../abis/zKube';
+import {
+  Address,
+  Hash,
+  createWalletClient,
+  custom,
+  getContract,
+  isAddress,
+} from 'viem';
+import { abi as zKubeAbi } from '../abis/zKube';
+import { abi as zKubePuzzleSetAbi } from '../abis/zKubePuzzleSet';
 import { useAccount, usePublicClient } from 'wagmi';
-import { ZKUBE_ADDRESS } from '../config';
+import { ZKUBE_ADDRESS, ZKUBE_PUZZLESET_ADDRESS } from '../config';
 import { waitForTransactionReceipt } from 'viem/actions';
 import { OnChainPuzzle, Puzzle } from '../types/Puzzle';
 import { OnChainGame } from '../types/Game';
@@ -10,44 +18,67 @@ import { convertPuzzleToBase4FromHex } from 'circuits/utils/contracts/hexConvers
 import { mapGrid } from '../utils';
 import { circuitFunctionsArray } from 'circuits/types/circuitFunctions.types';
 import { ZKProof } from '../types/Proof';
+import { useCallback } from 'react';
 
 type WriteResult = {
   txHash: Hash;
   success: boolean;
 };
 
-type ContractActions = {
+type ZKubeContractActions = Partial<{
   createGame: (
     targetPuzzleSet: string,
     interval: number,
     numberOfTurns: number
   ) => Promise<WriteResult>;
   joinGame: (gameId: bigint) => Promise<WriteResult>;
-  getPuzzle(gameId: bigint): Promise<{
+  selectPuzzle: (gameId: bigint) => Promise<{
     roundBlock: bigint;
     game: OnChainGame;
     puzzle: Puzzle;
   }>;
-  submitPuzzle(gameId: bigint, proof: ZKProof): Promise<WriteResult>;
-};
+  submitPuzzle: (gameId: bigint, proof: ZKProof) => Promise<WriteResult>;
+  verifyPuzzleSolution: (
+    puzzleSet: Address,
+    puzzleId: bigint,
+    proof: ZKProof
+  ) => Promise<boolean>;
+}>;
 
-export function useContract(): ContractActions {
-  if (typeof window == 'undefined') return {} as ContractActions; /// for SSR........... TODO: migrate to React.
+type ZKubePuzzleSetContractActions = Partial<{
+  getPuzzle: (puzzleId: bigint) => Promise<Puzzle>;
+}>;
+
+export function useClients() {
   if (!window.ethereum) {
     alert('please connect your wallet');
   }
+
   const publicClient = usePublicClient();
+  if (!publicClient) {
+    throw new Error('Public client not found');
+  }
+
   const walletClient = createWalletClient({
     chain: publicClient?.chain,
     transport: custom(window.ethereum),
   });
-  const { address } = useAccount();
   if (!walletClient) {
     throw new Error('Wallet client not found');
   }
 
+  return { publicClient, walletClient };
+}
+
+export function useZkubeContract(): ZKubeContractActions {
+  if (typeof window == 'undefined') return {} as ZKubeContractActions; /// for SSR........... TODO: migrate to React.
+
+  const { publicClient, walletClient } = useClients();
+
+  const { address } = useAccount();
+
   const zKube = getContract({
-    abi,
+    abi: zKubeAbi,
     address: ZKUBE_ADDRESS,
     client: { public: publicClient, wallet: walletClient },
   });
@@ -91,11 +122,11 @@ export function useContract(): ContractActions {
     return { txHash, success: receipt.status === 'success' };
   }
 
-  async function getPuzzle(
+  async function selectPuzzle(
     gameId: bigint
   ): Promise<{ roundBlock: bigint; game: OnChainGame; puzzle: Puzzle }> {
     const result = await publicClient?.readContract({
-      abi,
+      abi: zKubeAbi,
       address: ZKUBE_ADDRESS,
       functionName: 'selectPuzzle',
       args: [gameId],
@@ -130,5 +161,61 @@ export function useContract(): ContractActions {
     return { txHash, success: receipt.status === 'success' };
   }
 
-  return { createGame, joinGame, getPuzzle, submitPuzzle };
+  async function verifyPuzzleSolution(
+    puzzleSet: Address,
+    puzzleId: bigint,
+    proof: ZKProof
+  ): Promise<boolean> {
+    if (!address) {
+      throw new Error('No address found');
+    }
+    const result = await publicClient?.readContract({
+      abi: zKubeAbi,
+      address: ZKUBE_ADDRESS,
+      functionName: 'verifyPuzzleSolution',
+      args: [puzzleSet, puzzleId, proof, address],
+    });
+
+    return result as boolean;
+  }
+
+  return {
+    createGame,
+    joinGame,
+    selectPuzzle,
+    submitPuzzle,
+    verifyPuzzleSolution,
+  };
+}
+
+export function usePuzzleSetContract(): ZKubePuzzleSetContractActions {
+  if (typeof window == 'undefined') return {}; /// for SSR........... TODO: migrate to React.
+
+  const { publicClient } = useClients();
+
+  const getPuzzle = useCallback(
+    async (puzzleId: bigint): Promise<Puzzle> => {
+      const hexPuzzle = await publicClient.readContract({
+        abi: zKubePuzzleSetAbi,
+        address: ZKUBE_PUZZLESET_ADDRESS,
+        functionName: 'getPuzzle',
+        args: [puzzleId],
+      });
+
+      const base4Puzzle = convertPuzzleToBase4FromHex(
+        hexPuzzle! as OnChainPuzzle
+      );
+
+      return {
+        initialGrid: mapGrid(base4Puzzle.startingGrid),
+        finalGrid: mapGrid(base4Puzzle.finalGrid),
+        availableFunctions: base4Puzzle.availableFunctions.map(
+          (functionId) => circuitFunctionsArray[functionId]
+        ),
+      };
+    },
+    [publicClient]
+  );
+
+  return { getPuzzle };
 }

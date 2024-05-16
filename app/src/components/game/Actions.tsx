@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { PuzzleContext } from './Puzzle';
-import { Proof } from '../../types/Proof';
+import { ZKProof } from '../../types/Proof';
 import styles from '../../styles/actions.module.scss';
 import { GenerateProof } from '../zk/generateProof';
 import {
@@ -12,16 +12,23 @@ import {
 } from 'react-beautiful-dnd';
 import { PuzzleFunctionState } from '@/src/types/Puzzle';
 import { useAccount } from 'wagmi';
-import { getCircuitFunctionIndex } from 'circuits';
 import { InputSignals } from 'circuits/types/proof.types';
-import { useContract } from '@/src/hooks/useContract';
+import { ZKUBE_PUZZLESET_ADDRESS } from '../../config';
+import { useZkubeContract } from '../../hooks/useContract';
+import { getCircuitFunctionIndex } from 'circuits';
 
-export function Actions({gameId}: {gameId: string}) {
-  const { functions, setFunctions, initConfig } = useContext(PuzzleContext);
+export function Actions({
+  gameId,
+  puzzleId,
+}: {
+  gameId?: string;
+  puzzleId?: string;
+}) {
+  const { functions, setFunctions, initConfig, setPuzzleSolved, puzzleSolved } =
+    useContext(PuzzleContext);
   const { address } = useAccount();
   const [inputSignals, setInputSignals] = useState<InputSignals>();
-  const [proof, setProof] = useState<Proof>();
-  const {submitPuzzle} = useContract();
+  const { submitPuzzle, verifyPuzzleSolution } = useZkubeContract();
 
   useEffect(() => {
     if (!address) return;
@@ -30,14 +37,9 @@ export function Actions({gameId}: {gameId: string}) {
       ...initConfig,
       account: address,
       selectedFunctionsIndexes: getCircuitFunctionIndex(functions.chosen),
+      availableFunctionsIndexes: getCircuitFunctionIndex(functions.available),
     });
   }, [functions, address]);
-
-  useEffect(() => {
-    if (!proof) return;
-
-    console.log('Proof: ', proof);
-  }, [proof]);
 
   const remainingFunctionsElements = functions.remaining.map(
     (funcName, index) => (
@@ -54,6 +56,7 @@ export function Actions({gameId}: {gameId: string}) {
               setFunctions((prev) => ({
                 remaining: prev.remaining.toSpliced(index, 1),
                 chosen: prev.chosen.concat(funcName),
+                available: prev.available,
               }));
             }}
             ref={provided.innerRef}
@@ -78,6 +81,7 @@ export function Actions({gameId}: {gameId: string}) {
               setFunctions((prev) => ({
                 remaining: prev.remaining.concat(funcName),
                 chosen: prev.chosen.toSpliced(index, 1),
+                available: prev.available,
               }));
             }}
             ref={provided.innerRef}
@@ -119,6 +123,31 @@ export function Actions({gameId}: {gameId: string}) {
     }
   }
 
+  const submitPuzzleSolution = (result: ZKProof) => {
+    try {
+      if (gameId && submitPuzzle) {
+        submitPuzzle(BigInt(gameId), result).then((res) => {
+          if (res) {
+            setPuzzleSolved(true);
+          }
+        });
+      }
+      if (puzzleId && verifyPuzzleSolution) {
+        verifyPuzzleSolution(
+          ZKUBE_PUZZLESET_ADDRESS,
+          BigInt(puzzleId!),
+          result
+        ).then((res) => {
+          if (res) {
+            setPuzzleSolved(true);
+          }
+        });
+      }
+    } catch (e) {
+      console.error('Error submitting puzzle solution', e);
+    }
+  };
+
   return (
     <div className={styles.actions}>
       <div className={styles.gameUI}>
@@ -153,9 +182,7 @@ export function Actions({gameId}: {gameId: string}) {
         <div className={styles.submit}>
           <GenerateProof
             inputSignals={inputSignals}
-            onResult={async (result) => {
-              await submitPuzzle(BigInt(gameId), result);
-            }}
+            onResult={submitPuzzleSolution}
           />
         </div>
       </div>
