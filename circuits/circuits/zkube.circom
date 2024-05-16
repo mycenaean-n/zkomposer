@@ -467,7 +467,7 @@ template ZKube(W, H, F, NO_AVAIL_FUNC) {
     // compairng the final results
     eqCheck = ForceEqualIfEnabled();
     // if not equal no proof, sorry
-    eqCheck.enabled <== 0;
+    eqCheck.enabled <== 1;
     eqCheck.in[0] <== counter;
     eqCheck.in[1] <== W*H;
 }

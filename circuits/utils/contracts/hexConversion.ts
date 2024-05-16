@@ -63,8 +63,8 @@ export function convertPuzzleToHex(puzzle: OnChainPuzzle): OnChainPuzzle {
   checkLength(puzzle, 64);
 
   return {
-    startingGrid: base4ToHex(startingGrid),
-    finalGrid: base4ToHex(finalGrid),
+    startingGrid: `0x${base4ToHex(startingGrid)}`,
+    finalGrid: `0x${base4ToHex(finalGrid)}`,
     availableFunctions,
   };
 }

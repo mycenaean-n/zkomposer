@@ -5,7 +5,7 @@ import { calculateLabeledWitness } from './utils/calculateLabeledWitness';
 import { assert } from 'chai';
 import path from 'path';
 import { Puzzle } from '../types/circuitFunctions.types';
-import { gridMutator } from '../utils/gridMutator';
+import { gridMutator } from '../utils/mutators/gridMutator';
 
 const puzzles: Puzzle = require('./data/puzzles.json');
 
