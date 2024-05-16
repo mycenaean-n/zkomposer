@@ -8,7 +8,7 @@
 
 .gameUI {
   display: grid;
-  grid-template-columns: 40% 40% 20%;
+  grid-template-columns: calc(40% - 2rem) calc(40% - 2rem) 20%;
   gap: 2rem;
   justify-content: center;
   height: 20vh;

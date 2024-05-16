@@ -11,7 +11,7 @@ export function reject(column: Array<Colors>, color: Colors): Array<Colors> {
     ...elementToAddFirst,
     ...reject(restOfColumn, color),
     ...elementToAddLast,
-  ];
+  ] as Colors[];
 }
 export function rejectGrid(
   grid: Array<Array<Colors>>,

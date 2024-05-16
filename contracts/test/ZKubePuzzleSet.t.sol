@@ -42,7 +42,7 @@ contract ZKubePuzzleSetTest is Test {
     }
 
     function _addPuzzles () private {
-        string memory file = vm.readFile("./script/data/puzzles.json");
+        string memory file = vm.readFile("./script/data/test.puzzles.json");
         bytes memory json = vm.parseJson(file);
         PuzzleJson[] memory _puzzles = abi.decode(json, (PuzzleJson[]));
         for (uint256 i; i < _puzzles.length; i++) {

@@ -3,18 +3,21 @@ import { transformGrid } from './transform';
 import { transformTwoGrid } from './transformTwo';
 import { rejectGrid } from './reject';
 import { filter } from './filter';
-import { CircuitFunctions, Colors } from '../../types/circuitFunctions.types';
+import {
+  CircuitFunctions,
+  COLORS,
+  Colors,
+  ColorsKeys,
+} from '../../types/circuitFunctions.types';
 
-type ArgumentColor = 'YELLOW' | 'RED' | 'BLUE';
-
-function selectColor(color: ArgumentColor) {
+function selectColor(color: ColorsKeys) {
   return color === 'YELLOW'
-    ? Colors.Yellow
+    ? COLORS.YELLOW
     : color === 'RED'
-      ? Colors.Red
+      ? COLORS.RED
       : color === 'BLUE'
-        ? Colors.Blue
-        : Colors.White;
+        ? COLORS.BLUE
+        : COLORS.WHITE;
 }
 
 export function gridMutator(
@@ -25,19 +28,19 @@ export function gridMutator(
 
   const splitAtguments = args[0].split('_');
   const mutator = splitAtguments[0];
-  const colorIn = selectColor(splitAtguments[1] as ArgumentColor);
+  const colorIn = selectColor(splitAtguments[1] as ColorsKeys);
   //manipulate grid with calls to transformGrid, stackGrid, and/or transformTwoGrid
   switch (mutator) {
     case 'TRANSFORM': {
-      const colorOut = selectColor(splitAtguments[2] as ArgumentColor);
+      const colorOut = selectColor(splitAtguments[2] as ColorsKeys);
       return gridMutator(transformGrid(grid, colorIn, colorOut), args.slice(1));
     }
     case 'STACK': {
       return gridMutator(stackGrid(grid, colorIn), args.slice(1));
     }
     case 'TRANSFORMTWO': {
-      const colorOutBot = selectColor(splitAtguments[2] as ArgumentColor);
-      const colorOutTop = selectColor(splitAtguments[3] as ArgumentColor);
+      const colorOutBot = selectColor(splitAtguments[2] as ColorsKeys);
+      const colorOutTop = selectColor(splitAtguments[3] as ColorsKeys);
       return gridMutator(
         transformTwoGrid(grid, colorIn, colorOutBot, colorOutTop),
         args.slice(1)

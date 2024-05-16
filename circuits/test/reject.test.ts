@@ -5,8 +5,8 @@ import { WasmTester, wasm } from 'circom_tester';
 import path from 'path';
 import { calculateLabeledWitness } from './utils/calculateLabeledWitness';
 import { Puzzle } from '../types/circuitFunctions.types';
-import { gridMutator } from '../utils/mutators/gridMutator';
-const puzzles: Puzzle = require('./data/puzzles.json');
+import { gridMutator } from '../utils/transformers/gridMutator';
+const puzzles: Puzzle = require('../data/test.puzzles.json');
 
 describe.only('reject circuit', () => {
   let circuit: WasmTester;

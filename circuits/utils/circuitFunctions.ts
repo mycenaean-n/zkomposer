@@ -1,38 +1,37 @@
 import {
   CircuitFunctions,
+  COLORS,
   Colors,
   OnOff,
 } from '../types/circuitFunctions.types';
+import { parseCircuitArguments } from './parseCircuitArguments';
 
 export function argumentBuilder(
   arg: CircuitFunctions
 ): [OnOff.On, Colors, Colors, Colors] {
-  const colorIn = arg.split('_')[1];
-  const colorOutOne = arg.split('_')[2];
-  const colorOutTwo = arg.split('_')[3];
-
+  const { colorOne, colorTwo, colorThree } = parseCircuitArguments(arg);
   return [
     OnOff.On,
-    colorIn === 'YELLOW'
-      ? Colors.Yellow
-      : colorIn === 'RED'
-        ? Colors.Red
-        : colorIn === 'BLUE'
-          ? Colors.Blue
-          : Colors.White,
-    colorOutOne === 'YELLOW'
-      ? Colors.Yellow
-      : colorOutOne === 'RED'
-        ? Colors.Red
-        : colorOutOne === 'BLUE'
-          ? Colors.Blue
-          : Colors.White,
-    colorOutTwo === 'YELLOW'
-      ? Colors.Yellow
-      : colorOutTwo === 'RED'
-        ? Colors.Red
-        : colorOutTwo === 'BLUE'
-          ? Colors.Blue
-          : Colors.White,
+    colorOne === 'YELLOW'
+      ? COLORS.YELLOW
+      : colorOne === 'RED'
+        ? COLORS.RED
+        : colorOne === 'BLUE'
+          ? COLORS.BLUE
+          : COLORS.WHITE,
+    colorTwo === 'YELLOW'
+      ? COLORS.YELLOW
+      : colorTwo === 'RED'
+        ? COLORS.RED
+        : colorTwo === 'BLUE'
+          ? COLORS.BLUE
+          : COLORS.WHITE,
+    colorThree === 'YELLOW'
+      ? COLORS.YELLOW
+      : colorThree === 'RED'
+        ? COLORS.RED
+        : colorThree === 'BLUE'
+          ? COLORS.BLUE
+          : COLORS.WHITE,
   ];
 }

@@ -6,8 +6,10 @@ import { Vector3 } from 'three';
 import { ResponsiveCamera } from './ResponsiveCamera';
 import { gridMutator } from 'circuits';
 import IntermediateGrids from './IntermediateGrids';
+import { Colors } from 'circuits/types/circuitFunctions.types';
 
-const STARTING_X_POS = -1.5;
+const STARTING_X_POS = -3;
+const STARTING_Y_POS = 0.5;
 
 export function Scene() {
   const [grids, setGrids] = useState<number[][][]>([]);
@@ -20,7 +22,7 @@ export function Scene() {
 
   useEffect(() => {
     setGrids([]);
-    const mutatedGrids: number[][][] = [];
+    const mutatedGrids: Colors[][][] = [];
     functions.chosen.forEach((funcName, index) => {
       if (index == 0) {
         const grid = gridMutator(startingGrid, [funcName]);
@@ -39,17 +41,18 @@ export function Scene() {
         <Canvas
           orthographic
           camera={{
-            position: new Vector3(2, 2, 4),
+            position: new Vector3(3.5, 4, 3),
           }}
         >
           <ambientLight intensity={Math.PI} />
           <Grid
             grid={startingGrid}
-            position={{ x: STARTING_X_POS, y: -0.5, z: 0 }}
+            position={{ x: STARTING_X_POS, y: STARTING_Y_POS, z: 0 }}
           />
           <IntermediateGrids
             {...{ grids, availableFunctions }}
             xPos={STARTING_X_POS}
+            yPos={STARTING_Y_POS}
           />
           <ResponsiveCamera />
         </Canvas>
@@ -59,7 +62,7 @@ export function Scene() {
         <Canvas
           orthographic
           camera={{
-            position: new Vector3(2, 2, 4),
+            position: new Vector3(3.5, 4, 3),
           }}
         >
           <Grid grid={finalGrid} position={{ x: 0.4, y: 1.5, z: 0 }} />

@@ -36,7 +36,7 @@ contract ZKubeTest is Test {
         proofPlayerOne = parseProof(proofJsonPlayerOne);
         proofPlayerTwo = parseProof(proofJsonPlayerTwo);
 
-        string memory puzzleFile = vm.readFile("./script/data/puzzles.json");
+        string memory puzzleFile = vm.readFile("./script/data/test.puzzles.json");
         bytes memory puzzleJson = vm.parseJson(puzzleFile);
         PuzzleJson[] memory _puzzles = abi.decode(puzzleJson, (PuzzleJson[]));
         for (uint256 i; i < _puzzles.length; i++) {

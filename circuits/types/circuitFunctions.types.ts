@@ -3,12 +3,16 @@ export enum OnOff {
   Off = 0,
 }
 
-export enum Colors {
-  White = 0,
-  Yellow = 1,
-  Red = 2,
-  Blue = 3,
-}
+export const COLORS = {
+  WHITE: 0,
+  YELLOW: 1,
+  RED: 2,
+  BLUE: 3,
+} as const;
+
+type ColorValues<T> = T[keyof T];
+export type Colors = ColorValues<typeof COLORS>;
+export type ColorsKeys = keyof typeof COLORS;
 
 export type Puzzle = {
   [lvl in '0.1' | '1.1' | '1.2']: {

@@ -15,7 +15,7 @@
     "mocha": "^10.2.0"
   },
   "scripts": {
-    "convert-test-puzzles": "ts-node ./utils/contracts/convertTestPuzzles.ts",
+    "convert-puzzles": "ts-node ./utils/contracts/convertBase4PuzzlesToHex.ts",
     "test": "ts-node ./run-tests.ts",
     "compile": "circom circuits/zkube.circom --r1cs --sym --wasm -o zk/ ",
     "setup:sample-zkey": "snarkjs groth16 setup zk/zkube.r1cs powersOfTau28_hez_final_15.ptau zk/zkube.zkey",
