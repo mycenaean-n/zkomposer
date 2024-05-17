@@ -26,23 +26,21 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <ApolloClientProvider>
-        <Web3Provider>
-          <BlockProvider>
-            <GamesProvider>
-              <body
-                className={`${roboto.className} flex flex-col min-h-screen`}
-              >
+      <body className={`${roboto.className} flex flex-col min-h-screen`}>
+        <ApolloClientProvider>
+          <Web3Provider>
+            <BlockProvider>
+              <GamesProvider>
                 <header className="flex justify-between items-center bg-black h-20 p-4">
                   <Image src={logo} alt="logo" className="h-14 w-auto" />
                   <ConnectButton />
                 </header>
                 {children}
-              </body>
-            </GamesProvider>
-          </BlockProvider>
-        </Web3Provider>
-      </ApolloClientProvider>
+              </GamesProvider>
+            </BlockProvider>
+          </Web3Provider>
+        </ApolloClientProvider>
+      </body>
     </html>
   );
 }
