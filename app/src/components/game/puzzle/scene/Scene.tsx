@@ -7,9 +7,10 @@ import { ResponsiveCamera } from './ResponsiveCamera';
 import { gridMutator } from 'circuits';
 import IntermediateGrids from './IntermediateGrids';
 import { Colors } from 'circuits/types/circuitFunctions.types';
+import { isMobile } from 'react-device-detect';
 
-const STARTING_X_POS = -3;
-const STARTING_Y_POS = 0.5;
+const STARTING_X_POS = isMobile ? -2.3 : -3;
+const STARTING_Y_POS = isMobile ? -0.2 : 0.5;
 
 export function Scene() {
   const [grids, setGrids] = useState<number[][][]>([]);
@@ -36,8 +37,8 @@ export function Scene() {
   }, [functions]);
 
   return (
-    <div className="flex" style={{ height: '600px' }}>
-      <div className="flex-1">
+    <div className="flex" style={{ height: isMobile ? '300px' : '600px' }}>
+      <div className="w-2/3">
         <Canvas
           orthographic
           camera={{
@@ -57,15 +58,15 @@ export function Scene() {
           <ResponsiveCamera />
         </Canvas>
       </div>
-      <div className="flex-2 overflow-hidden">
-        <h3 className="text-2xl font-extrabold mt-8">Target</h3>
+      <div className="overflow-hidden">
+        <h3 className="text-2xl font-extrabold md:mt-12 w-1/3">Target</h3>
         <Canvas
           orthographic
           camera={{
             position: new Vector3(3.5, 4, 3),
           }}
         >
-          <Grid grid={finalGrid} position={{ x: 0.4, y: 1.5, z: 0 }} />
+          <Grid grid={finalGrid} position={{ x: -0.45, y: 2, z: 0 }} />
           <ResponsiveCamera />
         </Canvas>
       </div>

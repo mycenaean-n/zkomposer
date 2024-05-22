@@ -93,49 +93,8 @@ export function Actions({
   );
 
   return (
-    <div className={styles.gameUI}>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId={PuzzleFunctionState.remaining}>
-          {(provided) => (
-            <div
-              className="border border-black border-solid rounded-sm"
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-            >
-              {functions.remaining.map((funcName, i) => (
-                <Function
-                  key={`${funcName}-${i}`}
-                  elementType="remaining"
-                  funcName={funcName}
-                  index={i}
-                />
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-
-        <Droppable droppableId={PuzzleFunctionState.chosen}>
-          {(provided) => (
-            <div
-              ref={provided.innerRef}
-              className="border border-black border-dashed rounded-sm"
-              {...provided.droppableProps}
-            >
-              {functions.chosen.map((funcName, i) => (
-                <Function
-                  key={`${funcName}-${i}`}
-                  elementType="chosen"
-                  funcName={funcName}
-                  index={i}
-                />
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-      <div className={styles.submit}>
+    <div className="flex flex-col px-2">
+      <div className="mb-2">
         <GenerateProof
           inputSignals={inputSignals}
           onResult={submitPuzzleSolution}
@@ -145,6 +104,49 @@ export function Actions({
             Puzzle Solved!
           </div>
         )}
+      </div>
+      <div className={styles.gameUI}>
+        <DragDropContext onDragEnd={onDragEnd}>
+          <Droppable droppableId={PuzzleFunctionState.remaining}>
+            {(provided) => (
+              <div
+                className="border border-black border-solid rounded-sm "
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {functions.remaining.map((funcName, i) => (
+                  <Function
+                    key={`${funcName}-${i}`}
+                    elementType="remaining"
+                    funcName={funcName}
+                    index={i}
+                  />
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+
+          <Droppable droppableId={PuzzleFunctionState.chosen}>
+            {(provided) => (
+              <div
+                ref={provided.innerRef}
+                className="border border-black border-dashed rounded-sm"
+                {...provided.droppableProps}
+              >
+                {functions.chosen.map((funcName, i) => (
+                  <Function
+                    key={`${funcName}-${i}`}
+                    elementType="chosen"
+                    funcName={funcName}
+                    index={i}
+                  />
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
       </div>
     </div>
   );

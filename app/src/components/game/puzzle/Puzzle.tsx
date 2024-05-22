@@ -55,7 +55,7 @@ function Puzzle({
         setPuzzleSolved,
       }}
     >
-      <div className="flex flex-col flex-grow w-1000 h-800 m-auto">
+      <div className="flex flex-col flex-grow md:w-1000 md:h-800">
         <Scene />
         <Actions gameId={gameId} puzzleId={puzzleId} />
       </div>

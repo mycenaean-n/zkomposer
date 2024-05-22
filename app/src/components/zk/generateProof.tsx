@@ -2,6 +2,7 @@ import { useProof } from '../../hooks/useProof';
 import { ZKProof } from '../../types/Proof';
 import styles from '../../styles/actions.module.scss';
 import { InputSignals } from 'circuits/types/proof.types';
+import { useState } from 'react';
 
 export function GenerateProof({
   inputSignals,
@@ -11,6 +12,7 @@ export function GenerateProof({
   onResult: (proof: ZKProof) => void;
 }) {
   const proofCallback = useProof('/zk/zkube.wasm', '/zk/zkube_final.zkey');
+  const [generatingProof, setGenerationgProof] = useState(false);
 
   if (!inputSignals)
     return (
@@ -35,7 +37,8 @@ export function GenerateProof({
         !finalGrid ||
         !account ||
         !selectedFunctionsIndexes ||
-        !availableFunctionsIndexes
+        !availableFunctionsIndexes ||
+        generatingProof
       }
       onClick={async () => {
         if (!initialGrid) alert('Initial grid is not ready');
@@ -44,6 +47,7 @@ export function GenerateProof({
         else if (!selectedFunctionsIndexes)
           alert('selectedFunctionsIndexes is not ready');
         else {
+          setGenerationgProof(true);
           proofCallback({
             initialGrid,
             finalGrid,
@@ -51,12 +55,18 @@ export function GenerateProof({
             selectedFunctionsIndexes,
             availableFunctionsIndexes,
           }).then((res) => {
+            setGenerationgProof(false);
             onResult(res as unknown as ZKProof);
+            alert('Puzzle Solved!');
           });
         }
       }}
     >
-      Submit Solution
+      {generatingProof ? (
+        <div className="animate-spin h-6 w-6  border-b-2 border-gray-900 rounded-full mx-auto"></div>
+      ) : (
+        'Submit Solution'
+      )}
     </button>
   );
 }
