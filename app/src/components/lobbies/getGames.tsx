@@ -21,6 +21,7 @@ export async function getGames() {
     query: GAMES_QUERY,
     fetchPolicy: 'no-cache',
   });
+
   const games = data.games;
   return games;
 }

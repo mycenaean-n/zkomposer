@@ -1,13 +1,12 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Roboto } from 'next/font/google';
-import Image from 'next/image';
-import logo from '../src/assets/zKubeLogo.svg';
 import { Web3Provider } from '../src/providers/Web3Provider';
-import { ConnectButton } from '../src/components/ConnectButton';
+import { ConnectButton } from '../src/components/wallet/ConnectButton';
 import { ApolloClientProvider } from '../src/providers/ApolloClientProvider';
 import { GamesProvider } from '@/src/context/GamesContext';
 import { BlockProvider } from '@/src/context/BlockContext';
+import Logo from '../src/components/Logo';
 
 const roboto = Roboto({
   weight: '400',
@@ -32,7 +31,7 @@ export default function RootLayout({
             <BlockProvider>
               <GamesProvider>
                 <header className="flex justify-between items-center bg-black h-20 p-4">
-                  <Image src={logo} alt="logo" className="h-14 w-auto" />
+                  <Logo />
                   <ConnectButton />
                 </header>
                 {children}

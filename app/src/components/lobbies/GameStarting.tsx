@@ -2,14 +2,15 @@
 import { GamesContext } from '@/src/context/GamesContext';
 import { Game } from '@/src/types/Game';
 import { useContext } from 'react';
-import { useAccount, useBlockNumber } from 'wagmi';
+import { useBlockNumber } from 'wagmi';
 import styles from '../../styles/gameStarting.module.scss';
 import { useRouter } from 'next/navigation';
+import { usePrivyWalletAddress } from '../../hooks/usePrivyWalletAddress';
 
 export function GameStarting() {
   let { games } = useContext(GamesContext);
   const router = useRouter();
-  const { address } = useAccount();
+  const address = usePrivyWalletAddress();
 
   const { data: blockNumber } = useBlockNumber({
     watch: true,
@@ -45,10 +46,10 @@ export function GameStarting() {
           <div className={styles.card}>
             {startingGames.map((game) => (
               <>
-                <h2 key={game.id}>
+                {/* <h2 key={game.id}>
                   game #{game.id} starting in{' '}
                   {(BigInt(game.startingBlock) - blockNumber).toString()} blocks
-                </h2>
+                </h2> */}
                 <button onClick={() => router.push(`/game/${game.id}`)}>
                   join
                 </button>

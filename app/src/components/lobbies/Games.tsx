@@ -1,22 +1,19 @@
-import styles from '../../styles/games.module.scss';
+'use client';
 import { CreateGame } from './CreateGame';
-import { GameStarting } from './GameStarting';
-import { GamesTable } from './GamesTable';
-import { getGames } from './getGames';
+import SinglePlayer from './SinglePlayer';
 
-export async function Games() {
-  const games = await getGames();
-
+export function Games() {
   return (
-    <div id="games" className={styles.games}>
-      <h1>Available Games</h1>
-      <div className={styles.createGame}>
-        <CreateGame />
-      </div>
-      <div className={styles.tableContainer}>
-        <GamesTable prefetchedGames={games} />
-      </div>
-      <GameStarting />
+    <div>
+      <>
+        <div className="flex justify-center mt-8">
+          <h1 className="text-2xl">Create Game</h1>
+        </div>
+        <div id="games" className="flex justify-center gap-10 mt-16">
+          <SinglePlayer />
+          <CreateGame />
+        </div>
+      </>
     </div>
   );
 }

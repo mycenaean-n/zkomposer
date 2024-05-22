@@ -3,7 +3,7 @@ import { localhost, scroll, scrollSepolia } from 'wagmi/chains';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createConfig, WagmiProvider } from '@privy-io/wagmi';
 import { PrivyClientConfig, PrivyProvider } from '@privy-io/react-auth';
-import { http } from 'viem';
+import { defineChain, http } from 'viem';
 
 const queryClient = new QueryClient();
 
@@ -17,14 +17,32 @@ export const wagmiConfig = createConfig({
   ssr: true,
 });
 
+export const LocalHost = defineChain({
+  id: 31337, // Replace this with your chain's ID
+  name: 'Localhost',
+  network: 'my-custom-chain',
+  nativeCurrency: {
+    decimals: 18, // Replace this with the number of decimals for your chain's native token
+    name: 'Ether',
+    symbol: 'ETH',
+  },
+  rpcUrls: {
+    default: {
+      http: ['http://127.0.0.1:8545'],
+    },
+  },
+});
+
 const privyConfig = {
   appearance: {
     theme: 'light',
     accentColor: '#676FFF',
   },
   embeddedWallets: {
-    createOnLogin: 'users-without-wallets',
+    createOnLogin: 'all-users',
   },
+  supportedChains: [scroll, scrollSepolia, LocalHost],
+  defaultChain: LocalHost,
 } as PrivyClientConfig;
 
 export function Web3Provider({ children }: { children: React.ReactNode }) {

@@ -319,6 +319,91 @@ export const abi = [
         type: 'uint256',
       },
     ],
+    name: 'getGame',
+    outputs: [
+      {
+        components: [
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'address_',
+                type: 'address',
+              },
+              {
+                internalType: 'uint16',
+                name: 'score',
+                type: 'uint16',
+              },
+              {
+                internalType: 'uint72',
+                name: 'totalBlocks',
+                type: 'uint72',
+              },
+            ],
+            internalType: 'struct Player',
+            name: 'player1',
+            type: 'tuple',
+          },
+          {
+            components: [
+              {
+                internalType: 'address',
+                name: 'address_',
+                type: 'address',
+              },
+              {
+                internalType: 'uint16',
+                name: 'score',
+                type: 'uint16',
+              },
+              {
+                internalType: 'uint72',
+                name: 'totalBlocks',
+                type: 'uint72',
+              },
+            ],
+            internalType: 'struct Player',
+            name: 'player2',
+            type: 'tuple',
+          },
+          {
+            internalType: 'address',
+            name: 'puzzleSet',
+            type: 'address',
+          },
+          {
+            internalType: 'uint8',
+            name: 'interval',
+            type: 'uint8',
+          },
+          {
+            internalType: 'uint16',
+            name: 'numberOfRounds',
+            type: 'uint16',
+          },
+          {
+            internalType: 'uint72',
+            name: 'startingBlock',
+            type: 'uint72',
+          },
+        ],
+        internalType: 'struct Game',
+        name: '',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'id',
+        type: 'uint256',
+      },
+    ],
     name: 'joinGame',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -362,7 +447,7 @@ export const abi = [
         type: 'uint256[137]',
       },
     ],
-    stateMutability: 'view',
+    stateMutability: 'pure',
     type: 'function',
   },
   {

@@ -8,8 +8,8 @@ import { gridMutator } from 'circuits';
 import IntermediateGrids from './IntermediateGrids';
 import { Colors } from 'circuits/types/circuitFunctions.types';
 
-const STARTING_X_POS = -3;
-const STARTING_Y_POS = 0.5;
+const STARTING_X_POS = -0.8;
+const STARTING_Y_POS = 2.3;
 
 export function Scene() {
   const [grids, setGrids] = useState<number[][][]>([]);

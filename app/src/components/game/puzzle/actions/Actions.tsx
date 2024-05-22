@@ -1,9 +1,8 @@
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { PuzzleContext } from '../Puzzle';
 import styles from '../../../../styles/actions.module.scss';
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
 import { PuzzleFunctionState } from '@/src/types/Puzzle';
-import { useAccount } from 'wagmi';
 import { InputSignals } from 'circuits/types/proof.types';
 import { ZKUBE_PUZZLESET_ADDRESS } from '../../../../config';
 import { useZkubeContract } from '../../../../hooks/useContract';
@@ -11,6 +10,7 @@ import { getCircuitFunctionIndex } from 'circuits';
 import Function from './Function';
 import { ZKProof } from '../../../../types/Proof';
 import { GenerateProof } from '../../../zk/generateProof';
+import { usePrivyWalletAddress } from '../../../../hooks/usePrivyWalletAddress';
 
 export function Actions({
   gameId,
@@ -21,7 +21,7 @@ export function Actions({
 }) {
   const { functions, setFunctions, initConfig, setPuzzleSolved, puzzleSolved } =
     useContext(PuzzleContext);
-  const { address } = useAccount();
+  const address = usePrivyWalletAddress();
   const [inputSignals, setInputSignals] = useState<InputSignals>();
   const { submitPuzzle, verifyPuzzleSolution } = useZkubeContract();
 
@@ -64,30 +64,33 @@ export function Actions({
     }
   }
 
-  function submitPuzzleSolution(result: ZKProof) {
-    try {
-      if (gameId && submitPuzzle) {
-        submitPuzzle(BigInt(gameId), result).then((res) => {
-          if (res) {
-            setPuzzleSolved(true);
-          }
-        });
+  const submitPuzzleSolution = useCallback(
+    (result: ZKProof) => {
+      try {
+        if (gameId && submitPuzzle) {
+          submitPuzzle(BigInt(gameId), result).then((res) => {
+            if (res) {
+              setPuzzleSolved(true);
+            }
+          });
+        }
+        if (puzzleId && verifyPuzzleSolution) {
+          verifyPuzzleSolution(
+            ZKUBE_PUZZLESET_ADDRESS,
+            BigInt(puzzleId!),
+            result
+          ).then((res) => {
+            if (res) {
+              setPuzzleSolved(true);
+            }
+          });
+        }
+      } catch (e) {
+        console.error('Error submitting puzzle solution', e);
       }
-      if (puzzleId && verifyPuzzleSolution) {
-        verifyPuzzleSolution(
-          ZKUBE_PUZZLESET_ADDRESS,
-          BigInt(puzzleId!),
-          result
-        ).then((res) => {
-          if (res) {
-            setPuzzleSolved(true);
-          }
-        });
-      }
-    } catch (e) {
-      console.error('Error submitting puzzle solution', e);
-    }
-  }
+    },
+    [gameId, submitPuzzle, verifyPuzzleSolution]
+  );
 
   return (
     <div className={styles.gameUI}>

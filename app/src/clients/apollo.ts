@@ -3,9 +3,8 @@ import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { createClient } from 'graphql-ws';
 
-const GRAPHQL_API_HTTP_URL =
-  'https://squid.subsquid.io/zkube-squid/v/v1/graphql';
-const GRAPHQL_API_WS_URL = 'wss://squid.subsquid.io/zkube-squid/v/v1/graphql';
+const GRAPHQL_API_HTTP_URL = 'http://localhost:4350/graphql';
+const GRAPHQL_API_WS_URL = 'ws://localhost:4350/graphql';
 
 const httpLink = new HttpLink({
   uri: GRAPHQL_API_HTTP_URL,
@@ -16,7 +15,7 @@ const httpLink = new HttpLink({
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: GRAPHQL_API_WS_URL
+    url: GRAPHQL_API_WS_URL,
   })
 );
 
