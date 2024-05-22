@@ -166,4 +166,8 @@ contract ZKube is IZKube {
         if (currentBlock < startingBlock) revert GameNotStarted();
         blockNumber = currentBlock - ((currentBlock - startingBlock) % interval);
     }
+
+    function getGame(uint256 id) external view returns (Game memory) {
+        return games[id];
+    }
 }
