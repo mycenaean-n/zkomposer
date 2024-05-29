@@ -9,17 +9,17 @@ import { useGameAndPuzzleData } from '../../hooks/useGameData';
 import JoinGameModal from '../lobbies/JoinGameModal';
 import QrModal from '../lobbies/QrModal';
 import { usePrivyWalletAddress } from '../../hooks/usePrivyWalletAddress';
-import { useZkubeContract } from '../../hooks/useContract';
+import { useZkube } from '../../hooks/useContract';
 import { zeroAddress } from 'viem';
 import { LoginCTA } from '../wallet/LoginCTA';
 
 export function MultiplayerGame({ id }: { id: string }) {
   const blockNumber = useBlockNumber();
-  const { games, loading } = useContext(GamesContext);
-  const game = games.find((g) => g.id === id);
-  const { getGame } = useZkubeContract();
+  // const { games, loading } = useContext(GamesContext);
+  // const game = games.find((g) => g.id === id);
+  // const { getGame } = useZkube();
   const address = usePrivyWalletAddress();
-  const { initConfig, onChainGame } = useGameAndPuzzleData({ game });
+  const { initConfig, onChainGame } = useGameAndPuzzleData(id);
   const [inputsShowing, setInputsShowing] = useState<boolean>(false);
   const [yourScore, setYourScore] = useState<number>(0);
   const [opponentScore, setOpponentScore] = useState<number>(0);
@@ -49,27 +49,29 @@ export function MultiplayerGame({ id }: { id: string }) {
     </div>
   );
 
-  if (loading) {
+  console.log({ onChainGame, initConfig });
+
+  if (!onChainGame) {
     return LoadingState({ textMain: 'Loading game...' });
   }
 
-  if (!game) {
+  if (!onChainGame) {
     return LoadingState({ textMain: 'Game not found' });
   }
 
   if (
     onChainGame?.player1.address_ &&
     onChainGame?.player2?.address_ !== zeroAddress &&
-    !hasGameStarted(blockNumber!, game)
+    !hasGameStarted(blockNumber!, onChainGame)
   ) {
     return LoadingState({
       textMain: `Game starting in ${
-        Number(game.startingBlock) - Number(blockNumber)
+        Number(onChainGame.startingBlock) - Number(blockNumber)
       } blocks`,
     });
   }
 
-  if (isGameFinished(blockNumber!, game)) {
+  if (isGameFinished(blockNumber!, onChainGame)) {
     return LoadingState({
       textMain: 'Game is finished',
       textSub:
@@ -84,14 +86,29 @@ export function MultiplayerGame({ id }: { id: string }) {
 
   return (
     <div className="flex flex-col flex-grow h-full">
-      {(address && game.player1 === address && !game.player2 && (
-        <QrModal setInputsShowing={setInputsShowing} />
-      )) ||
-        (address && game.player1 !== address && !game.player2 && (
-          <JoinGameModal game={game} setInputsShowing={setInputsShowing} />
-        ))}
+      {(address &&
+        onChainGame.player1.address_ === address &&
+        onChainGame.player2?.address_ === zeroAddress && (
+          <QrModal setInputsShowing={setInputsShowing} />
+        )) ||
+        (address &&
+          onChainGame.player1.address_ !== address &&
+          onChainGame.player1.address_ !== address &&
+          onChainGame.player2?.address_ === zeroAddress && (
+            <JoinGameModal
+              game={onChainGame}
+              setInputsShowing={setInputsShowing}
+              gameId={id}
+            />
+          ))}
       <div className="flex-grow h-96">
-        {initConfig && <PuzzleMemoized initConfig={initConfig} gameId={id} />}
+        {initConfig && (
+          <PuzzleMemoized
+            initConfig={initConfig}
+            gameId={id}
+            gameMode="multiplayer"
+          />
+        )}
       </div>
       {onChainGame && (
         <Footer

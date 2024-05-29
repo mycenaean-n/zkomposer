@@ -1,60 +1,17 @@
 export const abi = [
   {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'verifier_',
-        type: 'address',
-      },
-    ],
+    inputs: [{ internalType: 'address', name: 'verifier_', type: 'address' }],
     stateMutability: 'nonpayable',
     type: 'constructor',
   },
-  {
-    inputs: [],
-    name: 'AlreadySubmitted',
-    type: 'error',
-  },
-  {
-    inputs: [],
-    name: 'GameFinished',
-    type: 'error',
-  },
-  {
-    inputs: [],
-    name: 'GameNotFinished',
-    type: 'error',
-  },
-  {
-    inputs: [],
-    name: 'GameNotStarted',
-    type: 'error',
-  },
-  {
-    inputs: [],
-    name: 'GameStarted',
-    type: 'error',
-  },
-  {
-    inputs: [],
-    name: 'IntervalTooBig',
-    type: 'error',
-  },
-  {
-    inputs: [],
-    name: 'InvalidProof',
-    type: 'error',
-  },
-  {
-    inputs: [],
-    name: 'JoiningYourOwnGame',
-    type: 'error',
-  },
-  {
-    inputs: [],
-    name: 'NotValidPlayer',
-    type: 'error',
-  },
+  { inputs: [], name: 'AlreadySubmitted', type: 'error' },
+  { inputs: [], name: 'GameFinished', type: 'error' },
+  { inputs: [], name: 'GameNotFinished', type: 'error' },
+  { inputs: [], name: 'GameNotStarted', type: 'error' },
+  { inputs: [], name: 'GameStarted', type: 'error' },
+  { inputs: [], name: 'InvalidProof', type: 'error' },
+  { inputs: [], name: 'JoiningYourOwnGame', type: 'error' },
+  { inputs: [], name: 'NotValidPlayer', type: 'error' },
   {
     anonymous: false,
     inputs: [
@@ -153,21 +110,9 @@ export const abi = [
       },
       {
         components: [
-          {
-            internalType: 'address',
-            name: 'address_',
-            type: 'address',
-          },
-          {
-            internalType: 'uint16',
-            name: 'score',
-            type: 'uint16',
-          },
-          {
-            internalType: 'uint72',
-            name: 'totalBlocks',
-            type: 'uint72',
-          },
+          { internalType: 'address', name: 'address_', type: 'address' },
+          { internalType: 'uint16', name: 'score', type: 'uint16' },
+          { internalType: 'uint72', name: 'totalBlocks', type: 'uint72' },
         ],
         indexed: false,
         internalType: 'struct Player',
@@ -180,86 +125,45 @@ export const abi = [
   },
   {
     inputs: [],
+    name: 'AVAILABLE_PAST_BLOCKS',
+    outputs: [{ internalType: 'uint16', name: '', type: 'uint16' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'BLOCKS_UNTIL_START',
-    outputs: [
-      {
-        internalType: 'uint72',
-        name: '',
-        type: 'uint72',
-      },
-    ],
+    outputs: [{ internalType: 'uint32', name: '', type: 'uint32' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'puzzleSet',
-        type: 'address',
-      },
-      {
-        internalType: 'uint8',
-        name: 'interval',
-        type: 'uint8',
-      },
-      {
-        internalType: 'uint16',
-        name: 'numberOfTurns',
-        type: 'uint16',
-      },
+      { internalType: 'address', name: 'puzzleSet', type: 'address' },
+      { internalType: 'uint16', name: 'interval', type: 'uint16' },
+      { internalType: 'uint8', name: 'numberOfTurns', type: 'uint8' },
     ],
     name: 'createGame',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: 'id',
-        type: 'uint256',
-      },
-    ],
+    outputs: [{ internalType: 'uint256', name: 'id', type: 'uint256' }],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
     inputs: [],
     name: 'gameId',
-    outputs: [
-      {
-        internalType: 'uint96',
-        name: '',
-        type: 'uint96',
-      },
-    ],
+    outputs: [{ internalType: 'uint32', name: '', type: 'uint32' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
+    inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     name: 'games',
     outputs: [
       {
         components: [
-          {
-            internalType: 'address',
-            name: 'address_',
-            type: 'address',
-          },
-          {
-            internalType: 'uint16',
-            name: 'score',
-            type: 'uint16',
-          },
-          {
-            internalType: 'uint72',
-            name: 'totalBlocks',
-            type: 'uint72',
-          },
+          { internalType: 'address', name: 'address_', type: 'address' },
+          { internalType: 'uint16', name: 'score', type: 'uint16' },
+          { internalType: 'uint72', name: 'totalBlocks', type: 'uint72' },
         ],
         internalType: 'struct Player',
         name: 'player1',
@@ -267,143 +171,24 @@ export const abi = [
       },
       {
         components: [
-          {
-            internalType: 'address',
-            name: 'address_',
-            type: 'address',
-          },
-          {
-            internalType: 'uint16',
-            name: 'score',
-            type: 'uint16',
-          },
-          {
-            internalType: 'uint72',
-            name: 'totalBlocks',
-            type: 'uint72',
-          },
+          { internalType: 'address', name: 'address_', type: 'address' },
+          { internalType: 'uint16', name: 'score', type: 'uint16' },
+          { internalType: 'uint72', name: 'totalBlocks', type: 'uint72' },
         ],
         internalType: 'struct Player',
         name: 'player2',
         type: 'tuple',
       },
-      {
-        internalType: 'address',
-        name: 'puzzleSet',
-        type: 'address',
-      },
-      {
-        internalType: 'uint8',
-        name: 'interval',
-        type: 'uint8',
-      },
-      {
-        internalType: 'uint16',
-        name: 'numberOfRounds',
-        type: 'uint16',
-      },
-      {
-        internalType: 'uint72',
-        name: 'startingBlock',
-        type: 'uint72',
-      },
+      { internalType: 'address', name: 'puzzleSet', type: 'address' },
+      { internalType: 'uint16', name: 'interval', type: 'uint16' },
+      { internalType: 'uint8', name: 'numberOfRounds', type: 'uint8' },
+      { internalType: 'uint72', name: 'startingBlock', type: 'uint72' },
     ],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'id',
-        type: 'uint256',
-      },
-    ],
-    name: 'getGame',
-    outputs: [
-      {
-        components: [
-          {
-            components: [
-              {
-                internalType: 'address',
-                name: 'address_',
-                type: 'address',
-              },
-              {
-                internalType: 'uint16',
-                name: 'score',
-                type: 'uint16',
-              },
-              {
-                internalType: 'uint72',
-                name: 'totalBlocks',
-                type: 'uint72',
-              },
-            ],
-            internalType: 'struct Player',
-            name: 'player1',
-            type: 'tuple',
-          },
-          {
-            components: [
-              {
-                internalType: 'address',
-                name: 'address_',
-                type: 'address',
-              },
-              {
-                internalType: 'uint16',
-                name: 'score',
-                type: 'uint16',
-              },
-              {
-                internalType: 'uint72',
-                name: 'totalBlocks',
-                type: 'uint72',
-              },
-            ],
-            internalType: 'struct Player',
-            name: 'player2',
-            type: 'tuple',
-          },
-          {
-            internalType: 'address',
-            name: 'puzzleSet',
-            type: 'address',
-          },
-          {
-            internalType: 'uint8',
-            name: 'interval',
-            type: 'uint8',
-          },
-          {
-            internalType: 'uint16',
-            name: 'numberOfRounds',
-            type: 'uint16',
-          },
-          {
-            internalType: 'uint72',
-            name: 'startingBlock',
-            type: 'uint72',
-          },
-        ],
-        internalType: 'struct Game',
-        name: '',
-        type: 'tuple',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'id',
-        type: 'uint256',
-      },
-    ],
+    inputs: [{ internalType: 'uint256', name: 'id', type: 'uint256' }],
     name: 'joinGame',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -418,26 +203,14 @@ export const abi = [
             name: 'availableFunctions',
             type: 'uint8[]',
           },
-          {
-            internalType: 'bytes16',
-            name: 'finalGrid',
-            type: 'bytes16',
-          },
-          {
-            internalType: 'bytes16',
-            name: 'startingGrid',
-            type: 'bytes16',
-          },
+          { internalType: 'bytes16', name: 'finalGrid', type: 'bytes16' },
+          { internalType: 'bytes16', name: 'startingGrid', type: 'bytes16' },
         ],
         internalType: 'struct Puzzle',
         name: 'puzzle',
         type: 'tuple',
       },
-      {
-        internalType: 'address',
-        name: 'sender',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'sender', type: 'address' },
     ],
     name: 'parseInputSignals',
     outputs: [
@@ -451,13 +224,7 @@ export const abi = [
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'id',
-        type: 'uint256',
-      },
-    ],
+    inputs: [{ internalType: 'uint256', name: 'id', type: 'uint256' }],
     name: 'resolveGame',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -465,67 +232,27 @@ export const abi = [
   },
   {
     inputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: '', type: 'uint256' },
+      { internalType: 'address', name: '', type: 'address' },
+      { internalType: 'uint256', name: '', type: 'uint256' },
     ],
     name: 'roundSubmitted',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: 'id',
-        type: 'uint256',
-      },
-    ],
+    inputs: [{ internalType: 'uint256', name: 'id', type: 'uint256' }],
     name: 'selectPuzzle',
     outputs: [
-      {
-        internalType: 'uint256',
-        name: 'roundBlockNumber',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'roundBlockNumber', type: 'uint256' },
       {
         components: [
           {
             components: [
-              {
-                internalType: 'address',
-                name: 'address_',
-                type: 'address',
-              },
-              {
-                internalType: 'uint16',
-                name: 'score',
-                type: 'uint16',
-              },
-              {
-                internalType: 'uint72',
-                name: 'totalBlocks',
-                type: 'uint72',
-              },
+              { internalType: 'address', name: 'address_', type: 'address' },
+              { internalType: 'uint16', name: 'score', type: 'uint16' },
+              { internalType: 'uint72', name: 'totalBlocks', type: 'uint72' },
             ],
             internalType: 'struct Player',
             name: 'player1',
@@ -533,46 +260,18 @@ export const abi = [
           },
           {
             components: [
-              {
-                internalType: 'address',
-                name: 'address_',
-                type: 'address',
-              },
-              {
-                internalType: 'uint16',
-                name: 'score',
-                type: 'uint16',
-              },
-              {
-                internalType: 'uint72',
-                name: 'totalBlocks',
-                type: 'uint72',
-              },
+              { internalType: 'address', name: 'address_', type: 'address' },
+              { internalType: 'uint16', name: 'score', type: 'uint16' },
+              { internalType: 'uint72', name: 'totalBlocks', type: 'uint72' },
             ],
             internalType: 'struct Player',
             name: 'player2',
             type: 'tuple',
           },
-          {
-            internalType: 'address',
-            name: 'puzzleSet',
-            type: 'address',
-          },
-          {
-            internalType: 'uint8',
-            name: 'interval',
-            type: 'uint8',
-          },
-          {
-            internalType: 'uint16',
-            name: 'numberOfRounds',
-            type: 'uint16',
-          },
-          {
-            internalType: 'uint72',
-            name: 'startingBlock',
-            type: 'uint72',
-          },
+          { internalType: 'address', name: 'puzzleSet', type: 'address' },
+          { internalType: 'uint16', name: 'interval', type: 'uint16' },
+          { internalType: 'uint8', name: 'numberOfRounds', type: 'uint8' },
+          { internalType: 'uint72', name: 'startingBlock', type: 'uint72' },
         ],
         internalType: 'struct Game',
         name: 'game',
@@ -585,16 +284,8 @@ export const abi = [
             name: 'availableFunctions',
             type: 'uint8[]',
           },
-          {
-            internalType: 'bytes16',
-            name: 'finalGrid',
-            type: 'bytes16',
-          },
-          {
-            internalType: 'bytes16',
-            name: 'startingGrid',
-            type: 'bytes16',
-          },
+          { internalType: 'bytes16', name: 'finalGrid', type: 'bytes16' },
+          { internalType: 'bytes16', name: 'startingGrid', type: 'bytes16' },
         ],
         internalType: 'struct Puzzle',
         name: 'puzzle',
@@ -606,33 +297,13 @@ export const abi = [
   },
   {
     inputs: [
-      {
-        internalType: 'uint256',
-        name: 'id',
-        type: 'uint256',
-      },
+      { internalType: 'uint256', name: 'id', type: 'uint256' },
       {
         components: [
-          {
-            internalType: 'uint256[2]',
-            name: 'a',
-            type: 'uint256[2]',
-          },
-          {
-            internalType: 'uint256[2][2]',
-            name: 'b',
-            type: 'uint256[2][2]',
-          },
-          {
-            internalType: 'uint256[2]',
-            name: 'c',
-            type: 'uint256[2]',
-          },
-          {
-            internalType: 'uint256[137]',
-            name: 'input',
-            type: 'uint256[137]',
-          },
+          { internalType: 'uint256[2]', name: 'a', type: 'uint256[2]' },
+          { internalType: 'uint256[2][2]', name: 'b', type: 'uint256[2][2]' },
+          { internalType: 'uint256[2]', name: 'c', type: 'uint256[2]' },
+          { internalType: 'uint256[137]', name: 'input', type: 'uint256[137]' },
         ],
         internalType: 'struct Proof',
         name: 'proof',
@@ -647,69 +318,29 @@ export const abi = [
   {
     inputs: [],
     name: 'verifier',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      {
-        internalType: 'address',
-        name: 'puzzleSet',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: 'puzzleId',
-        type: 'uint256',
-      },
+      { internalType: 'address', name: 'puzzleSet', type: 'address' },
+      { internalType: 'uint256', name: 'puzzleId', type: 'uint256' },
       {
         components: [
-          {
-            internalType: 'uint256[2]',
-            name: 'a',
-            type: 'uint256[2]',
-          },
-          {
-            internalType: 'uint256[2][2]',
-            name: 'b',
-            type: 'uint256[2][2]',
-          },
-          {
-            internalType: 'uint256[2]',
-            name: 'c',
-            type: 'uint256[2]',
-          },
-          {
-            internalType: 'uint256[137]',
-            name: 'input',
-            type: 'uint256[137]',
-          },
+          { internalType: 'uint256[2]', name: 'a', type: 'uint256[2]' },
+          { internalType: 'uint256[2][2]', name: 'b', type: 'uint256[2][2]' },
+          { internalType: 'uint256[2]', name: 'c', type: 'uint256[2]' },
+          { internalType: 'uint256[137]', name: 'input', type: 'uint256[137]' },
         ],
         internalType: 'struct Proof',
         name: 'proof',
         type: 'tuple',
       },
-      {
-        internalType: 'address',
-        name: 'sender',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'sender', type: 'address' },
     ],
     name: 'verifyPuzzleSolution',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
     stateMutability: 'view',
     type: 'function',
   },
@@ -722,16 +353,8 @@ export const abi = [
             name: 'availableFunctions',
             type: 'uint8[]',
           },
-          {
-            internalType: 'bytes16',
-            name: 'finalGrid',
-            type: 'bytes16',
-          },
-          {
-            internalType: 'bytes16',
-            name: 'startingGrid',
-            type: 'bytes16',
-          },
+          { internalType: 'bytes16', name: 'finalGrid', type: 'bytes16' },
+          { internalType: 'bytes16', name: 'startingGrid', type: 'bytes16' },
         ],
         internalType: 'struct Puzzle',
         name: 'puzzle',
@@ -739,45 +362,19 @@ export const abi = [
       },
       {
         components: [
-          {
-            internalType: 'uint256[2]',
-            name: 'a',
-            type: 'uint256[2]',
-          },
-          {
-            internalType: 'uint256[2][2]',
-            name: 'b',
-            type: 'uint256[2][2]',
-          },
-          {
-            internalType: 'uint256[2]',
-            name: 'c',
-            type: 'uint256[2]',
-          },
-          {
-            internalType: 'uint256[137]',
-            name: 'input',
-            type: 'uint256[137]',
-          },
+          { internalType: 'uint256[2]', name: 'a', type: 'uint256[2]' },
+          { internalType: 'uint256[2][2]', name: 'b', type: 'uint256[2][2]' },
+          { internalType: 'uint256[2]', name: 'c', type: 'uint256[2]' },
+          { internalType: 'uint256[137]', name: 'input', type: 'uint256[137]' },
         ],
         internalType: 'struct Proof',
         name: 'proof',
         type: 'tuple',
       },
-      {
-        internalType: 'address',
-        name: 'sender',
-        type: 'address',
-      },
+      { internalType: 'address', name: 'sender', type: 'address' },
     ],
     name: 'verifySolution',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
     stateMutability: 'view',
     type: 'function',
   },

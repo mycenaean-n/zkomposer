@@ -33,3 +33,10 @@ contract ZKubePuzzleSet is IZKubePuzzleSet, ERC721, Ownable {
         return baseUri;
     }
 }
+
+
+
+
+
+// block.number = 48496942
+// blockNumber = 48496740

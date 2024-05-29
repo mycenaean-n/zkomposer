@@ -31,7 +31,7 @@ export function GenerateProof({
 
   return (
     <button
-      className="bg-btn-gray p-2 rounded-sm w-full cursor-pointer z-100"
+      className="border-2 bg-black text-white border-black p-2 rounded-md w-full cursor-pointer font-bold"
       disabled={
         !initialGrid ||
         !finalGrid ||
@@ -57,13 +57,12 @@ export function GenerateProof({
           }).then((res) => {
             setGenerationgProof(false);
             onResult(res as unknown as ZKProof);
-            alert('Puzzle Solved!');
           });
         }
       }}
     >
       {generatingProof ? (
-        <div className="animate-spin h-6 w-6  border-b-2 border-gray-900 rounded-full mx-auto"></div>
+        <div className="animate-spin h-6 w-6  border-b-2 border-gray-100 rounded-full mx-auto "></div>
       ) : (
         'Submit Solution'
       )}

@@ -1,105 +1,53 @@
 'use client';
-import { useEffect, useMemo, useState } from 'react';
-import { Game, OnChainGame } from '../types/Game';
-import { hasGameStarted, isGameFinished } from '../utils/game';
+import { useEffect, useState } from 'react';
+import { OnChainGame } from '../types/Game';
 import { useBlockNumber } from './useBlockNumber';
 import { Puzzle } from '../types/Puzzle';
-import { useZkubeContract } from './useContract';
+import { useZkube } from './useContract';
+import { useDeepCompareMemo } from 'use-deep-compare';
 
-type InitalGameData = Puzzle & {
-  onChainGame: OnChainGame;
-};
-
-function useFetchPuzzleByGameId(game?: Game): InitalGameData | undefined {
+export function useGameAndPuzzleData(id: string) {
   const [data, setData] = useState<{
-    roundBlock: bigint;
+    roundBlock?: bigint;
     game: OnChainGame;
-    puzzle: Puzzle;
+    puzzle?: Puzzle;
   }>();
-  const { selectPuzzle } = useZkubeContract();
+  const { selectPuzzle } = useZkube();
   const blockNumber = useBlockNumber();
 
   useEffect(() => {
-    if (
-      !game ||
-      !game.id ||
-      !selectPuzzle ||
-      !hasGameStarted(blockNumber!, game) ||
-      isGameFinished(blockNumber!, game) ||
-      game.startingBlock === null
-    )
-      return;
+    if (!id || !selectPuzzle) return;
 
-    selectPuzzle(BigInt(game.id))
+    selectPuzzle(BigInt(id))
       .then((result) => {
         setData(result);
       })
       .catch((e) => {
-        console.log(e);
+        console.error(e);
       });
-  }, [selectPuzzle, game, blockNumber]);
+  }, [selectPuzzle, id, blockNumber]);
 
-  if (!data || !data.game) return;
+  return useDeepCompareMemo(() => {
+    if (!data || !data.game)
+      return { onChainGame: undefined, puzzle: undefined };
 
-  return {
-    ...data.puzzle,
-    onChainGame: data.game,
-  };
-}
+    const { game, puzzle } = data;
 
-function useGameData({
-  gameId,
-  onChainGame,
-}: {
-  gameId?: string;
-  onChainGame?: OnChainGame;
-}) {
-  const { getGame } = useZkubeContract();
-  const [game, setGame] = useState<OnChainGame>();
-  const blockNumber = useBlockNumber();
-
-  useEffect(() => {
-    if (onChainGame || !getGame || !gameId) {
-      return;
-    }
-    getGame(BigInt(gameId)).then((data) => {
-      setGame(data);
-    });
-  }, [getGame, gameId, blockNumber]);
-
-  return onChainGame || game;
-}
-
-export function useGameAndPuzzleData({ game }: { game?: Game }) {
-  const puzzleData = useFetchPuzzleByGameId(game);
-  const gameData = useGameData({
-    gameId: game?.id,
-    onChainGame: puzzleData?.onChainGame,
-  });
-
-  return useMemo(() => {
-    if (gameData && !puzzleData)
-      return { initConfig: undefined, onChainGame: gameData };
     if (
-      !puzzleData?.availableFunctions ||
-      !puzzleData?.finalGrid ||
-      !puzzleData?.initialGrid
+      !puzzle ||
+      !puzzle.finalGrid ||
+      !puzzle.initialGrid ||
+      !puzzle.availableFunctions
     )
-      return {};
+      return { initConfig: undefined, onChainGame: game };
 
     return {
       initConfig: {
-        availableFunctions: puzzleData.availableFunctions,
-        finalGrid: puzzleData.finalGrid,
-        initialGrid: puzzleData.initialGrid,
+        availableFunctions: puzzle.availableFunctions,
+        finalGrid: puzzle.finalGrid,
+        initialGrid: puzzle.initialGrid,
       },
-      onChainGame: gameData,
+      onChainGame: game,
     };
-  }, [
-    puzzleData,
-    puzzleData?.availableFunctions,
-    puzzleData?.finalGrid,
-    puzzleData?.initialGrid,
-    gameData,
-  ]);
+  }, [data]);
 }

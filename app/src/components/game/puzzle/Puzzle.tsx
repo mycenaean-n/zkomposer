@@ -8,20 +8,22 @@ import {
 } from '@/src/types/Puzzle';
 import { Scene } from './scene/Scene';
 
+type GameMode = 'singleplayer' | 'multiplayer';
+
 export const PuzzleContext = createContext<PuzzleContextType>({
   initConfig: { initialGrid: [], finalGrid: [], availableFunctions: [] },
   functions: { remaining: [], chosen: [], available: [] },
   setFunctions: () => {},
-  puzzleSolved: false,
-  setPuzzleSolved: () => {},
 });
 
 function Puzzle({
   initConfig,
   gameId,
   puzzleId,
+  gameMode,
 }: {
   initConfig: PuzzleType;
+  gameMode: GameMode;
   gameId?: string;
   puzzleId?: string;
 }) {
@@ -32,8 +34,6 @@ function Puzzle({
     chosen: [],
     available: initConfig.availableFunctions,
   });
-
-  const [puzzleSolved, setPuzzleSolved] = useState<boolean>(false);
 
   useEffect(() => {
     setFunctions({
@@ -51,11 +51,9 @@ function Puzzle({
         initConfig,
         functions,
         setFunctions,
-        puzzleSolved,
-        setPuzzleSolved,
       }}
     >
-      <div className="flex flex-col flex-grow md:w-1000 md:h-800">
+      <div className="flex flex-col flex-grow  m-auto md:w-1000 md:h-800">
         <Scene />
         <Actions gameId={gameId} puzzleId={puzzleId} />
       </div>

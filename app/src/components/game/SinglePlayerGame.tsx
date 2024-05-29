@@ -19,7 +19,13 @@ export function SinglePlayerGame({ id }: { id: string }) {
 
   return (
     <>
-      {puzzleData && <PuzzleMemoized initConfig={puzzleData} puzzleId={id} />}
+      {puzzleData && (
+        <PuzzleMemoized
+          initConfig={puzzleData}
+          puzzleId={id}
+          gameMode="singleplayer"
+        />
+      )}
     </>
   );
 }

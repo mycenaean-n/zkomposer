@@ -9,7 +9,7 @@ import {Puzzle, PuzzleJson} from "../src/Types.sol";
 
 contract AddPuzzles is Script {
     Puzzle[] public puzzles;
-    address public constant PUZZLE_SET_CONTRACT_ADDRESS = 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0;
+    address public constant PUZZLE_SET_CONTRACT_ADDRESS = 0x13cd31C4C3345e712a6501a040E8278b15107b32;
 
     function setUp() public {
         string memory file = vm.readFile("./script/data/cube-composer.puzzles.json");

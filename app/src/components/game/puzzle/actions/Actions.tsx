@@ -5,12 +5,14 @@ import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
 import { PuzzleFunctionState } from '@/src/types/Puzzle';
 import { InputSignals } from 'circuits/types/proof.types';
 import { ZKUBE_PUZZLESET_ADDRESS } from '../../../../config';
-import { useZkubeContract } from '../../../../hooks/useContract';
+import { useZkube } from '../../../../hooks/useContract';
 import { getCircuitFunctionIndex } from 'circuits';
 import Function from './Function';
 import { ZKProof } from '../../../../types/Proof';
 import { GenerateProof } from '../../../zk/generateProof';
 import { usePrivyWalletAddress } from '../../../../hooks/usePrivyWalletAddress';
+import { useChainId } from 'wagmi';
+import { Tick } from './Tick';
 
 export function Actions({
   gameId,
@@ -19,11 +21,12 @@ export function Actions({
   gameId?: string;
   puzzleId?: string;
 }) {
-  const { functions, setFunctions, initConfig, setPuzzleSolved, puzzleSolved } =
-    useContext(PuzzleContext);
+  const { functions, setFunctions, initConfig } = useContext(PuzzleContext);
   const address = usePrivyWalletAddress();
+  const chainId = useChainId();
   const [inputSignals, setInputSignals] = useState<InputSignals>();
-  const { submitPuzzle, verifyPuzzleSolution } = useZkubeContract();
+  const [puzzleSolved, setPuzzleSolved] = useState<boolean>(false);
+  const { submitPuzzle, verifyPuzzleSolution } = useZkube();
 
   useEffect(() => {
     if (!address) return;
@@ -76,7 +79,7 @@ export function Actions({
         }
         if (puzzleId && verifyPuzzleSolution) {
           verifyPuzzleSolution(
-            ZKUBE_PUZZLESET_ADDRESS,
+            ZKUBE_PUZZLESET_ADDRESS[chainId],
             BigInt(puzzleId!),
             result
           ).then((res) => {
@@ -94,16 +97,19 @@ export function Actions({
 
   return (
     <div className="flex flex-col px-2">
-      <div className="mb-2">
+      <div className="mb-2 relative">
+        {puzzleSolved && (
+          <div className="flex absolute -top-16 right-14">
+            <Tick />
+            <div>
+              <h2 className="text-2xl mt-2">Puzzle Solved</h2>
+            </div>
+          </div>
+        )}
         <GenerateProof
           inputSignals={inputSignals}
           onResult={submitPuzzleSolution}
         />
-        {puzzleSolved && (
-          <div className="text-green-600 text-xl text-center p-2 rounded-sm mt-2">
-            Puzzle Solved!
-          </div>
-        )}
       </div>
       <div className={styles.gameUI}>
         <DragDropContext onDragEnd={onDragEnd}>
@@ -131,7 +137,7 @@ export function Actions({
             {(provided) => (
               <div
                 ref={provided.innerRef}
-                className="border border-black border-dashed rounded-sm"
+                className="border border-black  rounded-sm"
                 {...provided.droppableProps}
               >
                 {functions.chosen.map((funcName, i) => (

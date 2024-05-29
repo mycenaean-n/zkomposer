@@ -5,8 +5,8 @@ struct Game {
     Player player1;
     Player player2;
     address puzzleSet;
-    uint8 interval;
-    uint16 numberOfRounds;
+    uint16 interval;
+    uint8 numberOfRounds;
     uint72 startingBlock;
 }
 
@@ -37,7 +37,7 @@ struct Player {
 
 interface IZKube {
     // When a game is created, the blockstart is defined. Each turn must be made within a blockinterval no greater than 256 blocks.
-    function createGame(address puzzleSet, uint8 interval, uint16 numberOfTurns) external returns (uint256 id);
+    function createGame(address puzzleSet, uint16 interval, uint8 numberOfTurns) external returns (uint256 id);
 
     function joinGame(uint256 id) external;
 

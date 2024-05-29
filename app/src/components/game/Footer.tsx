@@ -5,6 +5,7 @@ import { hasGameStarted, isGameFinished } from '@/src/utils/game';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { OnChainGame } from '../../types/Game';
 import { usePrivyWalletAddress } from '../../hooks/usePrivyWalletAddress';
+import { useGameAndPuzzleData } from '../../hooks/useGameData';
 
 export function Footer({
   gameId,
@@ -16,19 +17,21 @@ export function Footer({
   opponentScore: number;
 }) {
   const blockNumber = useBlockNumber();
-  const { games } = useContext(GamesContext);
+  // const { games } = useContext(GamesContext);
+  const { onChainGame } = useGameAndPuzzleData(gameId);
   const address = usePrivyWalletAddress();
-  const game = useMemo(() => {
-    return games.find((game) => game.id === gameId);
-  }, [games, gameId]);
+  // const game = useMemo(() => {
+  //   return games.find((game) => game.id === gameId);
+  // }, [games, gameId]);
 
-  if (!game || !blockNumber) return null;
-  if (isGameFinished(blockNumber, game)) return null;
-  if (!hasGameStarted(blockNumber, game)) return null;
+  if (!onChainGame || !blockNumber) return null;
+  if (isGameFinished(blockNumber, onChainGame)) return null;
+  if (!hasGameStarted(blockNumber, onChainGame)) return null;
 
   const blocksLeftThisTurn =
-    game.interval -
-    ((Number(blockNumber) - Number(game.startingBlock)) % game.interval);
+    onChainGame.interval -
+    ((Number(blockNumber) - Number(onChainGame.startingBlock)) %
+      onChainGame.interval);
 
   return (
     <footer className="bg-black h-20 mt-auto">
@@ -60,12 +63,12 @@ export function Footer({
             <br />
             <span className="text-xl font-normal">
               {Math.floor(
-                (Number(blockNumber) - Number(game.startingBlock)) /
-                  game.interval
+                (Number(blockNumber) - Number(onChainGame.startingBlock)) /
+                  onChainGame.interval
               ) +
                 1 +
                 ' of ' +
-                game.numberOfTurns}
+                onChainGame.numberOfRounds}
             </span>
           </h4>
         </div>

@@ -2,6 +2,7 @@
 'use client';
 import {
   Address,
+  Client,
   EIP1193Provider,
   Hash,
   createWalletClient,
@@ -12,7 +13,7 @@ import {
 } from 'viem';
 import { abi as zKubeAbi } from '../abis/zKube';
 import { abi as zKubePuzzleSetAbi } from '../abis/zKubePuzzleSet';
-import { usePublicClient, useReadContract } from 'wagmi';
+import { usePublicClient } from 'wagmi';
 import { ZKUBE_ADDRESS, ZKUBE_PUZZLESET_ADDRESS } from '../config';
 import { waitForTransactionReceipt } from 'viem/actions';
 import { OnChainPuzzle, Puzzle } from '../types/Puzzle';
@@ -38,18 +39,17 @@ type CreateGameEventValues = {
   numberOfTurns: bigint;
 };
 
-type ZKubeContractActions = Partial<{
+interface ZKubeContractActions {
   createGame: (
     targetPuzzleSet: string,
     interval: number,
     numberOfTurns: number
   ) => Promise<WriteResult & { eventValues: CreateGameEventValues }>;
   joinGame: (gameId: bigint) => Promise<WriteResult>;
-  getGame: (gameId: bigint) => Promise<OnChainGame>;
   selectPuzzle: (gameId: bigint) => Promise<{
-    roundBlock: bigint;
+    roundBlock?: bigint;
     game: OnChainGame;
-    puzzle: Puzzle;
+    puzzle?: Puzzle;
   }>;
   submitPuzzle: (gameId: bigint, proof: ZKProof) => Promise<WriteResult>;
   verifyPuzzleSolution: (
@@ -57,7 +57,7 @@ type ZKubeContractActions = Partial<{
     puzzleId: bigint,
     proof: ZKProof
   ) => Promise<boolean>;
-}>;
+}
 
 type ZKubePuzzleSetContractActions = Partial<{
   getPuzzle: (puzzleId: bigint) => Promise<Puzzle>;
@@ -89,16 +89,24 @@ export function useClients() {
   return { publicClient, walletClient };
 }
 
-export function useZkubeContract(): ZKubeContractActions {
+function getZkubeContract<T extends Client | undefined>({
+  publicClient,
+  walletClient,
+}: {
+  publicClient: Client;
+  walletClient: T;
+}) {
+  return getContract({
+    abi: zKubeAbi,
+    address: ZKUBE_ADDRESS[publicClient.chain!.id],
+    client: { public: publicClient, wallet: walletClient },
+  });
+}
+
+export function useZkube(): ZKubeContractActions {
   const { publicClient, walletClient } = useClients();
 
   const address = usePrivyWalletAddress();
-
-  const zKube = getContract({
-    abi: zKubeAbi,
-    address: ZKUBE_ADDRESS,
-    client: { public: publicClient, wallet: walletClient },
-  });
 
   const createGame = useCallback(
     async (
@@ -108,7 +116,15 @@ export function useZkubeContract(): ZKubeContractActions {
     ): Promise<WriteResult & { eventValues: CreateGameEventValues }> => {
       if (isAddress(targetPuzzleSet)) {
         if (!walletClient) throw new Error('No address found');
-        const txHash = await (zKube as any).write.createGame(
+        const zKube = getZkubeContract({ publicClient, walletClient });
+        console.log([targetPuzzleSet, interval, numberOfTurns], {
+          account: address,
+          chain: walletClient?.chain,
+        });
+
+        console.log({ address: walletClient });
+
+        const txHash = await zKube.write.createGame(
           [targetPuzzleSet, interval, numberOfTurns],
           { account: address, chain: walletClient?.chain }
         );
@@ -138,15 +154,15 @@ export function useZkubeContract(): ZKubeContractActions {
         throw new Error('Invalid address');
       }
     },
-    [walletClient, zKube]
+    [walletClient, publicClient, address]
   );
 
   const joinGame = useCallback(
     async (gameId: bigint): Promise<WriteResult> => {
-      if (!address || !zKube || !walletClient) {
-        throw new Error('No address found');
-      }
-      const txHash = await (zKube as any).write.joinGame([gameId], {
+      if (!address || !walletClient) throw new Error('No address found');
+
+      const zKube = getZkubeContract({ publicClient, walletClient });
+      const txHash = await zKube.write.joinGame([gameId], {
         account: address,
         chain: walletClient?.chain,
       });
@@ -156,32 +172,31 @@ export function useZkubeContract(): ZKubeContractActions {
       });
       return { txHash, success: receipt.status === 'success' };
     },
-    [zKube, walletClient]
-  );
-
-  const getGame = useCallback(
-    async (gameId: bigint): Promise<OnChainGame> => {
-      if (!gameId || !publicClient) {
-        throw new Error('No gameId or publicClient');
-      }
-
-      return await zKube.read.getGame([gameId]);
-    },
-    [publicClient]
+    [walletClient]
   );
 
   const selectPuzzle = useCallback(
     async (
       gameId: bigint
-    ): Promise<{ roundBlock: bigint; game: OnChainGame; puzzle: Puzzle }> => {
+    ): Promise<{ roundBlock?: bigint; game: OnChainGame; puzzle?: Puzzle }> => {
       const result = await publicClient?.readContract({
         abi: zKubeAbi,
-        address: ZKUBE_ADDRESS,
+        address: ZKUBE_ADDRESS[publicClient.chain.id],
         functionName: 'selectPuzzle',
         args: [gameId],
       });
 
       const [roundBlock, game, hexPuzzle] = result!;
+
+      if (
+        !hexPuzzle.availableFunctions ||
+        !hexPuzzle.startingGrid ||
+        !hexPuzzle.finalGrid ||
+        !roundBlock
+      ) {
+        return { roundBlock: undefined, game, puzzle: undefined };
+      }
+
       const base4Puzzle = convertPuzzleToBase4FromHex(
         hexPuzzle as OnChainPuzzle
       );
@@ -192,6 +207,7 @@ export function useZkubeContract(): ZKubeContractActions {
           (functionId) => circuitFunctionsArray[functionId]
         ),
       };
+
       return { roundBlock, game, puzzle };
     },
     [publicClient]
@@ -199,9 +215,9 @@ export function useZkubeContract(): ZKubeContractActions {
 
   const submitPuzzle = useCallback(
     async (gameId: bigint, proof: ZKProof): Promise<WriteResult> => {
-      if (!address) {
-        throw new Error('No address found');
-      }
+      if (!address) throw new Error('No address found');
+
+      const zKube = getZkubeContract({ publicClient, walletClient });
       const txHash = await (zKube as any).write.submitPuzzle([gameId, proof], {
         account: address,
         chain: walletClient?.chain,
@@ -212,7 +228,7 @@ export function useZkubeContract(): ZKubeContractActions {
       });
       return { txHash: '0xdadada', success: true };
     },
-    [zKube, address, walletClient]
+    [address, walletClient]
   );
 
   const verifyPuzzleSolution = useCallback(
@@ -226,7 +242,7 @@ export function useZkubeContract(): ZKubeContractActions {
       }
       const result = await publicClient?.readContract({
         abi: zKubeAbi,
-        address: ZKUBE_ADDRESS,
+        address: ZKUBE_ADDRESS[publicClient.chain.id],
         functionName: 'verifyPuzzleSolution',
         args: [puzzleSet, puzzleId, proof, address],
       });
@@ -242,7 +258,6 @@ export function useZkubeContract(): ZKubeContractActions {
     selectPuzzle,
     submitPuzzle,
     verifyPuzzleSolution,
-    getGame,
   };
 }
 
@@ -255,7 +270,7 @@ export function usePuzzleSetContract(): ZKubePuzzleSetContractActions {
     async (puzzleId: bigint): Promise<Puzzle> => {
       const hexPuzzle = await publicClient.readContract({
         abi: zKubePuzzleSetAbi,
-        address: ZKUBE_PUZZLESET_ADDRESS,
+        address: ZKUBE_PUZZLESET_ADDRESS[publicClient.chain.id],
         functionName: 'getPuzzle',
         args: [puzzleId],
       });

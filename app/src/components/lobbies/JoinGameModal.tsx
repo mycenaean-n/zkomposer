@@ -1,18 +1,20 @@
 import React from 'react';
 import styles from '../../styles/createGame.module.scss';
-import { useZkubeContract } from '@/src/hooks/useContract';
+import { useZkube } from '@/src/hooks/useContract';
 import { useState } from 'react';
 import { ZKUBE_PUZZLESET_ADDRESS } from '@/src/config';
-import { Game } from '../../types/Game';
+import { Game, OnChainGame } from '../../types/Game';
 
 export default function JoinGameModal({
   setInputsShowing,
   game,
+  gameId,
 }: {
   setInputsShowing: (showing: boolean) => void;
-  game: Game;
+  game: OnChainGame;
+  gameId: string;
 }) {
-  const { joinGame } = useZkubeContract();
+  const { joinGame } = useZkube();
   const [joined, setJoined] = useState(false);
 
   function onInputContainerClick(e: React.MouseEvent<HTMLDivElement>) {
@@ -31,7 +33,7 @@ export default function JoinGameModal({
               <input
                 className="text-black"
                 type="text"
-                value={game.player1}
+                value={game.player1.address_}
                 disabled={true}
               />
             </div>
@@ -58,7 +60,7 @@ export default function JoinGameModal({
               <input
                 className="text-black"
                 type="number"
-                value={game.numberOfTurns}
+                value={game.numberOfRounds}
                 disabled={true}
               />
             </div>
@@ -66,7 +68,7 @@ export default function JoinGameModal({
             <button
               onClick={async () => {
                 if (!joinGame) return;
-                const result = await joinGame(BigInt(game.id));
+                const result = await joinGame(BigInt(gameId));
                 if (result.success) {
                   setJoined(true);
                 } else {

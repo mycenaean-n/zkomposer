@@ -2,14 +2,14 @@
 import { Game } from '@/src/types/Game';
 import styles from '../../styles/games.module.scss';
 import { useContext } from 'react';
-import { useZkubeContract } from '../../hooks/useContract';
+import { useZkube } from '../../hooks/useContract';
 import { GamesContext } from '@/src/context/GamesContext';
 import { truncateAddress } from '@/src/utils/truncateAddress';
 
 export function GamesTable({ prefetchedGames }: { prefetchedGames: Game[] }) {
   let { games } = useContext(GamesContext);
 
-  const { joinGame } = useZkubeContract();
+  const { joinGame } = useZkube();
 
   if (games.length === 0) {
     games = prefetchedGames;

@@ -1,2 +1,2 @@
-export const ZKUBE_ADDRESS = '0xa63E564bEe5Ab70aDc3929d098d89CB55E1dEb57';
+export const ZKUBE_ADDRESS = '0x8f9522edd8e10b08ca5739d4dc8c20857b5c76ba';
 export const RPC_URL = process.env.RPC_URL;

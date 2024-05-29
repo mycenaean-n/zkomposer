@@ -16,8 +16,6 @@ export type PuzzleContext = {
   initConfig: Puzzle;
   functions: PuzzleFunctions;
   setFunctions: Dispatch<SetStateAction<PuzzleFunctions>>;
-  puzzleSolved: boolean;
-  setPuzzleSolved: Dispatch<SetStateAction<boolean>>;
 };
 
 export type Puzzle = {

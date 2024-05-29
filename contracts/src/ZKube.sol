@@ -2,6 +2,7 @@
 pragma solidity 0.8.22;
 
 import {Proof, IZKube, IZKubeVerifier, Puzzle, Game, IZKubePuzzleSet, Player} from "./Types.sol";
+import './ArbSys.sol';
 import "./Errors.sol";
 import "./libraries/Base4.sol";
 import {GameCreated, GameJoined, PlayerSubmitted, GameResolved} from "./Events.sol";
@@ -10,10 +11,10 @@ contract ZKube is IZKube {
     using Base4 for bytes16;
     /// STATE ///
     address public immutable verifier;
+    uint32 public gameId;
+    uint32 public constant BLOCKS_UNTIL_START = 120; // approx 30 seconds arbitrum
+    uint16 public constant AVAILABLE_PAST_BLOCKS = 256;
 
-    uint96 public gameId;
-
-    uint72 public constant BLOCKS_UNTIL_START = 10; // approx 30 seconds scroll
     mapping(uint256 => Game) public games;
 
     // game Id => player => roundBlockNumber => hasSubmittedRound
@@ -30,14 +31,14 @@ contract ZKube is IZKube {
         _;
     }
 
-    function ifGameNotFinished(uint8 interval, uint72 startingBlock, uint16 numberOfRounds) private view {
-        if (block.number >= startingBlock + interval * numberOfRounds) {
+    function ifGameNotFinished(uint16 interval, uint72 startingBlock, uint8 numberOfRounds) private view {
+        if (uint72(arbiBlockNumber()) >= startingBlock + interval * numberOfRounds) {
             revert GameFinished();
         }
     }
 
-    function ifGameFinished(uint8 interval, uint72 startingBlock, uint16 numberOfRounds) private view {
-        if (block.number < startingBlock + interval * numberOfRounds) {
+    function ifGameFinished(uint16 interval, uint72 startingBlock, uint8 numberOfRounds) private view {
+        if (uint72(arbiBlockNumber()) < startingBlock + interval * numberOfRounds) {
             revert GameNotFinished();
         }
     }
@@ -47,9 +48,7 @@ contract ZKube is IZKube {
     }
 
     // When a game is created, the blockstart is defined. Each turn must be made within a blockinterval no greater than 256 blocks.
-    function createGame(address puzzleSet, uint8 interval, uint16 numberOfTurns) external returns (uint256 id) {
-        if (interval > 256) revert IntervalTooBig();
-
+    function createGame(address puzzleSet, uint16 interval, uint8 numberOfTurns) external returns (uint256 id) {
         id = ++gameId;
         games[id] = Game(Player(msg.sender, 0, 0), Player(address(0), 0, 0), puzzleSet, interval, numberOfTurns, 0);
         emit GameCreated(id, puzzleSet, msg.sender, interval, numberOfTurns);
@@ -59,7 +58,7 @@ contract ZKube is IZKube {
         Game memory game = games[id];
         if (msg.sender == game.player1.address_) revert JoiningYourOwnGame();
         game.player2.address_ = msg.sender;
-        game.startingBlock = uint72(block.number) + BLOCKS_UNTIL_START;
+        game.startingBlock = uint72(arbiBlockNumber()) + BLOCKS_UNTIL_START;
         games[id] = game;
         emit GameJoined(id, game.player1.address_, msg.sender, game.startingBlock);
     }
@@ -71,7 +70,8 @@ contract ZKube is IZKube {
         returns (uint256 roundBlockNumber, Game memory game, Puzzle memory puzzle)
     {
         game = games[id];
-        roundBlockNumber = getBlock(game.interval, game.startingBlock, game.numberOfRounds);
+        if (arbiBlockNumber() < game.startingBlock || game.startingBlock == 0) return (0, game, Puzzle(new uint8[](0), 0, 0));
+        roundBlockNumber = getBlock(game.interval % AVAILABLE_PAST_BLOCKS, game.startingBlock, game.numberOfRounds);
         uint256 randomNumber = getRandomNumber(roundBlockNumber);
         puzzle = IZKubePuzzleSet(game.puzzleSet).getRandomPuzzle(randomNumber);
     }
@@ -111,18 +111,19 @@ contract ZKube is IZKube {
         //TODO: add msg.sender and puzzle check in here, in verifier function?? Is it a publicSignal we hardcode as msg.sender? call selectPuzzle here to get publicSignals??
         if (!verifySolution(puzzle, proof, msg.sender)) revert InvalidProof();
 
+        uint72 blockNeededToSolvePuzzle = uint72(arbiBlockNumber()) % game.interval;
         if (sender == game.player1.address_) {
             game.player1 = Player(
                 game.player1.address_,
                 game.player1.score + 1,
-                game.player1.totalBlocks + uint72(block.number % game.interval)
+                game.player1.totalBlocks + blockNeededToSolvePuzzle
             );
             emit PlayerSubmitted(id, game.player1);
         } else if (sender == game.player2.address_) {
             game.player2 = Player(
                 game.player2.address_,
                 game.player2.score + 1,
-                game.player2.totalBlocks + uint72(block.number % game.interval)
+                game.player2.totalBlocks + blockNeededToSolvePuzzle
             );
             emit PlayerSubmitted(id, game.player2);
         } else {
@@ -133,7 +134,7 @@ contract ZKube is IZKube {
 
     function getRandomNumber(uint256 blockNumber) internal view returns (uint256 randomNumber) {
         // always get previous blockhash
-        return uint256(blockhash(blockNumber - 1));
+        return uint256(ArbSys(address(100)).arbBlockHash(blockNumber - 1));
     }
 
     function resolveGame(uint256 id) external {
@@ -156,18 +157,18 @@ contract ZKube is IZKube {
         }
     }
 
-    function getBlock(uint8 interval, uint72 startingBlock, uint16 numberOfRounds)
+    function getBlock(uint16 interval, uint72 startingBlock, uint8 numberOfRounds)
         internal
         view
         returns (uint256 blockNumber)
     {
         ifGameNotFinished(interval, startingBlock, numberOfRounds);
-        uint256 currentBlock = block.number;
+        uint256 currentBlock = arbiBlockNumber();
         if (currentBlock < startingBlock) revert GameNotStarted();
         blockNumber = currentBlock - ((currentBlock - startingBlock) % interval);
     }
 
-    function getGame(uint256 id) external view returns (Game memory) {
-        return games[id];
+    function arbiBlockNumber() private view returns (uint256) {
+        return ArbSys(address(100)).arbBlockNumber();
     }
 }

@@ -7,6 +7,7 @@ import { ApolloClientProvider } from '../src/providers/ApolloClientProvider';
 import { GamesProvider } from '@/src/context/GamesContext';
 import { BlockProvider } from '@/src/context/BlockContext';
 import Logo from '../src/components/Logo';
+import dynamic from 'next/dynamic';
 
 const roboto = Roboto({
   weight: '400',
@@ -18,6 +19,11 @@ export const metadata: Metadata = {
   description: 'Zero-Knowledge Cube Composer game.',
 };
 
+const ServiceWorkerRegistration = dynamic(
+  () => import('./ServiceWorkerRegistration'),
+  { ssr: false }
+);
+
 export default function RootLayout({
   children,
 }: {
@@ -25,6 +31,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#000000" /> {/* Add this line */}
+      </head>
       <body className={`${roboto.className} flex flex-col min-h-screen`}>
         <ApolloClientProvider>
           <Web3Provider>
@@ -35,6 +45,7 @@ export default function RootLayout({
                   <ConnectButton />
                 </header>
                 {children}
+                <ServiceWorkerRegistration />
               </GamesProvider>
             </BlockProvider>
           </Web3Provider>
