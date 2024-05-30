@@ -88,7 +88,7 @@ contract ZKubeTest is Test {
 
     function testConcrete_createGame() public {
         uint8 interval = 10;
-        uint16 numberOfTurns = 20;
+        uint8 numberOfTurns = 20;
         vm.expectEmit(true, true, true, true);
         emit GameCreated(1, zKubePuzzleSet, player1, interval, numberOfTurns);
         uint256 id = _createGame(player1, interval, numberOfTurns);
@@ -97,8 +97,8 @@ contract ZKubeTest is Test {
             Player memory p1,
             Player memory p2,
             address puzzleSet,
-            uint8 interval_,
-            uint16 numberOfTurns_,
+            uint16 interval_,
+            uint8 numberOfTurns_,
             uint72 startingBlock
         ) = zKube.games(id);
         assertEq(p1.address_, player1);
@@ -133,8 +133,8 @@ contract ZKubeTest is Test {
     }
 
     function testConcrete_getBlock() public {
-        uint8 interval = 10;
-        uint16 numberOfRounds = 20;
+        uint16 interval = 10;
+        uint8 numberOfRounds = 20;
         uint256 randomBlock = 21382132;
         vm.roll(randomBlock);
         uint256 id = _createGame(player1, interval, numberOfRounds);
@@ -148,8 +148,8 @@ contract ZKubeTest is Test {
     }
 
     function testFuzz_getBlock(uint256 startingBlock, uint256 jump) public {
-        uint8 interval = 10;
-        uint16 numberOfTurns = 20;
+        uint16 interval = 10;
+        uint8 numberOfTurns = 20;
 
         vm.assume(jump < interval * numberOfTurns);
         vm.assume(startingBlock < type(uint64).max);
@@ -166,8 +166,8 @@ contract ZKubeTest is Test {
     }
 
     function testFuzz_getBlock_reverts_ifGameFinished(uint256 jump) public {
-        uint8 interval = 10;
-        uint16 numberOfTurns = 20;
+        uint16 interval = 10;
+        uint8 numberOfTurns = 20;
 
         uint256 id = _createGame(player1, interval, 20);
 
@@ -282,7 +282,7 @@ contract ZKubeTest is Test {
         zKube.resolveGame(id);
     }
 
-    function _createGame(address player, uint8 interval, uint16 numberOfTurns) private returns (uint256 id) {
+    function _createGame(address player, uint16 interval, uint8 numberOfTurns) private returns (uint256 id) {
         vm.prank(player);
         id = zKube.createGame(zKubePuzzleSet, interval, numberOfTurns);
     }
