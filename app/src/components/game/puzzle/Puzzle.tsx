@@ -8,22 +8,22 @@ import {
 } from '@/src/types/Puzzle';
 import { Scene } from './scene/Scene';
 
+type GameMode = 'singleplayer' | 'multiplayer';
+
 export const PuzzleContext = createContext<PuzzleContextType>({
   initConfig: { initialGrid: [], finalGrid: [], availableFunctions: [] },
   functions: { remaining: [], chosen: [], available: [] },
   setFunctions: () => {},
-  puzzleSolved: false,
-  setPuzzleSolved: () => {},
 });
 
 function Puzzle({
   initConfig,
-  gameId,
-  puzzleId,
+  id,
+  gameMode,
 }: {
   initConfig: PuzzleType;
-  gameId?: string;
-  puzzleId?: string;
+  id: string;
+  gameMode: GameMode;
 }) {
   const [functions, setFunctions] = useState<PuzzleFunctions>({
     remaining: initConfig.availableFunctions.filter(
@@ -33,8 +33,6 @@ function Puzzle({
     available: initConfig.availableFunctions,
   });
 
-  const [puzzleSolved, setPuzzleSolved] = useState<boolean>(false);
-
   useEffect(() => {
     setFunctions({
       remaining: initConfig.availableFunctions.filter(
@@ -43,7 +41,7 @@ function Puzzle({
       chosen: [],
       available: initConfig.availableFunctions,
     });
-  }, [initConfig, gameId, puzzleId]);
+  }, [initConfig, id]);
 
   return (
     <PuzzleContext.Provider
@@ -51,13 +49,11 @@ function Puzzle({
         initConfig,
         functions,
         setFunctions,
-        puzzleSolved,
-        setPuzzleSolved,
       }}
     >
-      <div className="flex flex-col flex-grow md:w-1000 md:h-800">
+      <div className="flex flex-col flex-grow m-auto md:w-1000 md:h-800">
         <Scene />
-        <Actions gameId={gameId} puzzleId={puzzleId} />
+        <Actions {...{ id, gameMode }} />
       </div>
     </PuzzleContext.Provider>
   );

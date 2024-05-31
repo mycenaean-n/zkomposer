@@ -8,7 +8,7 @@ export function ConnectButton() {
   const { ready, authenticated, login, user, logout } = usePrivy();
 
   // Disable login when Privy is not ready or the user is already authenticated
-  const disableLogin = !ready || (ready && authenticated);
+  const disableLogin = !ready ?? (ready && authenticated);
 
   return (
     <>
@@ -21,9 +21,9 @@ export function ConnectButton() {
           Log in
         </button>
       ) : (
-        <div className="flex border border-solid rounded">
+        <>
           {user?.wallet && (
-            <>
+            <div className="flex border border-solid rounded">
               {!isMobile && (
                 <button className="text-white font-bold py-2 px-4 rounded">
                   {truncateAddress(user.wallet.address as `0x${string}`)}
@@ -33,13 +33,13 @@ export function ConnectButton() {
               <button
                 onClick={logout}
                 type="submit"
-                className="bg-white text-black font-bold py-2 px-4 "
+                className="bg-white text-black font-bold py-2 px-4"
               >
                 Sign out
               </button>
-            </>
+            </div>
           )}
-        </div>
+        </>
       )}
     </>
   );
