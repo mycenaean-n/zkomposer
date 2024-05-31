@@ -9,8 +9,8 @@ import IntermediateGrids from './IntermediateGrids';
 import { Colors } from 'circuits/types/circuitFunctions.types';
 import { isMobile } from 'react-device-detect';
 
-const STARTING_X_POS = isMobile ? -2.3 : -3;
-const STARTING_Y_POS = isMobile ? -0.2 : 0.5;
+const STARTING_X_POS = isMobile ? -1.8 : -3;
+const STARTING_Y_POS = isMobile ? 0.6 : 0.5;
 
 export function Scene() {
   const [grids, setGrids] = useState<number[][][]>([]);
