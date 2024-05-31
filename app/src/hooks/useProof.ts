@@ -4,7 +4,7 @@ import { Hex } from 'viem';
 import { InputSignals } from 'circuits/types/proof.types';
 import { exportCalldataGroth16 } from 'circuits';
 
-async function exportCallDataGroth16(
+async function generateGroth16ProofCalldata(
   input: InputSignals,
   wasmPath: string,
   zkeyPath: string
@@ -34,7 +34,7 @@ async function exportCallDataGroth16(
 export function useProof(wasmPath: string, zkeyPath: string) {
   return useCallback(
     async (input: InputSignals) => {
-      const { a, b, c, Input } = await exportCallDataGroth16(
+      const { a, b, c, Input } = await generateGroth16ProofCalldata(
         input,
         wasmPath,
         zkeyPath
