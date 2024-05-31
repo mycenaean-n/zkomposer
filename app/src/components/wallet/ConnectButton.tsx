@@ -8,7 +8,7 @@ export function ConnectButton() {
   const { ready, authenticated, login, user, logout } = usePrivy();
 
   // Disable login when Privy is not ready or the user is already authenticated
-  const disableLogin = !ready ?? (ready && authenticated);
+  const disableLogin = !ready || (ready && authenticated);
 
   return (
     <>
