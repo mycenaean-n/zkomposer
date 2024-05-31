@@ -4,11 +4,14 @@ import { Address } from 'viem';
 
 export const usePrivyWalletAddress = () => {
   const { user } = usePrivy();
-  const [address, setAddress] = useState<Address>();
+  const [address, setAddress] = useState<Address | undefined>();
 
   useEffect(() => {
-    if (user?.wallet?.walletClientType === 'privy')
+    if (!user) {
+      setAddress(undefined);
+    } else if (user?.wallet?.walletClientType === 'privy') {
       setAddress(user?.wallet?.address as Address);
+    }
   }, [user?.wallet?.address]);
 
   return address;
