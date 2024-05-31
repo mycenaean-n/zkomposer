@@ -1,8 +1,17 @@
 'use client';
-import { Games } from '@/src/components/lobbies/Games';
-import { usePrivyWalletAddress } from '../src/hooks/usePrivyWalletAddress';
-import { LoginCTA } from '../src/components/wallet/LoginCTA';
+import SinglePlayer from '../src/components/lobbies/SinglePlayer';
+import { CreateGame } from '../src/components/lobbies/CreateGame';
 
 export default function Home() {
-  return <Games />;
+  return (
+    <div>
+      <div className="flex justify-center mt-8">
+        <h1 className="text-2xl">Create Game</h1>
+      </div>
+      <div id="games" className="flex justify-center gap-10 mt-16">
+        <SinglePlayer />
+        <CreateGame />
+      </div>
+    </div>
+  );
 }
