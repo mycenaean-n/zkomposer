@@ -1,21 +1,25 @@
 import React, { useContext } from 'react';
-import styles from '../../styles/createGame.module.scss';
-import { useZkubeContract } from '@/src/hooks/useContract';
+import styles from '../../../styles/createGame.module.scss';
+import { useZkube } from '@/src/hooks/useContract';
 import { useState } from 'react';
 import { ZKUBE_PUZZLESET_ADDRESS } from '@/src/config';
 import { useRouter } from 'next/navigation';
-import { GamesContext } from '../../context/GamesContext';
+import { GamesContext } from '../../../context/GamesContext';
+import { useChainId } from 'wagmi';
 
 export default function CreateGameModal({
   setInputsShowing,
 }: {
   setInputsShowing: (showing: boolean) => void;
 }) {
-  const [puzzleSet, setPuzzleSet] = useState<string>(ZKUBE_PUZZLESET_ADDRESS);
-  const [interval, setInterval] = useState<number>(30);
+  const chainId = useChainId();
+  const [puzzleSet, setPuzzleSet] = useState<string>(
+    ZKUBE_PUZZLESET_ADDRESS[chainId]
+  );
+  const [interval, setInterval] = useState<number>(200);
   const { push } = useRouter();
   const [numberOfTurns, setNumberOfTurns] = useState<number>(3);
-  const { createGame } = useZkubeContract();
+  const { createGame } = useZkube();
   const { setLink } = useContext(GamesContext);
 
   function onInputContainerClick(e: React.MouseEvent<HTMLDivElement>) {
