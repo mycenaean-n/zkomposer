@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { Proof } from '../types/Proof';
+import { Proof, ZKProof } from '../types/Proof';
 import { Hex } from 'viem';
 import { InputSignals } from 'circuits/types/proof.types';
 import { exportCalldataGroth16 } from 'circuits';
@@ -34,13 +34,21 @@ async function exportCallDataGroth16(
 export function useProof(wasmPath: string, zkeyPath: string) {
   return useCallback(
     async (input: InputSignals) => {
-      const calldata = await exportCallDataGroth16(input, wasmPath, zkeyPath);
+      const { a, b, c, Input } = await exportCallDataGroth16(
+        input,
+        wasmPath,
+        zkeyPath
+      );
+
       return {
-        a: calldata.a.map((x) => BigInt(x)),
-        b: calldata.b.map((x) => x.map((y) => BigInt(y))),
-        c: calldata.c.map((x) => BigInt(x)),
-        input: calldata.Input.map((x) => BigInt(x)),
-      };
+        a: [BigInt(a[0]), BigInt(a[1])],
+        b: [
+          [BigInt(b[0][0]), BigInt(b[0][1])],
+          [BigInt(b[1][0]), BigInt(b[1][1])],
+        ],
+        c: [BigInt(c[0]), BigInt(c[1])],
+        input: Input.map((x) => BigInt(x)),
+      } as ZKProof;
     },
     [wasmPath, zkeyPath]
   );
