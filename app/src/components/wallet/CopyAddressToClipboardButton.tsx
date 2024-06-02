@@ -1,29 +1,16 @@
-import React, { useEffect, useState } from 'react';
 import { usePrivyWalletAddress } from '../../hooks/usePrivyWalletAddress';
-import copy from 'copy-to-clipboard';
+import { useCopyToClipboard } from '../../hooks/useCopyToClipboard';
 
 export const CopyAddressToClipboardButton = () => {
   const address = usePrivyWalletAddress();
-  const [copySuccess, setCopySuccess] = useState(false);
-
-  useEffect(() => {
-    if (copySuccess) {
-      setTimeout(() => {
-        setCopySuccess(false);
-      }, 1500);
-    }
-  }, [copySuccess]);
-
-  function copyAddressToClipboard() {
-    if (!address) return;
-    const isCoppied = copy(address);
-    setCopySuccess(isCoppied);
-  }
+  const { copyToClipboard, success: copySuccess } = useCopyToClipboard();
 
   return (
     <div className="relative inline-block">
       <button
-        onClick={copyAddressToClipboard}
+        onClick={() => {
+          copyToClipboard(address);
+        }}
         className="py-2 px-4 text-black font-bold bg-white border-r-2 border-black "
       >
         Copy Address

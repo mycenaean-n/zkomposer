@@ -22,7 +22,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
     return LoadingState('Loading puzzle...');
   }
 
-  if (!puzzle && !loading) {
+  if (!puzzle) {
     return LoadingState('Puzzle not found');
   }
 
@@ -30,11 +30,5 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
     return <LoginCTA />;
   }
 
-  return (
-    <>
-      {puzzle && (
-        <PuzzleMemoized initConfig={puzzle} id={id} gameMode="singleplayer" />
-      )}
-    </>
-  );
+  return <PuzzleMemoized initConfig={puzzle} id={id} gameMode="singleplayer" />;
 }

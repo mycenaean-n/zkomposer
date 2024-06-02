@@ -1,25 +1,23 @@
 import React, { useContext } from 'react';
 import styles from '../../../styles/createGame.module.scss';
-import { useZkube } from '@/src/hooks/useContract';
 import { useState } from 'react';
 import { ZKUBE_PUZZLESET_ADDRESS } from '@/src/config';
 import { useRouter } from 'next/navigation';
 import { GamesContext } from '../../../context/GamesContext';
-import { useChainId } from 'wagmi';
+import { useCreteGameCallback } from '../../../hooks/callbacks/useCreateGameCallback';
+import { Address } from 'viem';
 
 export default function CreateGameModal({
   setInputsShowing,
 }: {
   setInputsShowing: (showing: boolean) => void;
 }) {
-  const chainId = useChainId();
-  const [puzzleSet, setPuzzleSet] = useState<string>(
-    ZKUBE_PUZZLESET_ADDRESS[chainId]
-  );
+  const [puzzleSet, setPuzzleSet] = useState<Address>(ZKUBE_PUZZLESET_ADDRESS);
   const [interval, setInterval] = useState<number>(200);
+  const [creatingGame, setCreatingGame] = useState(false);
   const { push } = useRouter();
   const [numberOfTurns, setNumberOfTurns] = useState<number>(3);
-  const { createGame } = useZkube();
+  const createGameCallback = useCreteGameCallback();
   const { setLink } = useContext(GamesContext);
 
   function onInputContainerClick(e: React.MouseEvent<HTMLDivElement>) {
@@ -29,12 +27,22 @@ export default function CreateGameModal({
   }
 
   async function createGameAction() {
-    if (!createGame) return;
-    const result = await createGame(puzzleSet, interval, numberOfTurns);
-    if (result && result.success == true) {
-      const route = `/game/${result.eventValues.gameId}`;
-      push(route);
-      setLink(window.location.origin + route);
+    if (!createGameCallback || !puzzleSet) return;
+    setCreatingGame(true);
+    try {
+      const result = await createGameCallback(
+        puzzleSet,
+        interval,
+        numberOfTurns
+      );
+      if (result && result.success) {
+        const route = `/game/${result.data?.gameId}`;
+        push(route);
+        setLink(window.location.origin + route);
+      }
+      setCreatingGame(false);
+    } catch (error) {
+      setCreatingGame(false);
     }
   }
 
@@ -44,16 +52,16 @@ export default function CreateGameModal({
         <div className="flex justify-between">
           <h4>Puzzle Set</h4>
           <input
-            className="text-black"
+            className="pl-1 text-black"
             type="text"
             value={puzzleSet}
-            onChange={(e) => setPuzzleSet(e.target.value)}
+            onChange={(e) => setPuzzleSet(e.target.value as Address)}
           />
         </div>
         <div className="flex justify-between">
           <h4>Interval (blocks)</h4>
           <input
-            className="text-black"
+            className="pl-1 text-black"
             type="number"
             value={interval}
             onChange={(e) => setInterval(parseInt(e.target.value))}
@@ -62,7 +70,7 @@ export default function CreateGameModal({
         <div className="flex justify-between">
           <h4>Number of Puzzles</h4>
           <input
-            className="text-black"
+            className="pl-1 text-black"
             type="number"
             value={numberOfTurns}
             onChange={(e) => setNumberOfTurns(parseInt(e.target.value))}
@@ -70,10 +78,14 @@ export default function CreateGameModal({
         </div>
 
         <button
-          className="bg-white text-black font-bold py-2 px-4 rounded "
+          className="py-2 px-4 w-40 bg-white text-black font-bold rounded "
           onClick={createGameAction}
         >
-          Create Game
+          {creatingGame ? (
+            <div className="animate-spin h-6 w-6 border-b-2 border-gray-800 rounded-full mx-auto "></div>
+          ) : (
+            'Create Game'
+          )}
         </button>
       </div>
     </div>

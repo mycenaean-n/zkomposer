@@ -8,8 +8,9 @@ import { PuzzleMemoized } from '../../../src/components/game/puzzle/Puzzle';
 import { Footer } from '../../../src/components/game/Footer';
 import { useBlockNumber } from '../../../src/hooks/useBlockNumber';
 import { usePrivyWalletAddress } from '../../../src/hooks/usePrivyWalletAddress';
-import { useGameAndPuzzleData } from '../../../src/hooks/useGameAndPuzzleData';
 import { LoginCTA } from '../../../src/components/wallet/LoginCTA';
+import { useGameAndPuzzleData } from '../../../src/hooks/useGameAndPuzzleData';
+import { useDeepCompareMemo } from '../../../src/hooks/useDeepCompareMemo';
 
 function LoadingState({
   textMain,
@@ -29,13 +30,21 @@ function LoadingState({
 export default function Page({ params: { id } }: { params: { id: string } }) {
   const blockNumber = useBlockNumber();
   const address = usePrivyWalletAddress();
+  const [shouldPoll, setShouldPoll] = useState(true);
   const {
     data: { initConfig, onChainGame },
     loading,
-  } = useGameAndPuzzleData(id);
+  } = useGameAndPuzzleData(id, shouldPoll);
   const [joinModalShowing, setJoinModalShowing] = useState<boolean>(true);
   const [yourScore, setYourScore] = useState<number>(0);
   const [opponentScore, setOpponentScore] = useState<number>(0);
+  const stableInitConfig = useDeepCompareMemo(initConfig);
+  const gameFinished =
+    onChainGame && blockNumber && isGameFinished(blockNumber, onChainGame);
+
+  useEffect(() => {
+    if (gameFinished) setShouldPoll(false);
+  }, [gameFinished]);
 
   useEffect(() => {
     if (!onChainGame || !address) return;
@@ -50,7 +59,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
   }, [onChainGame, address]);
 
   if (loading) {
-    return LoadingState({ textMain: 'Loading puzzle...' });
+    return LoadingState({ textMain: 'Loading game...' });
   }
 
   if (!address && blockNumber) {
@@ -92,7 +101,6 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
     onChainGame.player2?.address_ === zeroAddress;
 
   const displayJoinModal =
-    joinModalShowing &&
     address &&
     onChainGame.player1.address_ !== address &&
     onChainGame.player1.address_ !== address &&
@@ -108,9 +116,9 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
           gameId={id}
         />
       )}
-      {initConfig && (
+      {stableInitConfig && (
         <PuzzleMemoized
-          initConfig={initConfig}
+          initConfig={stableInitConfig}
           id={id}
           gameMode="multiplayer"
         />

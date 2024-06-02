@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from '../../../styles/createGame.module.scss';
-import { useZkube } from '@/src/hooks/useContract';
 import { useState } from 'react';
 import { OnChainGame } from '../../../types/Game';
+import { useJoinGameCallback } from '../../../hooks/callbacks/useJoinGameCallback';
 
 export function JoinGameModal({
   setInputsShowing,
@@ -13,17 +13,21 @@ export function JoinGameModal({
   game: OnChainGame;
   gameId: string;
 }) {
-  const { joinGame } = useZkube();
+  const joinGameCallback = useJoinGameCallback();
   const [joined, setJoined] = useState(false);
 
-  function onInputContainerClick(e: React.MouseEvent<HTMLDivElement>) {
-    if (e.target === e.currentTarget) {
-      setInputsShowing(false);
+  async function joinGame() {
+    if (!joinGameCallback) return;
+    const result = await joinGameCallback(BigInt(gameId));
+    if (result.success) {
+      setJoined(true);
+    } else {
+      alert('failed to join game');
     }
   }
 
   return (
-    <div className={styles.inputsContainer} onClick={onInputContainerClick}>
+    <div className={styles.inputsContainer}>
       <div className={styles.inputs}>
         {!joined ? (
           <>
@@ -63,19 +67,7 @@ export function JoinGameModal({
                 disabled={true}
               />
             </div>
-            <button
-              onClick={async () => {
-                if (!joinGame) return;
-                const result = await joinGame(BigInt(gameId));
-                if (result.success) {
-                  setJoined(true);
-                } else {
-                  alert('failed to join game');
-                }
-              }}
-            >
-              Join Game
-            </button>
+            <button onClick={joinGame}>Join Game</button>
           </>
         ) : (
           <div>Joined </div>

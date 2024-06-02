@@ -11,7 +11,7 @@ export function GenerateProof({
 }: {
   inputSignals?: InputSignals;
   onResult: (proof: ZKProof) => void;
-  onError: (err: Error) => void;
+  onError: (err: string) => void;
 }) {
   const proofCallback = useProof('/zk/zkube.wasm', '/zk/zkube_final.zkey');
   const [generatingProof, setGenerationgProof] = useState(false);
@@ -63,7 +63,7 @@ export function GenerateProof({
             })
             .catch((e) => {
               setGenerationgProof(false);
-              onError(e);
+              onError(e.message);
             });
         }
       }}

@@ -17,7 +17,9 @@ export const wagmiConfig = createConfig({
   transports: {
     [scroll.id]: http(),
     [scrollSepolia.id]: http(),
-    [arbitrumSepolia.id]: http(),
+    [arbitrumSepolia.id]: http(
+      `https://arbitrum-sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY}`
+    ),
     ['31337']: http(),
   },
 

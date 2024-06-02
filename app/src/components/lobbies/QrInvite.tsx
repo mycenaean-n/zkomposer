@@ -1,20 +1,21 @@
-import copy from 'copy-to-clipboard';
 import QRCode from 'qrcode.react';
-import React, { useState } from 'react';
+import { useCopyToClipboard } from '../../hooks/useCopyToClipboard';
 
 export default function QrInvite() {
-  const [copySuccess, setCopySuccess] = useState(false);
+  const { copyToClipboard, success: copySuccess } = useCopyToClipboard();
 
-  function copyLinkToClipboard() {
-    const isCoppied = copy(window.location.href);
-    setCopySuccess(isCoppied);
-  }
   return (
-    <div className="flex flex-col relative mt-48">
+    <div className="flex flex-col relative mt-8">
       <div className="m-auto mb-2">
-        <h2>Game Link</h2>
+        <h1 className="text-4xl">Invite Link</h1>
       </div>
-      <div className="flex justify-center" onClick={copyLinkToClipboard}>
+      <div
+        className="flex flex-col justify-center mt-8 mx-auto"
+        onClick={() => {
+          copyToClipboard(window.location.href);
+        }}
+      >
+        <h4 className="mb-2 mx-auto">Click to Copy!</h4>
         <QRCode value={window.location.href} />
       </div>
       {copySuccess && (

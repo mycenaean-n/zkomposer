@@ -5,13 +5,14 @@ import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
 import { PuzzleFunctionState } from '@/src/types/Puzzle';
 import { InputSignals } from 'circuits/types/proof.types';
 import { ZKUBE_PUZZLESET_ADDRESS } from '../../../../config';
-import { useZkube } from '../../../../hooks/useContract';
 import { getCircuitFunctionIndex } from 'circuits';
 import { Function } from './Function';
 import { ZKProof } from '../../../../types/Proof';
 import { GenerateProof } from '../../../zk/generateProof';
 import { usePrivyWalletAddress } from '../../../../hooks/usePrivyWalletAddress';
 import { useRouter } from 'next/navigation';
+import { useSubmitPuzzleCallback } from '../../../../hooks/callbacks/useSubmitPuzzleCallback';
+import { useVerifyPuzzleSolutionCallback } from '../../../../hooks/callbacks/useVerifyPuzzleCallback';
 
 export function Tick() {
   return (
@@ -39,10 +40,9 @@ export function Actions({
   const address = usePrivyWalletAddress();
   const [inputSignals, setInputSignals] = useState<InputSignals>();
   const [puzzleSolved, setPuzzleSolved] = useState<boolean>(false);
-  const [proofGenerationError, setProofGenerationError] = useState<
-    Error | undefined
-  >();
-  const { submitPuzzle, verifyPuzzleSolution } = useZkube();
+  const [proofGenerationError, setProofGenerationError] = useState<string>();
+  const submitPuzzleCallback = useSubmitPuzzleCallback();
+  const verifyPuzzleSolutionCallback = useVerifyPuzzleSolutionCallback();
   const router = useRouter();
 
   useEffect(() => {
@@ -87,40 +87,41 @@ export function Actions({
   const submitPuzzleSolution = useCallback(
     (result: ZKProof) => {
       try {
-        if (gameMode === 'multiplayer' && id && submitPuzzle) {
-          submitPuzzle(BigInt(id), result).then((res) => {
-            if (res) {
+        if (gameMode === 'multiplayer' && id && submitPuzzleCallback) {
+          submitPuzzleCallback(BigInt(id), result).then(({ success }) => {
+            if (success) {
               setProofGenerationError(undefined);
               setPuzzleSolved(true);
             }
           });
         }
-        if (gameMode === 'singleplayer' && id && verifyPuzzleSolution) {
-          verifyPuzzleSolution(
+        if (gameMode === 'singleplayer' && id && verifyPuzzleSolutionCallback) {
+          verifyPuzzleSolutionCallback(
             ZKUBE_PUZZLESET_ADDRESS,
             BigInt(id),
             result
-          ).then((res) => {
-            if (res) {
+          ).then(({ success }) => {
+            if (success) {
               setProofGenerationError(undefined);
               setPuzzleSolved(true);
             }
           });
         }
       } catch (e) {
-        console.error('Error submitting puzzle solution', e);
+        // TODO: Handle error
+        console.error(e);
       }
     },
-    [id, submitPuzzle, verifyPuzzleSolution]
+    [id, submitPuzzleCallback, verifyPuzzleSolutionCallback]
   );
 
   return (
     <div className="flex flex-col px-2">
       <div className="mb-2 relative">
         <div className="flex flex-col absolute -top-32 right-14">
-          {(proofGenerationError?.message && (
-            <h2 className="text-2xl mt-2">{proofGenerationError?.message}</h2>
-          )) ??
+          {(proofGenerationError && (
+            <h2 className="text-2xl mt-2">{proofGenerationError}</h2>
+          )) ||
             (puzzleSolved && (
               <>
                 <div className="flex">

@@ -3,6 +3,7 @@ import { useBlockNumber } from '@/src/hooks/useBlockNumber';
 import { hasGameStarted, isGameFinished } from '@/src/utils/game';
 import { useGameAndPuzzleData } from '../../hooks/useGameAndPuzzleData';
 import { useCurrentRound } from '../../hooks/useCurrentRound';
+import { useEffect, useState } from 'react';
 
 export function Footer({
   gameId,
@@ -14,10 +15,17 @@ export function Footer({
   opponentScore: number;
 }) {
   const blockNumber = useBlockNumber();
+  const [shouldPoll, setShouldPoll] = useState(true);
   const {
     data: { onChainGame },
-  } = useGameAndPuzzleData(gameId);
+  } = useGameAndPuzzleData(gameId, shouldPoll);
   const currentRound = useCurrentRound(onChainGame);
+  const gameFinished =
+    onChainGame && blockNumber && isGameFinished(blockNumber, onChainGame);
+
+  useEffect(() => {
+    if (gameFinished) setShouldPoll(false);
+  }, [gameFinished]);
 
   if (!onChainGame || !blockNumber || !currentRound) return null;
   if (isGameFinished(blockNumber, onChainGame)) return null;
