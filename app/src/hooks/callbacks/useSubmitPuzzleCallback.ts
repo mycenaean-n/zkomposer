@@ -4,7 +4,7 @@ import { ZKProof } from '../../types/Proof';
 import { usePrivyWalletAddress } from '../usePrivyWalletAddress';
 import { useChainId, useChains } from 'wagmi';
 import { StringNumberBI } from '../../types/Puzzle';
-import { ContractCallbackReturnType } from '../../types/callbacks.types';
+import { ContractCallbackReturnType } from '../../types/Hooks';
 
 export function useSubmitPuzzleCallback() {
   const zKubeContract = useZkubeContract(true);

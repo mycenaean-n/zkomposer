@@ -31,23 +31,24 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
   const blockNumber = useBlockNumber();
   const address = usePrivyWalletAddress();
   const [shouldPoll, setShouldPoll] = useState(true);
-  const {
-    data: { initConfig, onChainGame },
-    loading,
-  } = useGameAndPuzzleData(id, shouldPoll);
+  const { data, loading, error } = useGameAndPuzzleData(id, shouldPoll);
   const [joinModalShowing, setJoinModalShowing] = useState<boolean>(true);
   const [yourScore, setYourScore] = useState<number>(0);
   const [opponentScore, setOpponentScore] = useState<number>(0);
-  const stableInitConfig = useDeepCompareMemo(initConfig);
+  const stableInitConfig = useDeepCompareMemo(data?.initConfig);
   const gameFinished =
-    onChainGame && blockNumber && isGameFinished(blockNumber, onChainGame);
+    data?.onChainGame &&
+    blockNumber &&
+    isGameFinished(blockNumber, data?.onChainGame);
 
   useEffect(() => {
     if (gameFinished) setShouldPoll(false);
   }, [gameFinished]);
 
   useEffect(() => {
-    if (!onChainGame || !address) return;
+    if (!data?.onChainGame || !address) return;
+
+    const { onChainGame } = data;
 
     if (address == onChainGame.player1.address_) {
       setYourScore(onChainGame.player1.score);
@@ -56,17 +57,23 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
       setYourScore(onChainGame.player2!.score);
       setOpponentScore(onChainGame.player1.score);
     }
-  }, [onChainGame, address]);
-
-  if (loading) {
-    return LoadingState({ textMain: 'Loading game...' });
-  }
+  }, [data?.onChainGame, address]);
 
   if (!address && blockNumber) {
     return <LoginCTA />;
   }
 
-  if (!onChainGame) {
+  if (loading) {
+    return LoadingState({ textMain: 'Loading game...' });
+  }
+
+  if (error !== undefined) {
+    return LoadingState({ textMain: error });
+  }
+
+  const { onChainGame } = data;
+
+  if (!data.onChainGame) {
     return LoadingState({ textMain: 'Game not found' });
   }
 

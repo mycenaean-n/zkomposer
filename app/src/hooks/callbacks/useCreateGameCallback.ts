@@ -4,7 +4,7 @@ import { usePrivyWalletAddress } from '../usePrivyWalletAddress';
 import { useChainId, useChains, usePublicClient } from 'wagmi';
 import { Address, decodeEventLog } from 'viem';
 import { useBlockNumber } from '../useBlockNumber';
-import { ContractCallbackReturnType } from '../../types/callbacks.types';
+import { ContractCallbackReturnType } from '../../types/Hooks';
 
 const CreatGameEventAbi = [
   {

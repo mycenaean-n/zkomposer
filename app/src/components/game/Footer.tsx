@@ -16,18 +16,19 @@ export function Footer({
 }) {
   const blockNumber = useBlockNumber();
   const [shouldPoll, setShouldPoll] = useState(true);
-  const {
-    data: { onChainGame },
-  } = useGameAndPuzzleData(gameId, shouldPoll);
-  const currentRound = useCurrentRound(onChainGame);
+  const { data } = useGameAndPuzzleData(gameId, shouldPoll);
+  const currentRound = useCurrentRound(data?.onChainGame);
   const gameFinished =
-    onChainGame && blockNumber && isGameFinished(blockNumber, onChainGame);
+    data?.onChainGame &&
+    blockNumber &&
+    isGameFinished(blockNumber, data.onChainGame);
 
   useEffect(() => {
     if (gameFinished) setShouldPoll(false);
   }, [gameFinished]);
 
-  if (!onChainGame || !blockNumber || !currentRound) return null;
+  if (!data?.onChainGame || !blockNumber || !currentRound) return null;
+  const { onChainGame } = data;
   if (isGameFinished(blockNumber, onChainGame)) return null;
   if (!hasGameStarted(blockNumber, onChainGame)) return null;
 

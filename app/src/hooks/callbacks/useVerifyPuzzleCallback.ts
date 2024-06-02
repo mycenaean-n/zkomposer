@@ -5,7 +5,7 @@ import { useCallback } from 'react';
 import { usePrivyWalletAddress } from '../usePrivyWalletAddress';
 import { StringNumberBI } from '../../types/Puzzle';
 import { isNumberNumericStringBI } from '../../utils/isNumericString';
-import { ContractCallbackReturnType } from '../../types/callbacks.types';
+import { ContractCallbackReturnType } from '../../types/Hooks';
 
 export function useVerifyPuzzleSolutionCallback() {
   const zKubeContract = useZkubeContract();

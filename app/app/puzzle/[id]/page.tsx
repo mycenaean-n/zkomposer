@@ -16,13 +16,13 @@ function LoadingState(text: string) {
 export default function Page({ params: { id } }: { params: { id: string } }) {
   const blockNumber = useBlockNumber();
   const address = usePrivyWalletAddress();
-  const { puzzle, loading } = usePuzzleData(id);
+  const { data, loading } = usePuzzleData(id);
 
   if (loading) {
     return LoadingState('Loading puzzle...');
   }
 
-  if (!puzzle) {
+  if (!data) {
     return LoadingState('Puzzle not found');
   }
 
@@ -30,5 +30,5 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
     return <LoginCTA />;
   }
 
-  return <PuzzleMemoized initConfig={puzzle} id={id} gameMode="singleplayer" />;
+  return <PuzzleMemoized initConfig={data} id={id} gameMode="singleplayer" />;
 }

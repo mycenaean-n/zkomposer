@@ -10,6 +10,7 @@ import { isNumberNumericStringBI } from '../../utils/isNumericString';
 import { Hex } from 'viem';
 import { OnChainGame } from '../../types/Game';
 import { useBlockNumber } from '../useBlockNumber';
+import { ContractFetchReturnType } from '../../types/Hooks';
 
 type SelectPuzzleResponse = {
   roundBlock: BigInt;
@@ -39,10 +40,10 @@ type SelectPuzzleResponse = {
 export function useGameAndPuzzleData(
   gameId: StringNumberBI,
   shouldPoll: boolean
-): {
-  data: { initConfig?: Puzzle; onChainGame?: OnChainGame };
-  loading: boolean;
-} {
+): ContractFetchReturnType<{
+  initConfig?: Puzzle;
+  onChainGame: OnChainGame;
+}> {
   const zKubeContract = useZkubeContract(true);
   const address = usePrivyWalletAddress();
   const chains = useChains();
@@ -80,14 +81,16 @@ export function useGameAndPuzzleData(
       })
       .catch((e) => {
         console.error(e);
+        setLoading(false);
       });
   }, [gameId, address, chains, chainId, zKubeContract?.address, blockNumber]);
 
   return useMemo(() => {
     if (!data) {
       return {
-        data: { roundBlock: undefined, game: undefined, puzzle: undefined },
         loading,
+        success: false,
+        error: 'No data found',
       };
     }
 
@@ -100,8 +103,9 @@ export function useGameAndPuzzleData(
       !roundBlock
     ) {
       return {
-        data: { roundBlock: undefined, onChainGame: game, puzzle: undefined },
-        loading,
+        loading: false,
+        success: true,
+        data: { onChainGame: game },
       };
     }
 
@@ -119,6 +123,7 @@ export function useGameAndPuzzleData(
         onChainGame: game,
       },
       loading,
+      success: true,
     };
   }, [
     data?.hexPuzzle?.startingGrid,

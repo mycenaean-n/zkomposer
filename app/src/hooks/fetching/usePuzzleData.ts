@@ -5,30 +5,48 @@ import { useZkubePuzzleSetContract } from '../useContract';
 import { circuitFunctionsArray } from 'circuits/types/circuitFunctions.types';
 import { mapGrid } from '../../utils';
 import { convertPuzzleToBase4FromHex } from 'circuits/utils/contracts/hexConversion';
+import { ContractFetchReturnType } from '../../types/fetch.types';
 
 export const usePuzzleData = (
   puzzleId: string
-): { puzzle: Puzzle | undefined; loading: boolean } => {
-  const [puzzle, setPuzzle] = useState<Puzzle>();
-  const [loading, setLoading] = useState<boolean>(true);
+): ContractFetchReturnType<Puzzle> => {
+  const [response, setResponse] = useState<ContractFetchReturnType<Puzzle>>({
+    loading: true,
+    success: false,
+    error: 'Loading puzzle...',
+  });
   const zKubePuzzleSetContract = useZkubePuzzleSetContract();
 
   useEffect(() => {
-    if (!zKubePuzzleSetContract || !puzzleId) return;
-    setLoading(true);
-    zKubePuzzleSetContract?.read.getPuzzle([BigInt(puzzleId)]).then((data) => {
-      const base4Puzzle = convertPuzzleToBase4FromHex(data as OnChainPuzzle);
+    if (!zKubePuzzleSetContract || !puzzleId) {
+      setResponse({ loading: false, success: false, error: 'Missing data' });
+      return;
+    }
 
-      setPuzzle({
-        initialGrid: mapGrid(base4Puzzle.startingGrid),
-        finalGrid: mapGrid(base4Puzzle.finalGrid),
-        availableFunctions: base4Puzzle.availableFunctions.map(
-          (functionId) => circuitFunctionsArray[functionId]
-        ),
+    zKubePuzzleSetContract?.read
+      .getPuzzle([BigInt(puzzleId)])
+      .then((data) => {
+        const base4Puzzle = convertPuzzleToBase4FromHex(data as OnChainPuzzle);
+        setResponse({
+          loading: false,
+          success: true,
+          data: {
+            initialGrid: mapGrid(base4Puzzle.startingGrid),
+            finalGrid: mapGrid(base4Puzzle.finalGrid),
+            availableFunctions: base4Puzzle.availableFunctions.map(
+              (functionId) => circuitFunctionsArray[functionId]
+            ),
+          },
+        });
+      })
+      .catch((error) => {
+        setResponse({
+          loading: false,
+          success: false,
+          error: (error as Error).message,
+        });
       });
-      setLoading(false);
-    });
   }, [puzzleId, zKubePuzzleSetContract]);
 
-  return { puzzle, loading };
+  return response;
 };
