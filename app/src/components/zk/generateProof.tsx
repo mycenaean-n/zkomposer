@@ -33,7 +33,7 @@ export function GenerateProof({
 
   return (
     <button
-      className="border-2 bg-black text-white border-black p-2 rounded-md w-full cursor-pointer font-bold"
+      className="w-full cursor-pointer rounded-md border-2 border-black bg-black p-2 font-bold text-white"
       disabled={
         !initialGrid ||
         !finalGrid ||
@@ -69,7 +69,7 @@ export function GenerateProof({
       }}
     >
       {generatingProof ? (
-        <div className="animate-spin h-6 w-6  border-b-2 border-gray-100 rounded-full mx-auto "></div>
+        <div className="mx-auto h-6 w-6 animate-spin rounded-full border-b-2 border-gray-100"></div>
       ) : (
         'Submit Solution'
       )}

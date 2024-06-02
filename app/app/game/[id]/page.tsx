@@ -20,7 +20,7 @@ function LoadingState({
   textSub?: string;
 }) {
   return (
-    <div className="flex flex-grow justify-center items-center flex-col text-align-center w-screen h-full text-2xl">
+    <div className="text-align-center flex h-full w-screen flex-grow flex-col items-center justify-center text-2xl">
       <h1>{textMain}</h1>
       <h1 className="mt-4">{textSub}</h1>
     </div>
@@ -107,7 +107,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
     onChainGame.player2?.address_ === zeroAddress;
 
   return (
-    <div className="flex flex-col flex-grow h-full">
+    <div className="flex h-full flex-grow flex-col">
       {displayQrInvite && !displayJoinModal && <QrInvite />}
       {!displayQrInvite && displayJoinModal && (
         <JoinGameModal

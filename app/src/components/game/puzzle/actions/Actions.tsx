@@ -117,21 +117,21 @@ export function Actions({
 
   return (
     <div className="flex flex-col px-2">
-      <div className="mb-2 relative">
-        <div className="flex flex-col absolute -top-32 right-14">
+      <div className="relative mb-2">
+        <div className="absolute -top-32 right-14 flex flex-col">
           {(proofGenerationError && (
-            <h2 className="text-2xl mt-2">{proofGenerationError}</h2>
+            <h2 className="mt-2 text-2xl">{proofGenerationError}</h2>
           )) ||
             (puzzleSolved && (
               <>
                 <div className="flex">
                   <Tick />
-                  <h2 className="text-2xl mt-2">Puzzle Solved</h2>
+                  <h2 className="mt-2 text-2xl">Puzzle Solved</h2>
                 </div>
                 {gameMode === 'singleplayer' && (
                   <button
                     onClick={() => router.push(`/puzzle/${Number(id) + 1}`)}
-                    className="text-center border-2 bg-white text-black border-black p-2 rounded-md w-full cursor-pointer font-bold mt-2"
+                    className="mt-2 w-full cursor-pointer rounded-md border-2 border-black bg-white p-2 text-center font-bold text-black"
                   >
                     Next Level
                   </button>
@@ -150,7 +150,7 @@ export function Actions({
           <Droppable droppableId={PuzzleFunctionState.remaining}>
             {(provided) => (
               <div
-                className="border border-black border-solid rounded-sm "
+                className="rounded-sm border border-solid border-black"
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
@@ -171,7 +171,7 @@ export function Actions({
             {(provided) => (
               <div
                 ref={provided.innerRef}
-                className="border border-black  rounded-sm"
+                className="rounded-sm border border-black"
                 {...provided.droppableProps}
               >
                 {functions.chosen.map((funcName, i) => (

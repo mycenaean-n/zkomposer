@@ -5,12 +5,12 @@ export function LoginCTA() {
   const { login } = usePrivy();
 
   return (
-    <div className="flex flex-col justify-center mt-8 m-auto">
-      <h1 className="text-2xl m-4">
+    <div className="m-auto mt-8 flex flex-col justify-center">
+      <h1 className="m-4 text-2xl">
         Before playing please log in with your Privy wallet
       </h1>
       <button
-        className="py-2 px-10 m-auto w-fit text-white font-bold bg-black  rounded "
+        className="m-auto w-fit rounded bg-black px-10 py-2 font-bold text-white"
         onClick={login}
       >
         Log in

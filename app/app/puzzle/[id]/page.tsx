@@ -7,7 +7,7 @@ import { PuzzleMemoized } from '../../../src/components/game/puzzle/Puzzle';
 
 function LoadingState(text: string) {
   return (
-    <div className="flex flex-grow justify-center items-center text-align-center w-screen h-full text-2xl">
+    <div className="text-align-center flex h-full w-screen flex-grow items-center justify-center text-2xl">
       <h1>{text}</h1>
     </div>
   );

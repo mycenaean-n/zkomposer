@@ -25,12 +25,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${roboto.className} flex flex-col min-h-screen`}>
+      <body className={`${roboto.className} flex min-h-screen flex-col`}>
         <ApolloClientProvider>
           <Web3Provider>
             <BlockProvider>
               <GamesProvider>
-                <header className="flex justify-between items-center bg-black h-20 p-4">
+                <header className="flex h-20 items-center justify-between bg-black p-4">
                   <Logo />
                   <ConnectButton />
                 </header>

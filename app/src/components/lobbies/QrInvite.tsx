@@ -5,21 +5,21 @@ export default function QrInvite() {
   const { copyToClipboard, success: copySuccess } = useCopyToClipboard();
 
   return (
-    <div className="flex flex-col relative mt-8">
+    <div className="relative mt-8 flex flex-col">
       <div className="m-auto mb-2">
         <h1 className="text-4xl">Invite Link</h1>
       </div>
       <div
-        className="flex flex-col justify-center mt-8 mx-auto"
+        className="mx-auto mt-8 flex flex-col justify-center"
         onClick={() => {
           copyToClipboard(window.location.href);
         }}
       >
-        <h4 className="mb-2 mx-auto">Click to Copy!</h4>
+        <h4 className="mx-auto mb-2">Click to Copy!</h4>
         <QRCode value={window.location.href} />
       </div>
       {copySuccess && (
-        <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-max px-3 py-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg">
+        <div className="absolute left-1/2 top-full mt-2 w-max -translate-x-1/2 transform rounded bg-gray-200 px-3 py-2 text-sm text-gray-800 shadow-lg">
           Copied successfully!
         </div>
       )}

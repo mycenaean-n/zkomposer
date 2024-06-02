@@ -59,7 +59,7 @@ export function Scene() {
         </Canvas>
       </div>
       <div className="overflow-hidden">
-        <h3 className="text-2xl font-extrabold md:mt-12 w-1/3">Target</h3>
+        <h3 className="w-1/3 text-2xl font-extrabold md:mt-12">Target</h3>
         <Canvas
           orthographic
           camera={{

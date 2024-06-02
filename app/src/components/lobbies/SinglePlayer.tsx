@@ -9,7 +9,7 @@ export default function SinglePlayer() {
   };
   return (
     <button
-      className="p-5 border border-black w-32 h-32 text-center"
+      className="h-32 w-32 border border-black p-5 text-center"
       onClick={navigateToNewPage}
     >
       Singleplayer

@@ -45,39 +45,39 @@ function DisplayName({ funcName }: { funcName: CircuitFunctions }) {
   return (
     <>
       {colorThree ? (
-        <div className="p-1 h-10 rounded-md border border-black">
+        <div className="h-10 rounded-md border border-black p-1">
           <div className="flex justify-center">
-            <div className="flex pt-1 mr-1">
-              <div className="leading-snug font-bold">
+            <div className="mr-1 flex pt-1">
+              <div className="font-bold leading-snug">
                 {getDisplayName(func)}
               </div>
               <div
-                className={`m-1 ml-2 mt-1.5 h-3.5 w-3.5 ${bgColor(colorOne)} border-black border`}
+                className={`m-1 ml-2 mt-1.5 h-3.5 w-3.5 ${bgColor(colorOne)} border border-black`}
               ></div>
               <div> ↦ </div>
             </div>
             <div className="flex flex-col">
               <div
-                className={`mb-1 h-3.5 w-3.5 ${bgColor(colorThree)} border-black border`}
+                className={`mb-1 h-3.5 w-3.5 ${bgColor(colorThree)} border border-black`}
               ></div>
               <div
-                className={`h-3.5 w-3.5 ${bgColor(colorTwo)} border-black border`}
+                className={`h-3.5 w-3.5 ${bgColor(colorTwo)} border border-black`}
               ></div>
             </div>
           </div>
         </div>
       ) : (
-        <div className=" p-1 h-10 rounded-md border border-black">
-          <div className="flex justify-center mt-1.5">
-            <div className="leading-snug font-bold">{getDisplayName(func)}</div>
+        <div className="h-10 rounded-md border border-black p-1">
+          <div className="mt-1.5 flex justify-center">
+            <div className="font-bold leading-snug">{getDisplayName(func)}</div>
             <div
-              className={`m-1 ml-2 h-3.5 w-3.5 ${bgColor(colorOne)} border-black border`}
+              className={`m-1 ml-2 h-3.5 w-3.5 ${bgColor(colorOne)} border border-black`}
             ></div>
             {colorTwo && (
               <>
                 <div className="leading-5"> ↦ </div>
                 <div
-                  className={`m-1 h-3.5 w-3.5 ${bgColor(colorTwo)} border-black border`}
+                  className={`m-1 h-3.5 w-3.5 ${bgColor(colorTwo)} border border-black`}
                 ></div>
               </>
             )}
@@ -106,7 +106,7 @@ export function Function({
     >
       {(provided) => (
         <div
-          className="m-1 h-10 rounded-md  cursor-pointer "
+          className="m-1 h-10 cursor-pointer rounded-md"
           key={index}
           onClick={() => {
             elementType === 'remaining'

@@ -11,12 +11,12 @@ export const CopyAddressToClipboardButton = () => {
         onClick={() => {
           copyToClipboard(address);
         }}
-        className="py-2 px-4 text-black font-bold bg-white border-r-2 border-black "
+        className="border-r-2 border-black bg-white px-4 py-2 font-bold text-black"
       >
         Copy Address
       </button>
       {copySuccess && (
-        <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-max px-3 py-2 bg-gray-200 text-gray-800 text-sm rounded shadow-lg">
+        <div className="absolute left-1/2 top-full mt-2 w-max -translate-x-1/2 transform rounded bg-gray-200 px-3 py-2 text-sm text-gray-800 shadow-lg">
           Copied successfully!
         </div>
       )}

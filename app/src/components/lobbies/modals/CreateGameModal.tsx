@@ -78,11 +78,11 @@ export default function CreateGameModal({
         </div>
 
         <button
-          className="py-2 px-4 w-40 bg-white text-black font-bold rounded "
+          className="w-40 rounded bg-white px-4 py-2 font-bold text-black"
           onClick={createGameAction}
         >
           {creatingGame ? (
-            <div className="animate-spin h-6 w-6 border-b-2 border-gray-800 rounded-full mx-auto "></div>
+            <div className="mx-auto h-6 w-6 animate-spin rounded-full border-b-2 border-gray-800"></div>
           ) : (
             'Create Game'
           )}
