@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
-import { usePrivyWalletAddress } from './usePrivyWalletAddress';
-import { useZkubePuzzleSetContract } from './useContract';
+import { usePrivyWalletAddress } from '../usePrivyWalletAddress';
+import { useZkubePuzzleSetContract } from '../useContract';
 import { convertPuzzleToBase4FromHex } from 'circuits/utils/contracts/hexConversion';
-import { StringNumberBI, OnChainPuzzle } from '../types/Puzzle';
-import { mapGrid } from '../utils';
+import { StringNumberBI, OnChainPuzzle } from '../../types/Puzzle';
+import { mapGrid } from '../../utils';
 import { circuitFunctionsArray } from 'circuits/types/circuitFunctions.types';
-import { isNumberNumericStringBI } from '../utils/isNumericString';
+import { isNumberNumericStringBI } from '../../utils/isNumericString';
 
 export function useGetRandomPuzzleCallback(puzzleId: StringNumberBI) {
   const zKubePuzzleSetContract = useZkubePuzzleSetContract();

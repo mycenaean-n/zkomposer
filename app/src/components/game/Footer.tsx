@@ -1,7 +1,7 @@
 'use client';
 import { useBlockNumber } from '@/src/hooks/useBlockNumber';
 import { hasGameStarted, isGameFinished } from '@/src/utils/game';
-import { useGameAndPuzzleData } from '../../hooks/useGameAndPuzzleData';
+import { useGameAndPuzzleData } from '../../hooks/fetching/useGameAndPuzzleData';
 import { useCurrentRound } from '../../hooks/useCurrentRound';
 import { useEffect, useState } from 'react';
 

@@ -2,7 +2,7 @@
 import { LoginCTA } from '../../../src/components/wallet/LoginCTA';
 import { usePrivyWalletAddress } from '../../../src/hooks/usePrivyWalletAddress';
 import { useBlockNumber } from '../../../src/hooks/useBlockNumber';
-import { usePuzzleData } from '../../../src/hooks/usePuzzleData';
+import { usePuzzleData } from '../../../src/hooks/fetching/usePuzzleData';
 import { PuzzleMemoized } from '../../../src/components/game/puzzle/Puzzle';
 
 function LoadingState(text: string) {

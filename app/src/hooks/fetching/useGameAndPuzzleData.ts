@@ -1,15 +1,15 @@
 import { useChainId, useChains } from 'wagmi';
-import { useZkubeContract } from './useContract';
-import { usePrivyWalletAddress } from './usePrivyWalletAddress';
+import { useZkubeContract } from '../useContract';
+import { usePrivyWalletAddress } from '../usePrivyWalletAddress';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { circuitFunctionsArray } from 'circuits/types/circuitFunctions.types';
 import { convertPuzzleToBase4FromHex } from 'circuits/utils/contracts/hexConversion';
-import { StringNumberBI, OnChainPuzzle, Puzzle } from '../types/Puzzle';
-import { mapGrid } from '../utils';
-import { isNumberNumericStringBI } from '../utils/isNumericString';
+import { StringNumberBI, OnChainPuzzle, Puzzle } from '../../types/Puzzle';
+import { mapGrid } from '../../utils';
+import { isNumberNumericStringBI } from '../../utils/isNumericString';
 import { Hex } from 'viem';
-import { OnChainGame } from '../types/Game';
-import { useBlockNumber } from './useBlockNumber';
+import { OnChainGame } from '../../types/Game';
+import { useBlockNumber } from '../useBlockNumber';
 
 type SelectPuzzleResponse = {
   roundBlock: BigInt;

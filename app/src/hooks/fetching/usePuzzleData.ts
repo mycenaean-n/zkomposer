@@ -1,9 +1,9 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { OnChainPuzzle, Puzzle } from '../types/Puzzle';
-import { useZkubePuzzleSetContract } from './useContract';
+import { OnChainPuzzle, Puzzle } from '../../types/Puzzle';
+import { useZkubePuzzleSetContract } from '../useContract';
 import { circuitFunctionsArray } from 'circuits/types/circuitFunctions.types';
-import { mapGrid } from '../utils';
+import { mapGrid } from '../../utils';
 import { convertPuzzleToBase4FromHex } from 'circuits/utils/contracts/hexConversion';
 
 export const usePuzzleData = (

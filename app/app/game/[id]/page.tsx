@@ -9,7 +9,7 @@ import { Footer } from '../../../src/components/game/Footer';
 import { useBlockNumber } from '../../../src/hooks/useBlockNumber';
 import { usePrivyWalletAddress } from '../../../src/hooks/usePrivyWalletAddress';
 import { LoginCTA } from '../../../src/components/wallet/LoginCTA';
-import { useGameAndPuzzleData } from '../../../src/hooks/useGameAndPuzzleData';
+import { useGameAndPuzzleData } from '../../../src/hooks/fetching/useGameAndPuzzleData';
 import { useDeepCompareMemo } from '../../../src/hooks/useDeepCompareMemo';
 
 function LoadingState({
