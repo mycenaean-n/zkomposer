@@ -11,7 +11,7 @@ export const CopyAddressToClipboardButton = () => {
         onClick={() => {
           copyToClipboard(address);
         }}
-        className="border-r-2 border-black bg-white px-4 py-2 font-bold text-black"
+        className="btn-secondary border-2 border-r-black"
       >
         Copy Address
       </button>

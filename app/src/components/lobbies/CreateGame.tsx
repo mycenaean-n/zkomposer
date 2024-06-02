@@ -11,7 +11,7 @@ export function CreateGame() {
         onClick={() => {
           setInputsShowing(true);
         }}
-        className="h-32 w-32 border border-black p-5 text-center"
+        className="btn-transparent h-32 w-32"
       >
         Multiplayer
       </button>

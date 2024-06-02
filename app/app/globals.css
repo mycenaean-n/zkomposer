@@ -14,3 +14,27 @@ body {
   overflow-y: hidden;
   overflow-x: hidden;
 }
+
+.btn {
+  @apply bg-secondary text-primary w-40 rounded px-4 py-2 font-bold;
+}
+
+.btn-secondary {
+  @apply bg-secondary text-primary px-4 py-2 font-bold;
+}
+
+.btn-secondary-rounded {
+  @apply btn-secondary rounded;
+}
+
+.btn-primary {
+  @apply bg-primary text-secondary px-4 py-2 font-bold;
+}
+
+.btn-primary-rounded {
+  @apply btn-primary rounded;
+}
+
+.btn-transparent {
+  @apply text-primary border-primary rounded-md border-2 px-4 py-2 font-bold;
+}

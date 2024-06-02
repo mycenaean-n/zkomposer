@@ -14,7 +14,7 @@ export function ConnectButton() {
     <>
       {!disableLogin ? (
         <button
-          className="rounded bg-white px-4 py-2 font-bold text-black"
+          className="btn-secondary-rounded"
           disabled={disableLogin}
           onClick={login}
         >
@@ -23,9 +23,9 @@ export function ConnectButton() {
       ) : (
         <>
           {user?.wallet && (
-            <div className="flex rounded border border-solid">
+            <div className="flex rounded-md border border-solid">
               {!isMobile && (
-                <button className="rounded px-4 py-2 font-bold text-white">
+                <button className="btn-transparent" style={{ color: 'white' }}>
                   {truncateAddress(user.wallet.address as `0x${string}`)}
                 </button>
               )}
@@ -33,7 +33,7 @@ export function ConnectButton() {
               <button
                 onClick={logout}
                 type="submit"
-                className="bg-white px-4 py-2 font-bold text-black"
+                className="btn-secondary rounded-r-md"
               >
                 Sign out
               </button>

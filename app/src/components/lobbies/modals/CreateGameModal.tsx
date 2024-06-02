@@ -77,10 +77,7 @@ export default function CreateGameModal({
           />
         </div>
 
-        <button
-          className="w-40 rounded bg-white px-4 py-2 font-bold text-black"
-          onClick={createGameAction}
-        >
+        <button className="btn-primary-rounded w-40" onClick={createGameAction}>
           {creatingGame ? (
             <div className="mx-auto h-6 w-6 animate-spin rounded-full border-b-2 border-gray-800"></div>
           ) : (

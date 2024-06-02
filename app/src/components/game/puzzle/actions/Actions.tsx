@@ -131,7 +131,7 @@ export function Actions({
                 {gameMode === 'singleplayer' && (
                   <button
                     onClick={() => router.push(`/puzzle/${Number(id) + 1}`)}
-                    className="mt-2 w-full cursor-pointer rounded-md border-2 border-black bg-white p-2 text-center font-bold text-black"
+                    className="btn-transparent mt-2"
                   >
                     Next Level
                   </button>

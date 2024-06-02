@@ -8,10 +8,7 @@ export default function SinglePlayer() {
     router.push('/puzzle/0');
   };
   return (
-    <button
-      className="h-32 w-32 border border-black p-5 text-center"
-      onClick={navigateToNewPage}
-    >
+    <button className="btn-transparent h-32 w-32" onClick={navigateToNewPage}>
       Singleplayer
     </button>
   );

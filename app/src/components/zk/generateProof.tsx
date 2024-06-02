@@ -33,7 +33,7 @@ export function GenerateProof({
 
   return (
     <button
-      className="w-full cursor-pointer rounded-md border-2 border-black bg-black p-2 font-bold text-white"
+      className="btn-primary-rounded w-full"
       disabled={
         !initialGrid ||
         !finalGrid ||
