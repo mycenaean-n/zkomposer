@@ -72,7 +72,6 @@ export function useGameAndPuzzleData(
     zKubeContract.read
       .selectPuzzle([BigInt(gameId)])
       .then((result) => {
-        console.log({ result });
         const [roundBlock, game, hexPuzzle] = result;
         setData({
           roundBlock,
