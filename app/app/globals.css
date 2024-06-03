@@ -14,3 +14,43 @@ body {
   overflow-y: hidden;
   overflow-x: hidden;
 }
+
+.btn {
+  @apply bg-secondary text-primary w-40 rounded px-4 py-2 font-bold;
+}
+
+.btn-secondary {
+  @apply bg-secondary text-primary px-4 py-2 font-bold;
+}
+
+.btn-secondary-rounded {
+  @apply btn-secondary rounded;
+}
+
+.btn-primary {
+  @apply bg-primary text-secondary px-4 py-2 font-bold;
+}
+
+.btn-primary-rounded {
+  @apply btn-primary rounded;
+}
+
+.btn-transparent {
+  @apply text-primary border-primary rounded-md border-2 px-4 py-2 font-bold;
+}
+
+.modal {
+  @apply absolute bottom-0 left-0 right-0 top-24 z-20 flex items-center justify-center backdrop-blur-sm;
+}
+
+.modal-content {
+  @apply flex flex-col items-center rounded-md bg-black px-4 py-6 text-white;
+}
+
+.modal-input-container {
+  @apply m-4 flex w-96 justify-between;
+}
+
+.modal-input {
+  @apply pl-1 text-black;
+}

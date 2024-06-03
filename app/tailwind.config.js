@@ -8,7 +8,8 @@ module.exports = {
         1000: '1000px', // This adds a class named `w-800`
       },
       colors: {
-        'btn-gray': '#bbb',
+        primary: '#000000', // Black as primary color
+        secondary: '#FFFFFF', // White as seconda
       },
     },
   },

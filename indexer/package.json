@@ -6,11 +6,12 @@
   "scripts": {
     "clean": "rm -rf lib",
     "build": "yarn clean && tsc",
-    "db:migration:generate": "rm -rf db && npx squid-typeorm-migration generate",
-    "db:migration:apply": "npx squid-typeorm-migration apply",
+    "db:migration:generate": "rm -rf db && yarn squid-typeorm-migration generate",
+    "db:migration:apply": "yarn squid-typeorm-migration apply",
     "db:down": "docker compose down",
     "db:up": "docker compose up -d",
-    "start": "node -r dotenv/config lib/main.js"
+    "start": "node -r dotenv/config lib/main.js",
+    "gql:serve": "yarn squid-graphql-server --subscriptions"
   },
   "dependencies": {
     "@subsquid/archive-registry": "^3.3.0",

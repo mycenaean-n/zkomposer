@@ -6,7 +6,7 @@ export type OnChainGame = {
   player1: Player;
   player2: Player | null;
   puzzleSet: Address;
-  startingBlock: bigint;
+  startingBlock: bigint | null;
 };
 
 export type Game = {
@@ -16,8 +16,8 @@ export type Game = {
   player1: Address;
   player2: Address | null;
   puzzleSet: Address;
-  startingBlock: string;
-}
+  startingBlock: string | null;
+};
 
 type Player = {
   address_: Address;

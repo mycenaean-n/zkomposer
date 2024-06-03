@@ -1,4 +1,3 @@
-// @ts-ignore
 import { groth16 } from 'snarkjs';
 import { InputSignals } from '../types/proof.types';
 
@@ -15,8 +14,12 @@ export async function exportCalldataGroth16(
       zkeyPath
     ));
   } catch (err) {
-    console.error(err);
-    throw new Error('Wrong answer!');
+    // prettier-ignore
+    if ((err as Error).message.includes('Error in template ForceEqualIfEnabled_15')) {
+      throw new Error('Wrong answer, try again!');
+    }
+
+    throw new Error((err as Error).message);
   }
 
   return await groth16.exportSolidityCallData(_proof, _publicSignals);

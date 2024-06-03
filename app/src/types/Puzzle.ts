@@ -4,6 +4,9 @@ import {
 } from 'circuits/types/circuitFunctions.types';
 import { Dispatch, SetStateAction } from 'react';
 
+// all can be casted to BigInt
+export type StringNumberBI = string | number | bigint;
+
 export enum PuzzleFunctionState {
   remaining = 'remaining',
   chosen = 'chosen',
@@ -16,8 +19,6 @@ export type PuzzleContext = {
   initConfig: Puzzle;
   functions: PuzzleFunctions;
   setFunctions: Dispatch<SetStateAction<PuzzleFunctions>>;
-  puzzleSolved: boolean;
-  setPuzzleSolved: Dispatch<SetStateAction<boolean>>;
 };
 
 export type Puzzle = {
