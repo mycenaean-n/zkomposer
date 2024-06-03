@@ -48,8 +48,8 @@ export default function CreateGameModal({
 
   return (
     <div className={styles.inputsContainer} onClick={onInputContainerClick}>
-      <div className={styles.inputs}>
-        <div className="flex justify-between">
+      <div className="align-center flex flex-col bg-black p-1 text-white">
+        <div className="m-1 flex w-20 justify-between">
           <h4>Puzzle Set</h4>
           <input
             className="pl-1 text-black"
