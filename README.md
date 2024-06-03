@@ -1,74 +1,111 @@
-# ZK Cube Composer
+# zKube
 
-This game is inspired by [Cube Composer](https://david-peter.de/cube-composer/).
+PvP puzzle game inspired by [Cube Composer](https://david-peter.de/cube-composer/) and verified using ZK proofs.
 
 ## Rules
 
-Two players will play against eachother in a pvp style game.
+Two players play against each other in a pvp style game.
 
 A **game** consists of a set of puzzles which are solved by each player in sequence of rounds. Each puzzle for each round is randomly selected with a deterministic read-only function, this ensures each player always gets the same puzzle.
 
 A **puzzle** consists of a starting grid, a final grid, and a set of available functions to use.
 
-A **function** will mutate the grid, and the puzzle is solved by achieving the final grid.
+A **function** will transform the grid, and the puzzle is solved by achieving the final grid.
 
 A zero-knowledge proof is generated for each round submission and sent to a smart contract, where it is validated and the number of blocks it took to solve the round is recorded. A correct submission results in an extra point, the player at the end of the game with the most points will be the winner. In the eventuality of a draw, the player who submitted in the smallest amount of blocks will be deemed the winner.
 
 ## Smart Contracts
 
 ```mermaid
+
 ---
+
 title: Smart Contracts
+
 ---
+
 classDiagram
+
 class ZKube{
-    <<IZKube>>
-    +createGame(address puzzleSet, uint8 interval, uint16 numberOfTurns) (uint256 id)
-    +joinGame(uint256 id)
-    +selectPuzzle(uint256 id) (Puzzle puzzle)
-    +submitPuzzle(uint256 id, uint256[3] publicSignals, Proof proof)
-    +resolveGame(uint256 id)
+
+<<IZKube>>
+
++createGame(address puzzleSet, uint8 interval, uint16 numberOfTurns) (uint256 id)
+
++joinGame(uint256 id)
+
++selectPuzzle(uint256 id) (Puzzle puzzle)
+
++submitPuzzle(uint256 id, uint256[3] publicSignals, Proof proof)
+
++resolveGame(uint256 id)
+
 }
 
+
+
 class ZKubePuzzleSet {
-        <<IERC721>>
-        +owner address
-        +getPuzzle(uint256 randNum) : (Puzzle puzzle)
-        +addPuzzle(Puzzle puzzle)
+
+<<IERC721>>
+
++owner address
+
++getPuzzle(uint256 randNum) : (Puzzle puzzle)
+
++addPuzzle(Puzzle puzzle)
+
 }
+
+
 
 ZKube --> ZKubePuzzleSet: getPuzzle
 
+
+
 class ZKubeVerifier {
-    +validateProof (Proof proof) : bool
+
++validateProof (Proof proof) : bool
+
 }
 
+
+
 ZKube --> ZKubeVerifier: validateProof
+
+
 
 
 ```
 
 ### Addresses
 
-The contracts are deployed to Scroll Sepolia at these addresses:
+The contracts are deployed to Arbitrum Sepolia at these addresses:
 
-- `ZKubeVerifier`: [0x31D234a75Fdc64ca43b2600c0a85B79A9ED3E3F7](https://sepolia.scrollscan.com/address/0x31D234a75Fdc64ca43b2600c0a85B79A9ED3E3F7)
-- `ZKube`: [0xa63E564bEe5Ab70aDc3929d098d89CB55E1dEb57](https://sepolia.scrollscan.com/address/0xa63E564bEe5Ab70aDc3929d098d89CB55E1dEb57)
-- `ZKubePuzzleSet`: [0x1625956d2017fED96eaA53d1B1b1311eC61963B4](https://sepolia.scrollscan.com/address/0x1625956d2017fED96eaA53d1B1b1311eC61963B4)
+- `ZKube`: [0xd98f77077a776481557ff562d19799809a71e05f](https://sepolia.arbiscan.io/address/0xd98f77077a776481557ff562d19799809a71e05f)
 
-The **ZKube** contract is the only contract players will interact with. The first player will create a game using `createGame` and the second player will join using `joinGame`, the game will start X blocks after this. The players will get the puzzle by calling `selectPuzzle` and they will submit the proof of their solution using `submitProof`. The game can be resolved when it is finished by calling `resolveGame`
+- `ZKubePuzzleSet`: [0x13cd31c4c3345e712a6501a040e8278b15107b32](https://sepolia.arbiscan.io/address/0x13cd31c4c3345e712a6501a040e8278b15107b32)
+
+- `ZKubeVerifier`: [0xdbeec58fdedf8dd1b397e43618817035474a6555](https://sepolia.scrollscan.com/address/0xdbeec58fdedf8dd1b397e43618817035474a6555)
+
+The **ZKube** contract is the only contract players will interact with. The first player will create a game using `createGame` and the second player will join using `joinGame`, the game will start `n` blocks after this. The players will get the puzzle by calling `selectPuzzle` and they will submit the proof of their solution using `submitProof`. The game can be resolved when it is finished by calling `resolveGame`
 
 The **ZKubePuzzleSet** ERC721 contract defines a set of possible puzzles in a game contract, this makes the game very composable as it allows the community to create different sets of puzzles by deploying different **ZKubePuzzleSet** contracts - we will create a small set of puzzles as a POC.
 
 ## Circuits
 
-The ZKube circuit is the main circuit that integrates game logic, which is divided among three separate circuits. Each of these circuits performs a distinct manipulation on the grid:
+The ZKube circuit is the main circuit that integrates game logic, which is divided among five separate circuits. Each of these circuits performs a distinct manipulation on the grid:
 
 - `Stack`: Stacks elements of value `color`, of type `0 | 1 | 2 | 3`, on top of the grid.
+
 - `Transform`: Transforms elements in the grid from value `colorIn` to `colorOut`, both of which are of type `0 | 1 | 2 | 3`.
+
 - `TransformTwo`: Stacks elements of value `colorOut`, of type `0 | 1 | 2 | 3`, on top of elements with value `colorIn`, of type `0 | 1 | 2 | 3`.
 
-The design of the circuits facilitates easy updates. New circuits containing manipulation logic can be seamlessly integrated into the `ZKube` circuit without the need for extensive rewrites of its logic.
+- `Filter`: Filters columns containing elements of value `color`, of type `0 | 1 | 2 | 3`.
+
+- `Reject`: Removes elements of value `color`, of type `0 | 1 | 2 | 3` from a grid.
+
+The design of the circuits facilitates easy updates. New circuits containing transformation logic can be seamlessly integrated into the `ZKube` circuit without the need for extensive rewrites of its logic.
 
 ## Application Architecture
 
@@ -91,8 +128,6 @@ We will encode this from base4 (saves storage space) to hexadecimal bytes16.
 
 ## Considerations
 
-1. The games are most fair when there are lots of puzzles as it makes it almost impossible to know the solution to a puzzle.
-
-## Improvements
-
-1. We prove that the player knows the solution but we don't prove that he knows a solution from the pre-defined set of functions. This means players can use any functions with any arguments to mutate the grid and get the ZK proof for the desired solution. Whilst it is more difficult to choose your functions and arguments from a bigger list, we are planning to create a ZK proof that the user only used functions from the available list.
+1. Bots.
+2. Circuits are not audited and without the trusted set up.
+3. The games are most fair when there are lots of puzzles as it makes it almost impossible to know the solution to a puzzle.
