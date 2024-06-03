@@ -4,13 +4,13 @@ import { usePrivyWalletAddress } from '../usePrivyWalletAddress';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { circuitFunctionsArray } from 'circuits/types/circuitFunctions.types';
 import { convertPuzzleToBase4FromHex } from 'circuits/utils/contracts/hexConversion';
-import { StringNumberBI, OnChainPuzzle, Puzzle } from '../../types/Puzzle';
-import { mapGrid } from '../../utils';
-import { isNumberNumericStringBI } from '../../utils/isNumericString';
+import { StringNumberBI, OnChainPuzzle, Puzzle } from 'types/Puzzle';
+import { mapGrid } from 'utils';
+import { isNumberNumericStringBI } from '@utils/isNumericString';
 import { Hex } from 'viem';
-import { OnChainGame } from '../../types/Game';
+import { OnChainGame } from 'types/Game';
 import { useBlockNumber } from '../useBlockNumber';
-import { ContractFetchReturnType } from '../../types/Hooks';
+import { ContractFetchReturnType } from 'types/Hooks';
 
 type SelectPuzzleResponse = {
   roundBlock: BigInt;
@@ -29,6 +29,7 @@ type SelectPuzzleResponse = {
     interval: number;
     numberOfRounds: number;
     startingBlock: bigint;
+    randomNumbers: readonly bigint[];
   };
   hexPuzzle: {
     availableFunctions: readonly number[];
@@ -71,6 +72,7 @@ export function useGameAndPuzzleData(
     zKubeContract.read
       .selectPuzzle([BigInt(gameId)])
       .then((result) => {
+        console.log({ result });
         const [roundBlock, game, hexPuzzle] = result;
         setData({
           roundBlock,
@@ -80,7 +82,7 @@ export function useGameAndPuzzleData(
         setLoading(false);
       })
       .catch((e) => {
-        console.error(e);
+        console.error(e.message);
         setLoading(false);
       });
   }, [gameId, address, chains, chainId, zKubeContract?.address, blockNumber]);
@@ -100,7 +102,8 @@ export function useGameAndPuzzleData(
       !hexPuzzle.availableFunctions.length ||
       !Number(hexPuzzle.startingGrid) ||
       !Number(hexPuzzle.finalGrid) ||
-      !roundBlock
+      !game.randomNumbers.length ||
+      game.randomNumbers.every((el) => el === BigInt(0))
     ) {
       return {
         loading: false,

@@ -1,9 +1,9 @@
 'use client';
-import { useBlockNumber } from '@/src/hooks/useBlockNumber';
-import { hasGameStarted, isGameFinished } from '@/src/utils/game';
-import { useGameAndPuzzleData } from '../../hooks/fetching/useGameAndPuzzleData';
-import { useCurrentRound } from '../../hooks/useCurrentRound';
 import { useEffect, useState } from 'react';
+import { hasGameStarted, isGameFinished } from '@utils/game';
+import { useGameAndPuzzleData } from '@hooks/fetching/useGameAndPuzzleData';
+import { useCurrentRound } from '@hooks/useCurrentRound';
+import { useBlockNumber } from '@hooks/useBlockNumber';
 
 export function Footer({
   gameId,

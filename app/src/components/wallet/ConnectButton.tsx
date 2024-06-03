@@ -1,6 +1,6 @@
 'use client';
 import { usePrivy } from '@privy-io/react-auth';
-import { truncateAddress } from '../../utils/truncateAddress';
+import { truncateAddress } from '@utils/truncateAddress';
 import { CopyAddressToClipboardButton } from './CopyAddressToClipboardButton';
 import { isMobile } from 'react-device-detect';
 

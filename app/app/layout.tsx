@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Roboto } from 'next/font/google';
-import { Web3Provider } from '../src/providers/Web3Provider';
-import { ConnectButton } from '../src/components/wallet/ConnectButton';
-import { BlockProvider } from '@/src/context/BlockContext';
+import { Web3Provider } from 'providers/Web3Provider';
+import { ConnectButton } from '@components/wallet/ConnectButton';
+import { BlockProvider } from 'context/BlockContext';
 import Logo from '../src/components/Logo';
 import { PageFooter } from '../src/components/PageFooter';
 

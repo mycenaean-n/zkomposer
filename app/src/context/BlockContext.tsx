@@ -6,7 +6,7 @@ const BlockContext = createContext<bigint | undefined>(undefined);
 
 function BlockProvider({ children }: { children: React.ReactNode }) {
   const { data: blockNumber } = useBlockNumber({
-    watch: { enabled: true, pollingInterval: 1000 },
+    watch: { enabled: true, pollingInterval: 1300 },
   });
 
   return (

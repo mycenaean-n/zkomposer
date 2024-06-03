@@ -1,18 +1,19 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { PuzzleContext } from '../Puzzle';
-import styles from '../../../../styles/actions.module.scss';
+import styles from '@styles/actions.module.scss';
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
-import { PuzzleFunctionState } from '@/src/types/Puzzle';
+import { PuzzleFunctions, PuzzleFunctionState } from 'types/Puzzle';
 import { InputSignals } from 'circuits/types/proof.types';
-import { ZKUBE_PUZZLESET_ADDRESS } from '../../../../config';
+import { ZKUBE_PUZZLESET_ADDRESS } from 'config';
 import { getCircuitFunctionIndex } from 'circuits';
 import { Function } from './Function';
-import { ZKProof } from '../../../../types/Proof';
+import { ZKProof } from 'types/Proof';
 import { GenerateProof } from '../../../zk/generateProof';
-import { usePrivyWalletAddress } from '../../../../hooks/usePrivyWalletAddress';
+import { usePrivyWalletAddress } from '@hooks/usePrivyWalletAddress';
 import { useRouter } from 'next/navigation';
-import { useSubmitPuzzleCallback } from '../../../../hooks/callbacks/useSubmitPuzzleCallback';
-import { useVerifyPuzzleSolutionCallback } from '../../../../hooks/callbacks/useVerifyPuzzleCallback';
+import { useSubmitPuzzleCallback } from '@hooks/callbacks/useSubmitPuzzleCallback';
+import { useVerifyPuzzleSolutionCallback } from '@hooks/callbacks/useVerifyPuzzleCallback';
+import { CircuitFunctions } from 'circuits/types/circuitFunctions.types';
 
 export function Tick() {
   return (
@@ -154,7 +155,7 @@ export function Actions({
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
-                {functions.remaining.map((funcName, i) => (
+                {functions.remaining.map((funcName: CircuitFunctions, i) => (
                   <Function
                     key={`${funcName}-${i}`}
                     elementType="remaining"
@@ -174,7 +175,7 @@ export function Actions({
                 className="rounded-sm border border-black"
                 {...provided.droppableProps}
               >
-                {functions.chosen.map((funcName, i) => (
+                {functions.chosen.map((funcName: CircuitFunctions, i) => (
                   <Function
                     key={`${funcName}-${i}`}
                     elementType="chosen"

@@ -1,10 +1,10 @@
 'use client';
-import { LoginCTA } from '../../../src/components/wallet/LoginCTA';
-import { usePrivyWalletAddress } from '../../../src/hooks/usePrivyWalletAddress';
-import { useBlockNumber } from '../../../src/hooks/useBlockNumber';
-import { usePuzzleData } from '../../../src/hooks/fetching/usePuzzleData';
-import { PuzzleMemoized } from '../../../src/components/game/puzzle/Puzzle';
-import { LoadingState } from '../../../src/components/zk/LoadingState';
+import { LoginCTA } from '@components/wallet/LoginCTA';
+import { usePrivyWalletAddress } from '@hooks/usePrivyWalletAddress';
+import { useBlockNumber } from '@hooks/useBlockNumber';
+import { usePuzzleData } from '@hooks/fetching/usePuzzleData';
+import { PuzzleMemoized } from '@components/game/puzzle/Puzzle';
+import { LoadingState } from '@components/zk/LoadingState';
 
 export default function Page({ params: { id } }: { params: { id: string } }) {
   const blockNumber = useBlockNumber();

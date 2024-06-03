@@ -1,5 +1,5 @@
 import QRCode from 'qrcode.react';
-import { useCopyToClipboard } from '../../hooks/useCopyToClipboard';
+import { useCopyToClipboard } from '@hooks/useCopyToClipboard';
 
 export default function QrInvite() {
   const { copyToClipboard, success: copySuccess } = useCopyToClipboard();

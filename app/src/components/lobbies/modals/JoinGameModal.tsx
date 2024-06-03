@@ -1,7 +1,7 @@
 import React from 'react';
-import { OnChainGame } from '../../../types/Game';
-import { useJoinGameCallback } from '../../../hooks/callbacks/useJoinGameCallback';
+import { useJoinGameCallback } from '@hooks/callbacks/useJoinGameCallback';
 import { useRouter } from 'next/navigation';
+import { OnChainGame } from 'types/Game';
 
 export function JoinGameModal({
   setInputsShowing,

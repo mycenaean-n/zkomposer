@@ -5,7 +5,7 @@ import {
   PuzzleFunctions,
   PuzzleContext as PuzzleContextType,
   Puzzle as PuzzleType,
-} from '@/src/types/Puzzle';
+} from 'types/Puzzle';
 import { Scene } from './scene/Scene';
 
 type GameMode = 'singleplayer' | 'multiplayer';

@@ -1,17 +1,17 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { hasGameStarted, isGameFinished } from '@/src/utils/game';
+import { hasGameStarted, isGameFinished } from '@utils/game';
 import { zeroAddress } from 'viem';
-import QrInvite from '../../../src/components/lobbies/QrInvite';
-import { JoinGameModal } from '../../../src/components/lobbies/modals/JoinGameModal';
-import { PuzzleMemoized } from '../../../src/components/game/puzzle/Puzzle';
-import { Footer } from '../../../src/components/game/Footer';
-import { useBlockNumber } from '../../../src/hooks/useBlockNumber';
-import { usePrivyWalletAddress } from '../../../src/hooks/usePrivyWalletAddress';
-import { LoginCTA } from '../../../src/components/wallet/LoginCTA';
-import { useGameAndPuzzleData } from '../../../src/hooks/fetching/useGameAndPuzzleData';
-import { useDeepCompareMemo } from '../../../src/hooks/useDeepCompareMemo';
-import { LoadingState } from '../../../src/components/zk/LoadingState';
+import QrInvite from '@components/lobbies/QrInvite';
+import { JoinGameModal } from '@components/lobbies/modals/JoinGameModal';
+import { PuzzleMemoized } from '@components/game/puzzle/Puzzle';
+import { Footer } from '@components/game/Footer';
+import { useBlockNumber } from '@hooks/useBlockNumber';
+import { usePrivyWalletAddress } from '@hooks/usePrivyWalletAddress';
+import { LoginCTA } from '@components/wallet/LoginCTA';
+import { useGameAndPuzzleData } from '@hooks/fetching/useGameAndPuzzleData';
+import { useDeepCompareMemo } from '@hooks/useDeepCompareMemo';
+import { LoadingState } from '@components/zk/LoadingState';
 
 export default function Page({ params: { id } }: { params: { id: string } }) {
   const blockNumber = useBlockNumber();

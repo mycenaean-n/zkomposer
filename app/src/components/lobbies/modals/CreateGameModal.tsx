@@ -1,10 +1,9 @@
 import React from 'react';
-import styles from '../../../styles/createGame.module.scss';
 import { useState } from 'react';
-import { ZKUBE_PUZZLESET_ADDRESS } from '@/src/config';
 import { useRouter } from 'next/navigation';
-import { useCreteGameCallback } from '../../../hooks/callbacks/useCreateGameCallback';
+import { useCreteGameCallback } from '@hooks/callbacks/useCreateGameCallback';
 import { Address } from 'viem';
+import { ZKUBE_PUZZLESET_ADDRESS } from '@/config';
 
 export default function CreateGameModal({
   setInputsShowing,

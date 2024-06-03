@@ -1,6 +1,6 @@
 'use client';
-import SinglePlayer from '../src/components/lobbies/SinglePlayer';
-import { CreateGame } from '../src/components/lobbies/CreateGame';
+import SinglePlayer from '@components/lobbies/SinglePlayer';
+import { CreateGame } from '@components/lobbies/CreateGame';
 
 export default function Home() {
   return (
