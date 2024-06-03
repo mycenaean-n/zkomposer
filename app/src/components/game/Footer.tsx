@@ -49,7 +49,7 @@ export function Footer({
         </div>
         <div className="flex flex-grow basis-0 items-center justify-center">
           <h4 className="text-center text-2xl font-bold">
-            blocks left
+            blocks left in round {currentRound}
             <br />
             <span className="text-xl font-normal">{blocksLeftThisTurn}</span>
           </h4>

@@ -7,6 +7,7 @@ import { ApolloClientProvider } from '../src/providers/ApolloClientProvider';
 import { GamesProvider } from '@/src/context/GamesContext';
 import { BlockProvider } from '@/src/context/BlockContext';
 import Logo from '../src/components/Logo';
+import { PageFooter } from '../src/components/PageFooter';
 
 const roboto = Roboto({
   weight: '400',
@@ -34,7 +35,8 @@ export default function RootLayout({
                   <Logo />
                   <ConnectButton />
                 </header>
-                {children}
+                <main className="flex-grow">{children}</main>
+                <PageFooter />
               </GamesProvider>
             </BlockProvider>
           </Web3Provider>
