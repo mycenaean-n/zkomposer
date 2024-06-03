@@ -1,9 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styles from '../../../styles/createGame.module.scss';
 import { useState } from 'react';
 import { ZKUBE_PUZZLESET_ADDRESS } from '@/src/config';
 import { useRouter } from 'next/navigation';
-import { GamesContext } from '../../../context/GamesContext';
 import { useCreteGameCallback } from '../../../hooks/callbacks/useCreateGameCallback';
 import { Address } from 'viem';
 
@@ -18,7 +17,6 @@ export default function CreateGameModal({
   const { push } = useRouter();
   const [numberOfTurns, setNumberOfTurns] = useState<number>(3);
   const createGameCallback = useCreteGameCallback();
-  const { setLink } = useContext(GamesContext);
 
   function onInputContainerClick(e: React.MouseEvent<HTMLDivElement>) {
     if (e.target === e.currentTarget) {
@@ -38,7 +36,6 @@ export default function CreateGameModal({
       if (result && result.success) {
         const route = `/game/${result.data?.gameId}`;
         push(route);
-        setLink(window.location.origin + route);
       }
       setCreatingGame(false);
     } catch (error) {
