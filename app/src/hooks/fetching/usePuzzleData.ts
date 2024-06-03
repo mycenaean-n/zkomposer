@@ -5,7 +5,7 @@ import { useZkubePuzzleSetContract } from '../useContract';
 import { circuitFunctionsArray } from 'circuits/types/circuitFunctions.types';
 import { mapGrid } from '../../utils';
 import { convertPuzzleToBase4FromHex } from 'circuits/utils/contracts/hexConversion';
-import { ContractFetchReturnType } from '../../types/fetch.types';
+import { ContractFetchReturnType } from '../../types/Hooks';
 
 export const usePuzzleData = (
   puzzleId: string
