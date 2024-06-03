@@ -44,9 +44,9 @@ export default function CreateGameModal({
   }
 
   return (
-    <div className={styles.inputsContainer} onClick={onInputContainerClick}>
-      <div className="align-center flex flex-col bg-black p-1 text-white">
-        <div className="m-1 flex w-20 justify-between">
+    <div className="modal" onClick={onInputContainerClick}>
+      <div className="modal-content">
+        <div className="modal-input">
           <h4>Puzzle Set</h4>
           <input
             className="pl-1 text-black"
@@ -55,7 +55,7 @@ export default function CreateGameModal({
             onChange={(e) => setPuzzleSet(e.target.value as Address)}
           />
         </div>
-        <div className="flex justify-between">
+        <div className="modal-input">
           <h4>Interval (blocks)</h4>
           <input
             className="pl-1 text-black"
@@ -64,7 +64,7 @@ export default function CreateGameModal({
             onChange={(e) => setInterval(parseInt(e.target.value))}
           />
         </div>
-        <div className="flex justify-between">
+        <div className="modal-input">
           <h4>Number of Puzzles</h4>
           <input
             className="pl-1 text-black"
@@ -74,7 +74,10 @@ export default function CreateGameModal({
           />
         </div>
 
-        <button className="btn-primary-rounded w-40" onClick={createGameAction}>
+        <button
+          className="btn-secondary-rounded mt-4 w-40"
+          onClick={createGameAction}
+        >
           {creatingGame ? (
             <div className="mx-auto h-6 w-6 animate-spin rounded-full border-b-2 border-gray-800"></div>
           ) : (
