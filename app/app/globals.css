@@ -40,7 +40,7 @@ body {
 }
 
 .modal {
-  @apply absolute bottom-0 left-0 right-0 top-24 z-20 flex h-[calc(100vh-7rem)] items-center justify-center backdrop-blur-sm;
+  @apply absolute bottom-0 left-0 right-0 top-24 z-20 flex items-center justify-center backdrop-blur-sm;
 }
 
 .modal-content {
@@ -48,5 +48,5 @@ body {
 }
 
 .modal-input {
-  @apply m-4 flex w-80 justify-between;
+  @apply m-4 flex w-96 justify-between;
 }
