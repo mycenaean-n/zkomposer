@@ -1,13 +1,11 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Roboto } from 'next/font/google';
-import Image from 'next/image';
-import logo from '../src/assets/zKubeLogo.svg';
-import { Web3Provider } from '../src/providers/Web3Provider';
-import { ConnectButton } from '../src/components/ConnectButton';
-import { ApolloClientProvider } from '../src/providers/ApolloClientProvider';
-import { GamesProvider } from '@/src/context/GamesContext';
-import { BlockProvider } from '@/src/context/BlockContext';
+import { Web3Provider } from 'providers/Web3Provider';
+import { ConnectButton } from '@components/wallet/ConnectButton';
+import { BlockProvider } from 'context/BlockContext';
+import Logo from '../src/components/Logo';
+import { PageFooter } from '../src/components/PageFooter';
 
 const roboto = Roboto({
   weight: '400',
@@ -16,7 +14,7 @@ const roboto = Roboto({
 
 export const metadata: Metadata = {
   title: 'zKubes',
-  description: 'Zero-Knowledge Cube Composer game.',
+  description: 'Zero-Knowledge puzzle game inspired by Cube Composer game.',
 };
 
 export default function RootLayout({
@@ -26,23 +24,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <ApolloClientProvider>
+      <body className={`${roboto.className} flex min-h-screen flex-col`}>
         <Web3Provider>
           <BlockProvider>
-            <GamesProvider>
-              <body
-                className={`${roboto.className} flex flex-col min-h-screen`}
-              >
-                <header className="flex justify-between items-center bg-black h-20 p-4">
-                  <Image src={logo} alt="logo" className="h-14 w-auto" />
-                  <ConnectButton />
-                </header>
-                {children}
-              </body>
-            </GamesProvider>
+            <header className="flex h-20 items-center justify-between bg-black p-4">
+              <Logo />
+              <ConnectButton />
+            </header>
+            <main className="flex-grow">{children}</main>
+            <PageFooter />
           </BlockProvider>
         </Web3Provider>
-      </ApolloClientProvider>
+      </body>
     </html>
   );
 }

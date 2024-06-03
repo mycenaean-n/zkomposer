@@ -1,16 +1,20 @@
-import { useProof } from '../../hooks/useProof';
-import { ZKProof } from '../../types/Proof';
-import styles from '../../styles/actions.module.scss';
+import { useProof } from '@hooks/useProof';
+import { ZKProof } from 'types/Proof';
+import styles from '@styles/actions.module.scss';
 import { InputSignals } from 'circuits/types/proof.types';
+import { useState } from 'react';
 
 export function GenerateProof({
   inputSignals,
   onResult,
+  onError,
 }: {
   inputSignals?: InputSignals;
   onResult: (proof: ZKProof) => void;
+  onError: (err: string) => void;
 }) {
   const proofCallback = useProof('/zk/zkube.wasm', '/zk/zkube_final.zkey');
+  const [generatingProof, setGenerationgProof] = useState(false);
 
   if (!inputSignals)
     return (
@@ -29,13 +33,14 @@ export function GenerateProof({
 
   return (
     <button
-      className="bg-btn-gray p-2 rounded-sm w-full cursor-pointer z-100"
+      className="btn-primary-rounded w-full"
       disabled={
         !initialGrid ||
         !finalGrid ||
         !account ||
         !selectedFunctionsIndexes ||
-        !availableFunctionsIndexes
+        !availableFunctionsIndexes ||
+        generatingProof
       }
       onClick={async () => {
         if (!initialGrid) alert('Initial grid is not ready');
@@ -44,19 +49,30 @@ export function GenerateProof({
         else if (!selectedFunctionsIndexes)
           alert('selectedFunctionsIndexes is not ready');
         else {
+          setGenerationgProof(true);
           proofCallback({
             initialGrid,
             finalGrid,
             account,
             selectedFunctionsIndexes,
             availableFunctionsIndexes,
-          }).then((res) => {
-            onResult(res as unknown as ZKProof);
-          });
+          })
+            .then((res) => {
+              setGenerationgProof(false);
+              onResult(res);
+            })
+            .catch((e) => {
+              setGenerationgProof(false);
+              onError(e.message);
+            });
         }
       }}
     >
-      Submit Solution
+      {generatingProof ? (
+        <div className="mx-auto h-6 w-6 animate-spin rounded-full border-b-2 border-gray-100"></div>
+      ) : (
+        'Submit Solution'
+      )}
     </button>
   );
 }
