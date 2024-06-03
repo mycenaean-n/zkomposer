@@ -47,6 +47,10 @@ body {
   @apply flex flex-col items-center rounded-md bg-black px-4 py-6 text-white;
 }
 
-.modal-input {
+.modal-input-container {
   @apply m-4 flex w-96 justify-between;
+}
+
+.modal-input {
+  @apply pl-1 text-black;
 }

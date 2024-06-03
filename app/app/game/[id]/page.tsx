@@ -100,7 +100,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
     onChainGame.player2?.address_ === zeroAddress;
 
   return (
-    <div className="flex h-full flex-grow flex-col">
+    <div className="flex-grow">
       {displayQrInvite && !displayJoinModal && <QrInvite />}
       {!displayQrInvite && displayJoinModal && (
         <JoinGameModal

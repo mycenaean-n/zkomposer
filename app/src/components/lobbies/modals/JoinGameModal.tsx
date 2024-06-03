@@ -25,58 +25,57 @@ export function JoinGameModal({
   return (
     <div className="modal">
       <div className="modal-content">
-        <>
-          <div className="modal-input">
-            <h4>Opponent</h4>
-            <input
-              className="text-black"
-              type="text"
-              value={game.player1.address_}
-              disabled={true}
-            />
-          </div>
-          <div className="modal-input">
-            <h4>Puzzle Set</h4>
-            <input
-              className="text-black"
-              type="text"
-              value={game.puzzleSet}
-              disabled={true}
-            />
-          </div>
-          <div className="modal-input">
-            <h4>Interval (blocks)</h4>
-            <input
-              className="text-black"
-              type="number"
-              value={game.interval}
-              disabled={true}
-            />
-          </div>
-          <div className="modal-input">
-            <h4>Number of Puzzles</h4>
-            <input
-              className="text-black"
-              type="number"
-              value={game.numberOfRounds}
-              disabled={true}
-            />
-          </div>
-          <div className="flex">
-            <button
-              className="btn-secondary-rounded mr-4 mt-4 w-32"
-              onClick={joinGame}
-            >
-              Accept
-            </button>
-            <button
-              className="btn-secondary-rounded mt-4 w-32"
-              onClick={() => router.push('/')}
-            >
-              Decline
-            </button>
-          </div>
-        </>
+        <div className="modal-input-container">
+          <h4>Opponent</h4>
+          <input
+            className="modal-input"
+            type="text"
+            value={game.player1.address_}
+            disabled={true}
+          />
+        </div>
+        <div className="modal-input-container">
+          <h4>Puzzle Set</h4>
+          <input
+            className="modal-input"
+            type="text"
+            value={game.puzzleSet}
+            disabled={true}
+          />
+        </div>
+        <div className="modal-input-container">
+          <h4>Round duration (blocks)</h4>
+          <input
+            className="modal-input"
+            type="number"
+            value={game.interval}
+            disabled={true}
+          />
+        </div>
+        <div className="modal-input-container">
+          <h4>Number of Rounds</h4>
+          <input
+            className="modal-input"
+            type="number"
+            value={game.numberOfRounds}
+            disabled={true}
+          />
+        </div>
+        <div className="flex">
+          <button
+            className="btn-secondary-rounded mr-4 mt-4 w-32"
+            onClick={joinGame}
+          >
+            Accept
+          </button>
+          <button
+            className="btn-secondary-rounded mt-4 w-32"
+            style={{ border: 'solid 3px red' }}
+            onClick={() => router.push('/')}
+          >
+            Decline
+          </button>
+        </div>
       </div>
     </div>
   );

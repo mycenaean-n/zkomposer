@@ -38,7 +38,7 @@ export function Footer({
       onChainGame.interval);
 
   return (
-    <footer className="mt-auto h-20 bg-black">
+    <footer className="absolute bottom-0 left-0 right-0 mt-auto flex h-20 bg-black p-2 text-center">
       <div className="flex h-full w-full items-center justify-between p-6 text-white">
         <div className="flex flex-grow basis-0 items-center">
           <h4 className="text-left text-2xl font-bold">

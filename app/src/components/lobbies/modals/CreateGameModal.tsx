@@ -46,28 +46,28 @@ export default function CreateGameModal({
   return (
     <div className="modal" onClick={onInputContainerClick}>
       <div className="modal-content">
-        <div className="modal-input">
+        <div className="modal-input-container">
           <h4>Puzzle Set</h4>
           <input
-            className="pl-1 text-black"
+            className="modal-input"
             type="text"
             value={puzzleSet}
             onChange={(e) => setPuzzleSet(e.target.value as Address)}
           />
         </div>
-        <div className="modal-input">
+        <div className="modal-input-container">
           <h4>Interval (blocks)</h4>
           <input
-            className="pl-1 text-black"
+            className="modal-input"
             type="number"
             value={interval}
             onChange={(e) => setInterval(parseInt(e.target.value))}
           />
         </div>
-        <div className="modal-input">
+        <div className="modal-input-container">
           <h4>Number of Puzzles</h4>
           <input
-            className="pl-1 text-black"
+            className="modal-input"
             type="number"
             value={numberOfTurns}
             onChange={(e) => setNumberOfTurns(parseInt(e.target.value))}
