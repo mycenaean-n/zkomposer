@@ -15,12 +15,12 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
     return LoadingState({ textMain: 'Loading puzzle...' });
   }
 
-  if (!data) {
-    return LoadingState({ textMain: 'Puzzle not found' });
-  }
-
   if (!address && blockNumber) {
     return <LoginCTA />;
+  }
+
+  if (!data) {
+    return LoadingState({ textMain: 'Puzzle not found' });
   }
 
   return <PuzzleMemoized initConfig={data} id={id} gameMode="singleplayer" />;
