@@ -4,14 +4,7 @@ import { usePrivyWalletAddress } from '../../../src/hooks/usePrivyWalletAddress'
 import { useBlockNumber } from '../../../src/hooks/useBlockNumber';
 import { usePuzzleData } from '../../../src/hooks/fetching/usePuzzleData';
 import { PuzzleMemoized } from '../../../src/components/game/puzzle/Puzzle';
-
-function LoadingState(text: string) {
-  return (
-    <div className="text-align-center flex h-full w-screen flex-grow items-center justify-center text-2xl">
-      <h1>{text}</h1>
-    </div>
-  );
-}
+import { LoadingState } from '../../../src/components/zk/LoadingState';
 
 export default function Page({ params: { id } }: { params: { id: string } }) {
   const blockNumber = useBlockNumber();
@@ -19,11 +12,11 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
   const { data, loading } = usePuzzleData(id);
 
   if (loading) {
-    return LoadingState('Loading puzzle...');
+    return LoadingState({ textMain: 'Loading puzzle...' });
   }
 
   if (!data) {
-    return LoadingState('Puzzle not found');
+    return LoadingState({ textMain: 'Puzzle not found' });
   }
 
   if (!address && blockNumber) {

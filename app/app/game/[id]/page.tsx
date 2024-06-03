@@ -11,21 +11,7 @@ import { usePrivyWalletAddress } from '../../../src/hooks/usePrivyWalletAddress'
 import { LoginCTA } from '../../../src/components/wallet/LoginCTA';
 import { useGameAndPuzzleData } from '../../../src/hooks/fetching/useGameAndPuzzleData';
 import { useDeepCompareMemo } from '../../../src/hooks/useDeepCompareMemo';
-
-function LoadingState({
-  textMain,
-  textSub,
-}: {
-  textMain: string;
-  textSub?: string;
-}) {
-  return (
-    <div className="text-align-center flex h-full w-screen flex-grow flex-col items-center justify-center text-2xl">
-      <h1>{textMain}</h1>
-      <h1 className="mt-4">{textSub}</h1>
-    </div>
-  );
-}
+import { LoadingState } from '../../../src/components/zk/LoadingState';
 
 export default function Page({ params: { id } }: { params: { id: string } }) {
   const blockNumber = useBlockNumber();
