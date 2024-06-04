@@ -64,13 +64,13 @@ ZKube --> ZKubePuzzleSet: getPuzzle
 
 class ZKubeVerifier {
 
-+validateProof (Proof proof) : bool
++verifyProof (Proof proof) : bool
 
 }
 
 
 
-ZKube --> ZKubeVerifier: validateProof
+ZKube --> ZKubeVerifier: verifyProof
 
 
 
