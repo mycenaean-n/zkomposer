@@ -37,7 +37,7 @@ export function Scene() {
   }, [functions]);
 
   return (
-    <div className="flex" style={{ height: isMobile ? '300px' : '600px' }}>
+    <div className="flex" style={{ height: isMobile ? '300px' : '500px' }}>
       <div className="w-2/3">
         <Canvas
           orthographic
