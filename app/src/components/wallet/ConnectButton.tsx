@@ -2,7 +2,9 @@
 import { usePrivy } from '@privy-io/react-auth';
 import { truncateAddress } from '@utils/truncateAddress';
 import { CopyAddressToClipboardButton } from './CopyAddressToClipboardButton';
-import { isMobile } from 'react-device-detect';
+import { Faucet } from './Faucet';
+import { ArrowLeftEndOnRectangleIcon } from '@heroicons/react/24/solid';
+import { Address } from 'viem';
 
 export function ConnectButton() {
   const { ready, authenticated, login, user, logout } = usePrivy();
@@ -24,19 +26,19 @@ export function ConnectButton() {
         <>
           {user?.wallet && (
             <div className="flex rounded-md border border-solid">
-              {!isMobile && (
-                <button className="btn-transparent" style={{ color: 'white' }}>
-                  {truncateAddress(user.wallet.address as `0x${string}`)}
+              <Faucet />
+              <div className="flex">
+                <CopyAddressToClipboardButton
+                  text={truncateAddress(user.wallet.address as Address)}
+                />
+                <button
+                  onClick={logout}
+                  type="submit"
+                  className="btn-transaprent mr-2"
+                >
+                  <ArrowLeftEndOnRectangleIcon className="h-6 w-6 text-white" />
                 </button>
-              )}
-              <CopyAddressToClipboardButton />
-              <button
-                onClick={logout}
-                type="submit"
-                className="btn-secondary rounded-r-md"
-              >
-                Sign out
-              </button>
+              </div>
             </div>
           )}
         </>
