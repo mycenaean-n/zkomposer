@@ -121,6 +121,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
           gameId={id}
           yourScore={yourScore}
           opponentScore={opponentScore}
+          data={data}
         />
       )}
     </div>

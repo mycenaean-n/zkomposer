@@ -1,34 +1,29 @@
 'use client';
-import { useEffect, useState } from 'react';
 import { hasGameStarted, isGameFinished } from '@utils/game';
-import { useGameAndPuzzleData } from '@hooks/fetching/useGameAndPuzzleData';
 import { useCurrentRound } from '@hooks/useCurrentRound';
 import { useBlockNumber } from '@hooks/useBlockNumber';
 import { DesktopFooter } from './DesktopFooter';
 import { isMobile } from 'react-device-detect';
 import { MobileFooter } from './MobileFooter';
+import { Puzzle } from '../../types/Puzzle';
+import { OnChainGame } from '../../types/Game';
 
 export function Footer({
   gameId,
   yourScore,
   opponentScore,
+  data,
 }: {
   gameId: string;
   yourScore: number;
   opponentScore: number;
+  data: {
+    initConfig?: Puzzle;
+    onChainGame: OnChainGame;
+  };
 }) {
   const blockNumber = useBlockNumber();
-  const [shouldPoll, setShouldPoll] = useState(true);
-  const { data } = useGameAndPuzzleData(gameId, shouldPoll);
   const currentRound = useCurrentRound(data?.onChainGame);
-  const gameFinished =
-    data?.onChainGame &&
-    blockNumber &&
-    isGameFinished(blockNumber, data.onChainGame);
-
-  useEffect(() => {
-    if (gameFinished) setShouldPoll(false);
-  }, [gameFinished]);
 
   if (!data?.onChainGame || !blockNumber || !currentRound) return null;
   const { onChainGame } = data;
