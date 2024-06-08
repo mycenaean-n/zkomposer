@@ -28,5 +28,5 @@ export function useCopyToClipboard(delay = 1500) {
     }
   }, [success, delay]);
 
-  return { success, copyToClipboard, setSuccess };
+  return { success, copyToClipboard };
 }
