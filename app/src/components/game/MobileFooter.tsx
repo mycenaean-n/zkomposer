@@ -20,9 +20,11 @@ export function MobileFooter({
         </div>
         <div className="flex flex-grow basis-0 items-center justify-center">
           <h4 className="text-center font-bold md:text-2xl">
-            blocks in round {currentRound}
+            blocks left
             <br />
-            <span className="text-xl font-normal">{blocksLeftThisTurn}</span>
+            <span className="text-xl font-normal">
+              {(blocksLeftThisTurn / 4).toFixed(1)}
+            </span>
           </h4>
         </div>
         <div className="flex flex-grow basis-0 items-center justify-end">

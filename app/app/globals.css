@@ -36,11 +36,11 @@ body {
 }
 
 .btn-transparent {
-  @apply text-primary border-primary rounded-md border-2 px-2 py-1 font-bold md:px-4 md:py-2;
+  @apply text-primary border-primary rounded-md border-2 px-2 py-1 text-sm font-bold md:px-4 md:py-2 md:text-lg;
 }
 
 .modal {
-  @apply absolute bottom-0 left-0 right-0 top-24 z-20 flex items-center justify-center backdrop-blur-sm;
+  @apply absolute bottom-0 left-0 right-0 top-12 z-20 flex items-center justify-center backdrop-blur-sm md:top-24;
 }
 
 .modal-content {

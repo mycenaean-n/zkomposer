@@ -61,7 +61,7 @@ export function JoinGameModal({
             disabled={true}
           />
         </div>
-        <div className="flex">
+        <div className="m-auto flex">
           <button
             className="btn-secondary-rounded mr-4 mt-4 w-32"
             onClick={joinGame}

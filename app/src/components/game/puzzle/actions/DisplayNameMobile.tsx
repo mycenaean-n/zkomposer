@@ -23,7 +23,7 @@ export function DisplayNameMobile({
               <div
                 className={`m-1 ml-2 mt-1.5 h-2.5 w-2.5 ${bgColor(colorOne)} border border-black`}
               ></div>
-              <div> ↦ </div>
+              <div className="leading-tight"> ↦ </div>
             </div>
             <div className="flex flex-col">
               <div
@@ -44,7 +44,7 @@ export function DisplayNameMobile({
             ></div>
             {colorTwo && (
               <>
-                <div className="leading-6"> ↦ </div>
+                <div className="leading-4"> ↦ </div>
                 <div
                   className={`m-1 h-2.5 w-2.5 ${bgColor(colorTwo)} border border-black`}
                 ></div>
