@@ -24,3 +24,11 @@ type Player = {
   score: number;
   totalBlocks: bigint;
 };
+
+export type FooterDisplayProps = {
+  yourScore: number;
+  blocksLeftThisTurn: number;
+  opponentScore: number;
+  currentRound: number;
+  numberOfRounds: number;
+};

@@ -6,7 +6,7 @@ export function ResponsiveCamera() {
   const { size, camera } = useThree();
   // Adjust camera aspect ratio and update projection matrix
   useEffect(() => {
-    camera.zoom = isMobile ? size.height / 10 : size.height / 12;
+    camera.zoom = isMobile ? size.height / 9 : size.height / 12;
     camera.near = -25;
     if (isMobile) {
       camera.rotation.z = Math.PI / 3.2;

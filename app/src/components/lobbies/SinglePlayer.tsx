@@ -10,8 +10,6 @@ export default function SinglePlayer() {
   return (
     <button className="btn-transparent h-32 w-32" onClick={navigateToNewPage}>
       Singleplayer
-      <br />
-      (no ETH req)
     </button>
   );
 }

@@ -9,7 +9,7 @@ export function Faucet() {
         onClick={() => {
           faucetCallback();
         }}
-        className="btn-secondary w-20 border-2 border-r-black"
+        className="btn-secondary w-20 rounded-l-md border-2 border-r-black"
       >
         {loading ? (
           <div className="mx-auto h-6 w-6 animate-spin rounded-full border-b-2 border-gray-800"></div>
