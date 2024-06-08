@@ -9,12 +9,10 @@ import { Puzzle } from '../../types/Puzzle';
 import { OnChainGame } from '../../types/Game';
 
 export function Footer({
-  gameId,
   yourScore,
   opponentScore,
   data,
 }: {
-  gameId: string;
   yourScore: number;
   opponentScore: number;
   data: {

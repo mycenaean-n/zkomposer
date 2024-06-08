@@ -9,8 +9,8 @@ import IntermediateGrids from './IntermediateGrids';
 import { Colors } from 'circuits/types/circuitFunctions.types';
 import { isMobile } from 'react-device-detect';
 
-const STARTING_X_POS = isMobile ? -1.8 : -3;
-const STARTING_Y_POS = isMobile ? 0.6 : 0.5;
+const STARTING_X_POS = isMobile ? -1.7 : -3;
+const STARTING_Y_POS = isMobile ? 0.3 : 0.5;
 
 export function Scene() {
   const [grids, setGrids] = useState<number[][][]>([]);
@@ -37,7 +37,7 @@ export function Scene() {
   }, [functions]);
 
   return (
-    <div className="flex" style={{ height: isMobile ? '300px' : '500px' }}>
+    <div className="flex" style={{ height: isMobile ? '280px' : '500px' }}>
       <div className="w-2/3">
         <Canvas
           orthographic
@@ -66,7 +66,7 @@ export function Scene() {
             position: new Vector3(3.5, 4, 3),
           }}
         >
-          <Grid grid={finalGrid} position={{ x: -0.45, y: 2, z: 0 }} />
+          <Grid grid={finalGrid} position={{ x: 0, y: 1.8, z: 0 }} />
           <ResponsiveCamera />
         </Canvas>
       </div>

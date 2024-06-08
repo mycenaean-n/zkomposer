@@ -116,14 +116,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
           gameMode="multiplayer"
         />
       )}
-      {onChainGame && (
-        <Footer
-          gameId={id}
-          yourScore={yourScore}
-          opponentScore={opponentScore}
-          data={data}
-        />
-      )}
+      <Footer yourScore={yourScore} opponentScore={opponentScore} data={data} />
     </div>
   );
 }
