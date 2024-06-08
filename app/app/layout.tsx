@@ -6,6 +6,7 @@ import { ConnectButton } from '@components/wallet/ConnectButton';
 import { BlockProvider } from 'context/BlockContext';
 import Logo from '../src/components/Logo';
 import { PageFooter } from '../src/components/PageFooter';
+import dynamic from 'next/dynamic';
 
 const roboto = Roboto({
   weight: '400',
@@ -17,6 +18,11 @@ export const metadata: Metadata = {
   description: 'Zero-Knowledge puzzle game inspired by Cube Composer game.',
 };
 
+const ServiceWorkerRegistration = dynamic(
+  () => import('./ServiceWorkerRegistration'),
+  { ssr: false }
+);
+
 export default function RootLayout({
   children,
 }: {
@@ -24,6 +30,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+      </head>
       <body className={`${roboto.className} flex min-h-svh flex-col`}>
         <Web3Provider>
           <BlockProvider>
@@ -32,6 +41,7 @@ export default function RootLayout({
               <ConnectButton />
             </header>
             <main className="flex-grow">{children}</main>
+            <ServiceWorkerRegistration />
             <PageFooter />
           </BlockProvider>
         </Web3Provider>

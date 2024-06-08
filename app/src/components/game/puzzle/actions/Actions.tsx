@@ -121,7 +121,7 @@ export function Actions({
       <div className="relative mb-2">
         <div className="absolute -top-24 right-2 flex flex-col md:-top-32 md:right-14">
           {(proofGenerationError && (
-            <h2 className="mt-2 text-2xl">{proofGenerationError}</h2>
+            <h2 className="mt-2 text-sm md:text-2xl">{proofGenerationError}</h2>
           )) ||
             (puzzleSolved && (
               <>
