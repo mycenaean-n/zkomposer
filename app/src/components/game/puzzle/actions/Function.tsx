@@ -1,13 +1,10 @@
 import React, { useContext } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { PuzzleContext } from '../Puzzle';
-import {
-  AvailableFunctions,
-  CircuitFunctions,
-  ColorsKeys,
-} from 'circuits/types/circuitFunctions.types';
-import { parseCircuitArguments } from 'circuits';
+import { CircuitFunctions } from 'circuits/types/circuitFunctions.types';
 import { DisplayName } from './DisplayName';
+import { isMobile } from 'react-device-detect';
+import { DisplayNameMobile } from './DisplayNameMobile';
 
 export function Function({
   elementType,
@@ -27,7 +24,7 @@ export function Function({
     >
       {(provided) => (
         <div
-          className="m-1 h-10 cursor-pointer rounded-md"
+          className="m-1 cursor-pointer rounded-md"
           key={index}
           onClick={() => {
             elementType === 'remaining'
@@ -46,7 +43,11 @@ export function Function({
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <DisplayName funcName={funcName} />
+          {isMobile ? (
+            <DisplayNameMobile funcName={funcName} />
+          ) : (
+            <DisplayName funcName={funcName} />
+          )}
         </div>
       )}
     </Draggable>

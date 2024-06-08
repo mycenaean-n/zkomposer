@@ -10,7 +10,7 @@ export default function Logo() {
     <Image
       src={logo}
       alt="logo"
-      className="mr-4 h-14 w-auto cursor-pointer"
+      className="mr-4 h-8 w-auto cursor-pointer md:h-14"
       onClick={() => push('/')}
     />
   );

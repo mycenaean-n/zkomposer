@@ -27,7 +27,7 @@ export default function RootLayout({
       <body className={`${roboto.className} flex min-h-screen flex-col`}>
         <Web3Provider>
           <BlockProvider>
-            <header className="flex h-20 items-center justify-between bg-black p-4">
+            <header className="flex h-12 items-center justify-between bg-black p-4 md:h-20">
               <Logo />
               <ConnectButton />
             </header>
