@@ -9,15 +9,15 @@ import { ContractCallbackReturnType } from '../../types/Hooks';
 
 export function useVerifyPuzzleSolutionCallback() {
   const zKubeContract = useZkubeContract();
-  const address = usePrivyWalletAddress();
 
   return useCallback(
     async (
       puzzleSet: Address,
       puzzleId: StringNumberBI,
-      proof: ZKProof
+      proof: ZKProof,
+      address: Address
     ): Promise<ContractCallbackReturnType> => {
-      if (!isNumberNumericStringBI(puzzleId) || !address || !zKubeContract) {
+      if (!isNumberNumericStringBI(puzzleId) || !zKubeContract) {
         return { success: false, error: 'Invalid arguments' };
       }
 
@@ -35,6 +35,6 @@ export function useVerifyPuzzleSolutionCallback() {
         return { success: false, error: (error as Error).message };
       }
     },
-    [zKubeContract, address]
+    [zKubeContract]
   );
 }
