@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation';
 import { useSubmitPuzzleCallback } from '@hooks/callbacks/useSubmitPuzzleCallback';
 import { useVerifyPuzzleSolutionCallback } from '@hooks/callbacks/useVerifyPuzzleCallback';
 import { CircuitFunctions } from 'circuits/types/circuitFunctions.types';
+import { zeroAddress } from 'viem';
 
 export function Tick() {
   return (
@@ -38,7 +39,7 @@ export function Actions({
   gameMode: 'singleplayer' | 'multiplayer';
 }) {
   const { functions, setFunctions, initConfig } = useContext(PuzzleContext);
-  const address = usePrivyWalletAddress();
+  const address = usePrivyWalletAddress() ?? zeroAddress;
   const [inputSignals, setInputSignals] = useState<InputSignals>();
   const [puzzleSolved, setPuzzleSolved] = useState<boolean>(false);
   const [proofGenerationError, setProofGenerationError] = useState<string>();
@@ -47,8 +48,6 @@ export function Actions({
   const router = useRouter();
 
   useEffect(() => {
-    if (!address) return;
-
     setInputSignals({
       ...initConfig,
       account: address,
@@ -100,7 +99,8 @@ export function Actions({
           verifyPuzzleSolutionCallback(
             ZKUBE_PUZZLESET_ADDRESS,
             BigInt(id),
-            result
+            result,
+            address
           ).then(({ success }) => {
             if (success) {
               setProofGenerationError(undefined);
