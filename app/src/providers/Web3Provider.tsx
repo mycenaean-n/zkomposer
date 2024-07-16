@@ -10,19 +10,19 @@ import { createConfig, WagmiProvider } from '@privy-io/wagmi';
 import { PrivyClientConfig, PrivyProvider } from '@privy-io/react-auth';
 import { defineChain, http } from 'viem';
 
+localStorage.removeItem('wagmi.store');
 const queryClient = new QueryClient();
 
 export const wagmiConfig = createConfig({
-  chains: [scroll, scrollSepolia, arbitrumSepolia, { ...localhost, id: 31337 }],
+  chains: [arbitrumSepolia, scroll, scrollSepolia, { ...localhost, id: 31337 }],
   transports: {
-    [scroll.id]: http(),
-    [scrollSepolia.id]: http(),
     [arbitrumSepolia.id]: http(
       `https://arbitrum-sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY}`
     ),
+    [scroll.id]: http(),
+    [scrollSepolia.id]: http(),
     ['31337']: http(),
   },
-
   ssr: true,
 });
 
@@ -50,7 +50,7 @@ const privyConfig = {
   embeddedWallets: {
     createOnLogin: 'all-users',
   },
-  supportedChains: [scroll, scrollSepolia, arbitrumSepolia, LocalHost],
+  supportedChains: [arbitrumSepolia, scroll, scrollSepolia, LocalHost],
   defaultChain: arbitrumSepolia,
 } as PrivyClientConfig;
 
