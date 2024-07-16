@@ -20,7 +20,7 @@ body {
 }
 
 .btn-secondary {
-  @apply bg-secondary text-primary px-2 py-1 font-bold md:px-4 md:py-2;
+  @apply bg-secondary text-primary px-2 py-1 font-bold md:px-4 md:py-2 md:text-lg;
 }
 
 .btn-secondary-rounded {

@@ -31,11 +31,7 @@ export function ConnectButton() {
                 <CopyAddressToClipboardButton
                   text={truncateAddress(user.wallet.address as Address)}
                 />
-                <button
-                  onClick={logout}
-                  type="submit"
-                  className="btn-transaprent mr-2"
-                >
+                <button onClick={logout} type="submit" className="mr-2">
                   <ArrowLeftEndOnRectangleIcon className="h-6 w-6 text-white" />
                 </button>
               </div>
