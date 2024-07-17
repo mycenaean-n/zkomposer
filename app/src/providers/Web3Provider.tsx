@@ -9,8 +9,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createConfig, WagmiProvider } from '@privy-io/wagmi';
 import { PrivyClientConfig, PrivyProvider } from '@privy-io/react-auth';
 import { defineChain, http } from 'viem';
+import { useEffect } from 'react';
 
-localStorage.removeItem('wagmi.store');
 const queryClient = new QueryClient();
 
 export const wagmiConfig = createConfig({
@@ -55,6 +55,10 @@ const privyConfig = {
 } as PrivyClientConfig;
 
 export function Web3Provider({ children }: { children: React.ReactNode }) {
+  useEffect(() => {
+    window.localStorage.removeItem('wagmi.store');
+  }, []);
+
   if (!process.env.NEXT_PUBLIC_PRIVY_APP_ID)
     throw new Error('Missing Privy App ID');
   return (
