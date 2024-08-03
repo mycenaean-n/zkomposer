@@ -9,11 +9,6 @@ const nextConfig = {
     config.externals.push('pino-pretty');
     return config;
   },
-  env: {
-    NEXT_PUBLIC_PRIVY_APP_ID: process.env.NEXT_PUBLIC_PRIVY_APP_ID,
-    NEXT_PUBLIC_INFURA_API_KEY: process.env.NEXT_PUBLIC_INFURA_API_KEY,
-    PRIV_KEY: process.env.PRIV_KEY,
-  },
 };
 
 module.exports = nextConfig;
