@@ -23,7 +23,6 @@ export const wagmiConfig = createConfig({
     [scrollSepolia.id]: http(),
     ['31337']: http(),
   },
-  ssr: true,
 });
 
 export const LocalHost = defineChain({
