@@ -18,14 +18,13 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
   const address = usePrivyWalletAddress();
   const [shouldPoll, setShouldPoll] = useState(true);
   const { data, loading, error } = useGameAndPuzzleData(id, shouldPoll);
-  const [joinModalShowing, setJoinModalShowing] = useState<boolean>(true);
   const [yourScore, setYourScore] = useState<number>(0);
   const [opponentScore, setOpponentScore] = useState<number>(0);
   const stableInitConfig = useDeepCompareMemo(data?.initConfig);
   const gameFinished =
     data?.onChainGame &&
     blockNumber &&
-    isGameFinished(blockNumber, data?.onChainGame);
+    isGameFinished(blockNumber, data.onChainGame);
 
   useEffect(() => {
     if (gameFinished) setShouldPoll(false);
@@ -53,13 +52,13 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
     return LoadingState({ textMain: 'Loading game...' });
   }
 
-  if (error !== undefined) {
+  if (typeof error === 'string') {
     return LoadingState({ textMain: error });
   }
 
   const { onChainGame } = data;
 
-  if (!data.onChainGame) {
+  if (!onChainGame) {
     return LoadingState({ textMain: 'Game not found' });
   }
 
@@ -76,15 +75,13 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
   }
 
   if (isGameFinished(blockNumber!, onChainGame)) {
+    const winCase = yourScore > opponentScore;
+    const drawCase = yourScore === opponentScore;
+
     return LoadingState({
       textMain: 'Game is finished',
       textSub:
-        'Result: ' +
-        (yourScore > opponentScore
-          ? 'You Won'
-          : yourScore === opponentScore
-            ? 'Draw'
-            : 'You Lost'),
+        'Result: ' + (winCase ? 'You Won' : drawCase ? 'Draw' : 'You Lost'),
     });
   }
 
@@ -93,16 +90,15 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
     onChainGame.player1.address_ === address &&
     onChainGame.player2?.address_ === zeroAddress;
 
-  const displayJoin =
+  const displayJoinModal =
     address &&
-    onChainGame.player1.address_ !== address &&
     onChainGame.player1.address_ !== address &&
     onChainGame.player2?.address_ === zeroAddress;
 
   return (
     <div className="flex-grow">
-      {displayQrInvite && !displayJoin && <QrInvite />}
-      {!displayQrInvite && displayJoin && (
+      {displayQrInvite && !displayJoinModal && <QrInvite />}
+      {!displayQrInvite && displayJoinModal && (
         <JoinGame game={onChainGame} gameId={id} />
       )}
       {stableInitConfig && (
