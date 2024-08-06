@@ -137,7 +137,7 @@ contract ZKubeTest is Test {
         uint8 numberOfRounds = 20;
         uint256 randomBlock = 21382132;
         vm.roll(randomBlock);
-        uint256 id = _createGame(player1, interval, numberOfRounds);
+        uint256 id = _createGame(player1, interval, numberOfRounßds);
 
         uint256 startingBlock = _joinGame(player2, id);
         assertEq(randomBlock + zKube.BLOCKS_UNTIL_START(), startingBlock);
