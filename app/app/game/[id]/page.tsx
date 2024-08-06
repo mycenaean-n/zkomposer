@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { hasGameStarted, isGameFinished } from '@utils/game';
 import { zeroAddress } from 'viem';
 import QrInvite from '@components/lobbies/QrInvite';
-import { JoinGameModal } from '@components/lobbies/modals/JoinGameModal';
+import { JoinGame } from '@components/lobbies/JoinGame';
 import { PuzzleMemoized } from '@components/game/puzzle/Puzzle';
 import { Footer } from '@components/game/Footer';
 import { useBlockNumber } from '@hooks/useBlockNumber';
@@ -93,7 +93,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
     onChainGame.player1.address_ === address &&
     onChainGame.player2?.address_ === zeroAddress;
 
-  const displayJoinModal =
+  const displayJoin =
     address &&
     onChainGame.player1.address_ !== address &&
     onChainGame.player1.address_ !== address &&
@@ -101,13 +101,9 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
 
   return (
     <div className="flex-grow">
-      {displayQrInvite && !displayJoinModal && <QrInvite />}
-      {!displayQrInvite && displayJoinModal && (
-        <JoinGameModal
-          game={onChainGame}
-          setInputsShowing={setJoinModalShowing}
-          gameId={id}
-        />
+      {displayQrInvite && !displayJoin && <QrInvite />}
+      {!displayQrInvite && displayJoin && (
+        <JoinGame game={onChainGame} gameId={id} />
       )}
       {stableInitConfig && (
         <PuzzleMemoized

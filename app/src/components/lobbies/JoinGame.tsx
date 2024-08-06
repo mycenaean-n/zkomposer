@@ -1,14 +1,12 @@
 import React from 'react';
-import { useJoinGameCallback } from '@hooks/callbacks/useJoinGameCallback';
 import { useRouter } from 'next/navigation';
 import { OnChainGame } from 'types/Game';
+import { useJoinGameCallback } from '@hooks/callbacks/useJoinGameCallback';
 
-export function JoinGameModal({
-  setInputsShowing,
+export function JoinGame({
   game,
   gameId,
 }: {
-  setInputsShowing: (showing: boolean) => void;
   game: OnChainGame;
   gameId: string;
 }) {
