@@ -35,10 +35,10 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
 
     const { onChainGame } = data;
 
-    if (address == onChainGame.player1.address_) {
+    if (address === onChainGame.player1.address_) {
       setYourScore(onChainGame.player1.score);
       setOpponentScore(onChainGame.player2!.score);
-    } else if (address == onChainGame.player2!.address_) {
+    } else if (address === onChainGame.player2!.address_) {
       setYourScore(onChainGame.player2!.score);
       setOpponentScore(onChainGame.player1.score);
     }
