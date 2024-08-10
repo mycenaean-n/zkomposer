@@ -7,7 +7,7 @@ import { convertPuzzleToBase4FromHex } from 'circuits/utils/contracts/hexConvers
 import { StringNumberBI, OnChainPuzzle, Puzzle } from 'types/Puzzle';
 import { mapGrid } from 'utils';
 import { isNumberNumericStringBI } from '@utils/isNumericString';
-import { Hex } from 'viem';
+import { Address, Hex } from 'viem';
 import { OnChainGame } from 'types/Game';
 import { useBlockNumber } from '../useBlockNumber';
 import { ContractFetchReturnType } from 'types/Hooks';
@@ -16,16 +16,16 @@ type SelectPuzzleResponse = {
   roundBlock: BigInt;
   game: {
     player1: {
-      address_: `0x${string}`;
+      address_: Address;
       score: number;
       totalBlocks: bigint;
     };
     player2: {
-      address_: `0x${string}`;
+      address_: Address;
       score: number;
       totalBlocks: bigint;
     };
-    puzzleSet: `0x${string}`;
+    puzzleSet: Address;
     interval: number;
     numberOfRounds: number;
     startingBlock: bigint;
