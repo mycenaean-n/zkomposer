@@ -23,8 +23,6 @@ export async function POST(req: NextRequest) {
   try {
     const amount = parseEther('0.001');
 
-    console.log({ address });
-
     const txHash = await sendTransaction(client, {
       to: address as Address,
       value: amount,
