@@ -12,13 +12,13 @@ export function JoinGame({
 }) {
   const joinGameCallback = useJoinGameCallback();
   const router = useRouter();
-  async function joinGame() {
+  const joinGame = async () => {
     if (!joinGameCallback) return;
     const { success } = await joinGameCallback(BigInt(gameId));
     if (!success) {
       alert('failed to join game');
     }
-  }
+  };
 
   return (
     <div className="modal">

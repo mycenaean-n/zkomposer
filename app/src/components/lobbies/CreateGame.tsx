@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import CreateGameModal from './modals/CreateGameModal';
+import { CreateGameModal } from './modals/CreateGameModal';
 
 export function CreateGame() {
   const [inputsShowing, setInputsShowing] = useState<boolean>(false);

@@ -1,7 +1,7 @@
 'use client';
 import { useRouter } from 'next/navigation';
 
-export default function SinglePlayer() {
+export function SinglePlayer() {
   const router = useRouter();
 
   const navigateToNewPage = () => {

@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { hasGameStarted, isGameFinished } from '@utils/game';
 import { zeroAddress } from 'viem';
-import QrInvite from '@components/lobbies/QrInvite';
+import { QrInvite } from '@components/lobbies/QrInvite';
 import { JoinGame } from '@components/lobbies/JoinGame';
 import { PuzzleMemoized } from '@components/game/puzzle/Puzzle';
 import { Footer } from '@components/game/Footer';
@@ -90,17 +90,15 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
     onChainGame.player1.address_ === address &&
     onChainGame.player2?.address_ === zeroAddress;
 
-  const displayJoinModal =
+  const displayJoinGame =
     address &&
     onChainGame.player1.address_ !== address &&
     onChainGame.player2?.address_ === zeroAddress;
 
   return (
     <div className="flex-grow">
-      {displayQrInvite && !displayJoinModal && <QrInvite />}
-      {!displayQrInvite && displayJoinModal && (
-        <JoinGame game={onChainGame} gameId={id} />
-      )}
+      {displayQrInvite && <QrInvite />}
+      {displayJoinGame && <JoinGame game={onChainGame} gameId={id} />}
       {stableInitConfig && (
         <PuzzleMemoized
           initConfig={stableInitConfig}
@@ -108,7 +106,7 @@ export default function Page({ params: { id } }: { params: { id: string } }) {
           gameMode="multiplayer"
         />
       )}
-      <Footer yourScore={yourScore} opponentScore={opponentScore} data={data} />
+      <Footer {...{ yourScore, opponentScore, data }} />
     </div>
   );
 }
