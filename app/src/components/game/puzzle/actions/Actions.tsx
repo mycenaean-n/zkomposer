@@ -146,7 +146,7 @@ export function Actions({
           onError={setProofGenerationError}
         />
       </div>
-      <div className={styles.gameUI}>
+      <div className="h-20vh grid grid-cols-2 justify-center gap-2">
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable droppableId={PuzzleFunctionState.remaining}>
             {(provided) => (
