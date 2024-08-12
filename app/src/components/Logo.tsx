@@ -4,7 +4,7 @@ import React from 'react';
 import logo from '../assets/zKubeLogo.svg';
 import { useRouter } from 'next/navigation';
 
-export default function Logo() {
+export function Logo() {
   const { push } = useRouter();
   return (
     <Image

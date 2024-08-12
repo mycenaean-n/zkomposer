@@ -3,7 +3,7 @@ import { Roboto } from 'next/font/google';
 import { Web3Provider } from 'providers/Web3Provider';
 import { ConnectButton } from '@components/wallet/ConnectButton';
 import { BlockProvider } from 'context/BlockContext';
-import Logo from '../src/components/Logo';
+import { Logo } from '@components/Logo';
 import { PageFooter } from '../src/components/PageFooter';
 
 const roboto = Roboto({

@@ -5,7 +5,7 @@ import { useCreteGameCallback } from '@hooks/callbacks/useCreateGameCallback';
 import { Address } from 'viem';
 import { ZKUBE_PUZZLESET_ADDRESS } from '@/config';
 
-export default function CreateGameModal({
+export function CreateGameModal({
   setInputsShowing,
 }: {
   setInputsShowing: (showing: boolean) => void;
