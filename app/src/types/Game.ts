@@ -32,3 +32,5 @@ export type FooterDisplayProps = {
   currentRound: number;
   numberOfRounds: number;
 };
+
+export type GameMode = 'singleplayer' | 'multiplayer';

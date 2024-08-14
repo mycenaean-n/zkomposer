@@ -1,6 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { PuzzleContext } from '../Puzzle';
-import styles from '@styles/actions.module.scss';
 import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
 import { PuzzleFunctionState } from 'types/Puzzle';
 import { InputSignals } from 'circuits/types/proof.types';
@@ -15,6 +14,8 @@ import { useSubmitPuzzleCallback } from '@hooks/callbacks/useSubmitPuzzleCallbac
 import { useVerifyPuzzleSolutionCallback } from '@hooks/callbacks/useVerifyPuzzleCallback';
 import { CircuitFunctions } from 'circuits/types/circuitFunctions.types';
 import { zeroAddress } from 'viem';
+import { GameMode } from 'types/Game';
+import { LevelAction } from './LevelAction';
 
 export function Tick() {
   return (
@@ -31,13 +32,7 @@ export function Tick() {
   );
 }
 
-export function Actions({
-  id,
-  gameMode,
-}: {
-  id: string;
-  gameMode: 'singleplayer' | 'multiplayer';
-}) {
+export function Actions({ id, gameMode }: { id: string; gameMode: GameMode }) {
   const { functions, setFunctions, initConfig } = useContext(PuzzleContext);
   const address = usePrivyWalletAddress() ?? zeroAddress;
   const [inputSignals, setInputSignals] = useState<InputSignals>();
@@ -120,25 +115,14 @@ export function Actions({
     <div className="flex flex-col px-2">
       <div className="relative mb-2">
         <div className="absolute -top-24 right-2 flex flex-col md:-top-32 md:right-14">
-          {(proofGenerationError && (
-            <h2 className="mt-2 text-sm md:text-2xl">{proofGenerationError}</h2>
-          )) ||
-            (puzzleSolved && (
-              <>
-                <div className="flex">
-                  <Tick />
-                  <h2 className="mt-2 text-sm md:text-2xl">Puzzle Solved</h2>
-                </div>
-                {gameMode === 'singleplayer' && (
-                  <button
-                    onClick={() => router.push(`/puzzle/${Number(id) + 1}`)}
-                    className="btn-transparent mt-2"
-                  >
-                    Next Level
-                  </button>
-                )}
-              </>
-            ))}
+          <LevelAction
+            {...{
+              proofGenerationError,
+              puzzleSolved,
+              id,
+              gameMode,
+            }}
+          />
         </div>
         <GenerateProof
           inputSignals={inputSignals}
