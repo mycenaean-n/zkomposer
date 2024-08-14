@@ -98,10 +98,10 @@ export function useGameAndPuzzleData(
     const { roundBlock, game, hexPuzzle } = data;
 
     if (
-      !hexPuzzle.availableFunctions.length ||
+      hexPuzzle.availableFunctions.length === 0 ||
       !Number(hexPuzzle.startingGrid) ||
       !Number(hexPuzzle.finalGrid) ||
-      !game.randomNumbers.length ||
+      game.randomNumbers.length === 0 ||
       game.randomNumbers.every((el) => el === BigInt(0))
     ) {
       return {
