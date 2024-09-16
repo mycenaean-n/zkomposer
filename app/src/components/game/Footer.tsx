@@ -20,11 +20,11 @@ export function Footer({
     onChainGame: OnChainGame;
   };
 }) {
-  const blockNumber = useBlockNumber();
-  const currentRound = useCurrentRound(data?.onChainGame);
-
-  if (!data?.onChainGame || !blockNumber || !currentRound) return null;
   const { onChainGame } = data;
+  const blockNumber = useBlockNumber();
+  const currentRound = useCurrentRound(onChainGame);
+
+  if (!blockNumber || !currentRound) return null;
   if (isGameFinished(blockNumber, onChainGame)) return null;
   if (!hasGameStarted(blockNumber, onChainGame)) return null;
 
@@ -33,18 +33,10 @@ export function Footer({
     ((Number(blockNumber) - Number(onChainGame.startingBlock)) %
       onChainGame.interval);
 
-  return isMobile ? (
-    <MobileFooter
-      {...{
-        yourScore,
-        blocksLeftThisTurn,
-        opponentScore,
-        currentRound,
-      }}
-      numberOfRounds={onChainGame.numberOfRounds}
-    />
-  ) : (
-    <DesktopFooter
+  const FooterComponent = isMobile ? MobileFooter : DesktopFooter;
+
+  return (
+    <FooterComponent
       {...{
         yourScore,
         blocksLeftThisTurn,
