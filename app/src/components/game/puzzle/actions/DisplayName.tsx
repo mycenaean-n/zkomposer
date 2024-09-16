@@ -1,9 +1,5 @@
 import { parseCircuitArguments } from 'circuits';
-import {
-  AvailableFunctions,
-  CircuitFunctions,
-  ColorsKeys,
-} from 'circuits/types/circuitFunctions.types';
+import { CircuitFunctions } from 'circuits/types/circuitFunctions.types';
 import { bgColor, getDisplayName } from '@/utils';
 
 export function DisplayName({ funcName }: { funcName: CircuitFunctions }) {
