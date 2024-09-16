@@ -1,10 +1,9 @@
 import './globals.css';
 import { Roboto } from 'next/font/google';
 import { Web3Provider } from 'providers/Web3Provider';
-import { ConnectButton } from '@components/wallet/ConnectButton';
 import { BlockProvider } from 'context/BlockContext';
-import { Logo } from '@components/Logo';
 import { PageFooter } from '../src/components/PageFooter';
+import { Header } from '../src/components/header/Header';
 
 const roboto = Roboto({
   weight: '400',
@@ -24,10 +23,7 @@ export default function RootLayout({
       <body className={`${roboto.className} flex min-h-svh flex-col`}>
         <Web3Provider>
           <BlockProvider>
-            <header className="flex h-12 items-center justify-between bg-black p-4 md:h-20">
-              <Logo />
-              <ConnectButton />
-            </header>
+            <Header />
             <main className="container mx-auto flex-grow">{children}</main>
             <PageFooter />
           </BlockProvider>

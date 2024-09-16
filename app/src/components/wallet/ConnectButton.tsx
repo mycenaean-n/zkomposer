@@ -3,7 +3,10 @@ import { usePrivy } from '@privy-io/react-auth';
 import { truncateAddress } from '@utils/truncateAddress';
 import { CopyAddressToClipboardButton } from './CopyAddressToClipboardButton';
 import { Faucet } from './Faucet';
-import { ArrowLeftEndOnRectangleIcon } from '@heroicons/react/24/solid';
+import {
+  ArrowLeftEndOnRectangleIcon,
+  WalletIcon,
+} from '@heroicons/react/24/solid';
 import { Address } from 'viem';
 
 export function ConnectButton() {
@@ -16,11 +19,12 @@ export function ConnectButton() {
     <>
       {!disableLogin ? (
         <button
-          className="btn-secondary-rounded"
           disabled={disableLogin}
           onClick={login}
+          className="flex items-center gap-2 rounded-md border border-solid border-white p-1.5 text-white"
         >
-          Log in
+          <WalletIcon className="h-6 w-6" />
+          <span className="hidden sm:inline">Log in</span>
         </button>
       ) : (
         <>
