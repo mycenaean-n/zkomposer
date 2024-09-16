@@ -1,7 +1,8 @@
+'use client';
 import React from 'react';
 import { Tick } from './Actions';
-import { useRouter } from 'next/router';
-import { GameMode } from 'types/Game';
+import { useRouter } from 'next/navigation';
+import { GameMode } from '../../../../types/Game';
 
 type LevelActionProps = {
   proofGenerationError?: string;

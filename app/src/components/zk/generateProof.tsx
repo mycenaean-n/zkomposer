@@ -1,6 +1,5 @@
 import { useProof } from '@hooks/useProof';
 import { ZKProof } from 'types/Proof';
-import styles from '@styles/actions.module.scss';
 import { InputSignals } from 'circuits/types/proof.types';
 import { useState } from 'react';
 
@@ -16,12 +15,9 @@ export function GenerateProof({
   const proofCallback = useProof('/zk/zkube.wasm', '/zk/zkube_final.zkey');
   const [generatingProof, setGenerationgProof] = useState(false);
 
-  if (!inputSignals)
-    return (
-      <button disabled={true} className={styles.disabledButton}>
-        Submit Solution
-      </button>
-    );
+  if (!inputSignals) {
+    return <button disabled={true}>Submit Solution</button>;
+  }
 
   const {
     initialGrid,
@@ -46,9 +42,9 @@ export function GenerateProof({
         if (!initialGrid) alert('Initial grid is not ready');
         else if (!finalGrid) alert('finalGrid is not ready');
         else if (!account) alert('account is not ready');
-        else if (!selectedFunctionsIndexes)
+        else if (!selectedFunctionsIndexes) {
           alert('selectedFunctionsIndexes is not ready');
-        else {
+        } else {
           setGenerationgProof(true);
           proofCallback({
             initialGrid,
