@@ -28,7 +28,7 @@ export default function RootLayout({
               <Logo />
               <ConnectButton />
             </header>
-            <main className="flex-grow">{children}</main>
+            <main className="container mx-auto flex-grow">{children}</main>
             <PageFooter />
           </BlockProvider>
         </Web3Provider>
