@@ -16,27 +16,22 @@ body {
 }
 
 .btn {
-  @apply bg-secondary text-primary w-40 rounded px-4 py-2 font-bold;
+  @apply px-2 py-0.5 md:px-4 md:py-1;
 }
 
 .btn-secondary {
-  @apply bg-secondary text-primary px-2 py-1 font-bold md:px-4 md:py-2 md:text-lg;
-}
-
-.btn-secondary-rounded {
-  @apply btn-secondary rounded;
+  @apply btn;
+  @apply bg-secondary text-primary;
 }
 
 .btn-primary {
-  @apply bg-primary text-secondary px-2 py-1 font-bold md:px-4 md:py-2;
-}
-
-.btn-primary-rounded {
-  @apply btn-primary rounded;
+  @apply btn;
+  @apply bg-primary text-secondary;
 }
 
 .btn-transparent {
-  @apply text-primary border-primary rounded-md border-2 px-2 py-1 text-sm font-bold md:px-4 md:py-2 md:text-lg;
+  @apply btn;
+  @apply text-primary border-primary border-solid bg-transparent;
 }
 
 .modal {
@@ -53,4 +48,8 @@ body {
 
 .modal-input {
   @apply pl-1 text-black;
+}
+
+.spinner {
+  @apply mx-auto inline-block h-4 w-4 animate-spin rounded-full border-b-2 border-solid;
 }

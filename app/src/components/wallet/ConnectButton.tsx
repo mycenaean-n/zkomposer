@@ -1,13 +1,27 @@
 'use client';
+import { WalletIcon } from '@heroicons/react/24/solid';
 import { usePrivy } from '@privy-io/react-auth';
-import { truncateAddress } from '@utils/truncateAddress';
-import { CopyAddressToClipboardButton } from './CopyAddressToClipboardButton';
-import { Faucet } from './Faucet';
-import {
-  ArrowLeftEndOnRectangleIcon,
-  WalletIcon,
-} from '@heroicons/react/24/solid';
 import { Address } from 'viem';
+import { AccountSection } from '../header/AccountSection';
+
+function LogInButton({
+  onClick,
+  disabled,
+}: {
+  onClick: () => void;
+  disabled: boolean;
+}) {
+  return (
+    <button
+      disabled={disabled}
+      onClick={onClick}
+      className="flex items-center gap-2 rounded-md border border-solid border-white p-2 text-white"
+    >
+      <WalletIcon className="h-5 w-5" />
+      <span className="hidden sm:inline">Log in</span>
+    </button>
+  );
+}
 
 export function ConnectButton() {
   const { ready, authenticated, login, user, logout } = usePrivy();
@@ -16,33 +30,19 @@ export function ConnectButton() {
   const disableLogin = !ready || (ready && authenticated);
 
   return (
-    <>
+    <div className="flex justify-between">
       {!disableLogin ? (
-        <button
-          disabled={disableLogin}
-          onClick={login}
-          className="flex items-center gap-2 rounded-md border border-solid border-white p-1.5 text-white"
-        >
-          <WalletIcon className="h-6 w-6" />
-          <span className="hidden sm:inline">Log in</span>
-        </button>
+        <LogInButton onClick={login} disabled={disableLogin} />
       ) : (
         <>
-          {user?.wallet && (
-            <div className="flex rounded-md border border-solid">
-              <Faucet />
-              <div className="flex">
-                <CopyAddressToClipboardButton
-                  text={truncateAddress(user.wallet.address as Address)}
-                />
-                <button onClick={logout} type="submit" className="mr-2">
-                  <ArrowLeftEndOnRectangleIcon className="h-6 w-6 text-white" />
-                </button>
-              </div>
-            </div>
-          )}
+          {user?.wallet?.address ? (
+            <AccountSection
+              logout={logout}
+              address={user.wallet.address as Address}
+            />
+          ) : null}
         </>
       )}
-    </>
+    </div>
   );
 }
