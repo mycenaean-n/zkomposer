@@ -1,19 +1,19 @@
-"use client";
+'use client';
+import { GameMode } from '../../types/Game';
 
-import { GameMode } from "../../types/Game";
-
-export function SelectModeButton(
-  { mode, onClick }: {
-    mode: GameMode;
-    onClick: () => void;
-  },
-) {
+export function SelectModeButton({
+  mode,
+  onClick,
+}: {
+  mode: GameMode;
+  onClick: () => void;
+}) {
   return (
     <button
-      className="btn-transparent h-48 w-48 shadow-md hover:shadow-xl"
+      className={`btn-transparent border-secondary aspect-square w-2/3 rounded-md shadow-md transition-colors duration-150 hover:shadow-xl md:h-48 md:w-48`}
       onClick={onClick}
     >
-      {mode}
+      <span className="group-hover:text-primary text-2xl">{mode}</span>
     </button>
   );
 }
