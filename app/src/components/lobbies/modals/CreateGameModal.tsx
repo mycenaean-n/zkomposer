@@ -1,9 +1,9 @@
-import React from 'react';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useCreteGameCallback } from '@hooks/callbacks/useCreateGameCallback';
-import { Address } from 'viem';
 import { ZKUBE_PUZZLESET_ADDRESS } from '@/config';
+import { useCreteGameCallback } from '@hooks/callbacks/useCreateGameCallback';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+import { Address } from 'viem';
+import { Button } from '../../ui/Button';
 
 export function CreateGameModal({
   setInputsShowing,
@@ -74,16 +74,13 @@ export function CreateGameModal({
             onChange={(e) => setNumberOfTurns(parseInt(e.target.value))}
           />
         </div>
-        <button
-          className="btn-secondary-rounded mx-auto mt-4 w-40"
+        <Button
+          className="mx-auto mt-4 w-40"
           onClick={createGameAction}
+          disabled={creatingGame}
         >
-          {creatingGame ? (
-            <div className="mx-auto h-6 w-6 animate-spin rounded-full border-b-2 border-gray-800"></div>
-          ) : (
-            'Create Game'
-          )}
-        </button>
+          Create Game
+        </Button>
       </div>
     </div>
   );

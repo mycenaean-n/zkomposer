@@ -17,9 +17,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <link rel="manifest" href="/manifest.json" />
-      </head>
       <body className={`${roboto.className} flex min-h-svh flex-col`}>
         <Web3Provider>
           <BlockProvider>

@@ -1,20 +1,20 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
-import { PuzzleContext } from '../Puzzle';
-import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
-import { PuzzleFunctionState } from 'types/Puzzle';
-import { InputSignals } from 'circuits/types/proof.types';
-import { ZKUBE_PUZZLESET_ADDRESS } from 'config';
-import { getCircuitFunctionIndex } from 'circuits';
-import { Function } from './Function';
-import { ZKProof } from 'types/Proof';
-import { GenerateProof } from '../../../zk/generateProof';
-import { usePrivyWalletAddress } from '@hooks/usePrivyWalletAddress';
-import { useRouter } from 'next/navigation';
 import { useSubmitPuzzleCallback } from '@hooks/callbacks/useSubmitPuzzleCallback';
 import { useVerifyPuzzleSolutionCallback } from '@hooks/callbacks/useVerifyPuzzleCallback';
+import { usePrivyWalletAddress } from '@hooks/usePrivyWalletAddress';
+import { getCircuitFunctionIndex } from 'circuits';
 import { CircuitFunctions } from 'circuits/types/circuitFunctions.types';
-import { zeroAddress } from 'viem';
+import { InputSignals } from 'circuits/types/proof.types';
+import { ZKUBE_PUZZLESET_ADDRESS } from 'config';
+import { useRouter } from 'next/navigation';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { DragDropContext, DropResult, Droppable } from 'react-beautiful-dnd';
 import { GameMode } from 'types/Game';
+import { ZKProof } from 'types/Proof';
+import { PuzzleFunctionState } from 'types/Puzzle';
+import { zeroAddress } from 'viem';
+import { GenerateProof } from '../../../zk/generateProof';
+import { PuzzleContext } from '../Puzzle';
+import { Function } from './Function';
 import { LevelAction } from './LevelAction';
 
 export function Tick() {
@@ -54,19 +54,22 @@ export function Actions({ id, gameMode }: { id: string; gameMode: GameMode }) {
   function onDragEnd(result: DropResult) {
     const { source, destination } = result;
     if (!destination) return;
-    if (source.droppableId != destination.droppableId) {
+    if (source.droppableId !== destination.droppableId) {
       const sourceFunctionState = source.droppableId as PuzzleFunctionState;
       const destinationFunctionState =
         destination.droppableId as PuzzleFunctionState;
       const sourceFunctions = [...functions[sourceFunctionState]];
       const [removedFunction] = sourceFunctions.splice(source.index, 1);
       const destinationFunctions = [...functions[destinationFunctionState]];
+      console.log({ destinationFunctions });
+
       destinationFunctions.splice(destination.index, 0, removedFunction);
       setFunctions((prev) => ({
         ...prev,
         [sourceFunctionState]: sourceFunctions,
         [destinationFunctionState]: destinationFunctions,
       }));
+      console.log({ destinationFunctions });
     } else if (source.droppableId == destination.droppableId) {
       const functionState = source.droppableId as PuzzleFunctionState;
       const reorderedFunctions = functions[functionState];

@@ -1,5 +1,5 @@
 import { Logo } from '../Logo';
-import { ConnectButton } from '../wallet/ConnectButton';
+import { ConnectButton } from './ConnectButton';
 
 export function Header() {
   return (

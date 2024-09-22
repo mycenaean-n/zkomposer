@@ -1,8 +1,8 @@
 'use client';
-import React from 'react';
-import { Tick } from './Actions';
 import { useRouter } from 'next/navigation';
 import { GameMode } from '../../../../types/Game';
+import { Button } from '../../../ui/Button';
+import { Tick } from './Actions';
 
 type LevelActionProps = {
   proofGenerationError?: string;
@@ -31,12 +31,13 @@ export function LevelAction({
             <h2 className="mt-2 text-sm md:text-2xl">Puzzle Solved</h2>
           </div>
           {gameMode === 'singleplayer' && (
-            <button
+            <Button
+              variant="transparent"
               onClick={() => router.push(`/puzzle/${Number(id) + 1}`)}
-              className="btn-transparent mt-2"
+              className="mt-2"
             >
               Next Level
-            </button>
+            </Button>
           )}
         </>
       )}

@@ -1,8 +1,8 @@
-import { useCallback } from 'react';
-import { Proof, ZKProof } from '../types/Proof';
-import { Hex } from 'viem';
-import { InputSignals } from 'circuits/types/proof.types';
 import { exportCalldataGroth16 } from 'circuits';
+import { InputSignals } from 'circuits/types/proof.types';
+import { useCallback } from 'react';
+import { Hex } from 'viem';
+import { Proof, ZKProof } from '../types/Proof';
 
 async function generateGroth16ProofCalldata(
   input: InputSignals,

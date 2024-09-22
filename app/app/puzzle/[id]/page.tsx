@@ -1,7 +1,7 @@
 'use client';
-import { usePuzzleData } from '@hooks/fetching/usePuzzleData';
 import { PuzzleMemoized } from '@components/game/puzzle/Puzzle';
 import { LoadingState } from '@components/zk/LoadingState';
+import { usePuzzleData } from '@hooks/fetching/usePuzzleData';
 
 export default function Page({ params: { id } }: { params: { id: string } }) {
   const { data, loading } = usePuzzleData(id);
