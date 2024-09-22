@@ -1,11 +1,11 @@
 'use client';
 import { createContext, memo, useEffect, useState } from 'react';
-import { Actions } from './actions/Actions';
 import {
-  PuzzleFunctions,
   PuzzleContext as PuzzleContextType,
+  PuzzleFunctions,
   Puzzle as PuzzleType,
 } from 'types/Puzzle';
+import { Actions } from './actions/Actions';
 import { Scene } from './scene/Scene';
 
 type GameMode = 'singleplayer' | 'multiplayer';
@@ -41,7 +41,7 @@ function Puzzle({
       chosen: [],
       available: initConfig.availableFunctions,
     });
-  }, [initConfig, id]);
+  }, [JSON.stringify(initConfig), id]);
 
   return (
     <PuzzleContext.Provider
@@ -51,7 +51,7 @@ function Puzzle({
         setFunctions,
       }}
     >
-      <div className="md:w-1000 md:h-800 m-auto flex flex-grow flex-col">
+      <div className="md:w-1000 m-auto flex flex-grow flex-col md:h-[50vh]">
         <Scene />
         <Actions {...{ id, gameMode }} />
       </div>
@@ -59,4 +59,9 @@ function Puzzle({
   );
 }
 
-export const PuzzleMemoized = memo(Puzzle);
+export const PuzzleMemoized = memo(Puzzle, (prevProps, nextProps) => {
+  return (
+    JSON.stringify(prevProps.initConfig) ===
+    JSON.stringify(nextProps.initConfig)
+  );
+});

@@ -1,12 +1,12 @@
-import { Colors } from 'circuits/types/circuitFunctions.types';
 import {
   AvailableFunctions,
+  Colors,
   ColorsKeys,
 } from 'circuits/types/circuitFunctions.types';
 
 export function mapGrid(gridString: string): Colors[][] {
   const gridArray = Array.from(gridString);
-  const grid: Colors[][] = [[], [], [], [], [], [], [], []];
+  const grid: Colors[][] = Array.from({ length: 8 }, () => []);
 
   gridArray.forEach((value, index) => {
     const column = Math.floor(index / 8);
@@ -16,32 +16,34 @@ export function mapGrid(gridString: string): Colors[][] {
   return grid;
 }
 
-export function bgColor(color: ColorsKeys) {
-  switch (color) {
-    case 'YELLOW':
-      return 'bg-yellow-500';
-    case 'RED':
-      return 'bg-red-500';
-    case 'BLUE':
-      return 'bg-blue-500';
-    default:
-      throw Error('Not expected colour.');
+const colorClassMap: Record<ColorsKeys, string> = {
+  WHITE: 'bg-white',
+  YELLOW: 'bg-yellow-500',
+  RED: 'bg-red-500',
+  BLUE: 'bg-blue-500',
+} as const;
+
+export function bgColor(color: ColorsKeys): string {
+  const bgClass = colorClassMap[color];
+  if (!bgClass) {
+    throw new Error(`Unexpected color: ${color}`);
   }
+  return bgClass;
 }
 
-export function getDisplayName(func: AvailableFunctions) {
-  switch (func) {
-    case 'TRANSFORM':
-      return 'transform';
-    case 'STACK':
-      return 'stack';
-    case 'TRANSFORMTWO':
-      return 'map';
-    case 'REJECT':
-      return 'reject';
-    case 'FILTER':
-      return 'filter';
-    default:
-      throw Error('Not expected function.');
+const functionDisplayNames: Record<AvailableFunctions, string> = {
+  EMPTY: 'empty',
+  TRANSFORM: 'transform',
+  STACK: 'stack',
+  TRANSFORMTWO: 'map',
+  REJECT: 'reject',
+  FILTER: 'filter',
+} as const;
+
+export function getDisplayName(func: AvailableFunctions): string {
+  const displayName = functionDisplayNames[func];
+  if (!displayName) {
+    throw new Error(`Unexpected function: ${func}`);
   }
+  return displayName;
 }

@@ -1,13 +1,13 @@
+import { Canvas } from '@react-three/fiber';
+import { gridMutator } from 'circuits';
+import { Colors } from 'circuits/types/circuitFunctions.types';
 import { useContext, useEffect, useState } from 'react';
+import { isMobile } from 'react-device-detect';
+import { Vector3 } from 'three';
 import { PuzzleContext } from '../Puzzle';
 import { Grid } from './grid/Grid';
-import { Canvas } from '@react-three/fiber';
-import { Vector3 } from 'three';
-import { ResponsiveCamera } from './ResponsiveCamera';
-import { gridMutator } from 'circuits';
 import IntermediateGrids from './IntermediateGrids';
-import { Colors } from 'circuits/types/circuitFunctions.types';
-import { isMobile } from 'react-device-detect';
+import { ResponsiveCamera } from './ResponsiveCamera';
 
 const STARTING_X_POS = isMobile ? -1.7 : -3;
 const STARTING_Y_POS = isMobile ? 0.3 : 0.5;
@@ -37,7 +37,7 @@ export function Scene() {
   }, [functions]);
 
   return (
-    <div className="flex" style={{ height: isMobile ? '280px' : '500px' }}>
+    <div className="flex md:h-[50vh]">
       <div className="w-2/3">
         <Canvas
           orthographic

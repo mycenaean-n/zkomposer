@@ -2,6 +2,7 @@
 import { WalletIcon } from '@heroicons/react/24/solid';
 import { usePrivy } from '@privy-io/react-auth';
 import { Address } from 'viem';
+import { Button } from '../ui/Button';
 import { AccountSection } from './AccountSection';
 
 export function ConnectButton() {
@@ -16,7 +17,15 @@ export function ConnectButton() {
         </div>
       ) : null}
       {ready && !user?.wallet?.address ? (
-        <LogInButton onClick={login} disabled={authenticated} />
+        <Button
+          variant="primary"
+          disabled={authenticated}
+          onClick={login}
+          className="rounded-md"
+        >
+          <WalletIcon className="h-5 w-5" />
+          <span className="inline">Log in</span>
+        </Button>
       ) : null}
       {user?.wallet?.address && authenticated ? (
         <AccountSection
@@ -25,24 +34,5 @@ export function ConnectButton() {
         />
       ) : null}
     </div>
-  );
-}
-
-function LogInButton({
-  onClick,
-  disabled,
-}: {
-  onClick: () => void;
-  disabled: boolean;
-}) {
-  return (
-    <button
-      disabled={disabled}
-      onClick={onClick}
-      className="btn-primary flex items-center gap-2 rounded-md"
-    >
-      <WalletIcon className="h-5 w-5" />
-      <span className="inline">Log in</span>
-    </button>
   );
 }

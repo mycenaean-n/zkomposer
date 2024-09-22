@@ -1,7 +1,7 @@
 import { useProof } from '@hooks/useProof';
-import { ZKProof } from 'types/Proof';
 import { InputSignals } from 'circuits/types/proof.types';
 import { useState } from 'react';
+import { ZKProof } from 'types/Proof';
 
 export function GenerateProof({
   inputSignals,
@@ -27,17 +27,14 @@ export function GenerateProof({
     availableFunctionsIndexes,
   } = inputSignals;
 
+  const isAnySignalMissing = Object.values(inputSignals).some(
+    (signal) => signal === null || signal === undefined
+  );
+
   return (
     <button
-      className="btn-primary-rounded w-full"
-      disabled={
-        !initialGrid ||
-        !finalGrid ||
-        !account ||
-        !selectedFunctionsIndexes ||
-        !availableFunctionsIndexes ||
-        generatingProof
-      }
+      className="btn-transparent border- w-full rounded-md border p-1"
+      disabled={isAnySignalMissing ?? generatingProof}
       onClick={async () => {
         if (!initialGrid) alert('Initial grid is not ready');
         else if (!finalGrid) alert('finalGrid is not ready');
@@ -64,11 +61,7 @@ export function GenerateProof({
         }
       }}
     >
-      {generatingProof ? (
-        <div className="mx-auto h-6 w-6 animate-spin rounded-full border-b-2 border-gray-100"></div>
-      ) : (
-        'Submit Solution'
-      )}
+      Submit Solution
     </button>
   );
 }

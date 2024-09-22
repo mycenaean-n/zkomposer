@@ -1,25 +1,21 @@
 import { useFaucetCallback } from '@hooks/callbacks/useFaucetCallback';
+import { Button } from '../ui/Button';
+import { Tooltip } from '../ui/Tooltip';
 
 export function Faucet() {
   const { faucetCallback, message: faucetMsg, loading } = useFaucetCallback();
 
   return (
     <div className="relative inline-block">
-      <button
+      <Button
+        variant="secondary"
         onClick={faucetCallback}
-        className="btn-secondary h-full w-full rounded-l-sm"
+        className="min-w-[5rem] rounded-l-sm"
+        disabled={loading}
       >
-        {loading ? (
-          <div className="mx-auto h-6 w-6 animate-spin rounded-full border-b-2 border-black"></div>
-        ) : (
-          <span>Faucet</span>
-        )}
-      </button>
-      {faucetMsg && (
-        <div className="absolute left-1/2 top-full mt-1.5 h-max w-max -translate-x-1/2 transform rounded bg-gray-200 px-3 py-2 text-sm text-gray-800 shadow-lg">
-          {faucetMsg}
-        </div>
-      )}
+        Faucet
+      </Button>
+      {faucetMsg && <Tooltip>{faucetMsg}</Tooltip>}
     </div>
   );
 }
