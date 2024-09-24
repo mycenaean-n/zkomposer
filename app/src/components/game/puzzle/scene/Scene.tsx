@@ -1,3 +1,4 @@
+import { Html } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { gridMutator } from 'circuits';
 import { Colors } from 'circuits/types/circuitFunctions.types';
@@ -25,7 +26,7 @@ export function Scene() {
     setGrids([]);
     const mutatedGrids: Colors[][][] = [];
     functions.chosen.forEach((funcName, index) => {
-      if (index == 0) {
+      if (index === 0) {
         const grid = gridMutator(startingGrid, [funcName]);
         mutatedGrids.push(grid);
       } else {
@@ -37,12 +38,12 @@ export function Scene() {
   }, [functions]);
 
   return (
-    <div className="flex md:h-[50vh]">
+    <div className="flex h-[40vh]">
       <div className="w-2/3">
         <Canvas
           orthographic
           camera={{
-            position: new Vector3(3.5, 4, 3),
+            position: new Vector3(2.5, 3, 3),
           }}
         >
           <ambientLight intensity={Math.PI} />
@@ -58,15 +59,18 @@ export function Scene() {
           <ResponsiveCamera />
         </Canvas>
       </div>
-      <div className="overflow-hidden">
-        <h3 className="w-1/3 text-2xl font-extrabold md:mt-12">Target</h3>
+      <div className="relative overflow-hidden">
+        <h2 className="absolute left-0 top-5 text-2xl font-extrabold text-black">
+          Target
+        </h2>
         <Canvas
           orthographic
           camera={{
-            position: new Vector3(3.5, 4, 3),
+            position: new Vector3(2.5, 3, 3),
           }}
         >
-          <Grid grid={finalGrid} position={{ x: 0, y: 1.8, z: 0 }} />
+          <Html position={[0, 6, 2]} center></Html>
+          <Grid grid={finalGrid} position={{ x: 0.5, y: 1.2, z: 0 }} />
           <ResponsiveCamera />
         </Canvas>
       </div>
