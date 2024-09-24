@@ -1,3 +1,4 @@
+'use client';
 import clsx from 'clsx';
 import { ButtonHTMLAttributes } from 'react';
 import { Spinner } from './Spinner';
@@ -14,6 +15,7 @@ export type ButtonProps = {
   children?: React.ReactNode;
   className?: string;
   variant?: ButtonVariant;
+  rounded?: boolean;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const Button = ({
@@ -22,6 +24,7 @@ export const Button = ({
   className,
   disabled,
   type = 'button',
+  rounded = false,
   ...props
 }: ButtonProps) => {
   return (
@@ -31,7 +34,8 @@ export const Button = ({
       className={clsx(
         'flex h-full w-full items-center justify-center px-2 py-0.5 md:px-4 md:py-1',
         buttonVariants[variant],
-        className
+        className,
+        rounded ? 'rounded-md' : ''
       )}
       type={type}
       {...props}
