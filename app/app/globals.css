@@ -15,23 +15,8 @@ body {
   overflow-x: hidden;
 }
 
-.btn {
-  @apply px-2 py-0.5 md:px-4 md:py-1;
-}
-
-.btn-secondary {
-  @apply btn;
-  @apply bg-secondary text-primary;
-}
-
-.btn-primary {
-  @apply btn;
-  @apply bg-primary text-secondary;
-}
-
-.btn-transparent {
-  @apply btn;
-  @apply text-primary border-primary border-solid bg-transparent;
+main {
+  height: calc(100svh - (72px + 40px));
 }
 
 .modal {
