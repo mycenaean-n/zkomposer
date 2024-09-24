@@ -1,17 +1,17 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { hasGameStarted, isGameFinished } from '@utils/game';
-import { zeroAddress } from 'viem';
-import { QrInvite } from '@components/lobbies/QrInvite';
-import { JoinGame } from '@components/lobbies/JoinGame';
-import { PuzzleMemoized } from '@components/game/puzzle/Puzzle';
 import { Footer } from '@components/game/Footer';
-import { useBlockNumber } from '@hooks/useBlockNumber';
-import { usePrivyWalletAddress } from '@hooks/usePrivyWalletAddress';
+import { PuzzleMemoized } from '@components/game/puzzle/Puzzle';
+import { JoinGame } from '@components/lobbies/JoinGame';
+import { QrInvite } from '@components/lobbies/QrInvite';
 import { LoginCTA } from '@components/wallet/LoginCTA';
-import { useGameAndPuzzleData } from '@hooks/fetching/useGameAndPuzzleData';
-import { useDeepCompareMemo } from '@hooks/useDeepCompareMemo';
 import { LoadingState } from '@components/zk/LoadingState';
+import { useGameAndPuzzleData } from '@hooks/fetching/useGameAndPuzzleData';
+import { useBlockNumber } from '@hooks/useBlockNumber';
+import { useDeepCompareMemo } from '@hooks/useDeepCompareMemo';
+import { usePrivyWalletAddress } from '@hooks/usePrivyWalletAddress';
+import { hasGameStarted, isGameFinished } from '@utils/game';
+import { useEffect, useState } from 'react';
+import { zeroAddress } from 'viem';
 
 export default function Page({ params: { id } }: { params: { id: string } }) {
   const blockNumber = useBlockNumber();

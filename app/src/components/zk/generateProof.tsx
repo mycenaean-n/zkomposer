@@ -2,66 +2,76 @@ import { useProof } from '@hooks/useProof';
 import { InputSignals } from 'circuits/types/proof.types';
 import { useState } from 'react';
 import { ZKProof } from 'types/Proof';
+import { Button } from '../ui/Button';
+
+interface GenerateProofProps {
+  inputSignals?: InputSignals;
+  onResult: (result: boolean) => void;
+  onError: (err: string) => void;
+  onClick: (proof: ZKProof) => void;
+}
 
 export function GenerateProof({
   inputSignals,
   onResult,
   onError,
-}: {
-  inputSignals?: InputSignals;
-  onResult: (proof: ZKProof) => void;
-  onError: (err: string) => void;
-}) {
+  onClick,
+}: GenerateProofProps) {
   const proofCallback = useProof('/zk/zkube.wasm', '/zk/zkube_final.zkey');
   const [generatingProof, setGenerationgProof] = useState(false);
 
   if (!inputSignals) {
-    return <button disabled={true}>Submit Solution</button>;
+    return (
+      <Button
+        className="min-h-9 w-full border border-black bg-gray-200 p-1"
+        rounded={true}
+        variant="primary"
+        disabled={true}
+      >
+        Disabled
+      </Button>
+    );
   }
 
-  const {
-    initialGrid,
-    finalGrid,
-    account,
-    selectedFunctionsIndexes,
-    availableFunctionsIndexes,
-  } = inputSignals;
+  const handleGenerateProof = async (signals: InputSignals) => {
+    const checks = {
+      'Initial grid': signals.initialGrid,
+      'Final grid': signals.finalGrid,
+      Account: signals.account,
+      'Selected functions': signals.selectedFunctionsIndexes,
+    };
+
+    for (const [name, value] of Object.entries(checks)) {
+      if (!value) {
+        alert(`${name} is not ready`);
+        return;
+      }
+    }
+
+    setGenerationgProof(true);
+    try {
+      const res = await proofCallback({ ...signals });
+      setGenerationgProof(false);
+      onClick(res);
+    } catch (e) {
+      setGenerationgProof(false);
+      onError((e as Error).message);
+    }
+  };
 
   const isAnySignalMissing = Object.values(inputSignals).some(
     (signal) => signal === null || signal === undefined
   );
 
   return (
-    <button
-      className="btn-transparent border- w-full rounded-md border p-1"
-      disabled={isAnySignalMissing ?? generatingProof}
-      onClick={async () => {
-        if (!initialGrid) alert('Initial grid is not ready');
-        else if (!finalGrid) alert('finalGrid is not ready');
-        else if (!account) alert('account is not ready');
-        else if (!selectedFunctionsIndexes) {
-          alert('selectedFunctionsIndexes is not ready');
-        } else {
-          setGenerationgProof(true);
-          proofCallback({
-            initialGrid,
-            finalGrid,
-            account,
-            selectedFunctionsIndexes,
-            availableFunctionsIndexes,
-          })
-            .then((res) => {
-              setGenerationgProof(false);
-              onResult(res);
-            })
-            .catch((e) => {
-              setGenerationgProof(false);
-              onError(e.message);
-            });
-        }
-      }}
+    <Button
+      className="min-h-9 w-full border border-black p-1"
+      rounded={true}
+      variant="secondary"
+      disabled={isAnySignalMissing || generatingProof}
+      onClick={() => handleGenerateProof(inputSignals)}
     >
       Submit Solution
-    </button>
+    </Button>
   );
 }

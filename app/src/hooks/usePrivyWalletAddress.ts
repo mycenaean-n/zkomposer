@@ -1,3 +1,4 @@
+'use client';
 import { usePrivy } from '@privy-io/react-auth';
 import { useEffect, useState } from 'react';
 import { Address } from 'viem';

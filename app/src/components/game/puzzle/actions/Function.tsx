@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
-import { Draggable } from 'react-beautiful-dnd';
-import { PuzzleContext } from '../Puzzle';
 import { CircuitFunctions } from 'circuits/types/circuitFunctions.types';
-import { DisplayName } from './DisplayName';
+import { useContext } from 'react';
+import { Draggable } from 'react-beautiful-dnd';
 import { isMobile } from 'react-device-detect';
+import { PuzzleContext } from '../Puzzle';
+import { DisplayName } from './DisplayName';
 import { DisplayNameMobile } from './DisplayNameMobile';
 
 export function Function({

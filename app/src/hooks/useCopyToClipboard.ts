@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
+'use client';
 import copy from 'copy-to-clipboard';
+import { useCallback, useEffect, useState } from 'react';
 
 export function useCopyToClipboard(delay = 1500) {
   const [success, setSuccess] = useState(false);

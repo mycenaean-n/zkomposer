@@ -51,7 +51,7 @@ function Puzzle({
         setFunctions,
       }}
     >
-      <div className="md:w-1000 m-auto flex flex-grow flex-col md:h-[50vh]">
+      <div className="m-auto flex flex-grow flex-col">
         <Scene />
         <Actions {...{ id, gameMode }} />
       </div>
