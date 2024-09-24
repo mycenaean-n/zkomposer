@@ -1,8 +1,8 @@
-import { BlockProvider } from 'context/BlockContext';
 import { Roboto } from 'next/font/google';
-import { Web3Provider } from 'providers/Web3Provider';
-import { PageFooter } from '../src/components/PageFooter';
 import { Header } from '../src/components/header/Header';
+import { PageFooter } from '../src/components/PageFooter';
+import { BlockProvider } from '../src/context/BlockContext';
+import { Web3Provider } from '../src/providers/Web3Provider';
 import './globals.css';
 
 const roboto = Roboto({
@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${roboto.className} flex min-h-svh flex-col`}>
+      <body>
         <Web3Provider>
           <BlockProvider>
             <Header />
