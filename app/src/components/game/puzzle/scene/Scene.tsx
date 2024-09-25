@@ -1,4 +1,3 @@
-import { Html } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { gridMutator } from 'circuits';
 import { Colors } from 'circuits/types/circuitFunctions.types';
@@ -69,7 +68,6 @@ export function Scene() {
             position: new Vector3(2.5, 3, 3),
           }}
         >
-          <Html position={[0, 6, 2]} center></Html>
           <Grid grid={finalGrid} position={{ x: 0.5, y: 1.2, z: 0 }} />
           <ResponsiveCamera />
         </Canvas>
