@@ -1,7 +1,6 @@
-import React from 'react';
+import { useJoinGameCallback } from '@hooks/callbacks/useJoinGameCallback';
 import { useRouter } from 'next/navigation';
 import { OnChainGame } from 'types/Game';
-import { useJoinGameCallback } from '@hooks/callbacks/useJoinGameCallback';
 
 export function JoinGame({
   game,
@@ -23,37 +22,37 @@ export function JoinGame({
   return (
     <div className="modal">
       <div className="modal-content">
-        <div className="modal-input-container">
+        <div className="form-input-container">
           <h4>Opponent</h4>
           <input
-            className="modal-input"
+            className="form-input"
             type="text"
             value={game.player1.address_}
             disabled={true}
           />
         </div>
-        <div className="modal-input-container">
+        <div className="form-input-container">
           <h4>Puzzle Set</h4>
           <input
-            className="modal-input"
+            className="form-input"
             type="text"
             value={game.puzzleSet}
             disabled={true}
           />
         </div>
-        <div className="modal-input-container">
+        <div className="form-input-container">
           <h4>Round duration (blocks)</h4>
           <input
-            className="modal-input"
+            className="form-input"
             type="number"
             value={game.interval}
             disabled={true}
           />
         </div>
-        <div className="modal-input-container">
+        <div className="form-input-container">
           <h4>Number of Rounds</h4>
           <input
-            className="modal-input"
+            className="form-input"
             type="number"
             value={game.numberOfRounds}
             disabled={true}
