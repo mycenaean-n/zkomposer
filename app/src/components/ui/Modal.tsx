@@ -1,16 +1,23 @@
 'use client';
-import { Dispatch, SetStateAction } from 'react';
+
+import clsx from 'clsx';
+import React from 'react';
+
+type ModalProps = {
+  setIsOpen: (e: React.MouseEvent<HTMLDivElement>) => void;
+  children: React.ReactNode;
+  className?: string;
+} & React.HTMLAttributes<HTMLDivElement>;
 
 export function Modal({
-  isOpen,
+  setIsOpen,
   children,
-}: {
-  isOpen: Dispatch<SetStateAction<boolean>>;
-  children: React.ReactNode;
-}) {
+  className,
+  ...props
+}: ModalProps) {
   return (
-    <div className="modal" onClick={() => isOpen(false)}>
-      <div className="modal-content">{children}</div>
+    <div className="modal" onClick={setIsOpen} {...props}>
+      <div className={clsx('modal-content', className)}>{children}</div>
     </div>
   );
 }
