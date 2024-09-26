@@ -1,14 +1,20 @@
 'use client';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { useState } from 'react';
 import { Address, isAddress } from 'viem';
 import { z } from 'zod';
 import { ZKUBE_PUZZLESET_ADDRESS } from '../../../config';
-import { useInputContainerClickCallback } from '../../../hooks/useInputContainerClick';
-import { Button } from '../../ui/Button';
-import { Modal } from '../../ui/Modal';
+import { IntervalSection } from '../../lobbies/create-game-modal/IntervalSection';
+import { TurnsSection } from '../../lobbies/create-game-modal/TurnsSection';
+import { SelectModeButton } from '../../lobbies/SelectModeButton';
+import { Button } from '../Button';
 import { ComboboxSection } from './ComboboxSection';
-import { IntervalSection } from './IntervalSection';
-import { TurnsSection } from './TurnsSection';
+
+interface ModalWrapperProps {
+  ModalComponent: React.ComponentType<{
+    isOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    children: React.ReactNode;
+  }>;
+}
 
 const turnsMap = {
   small: 3,
@@ -51,11 +57,8 @@ const gameSettingsTransformationSchema = gameSettingsValidationSchema.transform(
 
 export type GameSettingsData = z.infer<typeof gameSettingsValidationSchema>;
 
-export function CreateGameModal({
-  setIsModalOpen,
-}: {
-  setIsModalOpen: Dispatch<SetStateAction<boolean>>;
-}) {
+export function ModalWrapper({ ModalComponent }: ModalWrapperProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState<GameSettingsData>({
     puzzleSet: puzzleSets[0].address,
     interval: 'blitz',
@@ -64,7 +67,6 @@ export function CreateGameModal({
   const [errors, setErrors] = useState<
     Partial<Record<keyof GameSettingsData, string>>
   >({});
-  const onInputContainerClick = useInputContainerClickCallback(setIsModalOpen);
 
   const changeGameSettings =
     (key: keyof GameSettingsData) => (value: string) => {
@@ -108,33 +110,39 @@ export function CreateGameModal({
 
   return (
     <>
-      <Modal setIsOpen={onInputContainerClick} className="bg-primary">
-        <form
-          onSubmit={handleSubmit}
-          className="flex max-w-full flex-col gap-2 space-y-4"
-        >
-          <ComboboxSection
-            onChange={changeGameSettings('puzzleSet')}
-            items={puzzleSets}
-            error={errors.puzzleSet}
-            defaultInputValue={puzzleSets[0].name}
-            defaultSelectedKey={puzzleSets[0].address}
-            label="Puzzle Set"
-          />
-          <TurnsSection changeNumberOfTurns={changeGameSettings('turns')} />
-          <IntervalSection changeGameStyle={changeGameSettings('interval')} />
-          <div>
-            <Button
-              type="submit"
-              className="border-secondary text-secondary mx-auto w-40 border-2 text-sm"
-              rounded={true}
-              variant="transparent"
-            >
-              Create Game
-            </Button>
-          </div>
-        </form>
-      </Modal>
+      <SelectModeButton
+        mode="multiplayer"
+        onClick={() => setIsModalOpen(true)}
+      />
+      {isModalOpen && (
+        <ModalComponent isOpen={() => true}>
+          <form
+            onSubmit={handleSubmit}
+            className="flex max-w-full flex-col gap-2 space-y-4"
+          >
+            <ComboboxSection
+              onChange={changeGameSettings('puzzleSet')}
+              items={puzzleSets}
+              error={errors.puzzleSet}
+              defaultInputValue={puzzleSets[0].name}
+              defaultSelectedKey={puzzleSets[0].address}
+              label="Puzzle Set"
+            />
+            <TurnsSection changeNumberOfTurns={changeGameSettings('turns')} />
+            <IntervalSection changeGameStyle={changeGameSettings('interval')} />
+            <div>
+              <Button
+                type="submit"
+                className="border-secondary text-secondary mx-auto w-40 border-2 text-sm"
+                rounded={true}
+                variant="transparent"
+              >
+                Create Game
+              </Button>
+            </div>
+          </form>
+        </ModalComponent>
+      )}
     </>
   );
 }

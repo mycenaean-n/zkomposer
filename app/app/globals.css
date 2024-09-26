@@ -24,7 +24,7 @@ main {
 }
 
 .modal-content {
-  @apply flex flex-col items-stretch rounded-md bg-black py-6 text-white md:px-4;
+  @apply border-primary flex flex-col items-stretch rounded-md border-2 py-6 text-white md:px-4;
 }
 
 .form-input-container {
