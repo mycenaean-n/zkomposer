@@ -1,7 +1,7 @@
 import Link from 'next/link';
+import { CreateGameModal } from '../src/components/lobbies/create-game-modal';
 import { SelectModeButton } from '../src/components/lobbies/SelectModeButton';
-import { CreateGameModal } from '../src/components/ui/modal/CreateGameModal';
-import { ModalWrapper } from '../src/components/ui/modal/ModalWrapper';
+import { Modal } from '../src/components/ui/Modal';
 
 export default async function Home() {
   return (
@@ -11,7 +11,7 @@ export default async function Home() {
         <Link href="/puzzle/0">
           <SelectModeButton mode="singleplayer" type="button" />
         </Link>
-        <ModalWrapper ModalComponent={CreateGameModal} />
+        <CreateGameModal ModalComponent={Modal} />
       </div>
     </section>
   );

@@ -5,11 +5,40 @@ include "./stack.circom";
 include "./transformtwo.circom";
 include "./reject.circom";
 include "./filter.circom";
-
+include "./instructionaggregator.circom";
 function indexToArgs(index) {
-    assert(index >= 0 && index <= 33);
+    signal input input_index;
+    // assert(input_index >= 0 && input_index <= 33);
+    signal output out[5][4];
+    component isEq = IsEqual();
+    isEq.in[0] <== input_index;
+    isEq.in[1] <== 0;
+    out[0] <== isEq.out;
+
+    isEq = IsEqual();
+    isEq.in[0] <== input_index;
+    isEq.in[1] <== 1;
+    out[1] <== isEq.out;
+
+    isEq = IsEqual();
+    isEq.in[0] <== input_index;
+    isEq.in[1] <== 2;
+    out[2] <== isEq.out;
+
+    isEq = IsEqual();
+    isEq.in[0] <== input_index;
+    isEq.in[1] <== 3;
+    out[3] <== isEq.out;
+
+    isEq = IsEqual();
+    isEq.in[0] <== input_index;
+    isEq.in[1] <== 4;
+    out[4] <== isEq.out;
+
+    
+
     // "EMPTY"
-        if(index == 0) {
+        if(input_index == 0) {
             return [
                 [0, 0, 0, 0],
                 [0, 0, 0, 0],
@@ -384,7 +413,7 @@ template Contains(L) {
     out <== 1 - isZero.out;
 }
 
-template ZKube(W, H, F, NO_AVAIL_FUNC) {
+template ZKube(W, H, F, NO_AVAIL_FUNC, NO_AVAIL_ARGS) {
     // public
     signal input initialGrid[W][H];
     signal input finalGrid[W][H];
@@ -410,6 +439,7 @@ template ZKube(W, H, F, NO_AVAIL_FUNC) {
     signal intermediateGrids[F+1][W][H];
     intermediateGrids[0] <== initialGrid;
     signal selectedFunctions[F][F][4];
+    component instructionAggregator[F];
     for (var i = 0; i < F; i++) {
         contains[i] = Contains(NO_AVAIL_FUNC);
         contains[i].element <== selectedFunctionsIndexes[i];
@@ -417,8 +447,10 @@ template ZKube(W, H, F, NO_AVAIL_FUNC) {
         intermediateAvailableFunctionsIndexes[i+1] <== contains[i].outArray;
         assert(contains[i].out > 0);
 
-        selectedFunctions[i] <-- indexToArgs(selectedFunctionsIndexes[i]);
-
+        instructionAggregator[i] = InstructionAggregator(NO_AVAIL_ARGS);
+        // selectedFunctions[i] <-- indexToArgs(selectedFunctionsIndexes[i]);
+        instructionAggregator[i].instructions <== selectedFunctions[i];
+        selectedFunctions[i] <== instructionAggregator[i].out;
         transform[i] = Transform(W, H);
         transform[i].grid <== intermediateGrids[i];
         transform[i].onOff <== selectedFunctions[i][0][0];
@@ -472,4 +504,9 @@ template ZKube(W, H, F, NO_AVAIL_FUNC) {
     eqCheck.in[1] <== W*H;
 }
 
-component main { public [initialGrid, finalGrid, availableFunctionsIndexes, account] } = ZKube(8, 8, 5, 8);
+// W = grid width
+// H = grid height
+// F = number of functions available
+// NO_AVAIL_FUNC = number of available functions (circuits/transformations - transform, stack, transformTwo, reject, filter)
+// NO_AVAIL_ARGS = all available arguments (permutations) to to zKube circuit in current 8x8 grid with 4 available colors and 5 available functions (transform, stack, transformTwo, reject, filter)
+component main { public [initialGrid, finalGrid, availableFunctionsIndexes, account] } = ZKube(8, 8, 5, 8, 33);

@@ -27,12 +27,12 @@ main {
   @apply flex flex-col items-stretch rounded-md bg-black py-6 text-white md:px-4;
 }
 
-.modal-input-container {
-  @apply m-4 flex justify-between md:w-96;
+.form-input-container {
+  @apply mx-4 flex justify-between md:w-96;
 }
 
-.modal-input {
-  @apply pl-1 text-black;
+.form-input {
+  @apply flex-[2] text-black;
 }
 
 .spinner {

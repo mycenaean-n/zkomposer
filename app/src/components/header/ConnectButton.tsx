@@ -24,7 +24,7 @@ export function ConnectButton() {
           className="rounded-md"
         >
           <WalletIcon className="h-5 w-5" />
-          <span className="inline">Log in</span>
+          <span className="ml-2 inline">Log in</span>
         </Button>
       ) : null}
       {user?.wallet?.address && authenticated ? (

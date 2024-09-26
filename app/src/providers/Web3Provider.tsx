@@ -1,15 +1,15 @@
 'use client';
+import { PrivyClientConfig, PrivyProvider } from '@privy-io/react-auth';
+import { createConfig, WagmiProvider } from '@privy-io/wagmi';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { useEffect } from 'react';
+import { defineChain, http } from 'viem';
 import {
   arbitrumSepolia,
   localhost,
   scroll,
   scrollSepolia,
 } from 'wagmi/chains';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { createConfig, WagmiProvider } from '@privy-io/wagmi';
-import { PrivyClientConfig, PrivyProvider } from '@privy-io/react-auth';
-import { defineChain, http } from 'viem';
-import { useEffect } from 'react';
 
 const queryClient = new QueryClient();
 

@@ -32,7 +32,7 @@ export const Button = ({
       aria-disabled={disabled}
       disabled={disabled}
       className={clsx(
-        'flex h-full w-full items-center justify-center px-2 py-0.5 md:px-4 md:py-1',
+        'flex h-full items-center justify-center px-2 py-0.5 md:px-4 md:py-1',
         buttonVariants[variant],
         className,
         rounded ? 'rounded-md' : ''
