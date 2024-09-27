@@ -1,6 +1,6 @@
+import { bgColor, getDisplayName } from '@/utils';
 import { parseCircuitArguments } from 'circuits';
 import { CircuitFunctions } from 'circuits/types/circuitFunctions.types';
-import { bgColor, getDisplayName } from '@/utils';
 
 export function DisplayName({ funcName }: { funcName: CircuitFunctions }) {
   const { func, colorOne, colorTwo, colorThree } =
@@ -12,9 +12,7 @@ export function DisplayName({ funcName }: { funcName: CircuitFunctions }) {
         <div className="h-10 rounded-md border border-black p-1">
           <div className="flex justify-center">
             <div className="mr-1 flex pt-1">
-              <div className="font-bold leading-snug">
-                {getDisplayName(func)}
-              </div>
+              <div className="leading-snug">{getDisplayName(func)}</div>
               <div
                 className={`m-1 ml-2 mt-1.5 h-3.5 w-3.5 ${bgColor(colorOne)} border border-black`}
               ></div>
@@ -33,7 +31,7 @@ export function DisplayName({ funcName }: { funcName: CircuitFunctions }) {
       ) : (
         <div className="h-10 rounded-md border border-black p-1">
           <div className="mt-1.5 flex justify-center">
-            <div className="font-bold leading-snug">{getDisplayName(func)}</div>
+            <div className="leading-snug">{getDisplayName(func)}</div>
             <div
               className={`m-1 ml-2 h-3.5 w-3.5 ${bgColor(colorOne)} border border-black`}
             ></div>
