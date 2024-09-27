@@ -16,23 +16,21 @@ export function LevelAction({
   id,
   gameMode,
 }: LevelActionProps) {
+  console.log({ puzzleSolved });
+
   return (
-    <div className="absolute -top-24 right-2 flex flex-col md:-top-32 md:right-14">
-      {proofGenerationError && (
-        <h2 className="mt-2 text-sm md:text-2xl">{proofGenerationError}</h2>
-      )}
+    <div className="flex flex-col">
       {puzzleSolved && (
         <>
-          <div className="flex">
+          <div className="absolute bottom-10 right-0 flex">
             <Tick />
-            Link
-            <h2 className="mt-2 text-sm md:text-2xl">Puzzle Solved</h2>
+            <h2 className="text-sm md:text-base">Puzzle Solved</h2>
           </div>
           {gameMode === 'singleplayer' && (
             <Link href={`/puzzle/${Number(id) + 1}`}>
               <Button
                 variant="primary"
-                className="mt-2"
+                className="min-h-9 w-full text-sm md:text-base"
                 rounded={true}
                 type="button"
               >
@@ -50,7 +48,8 @@ function Tick() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className="h-10 w-10"
+      width="24"
+      height="24"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
