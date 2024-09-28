@@ -68,13 +68,13 @@ function useSubmitPuzzleCallback() {
           chain: chains[chainId],
         });
 
-        return { success: true, error: undefined };
+        return { success: true, error: undefined, data: undefined };
       } catch (error) {
         console.error('Error submitting puzzle solution', error);
         return { success: false, error: (error as Error).message };
       }
     },
-    [zKubeContract.address, address, chainId]
+    [zKubeContract?.address, address, chainId]
   );
 }
 
@@ -101,12 +101,12 @@ function useVerifyPuzzleSolutionCallback() {
           address,
         ]);
 
-        return { success: true };
+        return { success: true, error: undefined, data: undefined };
       } catch (error) {
         console.error(error);
         return { success: false, error: (error as Error).message };
       }
     },
-    [zKubeContract.address, chainId]
+    [zKubeContract?.address, chainId]
   );
 }

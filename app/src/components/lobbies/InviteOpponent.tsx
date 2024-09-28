@@ -1,46 +1,53 @@
 import { useCopyToClipboard } from '@hooks/useCopyToClipboard';
 import QRCode from 'qrcode.react';
-import { useInputContainerClickCallback } from '../../hooks/useInputContainerClick';
-import { Modal } from '../ui/Modal';
 
-export function QrInviteModal({
+export function InviteOpponent({
   setIsOpen,
 }: {
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const { copyToClipboard, success: copySuccess } = useCopyToClipboard();
-  const onInputContainerClick = useInputContainerClickCallback(setIsOpen);
 
   return (
-    <Modal className="bg-primary" setIsOpen={onInputContainerClick}>
-      <div
-        className="bg-secondary mx-auto mt-2 flex w-full flex-col justify-center rounded-md p-4"
-        onClick={() => {
-          copyToClipboard(window.location.href);
-        }}
-      >
-        <QRCode value={window.location.href} size={196} bgColor="transparent" />
+    <div className="mx-auto flex flex-col">
+      <div className="mt-4 flex flex-col items-center">
+        <h1 className="text-3xl font-bold">Invite Opponent</h1>
       </div>
-      <div className="bg-secondary my-4 grid grid-cols-3 gap-4 rounded-md p-2">
-        <div className="flex items-center justify-center">
-          <TwitterIcon />
+      <div className="mx-auto mt-8 max-w-56">
+        <div
+          className="bg-secondary mx-auto mt-2 flex w-full flex-col justify-center rounded-md"
+          onClick={() => {
+            copyToClipboard(window.location.href);
+          }}
+        >
+          <QRCode
+            style={{ width: '100%', height: '100%' }}
+            size={208}
+            value={window.location.href}
+            bgColor="transparent"
+          />
         </div>
-        <div className="flex items-center justify-center">
-          <FarcasterIcon />
+        <div className="bg-secondary border-primary my-4 grid grid-cols-3 gap-4 rounded-md border-2 p-2">
+          <div className="flex items-center justify-center">
+            <TwitterIcon />
+          </div>
+          <div className="flex items-center justify-center">
+            <FarcasterIcon />
+          </div>
+          <div className="flex items-center justify-center">
+            <CopyIcon />
+          </div>
         </div>
-        <div className="flex items-center justify-center">
-          <CopyIcon />
+        <div className="text-primary bg-secondary overflow-hidden overflow-ellipsis rounded-md p-1 text-sm">
+          {window.location.href}
         </div>
+        {copySuccess && (
+          <div className="absolute left-1/2 top-full mt-2 w-max -translate-x-1/2 transform rounded bg-gray-200 px-3 py-2 text-sm text-gray-800 shadow-lg">
+            Copied successfully!
+          </div>
+        )}
       </div>
-      <div className="text-primary bg-secondary overflow-hidden overflow-ellipsis rounded-md p-1 text-sm">
-        {window.location.href}
-      </div>
-      {copySuccess && (
-        <div className="absolute left-1/2 top-full mt-2 w-max -translate-x-1/2 transform rounded bg-gray-200 px-3 py-2 text-sm text-gray-800 shadow-lg">
-          Copied successfully!
-        </div>
-      )}
-    </Modal>
+    </div>
   );
 }
 
