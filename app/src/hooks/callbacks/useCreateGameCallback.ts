@@ -1,10 +1,11 @@
 import { useCallback } from 'react';
+import { Address, decodeEventLog } from 'viem';
+import { useChainId, useChains, usePublicClient } from 'wagmi';
+import { ParsedGameSettingsData } from '../../components/lobbies/create-game-modal';
+import { ContractCallbackReturnType } from '../../types/Hooks';
+import { useBlockNumber } from '../useBlockNumber';
 import { useZkubeContract } from '../useContract';
 import { usePrivyWalletAddress } from '../usePrivyWalletAddress';
-import { useChainId, useChains, usePublicClient } from 'wagmi';
-import { Address, decodeEventLog } from 'viem';
-import { useBlockNumber } from '../useBlockNumber';
-import { ContractCallbackReturnType } from '../../types/Hooks';
 
 const CreatGameEventAbi = [
   {
@@ -58,11 +59,11 @@ export function useCreteGameCallback() {
   const publicClient = usePublicClient();
 
   return useCallback(
-    async (
-      targetPuzzleSet: Address,
-      interval: number,
-      numberOfTurns: number
-    ): Promise<
+    async ({
+      puzzleSet,
+      interval,
+      turns,
+    }: ParsedGameSettingsData): Promise<
       ContractCallbackReturnType<{
         gameId: bigint;
         puzzleSet: Address;
@@ -77,8 +78,14 @@ export function useCreteGameCallback() {
           error: 'address, zKubeContract or blockNumber missing',
         };
 
+      console.log(
+        chainId,
+        zKubeContract.address,
+        'zKubeContract.write.createGame'
+      );
+
       const hash = await zKubeContract.write.createGame(
-        [targetPuzzleSet, interval, numberOfTurns],
+        [puzzleSet, Number(interval), Number(turns)],
         { account: address, chain: chains[chainId] }
       );
 
@@ -101,6 +108,6 @@ export function useCreteGameCallback() {
         data: args as unknown as EventValues,
       };
     },
-    [zKubeContract, address, chains, chainId]
+    [zKubeContract?.address, address, chains, chainId]
   );
 }

@@ -1,14 +1,9 @@
 import { useJoinGameCallback } from '@hooks/callbacks/useJoinGameCallback';
 import { useRouter } from 'next/navigation';
-import { OnChainGame } from 'types/Game';
+import { Game } from '../../types/Game';
+import { Button } from '../ui/Button';
 
-export function JoinGame({
-  game,
-  gameId,
-}: {
-  game: OnChainGame;
-  gameId: string;
-}) {
+export function JoinGame({ game, gameId }: { game: Game; gameId: string }) {
   const joinGameCallback = useJoinGameCallback();
   const router = useRouter();
   const joinGame = async () => {
@@ -20,59 +15,30 @@ export function JoinGame({
   };
 
   return (
-    <div className="modal">
-      <div className="modal-content">
-        <div className="form-input-container">
-          <h4>Opponent</h4>
-          <input
-            className="form-input"
-            type="text"
-            value={game.player1.address_}
-            disabled={true}
-          />
-        </div>
-        <div className="form-input-container">
-          <h4>Puzzle Set</h4>
-          <input
-            className="form-input"
-            type="text"
-            value={game.puzzleSet}
-            disabled={true}
-          />
-        </div>
-        <div className="form-input-container">
-          <h4>Round duration (blocks)</h4>
-          <input
-            className="form-input"
-            type="number"
-            value={game.interval}
-            disabled={true}
-          />
-        </div>
-        <div className="form-input-container">
-          <h4>Number of Rounds</h4>
-          <input
-            className="form-input"
-            type="number"
-            value={game.numberOfRounds}
-            disabled={true}
-          />
-        </div>
-        <div className="m-auto flex">
-          <button
-            className="btn-secondary-rounded mr-4 mt-4 w-32"
-            onClick={joinGame}
-          >
-            Accept
-          </button>
-          <button
-            className="btn-secondary-rounded mt-4 w-32"
-            style={{ border: 'solid 3px red' }}
-            onClick={() => router.push('/')}
-          >
-            Decline
-          </button>
-        </div>
+    <div>
+      <div className="grid grid-cols-[1fr_3fr] gap-4">
+        <h4>Opponent</h4>
+        <div>{game.player1}</div>
+      </div>
+      <div className="grid grid-cols-[1fr_3fr] gap-4">
+        <h4>Puzzle Set</h4>
+        <div>{game.puzzleSet}</div>
+      </div>
+      <div className="grid grid-cols-[1fr_3fr] gap-4">
+        <h4>Round duration (blocks)</h4>
+        <div>{game.interval}</div>
+      </div>
+      <div className="grid grid-cols-[1fr_3fr] gap-4">
+        <h4>Number of Rounds</h4>
+        <div>{game.numberOfTurns}</div>
+      </div>
+      <div className="mx-auto flex gap-4">
+        <Button variant="secondary" onClick={joinGame}>
+          Accept
+        </Button>
+        <Button rounded variant="primary">
+          Decline
+        </Button>
       </div>
     </div>
   );

@@ -12,35 +12,47 @@ import { abi as zKubePuzzleSetAbi } from '../abis/zKubePuzzleSet';
 import { ZKUBE_ADDRESS, ZKUBE_PUZZLESET_ADDRESS } from '../config';
 import { useClients } from './useClients';
 
-export function useContract<TAbi extends Abi, T extends boolean = false>(
+type ContractWithWalletClient<TAbi extends Abi> = GetContractReturnType<
+  TAbi,
+  WalletClient,
+  Address
+>;
+
+type ContractWithPublicClient<TAbi extends Abi> = GetContractReturnType<
+  TAbi,
+  PublicClient,
+  Address
+>;
+
+function useContract<TAbi extends Abi, T extends boolean = false>(
   address: Address,
   abi: TAbi,
-  withWalletClient: T
-): T extends true
-  ? GetContractReturnType<TAbi, WalletClient, Address>
-  : GetContractReturnType<TAbi, PublicClient, Address> {
+  withWalletClient: boolean = false
+):
+  | (T extends false
+      ? ContractWithPublicClient<TAbi>
+      : ContractWithWalletClient<TAbi>)
+  | undefined {
   const { publicClient, walletClient } = useClients();
 
-  const contract = useMemo(() => {
-    if (walletClient && withWalletClient) {
-      return getContract({
-        address,
-        abi,
-        client: {
-          public: publicClient,
-          wallet: walletClient,
-        },
-      }) as GetContractReturnType<TAbi, WalletClient, Address>;
+  return useMemo(() => {
+    if (withWalletClient) {
+      return (
+        walletClient &&
+        (getContract({
+          abi,
+          address,
+          client: { public: publicClient, wallet: walletClient },
+        }) as ContractWithWalletClient<typeof abi>)
+      );
     }
 
     return getContract({
-      address,
       abi,
-      client: publicClient,
-    }) as GetContractReturnType<TAbi, PublicClient, Address>;
-  }, [address, publicClient.chain.id]);
-
-  return contract;
+      address,
+      client: { public: publicClient },
+    }) as ContractWithPublicClient<typeof abi>;
+  }, [address, abi, publicClient, walletClient?.account, withWalletClient]);
 }
 
 export function useZkubeContract(withWalletClient: boolean = false) {

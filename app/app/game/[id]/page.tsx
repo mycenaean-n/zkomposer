@@ -1,140 +1,113 @@
 'use client';
-import { QrInviteModal } from '@/components/lobbies/QrInviteModal';
-import { Footer } from '@components/game/Footer';
-import { LoginCTA } from '@components/wallet/LoginCTA';
 import { LoadingState } from '@components/zk/LoadingState';
-import { useGameAndPuzzleData } from '@hooks/fetching/useGameAndPuzzleData';
 import { useBlockNumber } from '@hooks/useBlockNumber';
-import { useDeepCompareMemo } from '@hooks/useDeepCompareMemo';
 import { usePrivyWalletAddress } from '@hooks/usePrivyWalletAddress';
-import { hasGameStarted, isGameFinished } from '@utils/game';
-import { useEffect, useReducer, useState } from 'react';
-import { zeroAddress } from 'viem';
-
-const initialState = { yourScore: 0, opponentScore: 0 };
-
-function scoreReducer(
-  state: typeof initialState,
-  action: { type: string; payload: number }
-) {
-  switch (action.type) {
-    case 'SET_YOUR_SCORE':
-      return { ...state, yourScore: action.payload };
-    case 'SET_OPPONENT_SCORE':
-      return { ...state, opponentScore: action.payload };
-    default:
-      return state;
-  }
-}
+import { useEffect, useState } from 'react';
+import { PuzzleMemoized } from '../../../src/components/game/puzzle/Puzzle';
+import { usePuzzleData } from '../../../src/hooks/fetching/usePuzzleData';
+import { useGameSubscription } from '../../../src/hooks/useGameSubscription';
 
 export default function Page({ params: { id } }: { params: { id: string } }) {
   const blockNumber = useBlockNumber();
   const address = usePrivyWalletAddress();
-  const [shouldPoll, setShouldPoll] = useState(true);
-  const { data, loading, error } = useGameAndPuzzleData(id, shouldPoll);
-  const [state, dispatch] = useReducer(scoreReducer, initialState);
-  const stableInitConfig = useDeepCompareMemo(data?.initConfig);
-  const gameFinished =
-    data?.onChainGame &&
-    blockNumber &&
-    isGameFinished(blockNumber, data.onChainGame);
-  const [isQrInviteModalOpen, setIsQrInviteModalOpen] = useState<boolean>(true);
+  const [yourScore, setYourScore] = useState<number>(0);
+  const [opponentScore, setOpponentScore] = useState<number>(0);
+  const [isQrInviteModalOpen, setIsQrInviteModalOpen] =
+    useState<boolean>(false);
+  const { data: gameData, loading, error } = useGameSubscription(id);
+  const { data: puzzleData } = usePuzzleData(id);
 
-  useEffect(() => {
-    if (gameFinished) setShouldPoll(false);
-  }, [gameFinished]);
-
+  // const gameFinished =
+  //   data?.onChainGame &&
+  //   blockNumber &&
+  //   isGameFinished(blockNumber, data.onChainGame);
   // useEffect(() => {
-  //   const displayQrInvite =
-  //     address &&
-  //     data?.onChainGame.player1.address_ === address &&
-  //     data?.onChainGame.player2?.address_ === zeroAddress;
-
-  //   setIsQrInviteModalOpen(displayQrInvite ?? false);
-  // }, [address, data?.onChainGame]);
+  //   if (gameFinished) setShouldPoll(false);
+  // }, [gameFinished]);
 
   useEffect(() => {
-    if (!data?.onChainGame || !address) return;
+    if (!gameData || !address) return;
 
-    const { onChainGame } = data;
+    // const { onChainGame } = data;
 
-    if (address === onChainGame.player1.address_) {
-      dispatch({ type: 'SET_YOUR_SCORE', payload: onChainGame.player1.score });
-      dispatch({
-        type: 'SET_OPPONENT_SCORE',
-        payload: onChainGame.player2!.score,
-      });
-    } else if (address === onChainGame.player2!.address_) {
-      dispatch({ type: 'SET_YOUR_SCORE', payload: onChainGame.player2!.score });
-      dispatch({
-        type: 'SET_OPPONENT_SCORE',
-        payload: onChainGame.player1.score,
-      });
+    if (address === gameData.player1) {
+      // todo: get score from onChainGame
+      setYourScore(0);
+      setOpponentScore(0);
+    } else if (address === gameData.player2) {
+      setYourScore(0);
+      setOpponentScore(0);
     }
-  }, [data?.onChainGame, address]);
+  }, [gameData?.id, gameData?.player1, gameData?.player2, address]);
 
-  if (!address && blockNumber) {
-    return <LoginCTA />;
+  // if (!address && blockNumber) {
+  //   return <LoginCTA />;
+  // }
+
+  // if (loading) {
+  //   return LoadingState({ textMain: 'Loading game...' });
+  // }
+
+  // if (typeof error === 'string') {
+  //   return LoadingState({ textMain: error });
+  // }
+
+  // const { onChainGame } = data;
+
+  console.log({ gameData });
+
+  if (!gameData) {
+    return LoadingState({ textMain: 'Game not found' });
   }
 
-  if (loading) {
-    return LoadingState({ textMain: 'Loading game...' });
-  }
+  // if (
+  //   gameData?.player1 &&
+  //   gameData?.player2 !== zeroAddress &&
+  //   !hasGameStarted(blockNumber!, gameData)
+  // ) {
+  //   return LoadingState({
+  //     textMain: `Game starting in ${
+  //       Number(gameData.startingBlock) - Number(blockNumber)
+  //     } blocks`,
+  //   });
+  // }
 
-  if (typeof error === 'string') {
-    return LoadingState({ textMain: error });
-  }
+  // if (isGameFinished(blockNumber!, gameData)) {
+  //   const winCase = yourScore > opponentScore;
+  //   const drawCase = yourScore === opponentScore;
 
-  const { onChainGame } = data;
-
-  if (
-    onChainGame?.player1.address_ &&
-    onChainGame?.player2?.address_ !== zeroAddress &&
-    !hasGameStarted(blockNumber!, onChainGame)
-  ) {
-    return LoadingState({
-      textMain: `Game starting in ${
-        Number(onChainGame.startingBlock) - Number(blockNumber)
-      } blocks`,
-    });
-  }
-
-  if (isGameFinished(blockNumber!, onChainGame)) {
-    const winCase = state.yourScore > state.opponentScore;
-    const drawCase = state.yourScore === state.opponentScore;
-
-    return LoadingState({
-      textMain: 'Game is finished',
-      textSub:
-        'Result: ' + (winCase ? 'You Won' : drawCase ? 'Draw' : 'You Lost'),
-    });
-  }
+  //   return LoadingState({
+  //     textMain: 'Game is finished',
+  //     textSub:
+  //       'Result: ' + (winCase ? 'You Won' : drawCase ? 'Draw' : 'You Lost'),
+  //   });
+  // }
 
   const displayJoinGame =
-    address &&
-    onChainGame.player1.address_ !== address &&
-    onChainGame.player2?.address_ === zeroAddress;
+    address && gameData.player1 !== address && !gameData.player2;
+
+  const displayInviteOpponent =
+    address && gameData.player1 === address && !gameData.player2;
+
+  console.log({ puzzleData });
 
   return (
-    <div className="flex-grow">
-      {isQrInviteModalOpen && (
-        <QrInviteModal setIsOpen={setIsQrInviteModalOpen} />
-      )}
-      {/* {displayJoinGame && <JoinGame game={onChainGame} gameId={id} />}
-      {stableInitConfig && (
-        <PuzzleMemoized
-          initConfig={stableInitConfig}
-          id={id}
-          gameMode="multiplayer"
-        />
-      )} */}
-      <Footer
-        {...{
-          yourScore: state.yourScore,
-          opponentScore: state.opponentScore,
-          data,
-        }}
-      />
+    // todo: set
+    <div className="h-full">
+      <div className="mx-auto">
+        {/* {displayInviteOpponent && (
+          <InviteOpponent setIsOpen={setIsQrInviteModalOpen} />
+        )}
+        {displayJoinGame && <JoinGame game={gameData} gameId={id} />} */}
+        {puzzleData && (
+          <PuzzleMemoized
+            initConfig={puzzleData}
+            id={id}
+            gameMode="multiplayer"
+          />
+        )}
+        {/* <Footer {...{ yourScore, opponentScore, data: gameData }} /> */}
+      </div>
     </div>
   );
 }

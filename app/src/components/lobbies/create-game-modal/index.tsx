@@ -1,8 +1,10 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { Address, isAddress } from 'viem';
 import { z } from 'zod';
 import { ZKUBE_PUZZLESET_ADDRESS } from '../../../config';
+import { useCreteGameCallback } from '../../../hooks/callbacks/useCreateGameCallback';
 import { useInputContainerClickCallback } from '../../../hooks/useInputContainerClick';
 import { Button } from '../../ui/Button';
 import { Modal } from '../../ui/Modal';
@@ -50,6 +52,9 @@ const gameSettingsTransformationSchema = gameSettingsValidationSchema.transform(
 );
 
 export type GameSettingsData = z.infer<typeof gameSettingsValidationSchema>;
+export type ParsedGameSettingsData = ReturnType<
+  typeof gameSettingsTransformationSchema.parse
+>;
 
 export function CreateGameModal({
   setIsModalOpen,
@@ -65,6 +70,8 @@ export function CreateGameModal({
     Partial<Record<keyof GameSettingsData, string>>
   >({});
   const onInputContainerClick = useInputContainerClickCallback(setIsModalOpen);
+  const router = useRouter();
+  const createGameCallback = useCreteGameCallback();
 
   const changeGameSettings =
     (key: keyof GameSettingsData) => (value: string) => {
@@ -89,13 +96,25 @@ export function CreateGameModal({
       }
     };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const validatedData = gameSettingsTransformationSchema.safeParse(formData);
 
     if (validatedData.success) {
       const parsedData = gameSettingsTransformationSchema.parse(formData);
-      console.log({ parsedData });
+      const { data, error, success } = await createGameCallback(parsedData);
+      // todo: set a new error type
+      if (error) {
+        setErrors({
+          ...errors,
+          puzzleSet: error,
+        });
+        return;
+      }
+      // todo: replace with id from contract
+      if (success) {
+        router.push(`/game/${data.gameId}`);
+      }
     } else {
       const newErrors: Record<string, string> = {};
       validatedData.error.errors.forEach((error) => {
@@ -123,16 +142,14 @@ export function CreateGameModal({
           />
           <TurnsSection changeNumberOfTurns={changeGameSettings('turns')} />
           <IntervalSection changeGameStyle={changeGameSettings('interval')} />
-          <div>
-            <Button
-              type="submit"
-              className="border-secondary text-secondary mx-auto w-40 border-2 text-sm"
-              rounded={true}
-              variant="transparent"
-            >
-              Create Game
-            </Button>
-          </div>
+          <Button
+            type="submit"
+            className="border-secondary text-secondary mx-auto w-40 border-2 text-sm"
+            rounded={true}
+            variant="transparent"
+          >
+            Create Game
+          </Button>
         </form>
       </Modal>
     </>
