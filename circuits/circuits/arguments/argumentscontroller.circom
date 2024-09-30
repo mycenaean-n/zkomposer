@@ -1,513 +1,149 @@
+pragma circom 2.0.0;
+
 include "./transformarguments.circom";
-
-
-// template ArgumentsTransformTwoYellowYellowRed() {
-//     signal input inputIndex;
-//     signal output out[5][4];
-//     signal instruction[4] <== [1, 1, 1, 2];
-//     signal instructionOut[4]; 
-
-//     component isEq;
-//     isEq = IsEqual();
-//     isEq.in[0] <== inputIndex;
-//     isEq.in[1] <== 10;
-
-//     // if eq 1, then multiply identity
-//     for (var i = 0; i < 4; i++) {
-//         instructionOut[i] <== instruction[i] * isEq.out;
-//     }
-
-//     out <== [
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0],
-//         instructionOut,
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0]
-//     ];
-// }
-
-// template ArgumentsTransformTwoYellowYellowBlue() {
-//     signal input inputIndex;
-//     signal output out[5][4];
-//     signal instruction[4] <== [1, 1, 1, 3];
-//     signal instructionOut[4]; 
-
-//     component isEq;
-//     isEq = IsEqual();
-//     isEq.in[0] <== inputIndex;
-//     isEq.in[1] <== 11;
-
-//     // if eq 1, then multiply identity
-//     for (var i = 0; i < 4; i++) {
-//         instructionOut[i] <== instruction[i] * isEq.out;
-//     }
-
-//     out <== [
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0],
-//         instructionOut,
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0]
-//     ];
-// }
-
-// template ArgumentsTransformTwoYellowRedYellow() {
-//     signal input inputIndex;
-//     signal output out[5][4];
-//     signal instruction[4] <== [1, 1, 2, 1];
-//     signal instructionOut[4]; 
-
-//     component isEq;
-//     isEq = IsEqual();
-//     isEq.in[0] <== inputIndex;
-//     isEq.in[1] <== 12;
-
-//     // if eq 1, then multiply identity
-//     for (var i = 0; i < 4; i++) {
-//         instructionOut[i] <== instruction[i] * isEq.out;
-//     }
-
-//     out <== [
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0],
-//         instructionOut,
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0]
-//     ];
-// }
-
-// template ArgumentsTransformTwoYellowRedBlue() {
-//     signal input inputIndex;
-//     signal output out[5][4];
-//     signal instruction[4] <== [1, 1, 2, 3];
-//     signal instructionOut[4]; 
-
-//     component isEq;
-//     isEq = IsEqual();
-//     isEq.in[0] <== inputIndex;
-//     isEq.in[1] <== 13;
-
-//     // if eq 1, then multiply identity
-//     for (var i = 0; i < 4; i++) {
-//         instructionOut[i] <== instruction[i] * isEq.out;
-//     }
-    
-//     out <== [
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0],
-//         instructionOut,
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0]
-//     ];
-// }       
-
-// template ArgumentsTransformTwoYellowBlueYellow() {
-//     signal input inputIndex;
-//     signal output out[5][4];
-//     signal instruction[4] <== [1, 1, 3, 1];
-//     signal instructionOut[4]; 
-
-//     component isEq;
-//     isEq = IsEqual();
-//     isEq.in[0] <== inputIndex;
-//     isEq.in[1] <== 14;
-
-//     // if eq 1, then multiply identity
-//     for (var i = 0; i < 4; i++) {
-//         instructionOut[i] <== instruction[i] * isEq.out;
-//     }
-
-//     out <== [
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0],
-//         instructionOut,
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0]
-//     ];
-// }
-
-// template ArgumentsTransformTwoYellowBlueRed() {
-//     signal input inputIndex;
-//     signal output out[5][4];
-//     signal instruction[4] <== [1, 1, 3, 2];
-//     signal instructionOut[4]; 
-
-//     component isEq;
-//     isEq = IsEqual();
-//     isEq.in[0] <== inputIndex;
-//     isEq.in[1] <== 15;
-
-//     // if eq 1, then multiply identity
-//     for (var i = 0; i < 4; i++) {
-//         instructionOut[i] <== instruction[i] * isEq.out;
-//     }
-
-//     out <== [
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0],
-//         instructionOut,
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0]
-//     ];
-// }
-
-//     template ArgumentsTransformTwoRedRedYellow() {
-//     signal input inputIndex;
-//     signal output out[5][4];
-//     signal instruction[4] <== [1, 2, 2, 1];
-//     signal instructionOut[4]; 
-
-//     component isEq;
-//     isEq = IsEqual();
-//     isEq.in[0] <== inputIndex;
-//     isEq.in[1] <== 16;
-
-//     // if eq 1, then multiply identity
-//     for (var i = 0; i < 4; i++) {
-//         instructionOut[i] <== instruction[i] * isEq.out;
-//     }
-
-//     out <== [
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0],
-//         instructionOut,
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0]
-//     ];
-// }
-
-// template ArgumentsTransformTwoRedRedBlue() {
-//     signal input inputIndex;
-//     signal output out[5][4];
-//     signal instruction[4] <== [1, 2, 2, 3];
-//     signal instructionOut[4]; 
-
-//     component isEq;
-//     isEq = IsEqual();
-//     isEq.in[0] <== inputIndex;
-//     isEq.in[1] <== 17;
-
-//     // if eq 1, then multiply identity
-//     for (var i = 0; i < 4; i++) {
-//         instructionOut[i] <== instruction[i] * isEq.out;
-//     }
-
-//     out <== [
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0],
-//         instructionOut,
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0]
-//     ];
-// }
-
-// template ArgumentsTransformTwoRedYellowRed() {
-//     signal input inputIndex;
-//     signal output out[5][4];
-//     signal instruction[4] <== [1, 2, 1, 2];
-//     signal instructionOut[4]; 
-
-//     component isEq;
-//     isEq = IsEqual();
-//     isEq.in[0] <== inputIndex;
-//     isEq.in[1] <== 18;
-
-//     // if eq 1, then multiply identity
-//     for (var i = 0; i < 4; i++) {
-//         instructionOut[i] <== instruction[i] * isEq.out;
-//     }
-
-//     out <== [
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0],
-//         instructionOut,
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0]
-//     ];
-// }
-
-// template ArgumentsTransformTwoRedYellowBlue() {
-//     signal input inputIndex;
-//     signal output out[5][4];
-//     signal instruction[4] <== [1, 2, 1, 3];
-//     signal instructionOut[4]; 
-
-//     component isEq;
-//     isEq = IsEqual();
-//     isEq.in[0] <== inputIndex;
-//     isEq.in[1] <== 19;
-
-//     // if eq 1, then multiply identity
-//     for (var i = 0; i < 4; i++) {
-//         instructionOut[i] <== instruction[i] * isEq.out;
-//     }
-
-//     out <== [
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0],
-//         instructionOut,
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0]
-//     ];
-// }
-
-// template ArgumentsTransformTwoRedBlueYellow() {
-//     signal input inputIndex;
-//     signal output out[5][4];
-//     signal instruction[4] <== [1, 2, 3, 1];
-//     signal instructionOut[4]; 
-
-//     component isEq;
-//     isEq = IsEqual();
-//     isEq.in[0] <== inputIndex;
-//     isEq.in[1] <== 20;
-
-//     // if eq 1, then multiply identity
-//     for (var i = 0; i < 4; i++) {
-//         instructionOut[i] <== instruction[i] * isEq.out;
-//     }
-
-//     out <== [
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0],
-//         instructionOut,
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0]
-//     ];
-// }
-
-// template ArgumentsTransformTwoRedBlueRed() {
-//     signal input inputIndex;
-//     signal output out[5][4];
-//     signal instruction[4] <== [1, 2, 3, 2];
-//     signal instructionOut[4]; 
-
-//     component isEq;
-//     isEq = IsEqual();
-//     isEq.in[0] <== inputIndex;
-//     isEq.in[1] <== 21;
-
-//     // if eq 1, then multiply identity
-//     for (var i = 0; i < 4; i++) {
-//         instructionOut[i] <== instruction[i] * isEq.out;
-//     }
-    
-//     out <== [
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0],
-//         instructionOut,
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0]
-//     ];
-// }
-
-// template ArgumentsTransformTwoBlueBlueYellow() {
-//     signal input inputIndex;
-//     signal output out[5][4];
-//     signal instruction[4] <== [1, 3, 3, 1];
-//     signal instructionOut[4]; 
-
-//     component isEq;
-//     isEq = IsEqual();
-//     isEq.in[0] <== inputIndex;
-//     isEq.in[1] <== 22;
-
-//     // if eq 1, then multiply identity
-//     for (var i = 0; i < 4; i++) {
-//         instructionOut[i] <== instruction[i] * isEq.out;
-//     }
-    
-//     out <== [
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0],
-//         instructionOut,
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0]
-//     ];
-// }   
-
-// template ArgumentsTransformTwoBlueBlueRed() {
-//     signal input inputIndex;
-//     signal output out[5][4];
-//     signal instruction[4] <== [1, 3, 3, 2];
-//     signal instructionOut[4]; 
-
-//     component isEq;
-//     isEq = IsEqual();
-//     isEq.in[0] <== inputIndex;
-//     isEq.in[1] <== 23;
-
-//     // if eq 1, then multiply identity
-//     for (var i = 0; i < 4; i++) {
-//         instructionOut[i] <== instruction[i] * isEq.out;
-//     }
-    
-//     out <== [
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0],
-//         instructionOut,
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0]
-//     ];
-// }
-
-// template ArgumentsTransformTwoBlueYellowBlue() {
-//     signal input inputIndex;
-//     signal output out[5][4];
-//     signal instruction[4] <== [1, 3, 1, 3];
-//     signal instructionOut[4]; 
-
-//     component isEq;
-//     isEq = IsEqual();
-//     isEq.in[0] <== inputIndex;
-//     isEq.in[1] <== 24;
-
-//     // if eq 1, then multiply identity
-//     for (var i = 0; i < 4; i++) {
-//         instructionOut[i] <== instruction[i] * isEq.out;
-//     }
-    
-//     out <== [
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0],
-//         instructionOut,
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0]
-//     ];
-// }
-
-// template ArgumentsTransformTwoBlueYellowRed() {
-//     signal input inputIndex;
-//     signal output out[5][4];
-//     signal instruction[4] <== [1, 3, 1, 2];
-//     signal instructionOut[4]; 
-
-//     component isEq;
-//     isEq = IsEqual();
-//     isEq.in[0] <== inputIndex;
-//     isEq.in[1] <== 25;
-
-//     // if eq 1, then multiply identity
-//     for (var i = 0; i < 4; i++) {
-//         instructionOut[i] <== instruction[i] * isEq.out;
-//     }
-    
-//     out <== [
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0],
-//         instructionOut,
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0]
-//     ];
-// }
-
-// template ArgumentsTransformTwoBlueRedYellow() {  
-//     signal input inputIndex;
-//     signal output out[5][4];
-//     signal instruction[4] <== [1, 3, 1, 3];
-//     signal instructionOut[4]; 
-
-//     component isEq;
-//     isEq = IsEqual();
-//     isEq.in[0] <== inputIndex;
-//     isEq.in[1] <== 26;
-
-//     // if eq 1, then multiply identity
-//     for (var i = 0; i < 4; i++) {
-//         instructionOut[i] <== instruction[i] * isEq.out;
-//     }
-    
-//     out <== [
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0],
-//         instructionOut,
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0]
-//     ];
-// }   
-
-// template ArgumentsTransformTwoBlueRedRed() {
-//     signal input inputIndex;
-//     signal output out[5][4];
-//     signal instruction[4] <== [1, 3, 2, 2];
-//     signal instructionOut[4]; 
-
-//     component isEq;
-//     isEq = IsEqual();
-//     isEq.in[0] <== inputIndex;
-//     isEq.in[1] <== 27;
-
-//     // if eq 1, then multiply identity
-//     for (var i = 0; i < 4; i++) {
-//         instructionOut[i] <== instruction[i] * isEq.out;
-//     }
-    
-//     out <== [
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0],
-//         instructionOut,
-//         [0, 0, 0, 0],
-//         [0, 0, 0, 0]
-//     ];
-// }
-
-
-template ArgumentsController(FUN_AVAILABLE) {
+include "./stackarguments.circom";
+include "./transformtwoarguments.circom";
+include "./filterarguments.circom";
+include "./rejectarguments.circom";
+
+template ArgumentsController(FUN_AVAILABLE, C, ARG_LEN) {
     signal input index;
-    signal output arguments[FUN_AVAILABLE][5][4];
+    signal output arguments[FUN_AVAILABLE][C][ARG_LEN];
 
     // Transform
-    component ArgumentOne = ArgumentsTransformYellowRed();
-    argumentOne.inputIndex <== index;
-    arguments[0] <== argumentOne.out;
+    component ArgumentOne = ArgumentsTransformYellowRed(C, ARG_LEN);
+    ArgumentOne.inputIndex <== index;
+    arguments[0] <== ArgumentOne.out;
 
-    component ArgumentTwo = ArguTransformYellowBlue();
+    component ArgumentTwo = ArgumentsTransformYellowBlue(C, ARG_LEN);
     ArgumentTwo.inputIndex <== index;
     arguments[1] <== ArgumentTwo.out;
 
-    component ArgumentThree = ArguTransformRedYellow();
+    component ArgumentThree = ArgumentsTransformRedYellow(C, ARG_LEN);
     ArgumentThree.inputIndex <== index;
     arguments[2] <== ArgumentThree.out;
 
-    component ArgumentFour = ArguTransformRedBlue();
+    component ArgumentFour = ArgumentsTransformRedBlue(C, ARG_LEN);
     ArgumentFour.inputIndex <== index;
     arguments[3] <== ArgumentFour.out;
     
-    component ArgumentFive = ArgumentsTransformBlueRed();
+    component ArgumentFive = ArgumentsTransformBlueYellow(C, ARG_LEN);
     ArgumentFive.inputIndex <== index;
     arguments[4] <== ArgumentFive.out;
 
-    // Stack
-    component ArgumentSix = ArgumentsStackRed();
+    component ArgumentSix = ArgumentsTransformBlueRed(C, ARG_LEN);
     ArgumentSix.inputIndex <== index;
     arguments[5] <== ArgumentSix.out;
 
-    component ArgumentSeven = ArgumentsStackBlue();
+    // Stack
+    component ArgumentSeven = ArgumentsStackRed(C, ARG_LEN);
     ArgumentSeven.inputIndex <== index;
     arguments[6] <== ArgumentSeven.out;
 
-    component ArgumentEight = ArgumentStackYellow();
+    component ArgumentEight = ArgumentsStackBlue(C, ARG_LEN);
     ArgumentEight.inputIndex <== index;
     arguments[7] <== ArgumentEight.out;
 
-    // TransformTwo
-    component ArgumentNine = ArgumentsTransformTwoYellowYellowRed();
+    component ArgumentNine = ArgumentsStackYellow(C, ARG_LEN);
     ArgumentNine.inputIndex <== index;
     arguments[8] <== ArgumentNine.out;
 
-    component ArgumentTen = ArgumentsTransformTwoYellowYellowBlue();
+    // TransformTwo
+    component ArgumentTen = ArgumentsTransformTwoYellowYellowRed(C, ARG_LEN);
     ArgumentTen.inputIndex <== index;
     arguments[9] <== ArgumentTen.out;
-    
-    component ArgumentEleven = ArgumentsTransformTwoYellowRedYellow();
+
+    component ArgumentEleven = ArgumentsTransformTwoYellowYellowBlue(C, ARG_LEN);
     ArgumentEleven.inputIndex <== index;
     arguments[10] <== ArgumentEleven.out;
-
-    component ArgumentTwelve = ArgumentsTransformTwoYellowRedBlue();
+    
+    component ArgumentTwelve = ArgumentsTransformTwoYellowRedYellow(C, ARG_LEN);
     ArgumentTwelve.inputIndex <== index;
     arguments[11] <== ArgumentTwelve.out;
+
+    component ArgumentThirteen = ArgumentsTransformTwoYellowRedBlue(C, ARG_LEN);
+    ArgumentThirteen.inputIndex <== index;
+    arguments[12] <== ArgumentThirteen.out;
+
+    component ArgumentFourteen = ArgumentsTransformTwoYellowBlueYellow(C, ARG_LEN);
+    ArgumentFourteen.inputIndex <== index;
+    arguments[13] <== ArgumentFourteen.out;
+
+    component ArgumentFiveteen = ArgumentsTransformTwoYellowBlueRed(C, ARG_LEN);
+    ArgumentFiveteen.inputIndex <== index;
+    arguments[14] <== ArgumentFiveteen.out;
+
+    component ArgumentSixteen = ArgumentsTransformTwoRedRedYellow(C, ARG_LEN);
+    ArgumentSixteen.inputIndex <== index;
+    arguments[15] <== ArgumentSixteen.out;
+
+    component ArgumentSeventeen = ArgumentsTransformTwoRedRedBlue(C, ARG_LEN);
+    ArgumentSeventeen.inputIndex <== index;
+    arguments[16] <== ArgumentSeventeen.out;
     
+    component ArgumentEighteen = ArgumentsTransformTwoRedYellowRed(C, ARG_LEN);
+    ArgumentEighteen.inputIndex <== index;
+    arguments[17] <== ArgumentEighteen.out;
+
+    component ArgumentNineteen = ArgumentsTransformTwoRedYellowBlue(C, ARG_LEN);
+    ArgumentNineteen.inputIndex <== index;
+    arguments[18] <== ArgumentNineteen.out;
     
+    component ArgumentTwenty = ArgumentsTransformTwoRedBlueYellow(C, ARG_LEN);
+    ArgumentTwenty.inputIndex <== index;
+    arguments[19] <== ArgumentTwenty.out;
+
+    component ArgumentTwentyOne = ArgumentsTransformTwoRedBlueRed(C, ARG_LEN);
+    ArgumentTwentyOne.inputIndex <== index;
+    arguments[20] <== ArgumentTwentyOne.out;
     
-    out <== arguments;
+    component ArgumentTwentyTwo = ArgumentsTransformTwoBlueBlueYellow(C, ARG_LEN);
+    ArgumentTwentyTwo.inputIndex <== index;
+    arguments[21] <== ArgumentTwentyTwo.out;
+    
+    component ArgumentTwentyThree = ArgumentsTransformTwoBlueBlueRed(C, ARG_LEN);
+    ArgumentTwentyThree.inputIndex <== index;
+    arguments[22] <== ArgumentTwentyThree.out;
+    
+    component ArgumentTwentyFour = ArgumentsTransformTwoBlueYellowBlue(C, ARG_LEN);
+    ArgumentTwentyFour.inputIndex <== index;
+    arguments[23] <== ArgumentTwentyFour.out;
+
+    component ArgumentTwentyFive = ArgumentsTransformTwoBlueYellowRed(C, ARG_LEN);
+    ArgumentTwentyFive.inputIndex <== index;
+    arguments[24] <== ArgumentTwentyFive.out;
+
+    component ArgumentTwentySix = ArgumentsTransformTwoBlueRedYellow(C, ARG_LEN);
+    ArgumentTwentySix.inputIndex <== index;
+    arguments[25] <== ArgumentTwentySix.out;
+
+    component ArgumentTwentySeven = ArgumentsTransformTwoBlueRedBlue(C, ARG_LEN);
+    ArgumentTwentySeven.inputIndex <== index;
+    arguments[26] <== ArgumentTwentySeven.out;
+    
+    // Reject
+    component ArgumentTwentyEight = ArgumentsRejectYellow(C, ARG_LEN);
+    ArgumentTwentyEight.inputIndex <== index;
+    arguments[27] <== ArgumentTwentyEight.out;
+
+    component ArgumentTwentyNine = ArgumentsRejectRed(C, ARG_LEN);
+    ArgumentTwentyNine.inputIndex <== index;
+    arguments[28] <== ArgumentTwentyNine.out;
+
+    component ArgumentThirty = ArgumentsRejectBlue(C, ARG_LEN);
+    ArgumentThirty.inputIndex <== index;
+    arguments[29] <== ArgumentThirty.out;
+
+    // Filter
+    component ArgumentThirtyOne = ArgumentsFilterYellow(C, ARG_LEN);
+    ArgumentThirtyOne.inputIndex <== index;
+    arguments[30] <== ArgumentThirtyOne.out;
+
+    component ArgumentThirtyTwo = ArgumentsFilterRed(C, ARG_LEN);
+    ArgumentThirtyTwo.inputIndex <== index;
+    arguments[31] <== ArgumentThirtyTwo.out;
+
+    component ArgumentThirtyThree = ArgumentsFilterBlue(C, ARG_LEN);
+    ArgumentThirtyThree.inputIndex <== index;
+    arguments[32] <== ArgumentThirtyThree.out;
 }

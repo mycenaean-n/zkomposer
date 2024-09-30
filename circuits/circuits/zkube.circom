@@ -5,395 +5,15 @@ include "./stack.circom";
 include "./transformtwo.circom";
 include "./reject.circom";
 include "./filter.circom";
-include "./instructionaggregator.circom";
-function indexToArgs(index) {
-    signal input input_index;
-    // assert(input_index >= 0 && input_index <= 33);
-    signal output out[5][4];
-    component isEq = IsEqual();
-    isEq.in[0] <== input_index;
-    isEq.in[1] <== 0;
-    out[0] <== isEq.out;
+include "./arguments/argumentsaggregator.circom";
 
-    isEq = IsEqual();
-    isEq.in[0] <== input_index;
-    isEq.in[1] <== 1;
-    out[1] <== isEq.out;
-
-    isEq = IsEqual();
-    isEq.in[0] <== input_index;
-    isEq.in[1] <== 2;
-    out[2] <== isEq.out;
-
-    isEq = IsEqual();
-    isEq.in[0] <== input_index;
-    isEq.in[1] <== 3;
-    out[3] <== isEq.out;
-
-    isEq = IsEqual();
-    isEq.in[0] <== input_index;
-    isEq.in[1] <== 4;
-    out[4] <== isEq.out;
-
-    
-
-    // "EMPTY"
-        if(input_index == 0) {
-            return [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // "TRANSFORM_YELLOW_RED",
-        else if (index == 1) {
-            return [
-                [1, 1, 2, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // "TRANSFORM_YELLOW_BLUE",
-        else if (index == 2) {
-            return [
-                [1, 1, 3, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        }
-        // "TRANSFORM_RED_YELLOW",
-        else if (index == 3) {
-            return [
-                [1, 2, 1, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // "TRANSFORM_RED_BLUE",
-        else if (index == 4) {
-            return [
-                [1, 2, 3, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // "TRANSFORM_BLUE_YELLOW",
-        else if (index == 5) {
-            return [
-                [1, 3, 1, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // "TRANSFORM_BLUE_RED",
-        else if (index == 6) {
-            return [
-                [1, 3, 2, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // "STACK_YELLOW",
-        else if (index == 7) {
-            return [
-                [0, 0, 0, 0],
-                [1, 1, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // "STACK_RED",
-        else if (index == 8) {
-            return [
-                [0, 0, 0, 0],
-                [1, 2, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // "STACK_BLUE",
-        else if (index == 9) {
-            return [
-                [0, 0, 0, 0],
-                [1, 3, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // 'TRANSFORMTWO_YELLOW_YELLOW_RED',
-        else if (index == 10) {
-            return [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [1, 1, 1, 2],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // 'TRANSFORMTWO_YELLOW_YELLOW_BLUE',
-        else if (index == 11) {
-            return [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [1, 1, 1, 3],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // 'TRANSFORMTWO_YELLOW_RED_YELLOW',
-        else if (index == 12) {
-            return [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [1, 1, 2, 1],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // 'TRANSFORMTWO_YELLOW_RED_BLUE',
-        else if (index == 13) {
-            return [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [1, 1, 2, 3],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // 'TRANSFORMTWO_YELLOW_BLUE_YELLOW',
-        else if (index == 14) {
-            return [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [1, 1, 3, 1],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // 'TRANSFORMTWO_YELLOW_BLUE_RED',
-        else if (index == 15) {  
-            return [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [1, 1, 3, 2],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // 'TRANSFORMTWO_RED_RED_YELLOW',
-        else if (index == 16) {
-            return [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [1, 2, 2, 1],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-         } 
-        // 'TRANSFORMTWO_RED_RED_BLUE',
-         else if (index == 17) {
-            return [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [1, 2, 2, 3],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // 'TRANSFORMTWO_RED_YELLOW_RED',  
-        else if (index == 18) {
-            return [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [1, 2, 1, 2],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // 'TRANSFORMTWO_RED_YELLOW_BLUE', 
-        else if (index == 19) {
-            return [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [1, 2, 1, 3],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // 'TRANSFORMTWO_RED_BLUE_YELLOW', 
-        else if (index == 20) {
-            return [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [1, 2, 3, 1],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // 'TRANSFORMTWO_RED_BLUE_RED',  
-        else if (index == 21) {
-            return [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [1, 2, 3, 2],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // 'TRANSFORMTWO_BLUE_BLUE_YELLOW',  
-        else if (index == 22) {
-            return [
-                    [0, 0, 0, 0],
-                    [0, 0, 0, 0],
-                    [1, 3, 3, 1],
-                    [0, 0, 0, 0],
-                    [0, 0, 0, 0]
-            ];
-        } 
-        // 'TRANSFORMTWO_BLUE_BLUE_RED',
-        else if (index == 23) {
-            return [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [1, 3, 3, 2],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // 'TRANSFORMTWO_BLUE_YELLOW_BLUE',
-        else if (index == 24) {
-            return [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [1, 3, 1, 3],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // 'TRANSFORMTWO_BLUE_YELLOW_RED',
-        else if (index == 25) {
-            return [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [1, 3, 1, 2],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // 'TRANSFORMTWO_BLUE_RED_YELLOW',
-        else if (index == 26) {
-            return [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [1, 3, 2, 1],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // 'TRANSFORMTWO_BLUE_RED_BLUE',
-        else if (index == 27) {
-            return [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [1, 3, 2, 3],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // 'REJECT_YELLOW',
-        else if (index == 28) {
-            return [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [1, 1, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // 'REJECT_RED',
-        else if (index == 29) {
-            return [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [1, 2, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        }
-        // 'REJECT_BLUE',
-        else if (index == 30) {
-            return [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [1, 3, 0, 0],
-                [0, 0, 0, 0]
-            ];
-        } 
-        // 'FILTER_YELLOW',
-        else if (index == 31) {
-            return [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [1, 1, 0, 0]
-            ];
-        } 
-        // 'FILTER_RED',
-        else if (index == 32) {
-            return [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [1, 2, 0, 0]
-            ];
-        }
-        // 'FILTER_BLUE',
-        else if (index == 33) {
-            return [
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [0, 0, 0, 0],
-                [1, 3, 0, 0]
-            ];
-        } 
-
-        return [
-            [0, 0, 0, 0],
-            [0, 0, 0, 0],
-            [0, 0, 0, 0],
-            [0, 0, 0, 0],
-            [0, 0, 0, 0]
-        ];
-}
-
-template Contains(L) {
+template Contains(LEN) {
     signal input element;
-    signal input inArray[L];
-    signal output outArray[L];
+    signal input inArray[LEN];
+    signal output outArray[LEN];
     signal output out;
-    signal counter[L];
-    component isEq[L];
+    signal counter[LEN];
+    component isEq[LEN];
     component isZero;
 
     isEq[0] = IsEqual();
@@ -401,56 +21,60 @@ template Contains(L) {
     isEq[0].in[1] <== inArray[0];
     counter[0] <== isEq[0].out;
     outArray[0] <== inArray[0] * (1 - isEq[0].out);
-    for (var i = 1; i < L; i++) {
+    for (var i = 1; i < LEN; i++) {
         isEq[i] = IsEqual();
         isEq[i].in[0] <== element;
         isEq[i].in[1] <== inArray[i];
         counter[i] <== counter[i-1] + isEq[i].out;
+        // removing a selected function from the available functions
         outArray[i] <== inArray[i] * (1 - isEq[i].out);
     }
     isZero = IsZero();
-    isZero.in <== counter[L-1];
+    isZero.in <== counter[LEN-1];
     out <== 1 - isZero.out;
 }
 
-template ZKube(W, H, F, NO_AVAIL_FUNC, NO_AVAIL_ARGS) {
+template ZKube(W, H, C, NUM_PUZZLE_TR, NUM_AVAIL_ARGS, ARG_LEN) {
     // public
     signal input initialGrid[W][H];
     signal input finalGrid[W][H];
-    // F possible functions is arbitrary
-    signal input selectedFunctionsIndexes[F];
-    signal input availableFunctionsIndexes[NO_AVAIL_FUNC];
+    // C possible selected transformations is arbitrary
+    signal input selectedFunctionsIndexes[C];
+    signal input availableFunctionsIndexes[NUM_PUZZLE_TR];
     signal input account;
 
     signal finalGridForPlayer[W][H];
     
-    component transform[F];
-    component stack[F];
-    component transformTwo[F];
-    component reject[F];
-    component filter[F];
+    component transform[C];
+    component stack[C];
+    component transformTwo[C];
+    component reject[C];
+    component filter[C];
 
-    component contains[F];
-    signal intermediateAvailableFunctionsIndexes[F+1][8];
+    component contains[C];
+    signal intermediateAvailableFunctionsIndexes[C+1][NUM_PUZZLE_TR];
     // having +1 because we are assigning current value to the next one
     intermediateAvailableFunctionsIndexes[0] <== availableFunctionsIndexes;
     
-    // F intermediate grids, corresponding to possible Functions. Of width W and height H
-    signal intermediateGrids[F+1][W][H];
+    // C intermediate grids, corresponding to possible Functions. Of width W and height H
+    signal intermediateGrids[C+1][W][H];
     intermediateGrids[0] <== initialGrid;
-    signal selectedFunctions[F][F][4];
-    component instructionAggregator[F];
-    for (var i = 0; i < F; i++) {
-        contains[i] = Contains(NO_AVAIL_FUNC);
+    signal selectedFunctions[C][C][4];
+    component argumentsAggregator[C];
+    for (var i = 0; i < C; i++) {
+        // check that player has not selected any of the functions which is not available for the puzzle
+        // since `selectedFunctionsIndexes` is private signal we can only check the 
+        // `selectedFunctionsIndexes` should be a subset of `availableFunctionsIndexes` 
+        contains[i] = Contains(NUM_PUZZLE_TR);
         contains[i].element <== selectedFunctionsIndexes[i];
         contains[i].inArray <== intermediateAvailableFunctionsIndexes[i];
         intermediateAvailableFunctionsIndexes[i+1] <== contains[i].outArray;
         assert(contains[i].out > 0);
 
-        instructionAggregator[i] = InstructionAggregator(NO_AVAIL_ARGS);
-        // selectedFunctions[i] <-- indexToArgs(selectedFunctionsIndexes[i]);
-        instructionAggregator[i].instructions <== selectedFunctions[i];
-        selectedFunctions[i] <== instructionAggregator[i].out;
+        argumentsAggregator[i] = ArgumentsAggregator(NUM_AVAIL_ARGS, C, ARG_LEN);
+        argumentsAggregator[i].index <== selectedFunctionsIndexes[i];
+        selectedFunctions[i] <== argumentsAggregator[i].out;
+
         transform[i] = Transform(W, H);
         transform[i].grid <== intermediateGrids[i];
         transform[i].onOff <== selectedFunctions[i][0][0];
@@ -482,7 +106,7 @@ template ZKube(W, H, F, NO_AVAIL_FUNC, NO_AVAIL_ARGS) {
         intermediateGrids[i + 1] <== filter[i].out;
     }
 
-    finalGridForPlayer <== intermediateGrids[F];
+    finalGridForPlayer <== intermediateGrids[C];
 
     component isEq[W][H];
     var counter = 0;
@@ -506,7 +130,8 @@ template ZKube(W, H, F, NO_AVAIL_FUNC, NO_AVAIL_ARGS) {
 
 // W = grid width
 // H = grid height
-// F = number of functions available
-// NO_AVAIL_FUNC = number of available functions (circuits/transformations - transform, stack, transformTwo, reject, filter)
-// NO_AVAIL_ARGS = all available arguments (permutations) to to zKube circuit in current 8x8 grid with 4 available colors and 5 available functions (transform, stack, transformTwo, reject, filter)
-component main { public [initialGrid, finalGrid, availableFunctionsIndexes, account] } = ZKube(8, 8, 5, 8, 33);
+// C = number of transformation circuits (transform, stack, transformTwo, reject, filter)
+// NUM_PUZZLE_TR = number of functions in a round
+// NUM_AVAIL_ARGS = all available arguments to zKube circuit with 4 available colors and 5 available transformation circuits (transform, stack, transformTwo, reject, filter)
+// ARG_LEN = length of arguments for each transformation circuit
+component main { public [initialGrid, finalGrid, availableFunctionsIndexes, account] } = ZKube(8, 8, 5, 8, 33, 4);
