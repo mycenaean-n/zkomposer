@@ -1,12 +1,12 @@
 pragma circom 2.0.0;
-include "../../node_modules/circomlib/circuits/comparators.circom";
+include "../../../node_modules/circomlib/circuits/comparators.circom";
 
 // TRANSFORM_YELLOW_RED
-template ArgumentsTransformYellowRed() {
+template ArgumentsTransformYellowRed(C, ARG_LEN) {
     signal input inputIndex;
-    signal output out[5][4];
-    signal instruction[4] <== [1, 3, 1, 0];
-    signal instructionOut[4]; 
+    signal output out[C][ARG_LEN];
+    signal instruction[ARG_LEN] <== [1, 1, 2, 0];
+    signal instructionOut[ARG_LEN]; 
 
     component isEq;
     isEq = IsEqual();
@@ -14,7 +14,7 @@ template ArgumentsTransformYellowRed() {
     isEq.in[1] <== 1;
 
     // if eq 1, then multiply identity
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < ARG_LEN; i++) {
         instructionOut[i] <== instruction[i] * isEq.out;
     }
 
@@ -28,18 +28,18 @@ template ArgumentsTransformYellowRed() {
 }
 
 // TRANSFORM_YELLOW_BLUE
-template ArgumentsTransformYellowBlue() {
+template ArgumentsTransformYellowBlue(C, ARG_LEN) {
     signal input inputIndex;
-    signal output out[5][4];
-    signal instruction[4] <== [1, 1, 3, 0];
-    signal instructionOut[4]; 
+    signal output out[C][ARG_LEN];
+    signal instruction[ARG_LEN] <== [1, 1, 3, 0];
+    signal instructionOut[ARG_LEN]; 
 
     component isEq;
     isEq = IsEqual();
     isEq.in[0] <== inputIndex;
     isEq.in[1] <== 2;
 
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < ARG_LEN; i++) {
         instructionOut[i] <== instruction[i] * isEq.out;
     }
 
@@ -53,18 +53,18 @@ template ArgumentsTransformYellowBlue() {
 }
 
 // TRANSFORM_RED_YELLOW
-template ArgumentsTransformRedYellow() {
+template ArgumentsTransformRedYellow(C, ARG_LEN) {
     signal input inputIndex;
-    signal output out[5][4];
-    signal instruction[4] <== [1, 2, 1, 0];
-    signal instructionOut[4]; 
+    signal output out[C][ARG_LEN];
+    signal instruction[ARG_LEN] <== [1, 2, 1, 0];
+    signal instructionOut[ARG_LEN]; 
 
     component isEq;
     isEq = IsEqual();
     isEq.in[0] <== inputIndex;
     isEq.in[1] <== 2;
 
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < ARG_LEN; i++) {
         instructionOut[i] <== instruction[i] * isEq.out;
     }
 
@@ -78,18 +78,18 @@ template ArgumentsTransformRedYellow() {
 }
 
 // TRANSFORM_RED_BLUE
-template ArgumentsTransformRedBlue() {
+template ArgumentsTransformRedBlue(C, ARG_LEN) {
     signal input inputIndex;
-    signal output out[5][4];
-    signal instruction[4] <== [1, 2, 3, 0];
-    signal instructionOut[4]; 
+    signal output out[C][ARG_LEN];
+    signal instruction[ARG_LEN] <== [1, 2, 3, 0];
+    signal instructionOut[ARG_LEN]; 
 
     component isEq;
     isEq = IsEqual();
     isEq.in[0] <== inputIndex;
     isEq.in[1] <== 4;
 
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < ARG_LEN; i++) {
         instructionOut[i] <== instruction[i] * isEq.out;
     }
 
@@ -103,18 +103,18 @@ template ArgumentsTransformRedBlue() {
 }
 
 // TRANSFORM_BLUE_YELLOW
-template ArgumentsTransformBlueYellow() {
+template ArgumentsTransformBlueYellow(C, ARG_LEN) {
     signal input inputIndex;
-    signal output out[5][4];
-    signal instruction[4] <== [1, 3, 1, 0];
-    signal instructionOut[4]; 
+    signal output out[C][ARG_LEN];
+    signal instruction[ARG_LEN] <== [1, 3, 1, 0];
+    signal instructionOut[ARG_LEN]; 
 
     component isEq;
     isEq = IsEqual();
     isEq.in[0] <== inputIndex;
     isEq.in[1] <== 5;
 
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < ARG_LEN; i++) {
         instructionOut[i] <== instruction[i] * isEq.out;
     }
 
@@ -128,18 +128,18 @@ template ArgumentsTransformBlueYellow() {
 }
 
 // TRANSFORM_BLUE_RED
-template ArgumentsTransformBlueRed() {
+template ArgumentsTransformBlueRed(C, ARG_LEN) {
     signal input inputIndex;
-    signal output out[5][4];
-    signal instruction[4] <== [1, 3, 2, 0];
-    signal instructionOut[4]; 
+    signal output out[C][ARG_LEN];
+    signal instruction[ARG_LEN] <== [1, 3, 2, 0];
+    signal instructionOut[ARG_LEN]; 
 
     component isEq;
     isEq = IsEqual();
     isEq.in[0] <== inputIndex;
     isEq.in[1] <== 6;
 
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < ARG_LEN; i++) {
         instructionOut[i] <== instruction[i] * isEq.out;
     }
 

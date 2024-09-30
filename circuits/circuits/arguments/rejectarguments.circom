@@ -1,17 +1,17 @@
 pragma circom 2.0.0;
 include "../../../node_modules/circomlib/circuits/comparators.circom";
 
-// "STACK_YELLOW",
-template ArgumentsStackYellow(C, ARG_LEN) {
+// REJECT_YELLOW
+template ArgumentsRejectYellow(C, ARG_LEN) {
     signal input inputIndex;
-    signal output out[C][ARG_LEN];
+    signal output out[C][4];
     signal instruction[ARG_LEN] <== [1, 1, 0, 0];
     signal instructionOut[ARG_LEN]; 
 
     component isEq;
     isEq = IsEqual();
     isEq.in[0] <== inputIndex;
-    isEq.in[1] <== 7;
+    isEq.in[1] <== 28;
 
      for (var i = 0; i < ARG_LEN; i++) {
         instructionOut[i] <== instruction[i] * isEq.out;
@@ -19,15 +19,15 @@ template ArgumentsStackYellow(C, ARG_LEN) {
 
     out <== [
         [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
         instructionOut,
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
         [0, 0, 0, 0]
     ];
 }
 
-// "STACK_RED"
-template ArgumentsStackRed(C, ARG_LEN) {
+// REJECT_RED
+template ArgumentsRejectRed(C, ARG_LEN) {
     signal input inputIndex;
     signal output out[C][ARG_LEN];
     signal instruction[ARG_LEN] <== [1, 2, 0, 0];
@@ -36,7 +36,7 @@ template ArgumentsStackRed(C, ARG_LEN) {
     component isEq;
     isEq = IsEqual();
     isEq.in[0] <== inputIndex;
-    isEq.in[1] <== 8;
+    isEq.in[1] <== 29;
 
      for (var i = 0; i < ARG_LEN; i++) {
         instructionOut[i] <== instruction[i] * isEq.out;
@@ -44,15 +44,15 @@ template ArgumentsStackRed(C, ARG_LEN) {
 
     out <== [
         [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
         instructionOut,
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
         [0, 0, 0, 0]
     ];
 }
 
-// "STACK_BLUE",
-template ArgumentsStackBlue(C, ARG_LEN) {
+// REJECT_BLUE
+template ArgumentsRejectBlue(C, ARG_LEN) {
     signal input inputIndex;
     signal output out[C][ARG_LEN];
     signal instruction[ARG_LEN] <== [1, 3, 0, 0];
@@ -61,7 +61,7 @@ template ArgumentsStackBlue(C, ARG_LEN) {
     component isEq;
     isEq = IsEqual();
     isEq.in[0] <== inputIndex;
-    isEq.in[1] <== 9;
+    isEq.in[1] <== 30;
 
      for (var i = 0; i < ARG_LEN; i++) {
         instructionOut[i] <== instruction[i] * isEq.out;
@@ -69,9 +69,9 @@ template ArgumentsStackBlue(C, ARG_LEN) {
 
     out <== [
         [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
         instructionOut,
-        [0, 0, 0, 0],
-        [0, 0, 0, 0],
         [0, 0, 0, 0]
     ];
 }
