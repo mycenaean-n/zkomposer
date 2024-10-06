@@ -1,3 +1,4 @@
+import config from '../../config';
 import { Colors } from '../../types/circuitFunctions.types';
 
 export function filter(
@@ -8,7 +9,7 @@ export function filter(
   const [firstColumn, ...restOfGrid] = grid;
 
   const [columnToAddFirst, columnToAddLast] = firstColumn.includes(color)
-    ? [[], [Array(8).fill(0)]]
+    ? [[], [Array(config.gridHeight).fill(0)]]
     : [[firstColumn], []];
 
   return [
