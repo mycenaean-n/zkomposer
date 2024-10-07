@@ -9,7 +9,7 @@ import { Grid } from './grid/Grid';
 import IntermediateGrids from './IntermediateGrids';
 import { ResponsiveCamera } from './ResponsiveCamera';
 
-const STARTING_X_POS = isMobile ? -1.7 : -3;
+const STARTING_X_POS = isMobile ? -1.7 : -1;
 const STARTING_Y_POS = isMobile ? 0.3 : 0.5;
 
 export function Scene() {

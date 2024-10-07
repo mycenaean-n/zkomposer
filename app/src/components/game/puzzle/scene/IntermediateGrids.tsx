@@ -1,6 +1,6 @@
 import { CircuitFunctions } from 'circuits/types/circuitFunctions.types';
-import { Grid } from './grid/Grid';
 import { isMobile } from 'react-device-detect';
+import { Grid } from './grid/Grid';
 
 export default function IntermediateGrids({
   grids,
@@ -15,7 +15,7 @@ export default function IntermediateGrids({
 }) {
   const xGap = isMobile
     ? 8 / availableFunctions.length
-    : 10 / availableFunctions.length;
+    : 5 / availableFunctions.length;
   return grids.map((grid, index) => {
     xPos += xGap;
     return (
