@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import { WasmTester, wasm } from 'circom_tester';
 import path from 'path';
-import config from '../config';
+import { GRID_HEIGHT, GRID_WIDTH } from '../config';
 import { Colors } from '../types/circuitFunctions.types';
 import { calculateLabeledWitness } from './utils/calculateLabeledWitness';
 
@@ -162,8 +162,8 @@ describe.only('removecolumnwithleadingzero circuit', () => {
         sanityCheck
       );
 
-      for (let i = 0; i < config.gridWidth; i++) {
-        for (let j = 0; j < config.gridHeight; j++) {
+      for (let i = 0; i < GRID_WIDTH; i++) {
+        for (let j = 0; j < GRID_HEIGHT; j++) {
           assert.propertyVal(
             witness,
             `main.out[${i}][${j}]`,

@@ -1,3 +1,4 @@
+import { AVAILABLE_CIRCUITS } from '../config';
 import {
   CircuitFunctions,
   circuitFunctionsArray,
@@ -14,7 +15,8 @@ export function getCircuitFunctionIndex<
   T extends CircuitFunctions | CircuitFunctions[],
 >(funcName: T): T extends CircuitFunctions[] ? number[] : number {
   if (Array.isArray(funcName)) {
-    const emptyArray: number[] = new Array(5).fill(0);
+    // todo
+    const emptyArray: number[] = new Array(AVAILABLE_CIRCUITS).fill(0);
     funcName.forEach((name, i) => {
       emptyArray[i] = getCircuitFunctionIndexByName(name);
     });

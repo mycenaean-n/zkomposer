@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import { WasmTester, wasm } from 'circom_tester';
 import path from 'path';
-import config from '../config';
+import { GRID_HEIGHT, GRID_WIDTH } from '../config';
 import { Puzzle } from '../types/circuitFunctions.types';
 import { argumentBuilder } from '../utils/circuitFunctions';
 import { gridMutator } from '../utils/transformers/gridMutator';
@@ -108,8 +108,8 @@ describe.only('transform circuit', () => {
 
       const targetGrid = gridMutator(puzzles[0.1].initial, [argument]);
 
-      for (let i = 0; i < config.gridWidth; i++) {
-        for (let j = 0; j < config.gridHeight; j++) {
+      for (let i = 0; i < GRID_WIDTH; i++) {
+        for (let j = 0; j < GRID_HEIGHT; j++) {
           assert.propertyVal(
             witness,
             `main.out[${i}][${j}]`,
