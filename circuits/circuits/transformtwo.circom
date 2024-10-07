@@ -112,8 +112,8 @@ template TransformTwo(W, H) {
             noTransformations += isEqOut[i][j];
             out[i][j-1] <== tupleList[i][j][0];
         }
-        lastElOn[i] <== onOff * tupleList[i][7][1];
-        lastElOff[i] <== (1 - onOff) * grid[i][7];
+        lastElOn[i] <== onOff * tupleList[i][H-1][1];
+        lastElOff[i] <== (1 - onOff) * grid[i][H-1];
         out[i][H-1] <== lastElOn[i] + lastElOff[i];
     }
 }
