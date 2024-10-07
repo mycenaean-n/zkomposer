@@ -1,11 +1,11 @@
-import config from '../config';
-import { argumentBuilder } from '../utils/circuitFunctions';
-import { WasmTester, wasm } from 'circom_tester';
-import { calculateLabeledWitness } from './utils/calculateLabeledWitness';
 import { assert } from 'chai';
+import { WasmTester, wasm } from 'circom_tester';
 import path from 'path';
+import config from '../config';
 import { Puzzle } from '../types/circuitFunctions.types';
+import { argumentBuilder } from '../utils/circuitFunctions';
 import { gridMutator } from '../utils/transformers/gridMutator';
+import { calculateLabeledWitness } from './utils/calculateLabeledWitness';
 const puzzles: Puzzle = require('../data/test.puzzles.json');
 
 describe.only('transform circuit', () => {
@@ -41,7 +41,7 @@ describe.only('transform circuit', () => {
     );
 
     for (let i = 0; i < 8; i++) {
-      for (let j = 0; j < 8; j++) {
+      for (let j = 0; j < 12; j++) {
         assert.propertyVal(
           witness,
           `main.out[${i}][${j}]`,

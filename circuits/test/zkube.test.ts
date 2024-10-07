@@ -1,15 +1,15 @@
 import { assert } from 'chai';
-import { gridMutator } from '../utils/transformers/gridMutator';
+import { wasm, WasmTester } from 'circom_tester';
+import path from 'path';
+import config from '../config';
 import {
   CircuitFunctions,
   circuitFunctionsArray,
   Puzzle,
 } from '../types/circuitFunctions.types';
-import { WasmTester, wasm } from 'circom_tester';
-import path from 'path';
-import { calculateLabeledWitness } from './utils/calculateLabeledWitness';
-import config from '../config';
 import { getCircuitFunctionIndex } from '../utils/circuitFunctionGetter';
+import { gridMutator } from '../utils/transformers/gridMutator';
+import { calculateLabeledWitness } from './utils/calculateLabeledWitness';
 const puzzles: Puzzle = require('../data/test.puzzles.json');
 
 type Level = {
@@ -222,8 +222,8 @@ describe.only('zkube circuit', () => {
       sanityCheck
     );
 
-    for (let i = 0; i < 8; i++) {
-      for (let j = 0; j < 8; j++) {
+    for (let i = 0; i < config.gridWidth; i++) {
+      for (let j = 0; j < config.gridHeight; j++) {
         assert.propertyVal(
           witness,
           `main.finalGridForPlayer[${i}][${j}]`,

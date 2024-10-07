@@ -59,7 +59,7 @@ template ZKube(W, H, C, NUM_PUZZLE_TR, NUM_AVAIL_ARGS, ARG_LEN) {
     // C intermediate grids, corresponding to possible Functions. Of width W and height H
     signal intermediateGrids[C+1][W][H];
     intermediateGrids[0] <== initialGrid;
-    signal selectedFunctions[C][C][4];
+    signal selectedFunctions[C][C][ARG_LEN];
     component argumentsAggregator[C];
     for (var i = 0; i < C; i++) {
         // check that player has not selected any of the functions which is not available for the puzzle
@@ -134,4 +134,4 @@ template ZKube(W, H, C, NUM_PUZZLE_TR, NUM_AVAIL_ARGS, ARG_LEN) {
 // NUM_PUZZLE_TR = number of functions in a round
 // NUM_AVAIL_ARGS = all available arguments to zKube circuit with 4 available colors and 5 available transformation circuits (transform, stack, transformTwo, reject, filter)
 // ARG_LEN = length of arguments for each transformation circuit
-component main { public [initialGrid, finalGrid, availableFunctionsIndexes, account] } = ZKube(8, 8, 5, 8, 33, 4);
+component main { public [initialGrid, finalGrid, availableFunctionsIndexes, account] } = ZKube(8, 12, 5, 8, 33, 4);
