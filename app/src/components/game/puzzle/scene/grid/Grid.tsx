@@ -1,4 +1,4 @@
-import { Vector3, ColorRepresentation, Color } from 'three';
+import { Color, ColorRepresentation, Vector3 } from 'three';
 import { Cube } from './Cube';
 
 type GridProps = {
