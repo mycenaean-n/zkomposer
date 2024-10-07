@@ -6,7 +6,7 @@ export function removeColumnWithLeadingZero(
   if (grid.length === 1) return grid;
 
   const [firstColumn, ...restOfColumns] = grid;
-
+  
   const [columnToAddFirst, columnToAddLast] =
     firstColumn[0] === 0
       ? [[], [Array(firstColumn.length).fill(0)]]

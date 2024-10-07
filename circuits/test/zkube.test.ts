@@ -1,7 +1,7 @@
 import { assert } from 'chai';
 import { wasm, WasmTester } from 'circom_tester';
 import path from 'path';
-import config from '../config';
+import { GRID_HEIGHT, GRID_WIDTH } from '../config';
 import {
   CircuitFunctions,
   circuitFunctionsArray,
@@ -222,8 +222,8 @@ describe.only('zkube circuit', () => {
       sanityCheck
     );
 
-    for (let i = 0; i < config.gridWidth; i++) {
-      for (let j = 0; j < config.gridHeight; j++) {
+    for (let i = 0; i < GRID_WIDTH; i++) {
+      for (let j = 0; j < GRID_HEIGHT; j++) {
         assert.propertyVal(
           witness,
           `main.finalGridForPlayer[${i}][${j}]`,
@@ -458,8 +458,8 @@ describe.only('zkube circuit', () => {
         sanityCheck
       );
 
-      for (let i = 0; i < config.gridWidth; i++) {
-        for (let j = 0; j < config.gridHeight; j++) {
+      for (let i = 0; i < GRID_WIDTH; i++) {
+        for (let j = 0; j < GRID_HEIGHT; j++) {
           assert.propertyVal(
             witness,
             `main.finalGridForPlayer[${i}][${j}]`,

@@ -1,16 +1,14 @@
-import { useChainId, useChains } from 'wagmi';
-import { useZkubeContract } from '../useContract';
-import { usePrivyWalletAddress } from '../usePrivyWalletAddress';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { isNumberNumericStringBI } from '@utils/isNumericString';
 import { circuitFunctionsArray } from 'circuits/types/circuitFunctions.types';
 import { convertPuzzleToBase4FromHex } from 'circuits/utils/contracts/hexConversion';
-import { StringNumberBI, OnChainPuzzle, Puzzle } from 'types/Puzzle';
-import { mapGrid } from 'utils';
-import { isNumberNumericStringBI } from '@utils/isNumericString';
-import { Address, Hex } from 'viem';
+import { useEffect, useMemo, useState } from 'react';
 import { OnChainGame } from 'types/Game';
-import { useBlockNumber } from '../useBlockNumber';
 import { ContractFetchReturnType } from 'types/Hooks';
+import { OnChainPuzzle, Puzzle, StringNumberBI } from 'types/Puzzle';
+import { mapGrid } from 'utils';
+import { Address, Hex } from 'viem';
+import { useChainId } from 'wagmi';
+import { useZkubeContract } from '../useContract';
 
 type SelectPuzzleResponse = {
   roundBlock: BigInt;
@@ -39,33 +37,18 @@ type SelectPuzzleResponse = {
 };
 
 export function useGameAndPuzzleData(
-  gameId: StringNumberBI,
-  shouldPoll: boolean
+  gameId: StringNumberBI
 ): ContractFetchReturnType<{
   initConfig?: Puzzle;
   onChainGame: OnChainGame;
 }> {
   const zKubeContract = useZkubeContract(true);
-  const address = usePrivyWalletAddress();
-  const chains = useChains();
   const chainId = useChainId();
-  const blockNumber = useBlockNumber();
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<SelectPuzzleResponse>();
-  const pollingRef = useRef(shouldPoll);
 
   useEffect(() => {
-    pollingRef.current = shouldPoll;
-  }, [shouldPoll]);
-
-  useEffect(() => {
-    if (
-      gameId == null ||
-      !isNumberNumericStringBI(gameId) ||
-      !address ||
-      !zKubeContract ||
-      !pollingRef.current
-    ) {
+    if (gameId == null || !isNumberNumericStringBI(gameId) || !zKubeContract) {
       return;
     }
 
@@ -84,7 +67,8 @@ export function useGameAndPuzzleData(
         console.error(e.message);
         setLoading(false);
       });
-  }, [gameId, address, chains, chainId, zKubeContract?.address, blockNumber]);
+    // todo: add is new round dependacy-1q2
+  }, [gameId, chainId, zKubeContract?.address]);
 
   return useMemo(() => {
     if (!data) {
@@ -95,15 +79,18 @@ export function useGameAndPuzzleData(
       };
     }
 
-    const { roundBlock, game, hexPuzzle } = data;
+    const { game, hexPuzzle } = data;
 
-    if (
+    const isPuzzleInvalid =
       hexPuzzle.availableFunctions.length === 0 ||
       !Number(hexPuzzle.startingGrid) ||
-      !Number(hexPuzzle.finalGrid) ||
+      !Number(hexPuzzle.finalGrid);
+
+    const areRandomNumbersInvalid =
       game.randomNumbers.length === 0 ||
-      game.randomNumbers.every((el) => el === BigInt(0))
-    ) {
+      game.randomNumbers.every((el) => el === BigInt(0));
+
+    if (isPuzzleInvalid || areRandomNumbersInvalid) {
       return {
         loading: false,
         success: true,
