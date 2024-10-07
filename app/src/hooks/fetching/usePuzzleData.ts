@@ -31,8 +31,8 @@ export const usePuzzleData = (
           loading: false,
           success: true,
           data: {
-            initialGrid: mapGrid(base4Puzzle.startingGrid),
-            finalGrid: mapGrid(base4Puzzle.finalGrid),
+            initialGrid: mapGrid(base4Puzzle.startingGrid, 4),
+            finalGrid: mapGrid(base4Puzzle.finalGrid, 4),
             availableFunctions: base4Puzzle.availableFunctions.map(
               (functionId) => circuitFunctionsArray[functionId]
             ),
