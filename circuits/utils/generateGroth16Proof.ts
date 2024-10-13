@@ -1,12 +1,12 @@
 // @ts-ignore
 import { groth16 } from 'snarkjs';
-import { InputSignals } from '../types/proof.types';
+import { InputSignals, Proof } from '../types/proof.types';
 
-export async function exportCalldataGroth16(
+export async function generateGroth16Proof(
   input: InputSignals,
   wasmPath: string,
   zkeyPath: string
-): Promise<string> {
+): Promise<{ proof: Proof; publicSignals: `0x${string}`[] }> {
   let _proof, _publicSignals;
   try {
     ({ proof: _proof, publicSignals: _publicSignals } = await groth16.fullProve(
@@ -23,5 +23,5 @@ export async function exportCalldataGroth16(
     throw new Error((err as Error).message);
   }
 
-  return await groth16.exportSolidityCallData(_proof, _publicSignals);
+  return { proof: _proof, publicSignals: _publicSignals };
 }

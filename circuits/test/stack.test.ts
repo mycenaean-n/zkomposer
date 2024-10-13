@@ -1,11 +1,11 @@
 import { assert } from 'chai';
-import config from '../config';
 import { WasmTester, wasm } from 'circom_tester';
-import { calculateLabeledWitness } from './utils/calculateLabeledWitness';
 import path from 'path';
+import { GRID_HEIGHT, GRID_WIDTH } from '../config';
 import { Puzzle } from '../types/circuitFunctions.types';
-import { gridMutator } from '../utils/transformers/gridMutator';
 import { argumentBuilder } from '../utils/circuitFunctions';
+import { gridMutator } from '../utils/transformers/gridMutator';
+import { calculateLabeledWitness } from './utils/calculateLabeledWitness';
 const puzzles: Puzzle = require('../data/test.puzzles.json');
 
 describe.only('stack circuit', () => {
@@ -81,8 +81,8 @@ describe.only('stack circuit', () => {
 
       const targetGrid = gridMutator(initialGrid, [argument]);
 
-      for (let i = 0; i < config.gridWidth; i++) {
-        for (let j = 0; j < config.gridHeight; j++) {
+      for (let i = 0; i < GRID_WIDTH; i++) {
+        for (let j = 0; j < GRID_HEIGHT; j++) {
           assert.propertyVal(
             witness,
             `main.out[${i}][${j}]`,

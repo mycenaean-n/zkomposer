@@ -1,8 +1,8 @@
-import { Puzzle } from '../types/circuitFunctions.types';
-import { gridMutator } from './transformers/gridMutator';
-import { getCircuitFunctionIndex } from '../utils/circuitFunctionGetter';
 import { writeFileSync } from 'fs';
-const puzzles: Puzzle = require('../test/data/puzzles.json');
+import puzzles from '../data/test.puzzles.json';
+import { Colors } from '../types/circuitFunctions.types';
+import { getCircuitFunctionIndex } from '../utils/circuitFunctionGetter';
+import { gridMutator } from './transformers/gridMutator';
 
 const ADDRESS_PLAYER_ONE = '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266';
 const ADDRESS_PLAYER_TWO = '0x6813Eb9362372EEF6200f3b1dbC3f819671cBA69';
@@ -10,7 +10,7 @@ const ADDRESS_PLAYER_TWO = '0x6813Eb9362372EEF6200f3b1dbC3f819671cBA69';
 export function generateCircuitInput() {
   const initialGrid = puzzles[0.1].initial;
 
-  const targetGrid = gridMutator(initialGrid, [
+  const targetGrid = gridMutator(initialGrid as Colors[][], [
     'TRANSFORM_YELLOW_RED',
     'EMPTY',
     'EMPTY',
