@@ -4,7 +4,7 @@ include "../../../node_modules/circomlib/circuits/comparators.circom";
 // REJECT_YELLOW
 template ArgumentsRejectYellow(C, ARG_LEN) {
     signal input inputIndex;
-    signal output out[C][4];
+    signal output out[C][ARG_LEN];
     signal instruction[ARG_LEN] <== [1, 1, 0, 0];
     signal instructionOut[ARG_LEN]; 
 

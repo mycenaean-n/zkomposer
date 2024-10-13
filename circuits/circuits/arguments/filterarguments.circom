@@ -4,7 +4,7 @@ include "../../../node_modules/circomlib/circuits/comparators.circom";
 // FILTER_YELLOW
 template ArgumentsFilterYellow(C, ARG_LEN) {
     signal input inputIndex;
-    signal output out[C][4];
+    signal output out[C][ARG_LEN];
     signal instruction[ARG_LEN] <== [1, 1, 0, 0];
     signal instructionOut[ARG_LEN]; 
 
@@ -29,7 +29,7 @@ template ArgumentsFilterYellow(C, ARG_LEN) {
 // FILTER_RED
 template ArgumentsFilterRed(C, ARG_LEN) {
     signal input inputIndex;
-    signal output out[C][4];
+    signal output out[C][ARG_LEN];
     signal instruction[ARG_LEN] <== [1, 2, 0, 0];
     signal instructionOut[ARG_LEN]; 
 
@@ -54,7 +54,7 @@ template ArgumentsFilterRed(C, ARG_LEN) {
 // FILTER_BLUE
 template ArgumentsFilterBlue(C, ARG_LEN) {
     signal input inputIndex;
-    signal output out[C][4];
+    signal output out[C][ARG_LEN];
     signal instruction[ARG_LEN] <== [1, 3, 0, 0];
     signal instructionOut[ARG_LEN]; 
 

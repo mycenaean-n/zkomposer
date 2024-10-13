@@ -1,14 +1,14 @@
-import { stackGrid } from './stack';
-import { transformGrid } from './transform';
-import { transformTwoGrid } from './transformTwo';
-import { rejectGrid } from './reject';
-import { filter } from './filter';
 import {
   CircuitFunctions,
   COLORS,
   Colors,
   ColorsKeys,
 } from '../../types/circuitFunctions.types';
+import { filter } from './filter';
+import { rejectGrid } from './reject';
+import { stackGrid } from './stack';
+import { transformGrid } from './transform';
+import { transformTwoGrid } from './transformTwo';
 
 function selectColor(color: ColorsKeys) {
   return color === 'YELLOW'
