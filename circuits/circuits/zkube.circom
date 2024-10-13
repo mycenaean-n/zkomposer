@@ -71,7 +71,7 @@ template ZKube(W, H, C, NUM_PUZZLE_TR, NUM_AVAIL_ARGS, ARG_LEN) {
         intermediateAvailableFunctionsIndexes[i+1] <== contains[i].outArray;
         assert(contains[i].out > 0);
 
-        argumentsAggregator[i] = ArgumentsAggregator(NUM_AVAIL_ARGS, C, ARG_LEN);
+        argumentsAggregator[i] = ArgumentsAggregator(NUM_AVAIL_ARGS+1, C, ARG_LEN);
         argumentsAggregator[i].index <== selectedFunctionsIndexes[i];
         selectedFunctions[i] <== argumentsAggregator[i].out;
 

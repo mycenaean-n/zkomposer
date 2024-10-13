@@ -27,7 +27,7 @@ template RemoveColumnsWithLeadingZero(W,H) {
 
     columnSortingOdd[0] <== grid;
     // i = (h/2)+1
-    for(var i = 1; i < 5; i++) {
+    for(var i = 1; i < 7; i++) {
         for(var j = 0; j < W; j+=2) {
             isZeroEven[i][j] = IsZero();
             isZeroEven[i][j].in <== columnSortingOdd[i-1][j][0] + (1 - onOff);
@@ -63,5 +63,6 @@ template RemoveColumnsWithLeadingZero(W,H) {
         columnSortingOdd[i][0] <== columnSortingEven[i][0];
         columnSortingOdd[i][W-1] <== columnSortingEven[i][W-1];
     }
-    out <== columnSortingEven[4];
+    // (h/2)
+    out <== columnSortingEven[6];
 }
