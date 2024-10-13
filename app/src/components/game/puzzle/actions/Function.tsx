@@ -1,10 +1,8 @@
 import { CircuitFunctions } from 'circuits/types/circuitFunctions.types';
 import { useContext } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { isMobile } from 'react-device-detect';
 import { PuzzleContext } from '../Puzzle';
-import { DisplayName } from './DisplayName';
-import { DisplayNameMobile } from './DisplayNameMobile';
+import { FunctionCard } from './function-card/FunctionCard';
 
 export function Function({
   elementType,
@@ -43,11 +41,7 @@ export function Function({
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          {isMobile ? (
-            <DisplayNameMobile funcName={funcName} />
-          ) : (
-            <DisplayName funcName={funcName} />
-          )}
+          <FunctionCard funcName={funcName} />
         </div>
       )}
     </Draggable>
