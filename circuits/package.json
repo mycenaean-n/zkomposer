@@ -27,7 +27,7 @@
     "generate:calldata": "ts-node -e \"import { exportCalldataGroth16Invoke } from './utils/exportCalldataGroth16Invoke'; exportCalldataGroth16Invoke();\"",
     "build:dev": "yarn compile && yarn setup:sample-zkey && yarn contribute:deterministic && yarn generate:verifier",
     "generate:proof:calldata": "yarn generate:input && yarn generate:calldata",
-    "export:elements": "cp ./zk/ZKubeVerifier.sol ../contracts/src && cp ./zk/zkube_proof_calldata_player_one.json ../contracts/test/ && cp ./zk/zkube_proof_calldata_player_two.json ../contracts/test/ && cp ./zk/zkube_final.zkey ./zk/zkube_js/zkube.wasm ../app/public/zk",
-    "build:dev:all": "yarn build:dev && yarn generate:proof:calldata && yarn export:elements"
+    "export:elements": "cp ./zk/ZKubeVerifier.sol ../contracts/src && cp ./zk/zkube_proof_calldata_player_one.json ../contracts/test/ && cp ./zk/zkube_proof_calldata_player_two.json ../contracts/test/ && cp ./zk/zkube_final.zkey ./zk/zkube_js/zkube.wasm ./zk/zkube_verification_key.json ../app/public/zk",
+    "build:dev:all": "yarn build:dev && yarn generate:proof:calldata && yarn export-verification-key && yarn export:elements"
   }
 }
