@@ -62,7 +62,7 @@ template ArgumentsTransformRedYellow(C, ARG_LEN) {
     component isEq;
     isEq = IsEqual();
     isEq.in[0] <== inputIndex;
-    isEq.in[1] <== 2;
+    isEq.in[1] <== 3;
 
     for (var i = 0; i < ARG_LEN; i++) {
         instructionOut[i] <== instruction[i] * isEq.out;
