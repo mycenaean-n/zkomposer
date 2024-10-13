@@ -8,6 +8,7 @@ const ARGUMENT_VALUE = [
   'removeColumnWithLeadingZero',
   'reject',
   'filter',
+  'custom',
 ];
 
 const argumentValue = process.argv[2];
@@ -31,6 +32,7 @@ if (!argumentValue) {
   mochaConfig.addFile('./test/reject.test.ts');
   mochaConfig.addFile('./test/removeColumnWithLeadingZero.test.ts');
   mochaConfig.addFile('./test/filter.test.ts');
+  mochaConfig.addFile('./test/custom.test.ts');
 } else {
   mochaConfig.addFile(`./test/${argumentValue}.test.ts`);
 }
