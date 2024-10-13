@@ -2,11 +2,11 @@ import { assert } from 'chai';
 import { WasmTester, wasm } from 'circom_tester';
 import path from 'path';
 import { GRID_HEIGHT, GRID_WIDTH } from '../config';
-import { Puzzle } from '../types/circuitFunctions.types';
+import puzzles from '../data/test.puzzles.json';
+import { Colors } from '../types/circuitFunctions.types';
 import { argumentBuilder } from '../utils/circuitFunctions';
 import { gridMutator } from '../utils/transformers/gridMutator';
 import { calculateLabeledWitness } from './utils/calculateLabeledWitness';
-const puzzles: Puzzle = require('../data/test.puzzles.json');
 
 describe.only('transform circuit', () => {
   let circuit: WasmTester;
@@ -106,7 +106,9 @@ describe.only('transform circuit', () => {
         sanityCheck
       );
 
-      const targetGrid = gridMutator(puzzles[0.1].initial, [argument]);
+      const targetGrid = gridMutator(puzzles[0.1].initial as Colors[][], [
+        argument,
+      ]);
 
       for (let i = 0; i < GRID_WIDTH; i++) {
         for (let j = 0; j < GRID_HEIGHT; j++) {

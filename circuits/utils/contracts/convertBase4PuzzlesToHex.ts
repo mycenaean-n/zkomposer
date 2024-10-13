@@ -1,9 +1,9 @@
-import fs from 'fs';
-import { convertPuzzleToHex } from './hexConversion';
-import { Puzzle } from '../../types/circuitFunctions.types';
-import {getCircuitFunctionIndex} from '../circuitFunctionGetter'
 import { OnChainPuzzle } from 'app/src/types/Puzzle';
+import fs from 'fs';
 import path from 'path';
+import { Puzzle } from '../../types/circuitFunctions.types';
+import { getCircuitFunctionIndex } from '../circuitFunctionGetter';
+import { convertPuzzleToHex } from './hexConversion';
 const puzzles: Puzzle = require('../../data/cube-composer.puzzles.json');
 
 function main() {
