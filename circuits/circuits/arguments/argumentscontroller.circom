@@ -6,9 +6,9 @@ include "./transformtwoarguments.circom";
 include "./filterarguments.circom";
 include "./rejectarguments.circom";
 
-template ArgumentsController(NUM_AVAIL_ARGS, C, ARG_LEN) {
+template ArgumentsController(NUM_TOTAL_ARGS, C, ARG_LEN) {
     signal input index;
-    signal output arguments[NUM_AVAIL_ARGS][C][ARG_LEN];
+    signal output arguments[NUM_TOTAL_ARGS][C][ARG_LEN];
 
     // Transform
     component ArgumentOne = ArgumentsTransformYellowRed(C, ARG_LEN);
