@@ -1,15 +1,12 @@
-import { exportCalldataGroth16 } from 'circuits';
-import { InputSignals } from 'circuits/types/proof.types';
-import { useCallback } from 'react';
+import { groth16 } from 'snarkjs';
 import { Hex } from 'viem';
-import { Proof, ZKProof } from '../types/Proof';
+import { Proof, ZKProofCalldata } from '../types/Proof';
 
 async function generateGroth16ProofCalldata(
-  input: InputSignals,
-  wasmPath: string,
-  zkeyPath: string
+  proof: Proof,
+  publicSignals: Hex[]
 ): Promise<Proof & { Input: string[] }> {
-  const calldata = await exportCalldataGroth16(input, wasmPath, zkeyPath);
+  const calldata = await groth16.exportSolidityCallData(proof, publicSignals);
 
   const argv = calldata
     .replace(/["[\]\s]/g, '')
@@ -31,25 +28,22 @@ async function generateGroth16ProofCalldata(
   return { a, b, c, Input };
 }
 
-export function useProof(wasmPath: string, zkeyPath: string) {
-  return useCallback(
-    async (input: InputSignals) => {
-      const { a, b, c, Input } = await generateGroth16ProofCalldata(
-        input,
-        wasmPath,
-        zkeyPath
-      );
-
-      return {
-        a: [BigInt(a[0]), BigInt(a[1])],
-        b: [
-          [BigInt(b[0][0]), BigInt(b[0][1])],
-          [BigInt(b[1][0]), BigInt(b[1][1])],
-        ],
-        c: [BigInt(c[0]), BigInt(c[1])],
-        input: Input.map((x) => BigInt(x)),
-      } as ZKProof;
-    },
-    [wasmPath, zkeyPath]
+export async function generateGroth16ProofCalldataParsed(
+  proof: Proof,
+  publicSignals: `0x${string}`[]
+): Promise<ZKProofCalldata> {
+  const { a, b, c, Input } = await generateGroth16ProofCalldata(
+    proof,
+    publicSignals
   );
+
+  return {
+    a: [BigInt(a[0]), BigInt(a[1])],
+    b: [
+      [BigInt(b[0][0]), BigInt(b[0][1])],
+      [BigInt(b[1][0]), BigInt(b[1][1])],
+    ],
+    c: [BigInt(c[0]), BigInt(c[1])],
+    input: Input.map((x) => BigInt(x)),
+  };
 }
