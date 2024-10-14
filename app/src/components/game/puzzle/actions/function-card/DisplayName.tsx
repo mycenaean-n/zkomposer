@@ -1,7 +1,7 @@
 import { AvailableFunctions } from 'circuits/types/circuitFunctions.types';
 import { ReactNode } from 'react';
 
-const functionDisplayNames: Record<
+const FunctionDisplayNamesMap: Record<
   AvailableFunctions,
   (props: { children: React.ReactNode }) => ReactNode
 > = {
@@ -13,15 +13,18 @@ const functionDisplayNames: Record<
   FILTER: ({ children }) => <>filter (contains {children})</>,
 } as const;
 
-export function getDisplayName(
-  func: AvailableFunctions
-): (props: { children: ReactNode }) => ReactNode {
-  const displayName = functionDisplayNames[func];
-  if (!displayName) {
-    throw new Error(`Unexpected function: ${func}`);
+export function DisplayName({
+  functionName,
+  children,
+}: {
+  functionName: AvailableFunctions;
+  children: ReactNode;
+}): ReactNode {
+  const FunctionDisplayName = FunctionDisplayNamesMap[functionName];
+
+  if (!FunctionDisplayName) {
+    throw new Error(`Unexpected function: ${functionName}`);
   }
 
-  return (props) => (
-    <div className="flex items-center leading-snug">{displayName(props)}</div>
-  );
+  return <FunctionDisplayName>{children}</FunctionDisplayName>;
 }
