@@ -27,7 +27,7 @@ contract DeployZKube is Script {
     function run() public {
         vm.startBroadcast();
         ZKubeVerifier verifier = new ZKubeVerifier();
-        new ZKube(address(verifier));
+        new ZKube(address(verifier), 8, 12, 8);
         ZKubePuzzleSet puzzleSet = new ZKubePuzzleSet("Official ZKubePuzzleSet", "ZKPuzzle");
         for (uint256 i; i < puzzles.length; i++) {
             puzzleSet.addPuzzle(puzzles[i]);
