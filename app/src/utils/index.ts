@@ -1,9 +1,4 @@
-import {
-  AvailableFunctions,
-  COLORS,
-  Colors,
-  ColorsKeys,
-} from 'circuits/types/circuitFunctions.types';
+import { COLORS, Colors } from 'circuits/types/circuitFunctions.types';
 import { GRID_HEIGHT, GRID_WIDTH } from '../config';
 
 function isValidColor(value: number): value is Colors {
@@ -29,36 +24,4 @@ export function mapGrid(gridString: string, padding: number = 0): Colors[][] {
   });
 
   return grid;
-}
-
-const colorClassMap: Record<ColorsKeys, string> = {
-  WHITE: 'bg-white',
-  YELLOW: 'bg-yellow-500',
-  RED: 'bg-red-500',
-  BLUE: 'bg-blue-500',
-} as const;
-
-export function bgColor(color: ColorsKeys): string {
-  const bgClass = colorClassMap[color];
-  if (!bgClass) {
-    throw new Error(`Unexpected color: ${color}`);
-  }
-  return bgClass;
-}
-
-const functionDisplayNames: Record<AvailableFunctions, string> = {
-  EMPTY: 'empty',
-  TRANSFORM: 'transform',
-  STACK: 'stack',
-  TRANSFORMTWO: 'map',
-  REJECT: 'reject',
-  FILTER: 'filter',
-} as const;
-
-export function getDisplayName(func: AvailableFunctions): string {
-  const displayName = functionDisplayNames[func];
-  if (!displayName) {
-    throw new Error(`Unexpected function: ${func}`);
-  }
-  return displayName;
 }
