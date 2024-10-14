@@ -1,14 +1,15 @@
 // SPDX-License-Identifier: AGPL-3.0
 pragma solidity ^0.8.19;
 
-import "../src/libraries/Base4.sol";
+import {Base4} from "../src/libraries/Base4.sol";
+import {Constants} from "./constants.sol";
 import {Test, console2} from "forge-std/Test.sol";
-contract Base4Test is Test {
+contract Base4Test is Test, Constants {
     using Base4 for bytes16;
 
-    function test_hexToBase4_first() public {
+    function test_hexToBase4_first() public pure {
         bytes16 input = 0x00000000000000000000000001AB2CD3;
-        uint[] memory expected = new uint[](64);
+        uint[] memory expected = new uint[](GRID_HEIGHT*GRID_WIDTH);
         expected[51] = 1;
         expected[52] = 2;
         expected[53] = 2;
@@ -31,9 +32,9 @@ contract Base4Test is Test {
         }
     }
 
-    function test_hexToBase4_second() public {
+    function test_hexToBase4_second() public pure {
         bytes16 input = 0x0000230032000ef00000000001AB2CD3;
-        uint[] memory expected = new uint[](64);
+        uint[] memory expected = new uint[](GRID_HEIGHT*GRID_WIDTH);
         expected[9] = 2;
         expected[11] = 3;
         expected[17] = 3;
@@ -64,16 +65,16 @@ contract Base4Test is Test {
         }
     }
 
-     function test_hexToBase4_failsIfIncorrect() public {
+    function test_hexToBase4_failsIfIncorrect() public pure {
         bytes16 input = 0x00000000000000000000000001AB2CD3;
-        uint[] memory expected = new uint[](64);
+        uint[] memory expected = new uint[](GRID_HEIGHT*GRID_WIDTH);
         expected[61] = 3;
         expected[62] = 3;
         expected[63] = 1;
 
         uint[] memory result = input.hexToBase4();
 
-        for (uint i = 61; i < result.length; i++) {
+        for (uint i = 61; i < 64; i++) {
             assertNotEq(result[i], expected[i], "Base4 assertion should not equals");
         }
     }

@@ -2,8 +2,8 @@
 pragma solidity 0.8.22;
 
 library Base4 {
-    function hexToBase4(bytes16 input) internal pure returns (uint[] memory) {
-        uint[] memory base4Array = new uint[](64); 
+    function hexToBase4(bytes32 input) internal pure returns (uint[] memory) {
+        uint[] memory base4Array = new uint[](96); 
         uint index = 0;
 
         for (uint i = 0; i < 16; i++) {

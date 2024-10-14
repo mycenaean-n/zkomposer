@@ -17,7 +17,7 @@ contract ZKubePuzzleSetTest is Test {
         puzzleSet = new ZKubePuzzleSet("Test puzzle set", "ZKPuzzle");
     }
 
-    function test_init() public {
+    function test_init() public view {
         assertEq(puzzleSet.owner(), deployer, "Owner should be deployer");
         assertEq(puzzleSet.name(), "Test puzzle set", "Name incorrectly set");
         assertEq(puzzleSet.symbol(), "ZKPuzzle", "Symbol incorrectly set");
@@ -27,7 +27,7 @@ contract ZKubePuzzleSetTest is Test {
         _addPuzzles();
         assertEq(puzzleSet.numberOfPuzzles(), puzzles.length, "Puzzles should be added");
         for (uint256 i; i < puzzles.length; i++) {
-            (bytes16 finalGrid, bytes16 startingGrid) = puzzleSet.puzzles(i);
+            (bytes32 finalGrid, bytes32 startingGrid) = puzzleSet.puzzles(i);
             assertEq(startingGrid, puzzles[i].startingGrid, "Starting grid should be the same");
             assertEq(finalGrid, puzzles[i].finalGrid, "Final grid should be the same");
         }
@@ -47,16 +47,16 @@ contract ZKubePuzzleSetTest is Test {
         PuzzleJson[] memory _puzzles = abi.decode(json, (PuzzleJson[]));
         for (uint256 i; i < _puzzles.length; i++) {
             Puzzle memory puzzle = Puzzle({
-                startingGrid: bytes16(_puzzles[i].startingGrid),
-                finalGrid: bytes16(_puzzles[i].finalGrid),
+                startingGrid: bytes32(_puzzles[i].startingGrid),
+                finalGrid: bytes32(_puzzles[i].finalGrid),
                 availableFunctions: _puzzles[i].availableFunctions
             });
             puzzles.push(puzzle);
         }
         for (uint256 i; i < puzzles.length; i++) {
             vm.prank(deployer);
-            console.logBytes16(puzzles[i].startingGrid);
-            console.logBytes16(puzzles[i].finalGrid);
+            console.logBytes32(puzzles[i].startingGrid);
+            console.logBytes32(puzzles[i].finalGrid);
             puzzleSet.addPuzzle(puzzles[i]);
         }
     }
