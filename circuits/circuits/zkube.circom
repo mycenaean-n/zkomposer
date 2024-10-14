@@ -34,13 +34,13 @@ template Contains(LEN) {
     out <== 1 - isZero.out;
 }
 
-template ZKube(W, H, C, NUM_PUZZLE_TR, NUM_TOTAL_ARGS, ARG_LEN) {
+template ZKube(W, H, C, NUM_AVAILABLE_ARGS, NUM_TOTAL_ARGS, ARG_LEN) {
     // public
     signal input initialGrid[W][H];
     signal input finalGrid[W][H];
     // C possible selected transformations is arbitrary
     signal input selectedFunctionsIndexes[C];
-    signal input availableFunctionsIndexes[NUM_PUZZLE_TR];
+    signal input availableFunctionsIndexes[NUM_AVAILABLE_ARGS];
     signal input account;
 
     signal finalGridForPlayer[W][H];
@@ -52,7 +52,7 @@ template ZKube(W, H, C, NUM_PUZZLE_TR, NUM_TOTAL_ARGS, ARG_LEN) {
     component filter[C];
 
     component contains[C];
-    signal intermediateAvailableFunctionsIndexes[C+1][NUM_PUZZLE_TR];
+    signal intermediateAvailableFunctionsIndexes[C+1][NUM_AVAILABLE_ARGS];
     // having +1 because we are assigning current value to the next one
     intermediateAvailableFunctionsIndexes[0] <== availableFunctionsIndexes;
     
@@ -65,7 +65,7 @@ template ZKube(W, H, C, NUM_PUZZLE_TR, NUM_TOTAL_ARGS, ARG_LEN) {
         // check that player has not selected any of the functions which is not available for the puzzle
         // since `selectedFunctionsIndexes` is private signal we can only check the 
         // `selectedFunctionsIndexes` should be a subset of `availableFunctionsIndexes` 
-        contains[i] = Contains(NUM_PUZZLE_TR);
+        contains[i] = Contains(NUM_AVAILABLE_ARGS);
         contains[i].element <== selectedFunctionsIndexes[i];
         contains[i].inArray <== intermediateAvailableFunctionsIndexes[i];
         intermediateAvailableFunctionsIndexes[i+1] <== contains[i].outArray;
@@ -131,7 +131,7 @@ template ZKube(W, H, C, NUM_PUZZLE_TR, NUM_TOTAL_ARGS, ARG_LEN) {
 // W = grid width
 // H = grid height
 // C = number of transformation circuits (transform, stack, transformTwo, reject, filter)
-// NUM_PUZZLE_TR = number of functions in a round
+// NUM_AVAILABLE_ARGS = number of functions in a round
 // NUM_TOTAL_ARGS = all available arguments to zKube circuit with 4 available colors and 5 available transformation circuits (transform, stack, transformTwo, reject, filter)
 // ARG_LEN = length of arguments for each transformation circuit
 component main { public [initialGrid, finalGrid, availableFunctionsIndexes, account] } = ZKube(8, 12, 5, 8, 33, 4);
