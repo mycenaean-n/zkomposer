@@ -25,8 +25,8 @@ export function FunctionCard({ funcName }: { funcName: CircuitFunctions }) {
                     colorThree ? 'flex flex-col gap-0.5' : 'block'
                   )}
                 >
-                  <ColorBox color={colorTwo} />
                   {colorThree ? <ColorBox color={colorThree} /> : null}
+                  <ColorBox color={colorTwo} />
                 </div>
               </>
             ) : null}
