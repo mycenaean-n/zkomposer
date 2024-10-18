@@ -1,11 +1,10 @@
-import { Address } from 'viem';
-import { ZKProof } from '../../types/Proof';
-import { useZkubeContract } from '../useContract';
 import { useCallback } from 'react';
-import { usePrivyWalletAddress } from '../usePrivyWalletAddress';
+import { Address } from 'viem';
+import { ContractCallbackReturnType } from '../../types/Hooks';
+import { ZKProofCalldata } from '../../types/Proof';
 import { StringNumberBI } from '../../types/Puzzle';
 import { isNumberNumericStringBI } from '../../utils/isNumericString';
-import { ContractCallbackReturnType } from '../../types/Hooks';
+import { useZkubeContract } from '../useContract';
 
 export function useVerifyPuzzleSolutionCallback() {
   const zKubeContract = useZkubeContract();
@@ -14,7 +13,7 @@ export function useVerifyPuzzleSolutionCallback() {
     async (
       puzzleSet: Address,
       puzzleId: StringNumberBI,
-      proof: ZKProof,
+      proof: ZKProofCalldata,
       address: Address
     ): Promise<ContractCallbackReturnType> => {
       if (!isNumberNumericStringBI(puzzleId) || !zKubeContract) {
@@ -29,7 +28,7 @@ export function useVerifyPuzzleSolutionCallback() {
           address,
         ]);
 
-        return { success: true };
+        return { success: true, data };
       } catch (error) {
         console.error(error);
         return { success: false, error: (error as Error).message };
