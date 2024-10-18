@@ -1,16 +1,13 @@
 import { EIP1193Provider, useWallets } from '@privy-io/react-auth';
 import { useEffect, useMemo, useState } from 'react';
-import { createPublicClient, createWalletClient, http } from 'viem';
-import { arbitrumSepolia } from 'viem/chains';
-import { custom } from 'wagmi';
+import { createWalletClient } from 'viem';
+import { custom, usePublicClient } from 'wagmi';
+import { wagmiConfig } from '../providers/Web3Provider';
 
 export function useClients() {
   const { wallets } = useWallets();
   const [provider, setProvider] = useState<EIP1193Provider | undefined>();
-  const publicClient = createPublicClient({
-    chain: arbitrumSepolia,
-    transport: http(),
-  });
+  const publicClient = usePublicClient({ config: wagmiConfig });
 
   useEffect(() => {
     if (wallets[0]) {
