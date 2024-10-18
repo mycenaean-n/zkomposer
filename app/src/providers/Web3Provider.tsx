@@ -4,33 +4,13 @@ import { createConfig, WagmiProvider } from '@privy-io/wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { defineChain, http } from 'viem';
-import {
-  arbitrumSepolia,
-  localhost,
-  scroll,
-  scrollSepolia,
-} from 'wagmi/chains';
-
-const queryClient = new QueryClient();
-
-export const wagmiConfig = createConfig({
-  chains: [arbitrumSepolia, scroll, scrollSepolia, { ...localhost, id: 31337 }],
-  transports: {
-    [arbitrumSepolia.id]: http(
-      `https://arbitrum-sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY}`
-    ),
-    [scroll.id]: http(),
-    [scrollSepolia.id]: http(),
-    ['31337']: http(),
-  },
-});
+import { arbitrumSepolia, scroll, scrollSepolia } from 'wagmi/chains';
 
 export const LocalHost = defineChain({
-  id: 31337, // Replace this with your chain's ID
+  id: 31337,
   name: 'Localhost',
-  network: 'my-custom-chain',
   nativeCurrency: {
-    decimals: 18, // Replace this with the number of decimals for your chain's native token
+    decimals: 18,
     name: 'Ether',
     symbol: 'ETH',
   },
@@ -38,6 +18,26 @@ export const LocalHost = defineChain({
     default: {
       http: ['http://127.0.0.1:8545'],
     },
+  },
+});
+
+const queryClient = new QueryClient();
+const SUPPORTED_CHAINS = [
+  arbitrumSepolia,
+  LocalHost,
+  scroll,
+  scrollSepolia,
+] as const;
+
+export const wagmiConfig = createConfig({
+  chains: SUPPORTED_CHAINS,
+  transports: {
+    [arbitrumSepolia.id]: http(
+      `https://arbitrum-sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY}`
+    ),
+    ['31337']: http(),
+    [scroll.id]: http(),
+    [scrollSepolia.id]: http(),
   },
 });
 
@@ -49,8 +49,8 @@ const privyConfig = {
   embeddedWallets: {
     createOnLogin: 'all-users',
   },
-  supportedChains: [arbitrumSepolia, scroll, scrollSepolia, LocalHost],
-  defaultChain: arbitrumSepolia,
+  supportedChains: SUPPORTED_CHAINS as unknown,
+  defaultChain: SUPPORTED_CHAINS[0],
 } as PrivyClientConfig;
 
 export function Web3Provider({ children }: { children: React.ReactNode }) {
