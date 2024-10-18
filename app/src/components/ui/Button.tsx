@@ -16,31 +16,34 @@ export type ButtonProps = {
   className?: string;
   variant?: ButtonVariant;
   rounded?: boolean;
+  loading?: boolean;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const Button = ({
   children,
   variant = 'primary',
   className,
-  disabled,
+  loading,
   type = 'button',
   rounded = false,
+  disabled = false,
   ...props
 }: ButtonProps) => {
   return (
     <button
-      aria-disabled={disabled}
-      disabled={disabled}
+      aria-disabled={loading || disabled}
+      disabled={loading || disabled}
       className={clsx(
         'flex h-full items-center justify-center px-2 py-0.5 md:px-4 md:py-1',
         buttonVariants[variant],
         className,
-        rounded ? 'rounded-md' : ''
+        rounded ? 'rounded-md' : '',
+        disabled ? 'bg-gray-500 opacity-50' : ''
       )}
       type={type}
       {...props}
     >
-      {disabled ? <Spinner isPrimary={variant === 'primary'} /> : children}
+      {loading ? <Spinner isPrimary={variant === 'primary'} /> : children}
     </button>
   );
 };
