@@ -1,4 +1,7 @@
 import { OnChainPuzzle } from 'app/src/types/Puzzle';
+import { GRID_HEIGHT, GRID_WIDTH } from '../../config';
+
+const GRID_SIZE = GRID_HEIGHT * GRID_WIDTH;
 
 function base4ToHex(base4: string): string {
   const base4Array = Array.from(base4);
@@ -45,8 +48,8 @@ function hexToBase4(base16: string): string {
 
 export function padPuzzle(puzzle: OnChainPuzzle): OnChainPuzzle {
   return {
-    startingGrid: puzzle.startingGrid.padEnd(64, '0'),
-    finalGrid: puzzle.finalGrid.padEnd(64, '0'),
+    startingGrid: puzzle.startingGrid.padEnd(GRID_SIZE, '0'),
+    finalGrid: puzzle.finalGrid.padEnd(GRID_SIZE, '0'),
     availableFunctions: puzzle.availableFunctions,
   };
 }
@@ -60,7 +63,7 @@ function checkLength(puzzle: OnChainPuzzle, length: number) {
 export function convertPuzzleToHex(puzzle: OnChainPuzzle): OnChainPuzzle {
   const { startingGrid, finalGrid, availableFunctions } = puzzle;
 
-  checkLength(puzzle, 64);
+  checkLength(puzzle, GRID_SIZE);
 
   return {
     startingGrid: `0x${base4ToHex(startingGrid)}`,
