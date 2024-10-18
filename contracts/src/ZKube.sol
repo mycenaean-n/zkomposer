@@ -1,11 +1,11 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.22;
 
-import {Proof, IZKube, IZKubeVerifier, Puzzle, Game, IZKubePuzzleSet, Player} from "./Types.sol";
+import {Proof, IZKube, IZKubeVerifier, Puzzle, IZKubePuzzleSet} from "./Types.sol";
 import './ArbSys.sol';
 import "./Errors.sol";
 import "./libraries/Base4.sol";
-import {GameCreated, GameJoined, PlayerSubmitted, GameResolved} from "./Events.sol";
+import {SolutionSubmitted} from "./Events.sol";
 
 contract ZKube is IZKube {
     using Base4 for bytes32;
@@ -13,6 +13,7 @@ contract ZKube is IZKube {
     address public immutable verifier;
     uint256 public immutable GRID_SIZE;
     uint256 public immutable NUM_AVAILABLE_ARGS;
+    // puzzleSet => puzzleId => player => block
     mapping(address => mapping(uint256 => mapping(address => uint))) public solvedPuzzles;
     
     constructor(address verifier_, uint256 gridWidth_, uint256 gridHeight_, uint256 numberOfAvailableFunctions_) {
@@ -47,6 +48,7 @@ contract ZKube is IZKube {
         Puzzle memory puzzle = IZKubePuzzleSet(puzzleSet).getPuzzle(puzzleId);
         if (!verifySolution(puzzle, proof, msg.sender)) revert InvalidProof();
 
-        userSolvedPuzzles[msg.sender] = block.timestamp;
+        userSolvedPuzzles[msg.sender] = block.number;
+        emit SolutionSubmitted(puzzleSet, puzzleId, msg.sender, block.number);
     }
 }

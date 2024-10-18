@@ -11,13 +11,13 @@ contract DeployZKube is Script {
     Puzzle[] public puzzles;
 
     function setUp() public {
-        string memory file = vm.readFile("./script/data/test.puzzles.json");
+        string memory file = vm.readFile("./script/data/cube-composer.puzzles.json");
         bytes memory json = vm.parseJson(file);
         PuzzleJson[] memory _puzzles = abi.decode(json, (PuzzleJson[]));
         for (uint256 i; i < _puzzles.length; i++) {
             Puzzle memory puzzle = Puzzle({
-                startingGrid: bytes16(_puzzles[i].startingGrid),
-                finalGrid: bytes16(_puzzles[i].finalGrid),
+                startingGrid: bytes32(_puzzles[i].startingGrid),
+                finalGrid: bytes32(_puzzles[i].finalGrid),
                 availableFunctions: _puzzles[i].availableFunctions
             });
             puzzles.push(puzzle);

@@ -13,3 +13,5 @@ event GameJoined(uint256 indexed gameId, address indexed player1, address indexe
 event PlayerSubmitted(uint256 indexed gameId, Player player);
 
 event GameResolved(uint256 indexed gameId, address indexed winner);
+
+event SolutionSubmitted(address indexed puzzleSet, uint256 indexed puzzleId, address indexed player, uint256 blockNumber);
