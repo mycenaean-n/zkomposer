@@ -9,7 +9,7 @@ import { Grid } from './grid/Grid';
 import IntermediateGrids from './IntermediateGrids';
 import { ResponsiveCamera } from './ResponsiveCamera';
 
-const STARTING_X_POS = isMobile ? -1.7 : -1;
+const STARTING_X_POS = isMobile ? -1.7 : -1.5;
 const STARTING_Y_POS = isMobile ? 0.3 : 0.5;
 
 export function Scene() {
@@ -37,27 +37,25 @@ export function Scene() {
   }, [functions]);
 
   return (
-    <div className="flex h-[40vh]">
-      <div className="w-2/3">
-        <Canvas
-          orthographic
-          camera={{
-            position: new Vector3(2.5, 3, 3),
-          }}
-        >
-          <ambientLight intensity={Math.PI} />
-          <Grid
-            grid={startingGrid}
-            position={{ x: STARTING_X_POS, y: STARTING_Y_POS, z: 0 }}
-          />
-          <IntermediateGrids
-            {...{ grids, availableFunctions }}
-            xPos={STARTING_X_POS}
-            yPos={STARTING_Y_POS}
-          />
-          <ResponsiveCamera />
-        </Canvas>
-      </div>
+    <div className="grid h-[350px] grid-cols-[3fr_1fr] gap-2">
+      <Canvas
+        orthographic
+        camera={{
+          position: new Vector3(2.5, 3, 3),
+        }}
+      >
+        <ambientLight intensity={Math.PI} />
+        <Grid
+          grid={startingGrid}
+          position={{ x: STARTING_X_POS, y: STARTING_Y_POS, z: 0 }}
+        />
+        <IntermediateGrids
+          {...{ grids, availableFunctions }}
+          xPos={STARTING_X_POS}
+          yPos={STARTING_Y_POS}
+        />
+        <ResponsiveCamera />
+      </Canvas>
       <div className="relative overflow-hidden">
         <h2 className="absolute left-0 top-5 text-2xl font-extrabold text-black">
           Target
@@ -68,7 +66,7 @@ export function Scene() {
             position: new Vector3(2.5, 3, 3),
           }}
         >
-          <Grid grid={finalGrid} position={{ x: 0.5, y: 1.2, z: 0 }} />
+          <Grid grid={finalGrid} position={{ x: 0.5, y: 1.2, z: 0.8 }} />
           <ResponsiveCamera />
         </Canvas>
       </div>

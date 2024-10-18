@@ -12,8 +12,8 @@ export function FunctionCard({ funcName }: { funcName: CircuitFunctions }) {
     parseCircuitArguments(funcName);
 
   return (
-    <div className="flex h-10 justify-center rounded-md border border-black p-1">
-      <div className="flex items-center leading-snug">
+    <div className="flex h-9 justify-center rounded-md border border-black bg-white p-1">
+      <div className="flex items-center">
         <DisplayName functionName={functionName}>
           <div className="mx-1 flex items-center">
             <ColorBox color={colorOne} />
