@@ -1,61 +1,88 @@
 'use client';
-import Link from 'next/link';
+import { usePrivy } from '@privy-io/react-auth';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { ZKUBE_PUZZLESET_ADDRESS } from '../../../../config';
+import { useSubmitSolutionCallback } from '../../../../hooks/callbacks/useSubmitSolutionCallback';
+import { usePrivyWalletAddress } from '../../../../hooks/usePrivyWalletAddress';
 import { GameMode } from '../../../../types/Game';
+import { ZKProofCalldata } from '../../../../types/Proof';
 import { Button } from '../../../ui/Button';
 
 type LevelActionProps = {
-  proofGenerationError?: string;
-  puzzleSolved: boolean;
+  proofCalldata: ZKProofCalldata | null;
   id: string;
   gameMode: GameMode;
+  error: Error | null;
 };
 
 export function LevelAction({
-  proofGenerationError,
-  puzzleSolved,
+  proofCalldata,
   id,
-  gameMode,
+  error: proofError,
 }: LevelActionProps) {
-  console.log({ puzzleSolved });
+  const [error, setError] = useState<Error | null>(null);
+  const { callback: submitSolution, error: submitSolutionError } =
+    useSubmitSolutionCallback();
+
+  useEffect(() => {
+    setError(proofError);
+  }, [proofError]);
+
+  useEffect(() => {
+    setError(submitSolutionError);
+  }, [submitSolutionError]);
+
+  const router = useRouter();
+  const handleNextLevel = () => {
+    router.push(`/puzzle/${Number(id) + 1}`);
+  };
+  const walletAddress = usePrivyWalletAddress();
+  const { login } = usePrivy();
+
+  const onClick = async () => {
+    if (!walletAddress) {
+      login();
+    } else {
+      submitSolution({
+        puzzleSet: ZKUBE_PUZZLESET_ADDRESS,
+        puzzleId: BigInt(id),
+        proof: proofCalldata,
+      });
+    }
+  };
 
   return (
-    <div className="flex flex-col">
-      {puzzleSolved && (
+    <div className="absolute bottom-20 right-0 grid grid-cols-2 gap-2">
+      {proofCalldata ? (
         <>
-          <div className="absolute bottom-10 right-0 flex">
-            <Tick />
-            <h2 className="text-sm md:text-base">Puzzle Solved</h2>
+          <div className="col-span-full flex items-center justify-center gap-2">
+            <h1 className="text-[1.5rem]">🎉 Puzzle Solved 🎉</h1>
           </div>
-          {gameMode === 'singleplayer' && (
-            <Link href={`/puzzle/${Number(id) + 1}`}>
-              <Button
-                variant="primary"
-                className="min-h-9 w-full text-sm md:text-base"
-                rounded={true}
-                type="button"
-              >
-                Next Level
-              </Button>
-            </Link>
-          )}
+          <Button
+            onClick={onClick}
+            variant="secondary"
+            className="min-h-9 w-full border border-black text-sm md:text-base"
+            type="button"
+            rounded
+          >
+            Submit
+          </Button>
+          <Button
+            onClick={handleNextLevel}
+            variant="primary"
+            className="min-h-9 w-full text-sm md:text-base"
+            type="button"
+            rounded
+          >
+            Next Level
+          </Button>
         </>
+      ) : (
+        <div className="col-span-full flex items-center justify-center gap-2">
+          {error ? <h1 className="text-[1.5rem]">{error?.message}</h1> : null}
+        </div>
       )}
     </div>
-  );
-}
-
-function Tick() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth="3"
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-    </svg>
   );
 }
