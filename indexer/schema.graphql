@@ -1,9 +1,7 @@
-type Game @entity {
+type Solution @entity {
   id: ID!
   puzzleSet: String! @index
-  interval: Int!
-  numberOfTurns: Int!
-  startingBlock: BigInt
-  player1: String! @index
-  player2: String @index
+  puzzleId: String! @index
+  player: String @index
+  blockNumber: BigInt!
 }

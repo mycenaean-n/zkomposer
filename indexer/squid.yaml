@@ -8,7 +8,11 @@ build:
 
 deploy:
   addons:
+    rpc:
+      - arbitrum-sepolia.http
     postgres:
+      migrations:
+        - db/migrations/*.js
   processor:
     cmd: ['sqd', 'process:prod']
     env:
