@@ -1,6 +1,6 @@
+import { writeFileSync } from 'fs';
 import path from 'path';
 import { exportCalldataGroth16 } from './exportCalldataGroth16';
-import { writeFileSync } from 'fs';
 
 export async function exportCalldataGroth16Invoke() {
   const zkeyPath = path.join(__dirname, '../zk/zkube_final.zkey');
@@ -20,12 +20,12 @@ export async function exportCalldataGroth16Invoke() {
   );
 
   writeFileSync(
-    './zk/zkube_proof_player_one.json',
+    './zk/zkube_proof_calldata_player_one.json',
     '[' + dataPlayerOne + ']',
     'utf8'
   );
   writeFileSync(
-    './zk/zkube_proof_player_two.json',
+    './zk/zkube_proof_calldata_player_two.json',
     '[' + dataPlayerTwo + ']',
     'utf8'
   );
