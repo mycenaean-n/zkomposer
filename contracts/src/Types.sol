@@ -1,15 +1,6 @@
 //SPDX-License-Identifier: MIT
 pragma solidity 0.8.22;
 
-struct Game {
-    Player player1;
-    Player player2;
-    address puzzleSet;
-    uint16 interval;
-    uint8 numberOfRounds;
-    uint72 startingBlock;
-}
-
 struct Proof {
     uint256[2] a;
     uint256[2][2] b;

@@ -3,7 +3,7 @@ pragma solidity ^0.8.13;
 
 import {Test, console2} from "forge-std/Test.sol";
 import {ZKubeHarness} from "./ZKube.harness.sol";
-import {Game, Player, Proof, Puzzle, PuzzleJson} from "../src/Types.sol";
+import { Player, Proof, Puzzle, PuzzleJson} from "../src/Types.sol";
 import {ZKubePuzzleSet} from "../src/ZKubePuzzleSet.sol";
 import "../src/Errors.sol";
 import {ZKubeVerifier} from "../src/ZKubeVerifier.sol";
@@ -90,18 +90,18 @@ contract ZKubeTest is Test, Constants {
     function testConcrete_submitPuzzle() public {
         vm.prank(player1);
         zKube.submitSolution(zKubePuzzleSet, 0, proofPlayerOne);
-        assertEq(zKube.solvedPuzzles(zKubePuzzleSet, 0, player1), block.timestamp);
+        assertEq(zKube.solvedPuzzles(zKubePuzzleSet, 0, player1), block.number);
 
         vm.prank(player2);
         zKube.submitSolution(zKubePuzzleSet, 0, proofPlayerTwo);
-        assertEq(zKube.solvedPuzzles(zKubePuzzleSet, 0, player2), block.timestamp);
+        assertEq(zKube.solvedPuzzles(zKubePuzzleSet, 0, player2), block.number);
     }
 
     function testConcrete_submitPuzzle_oneHour() public {
         vm.prank(player1);
-        vm.warp(block.timestamp + 1 hours);
+        vm.warp(block.number + 10);
         zKube.submitSolution(zKubePuzzleSet, 0, proofPlayerOne);
-        assertEq(zKube.solvedPuzzles(zKubePuzzleSet, 0, player1), block.timestamp);
+        assertEq(zKube.solvedPuzzles(zKubePuzzleSet, 0, player1), block.number);
     }
 
     function testConcrete_submitPuzzle_wrongProof() public {
