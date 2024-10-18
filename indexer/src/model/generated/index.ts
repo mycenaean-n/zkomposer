@@ -1,1 +1,1 @@
-export * from './game.model';
+export * from "./solution.model"
