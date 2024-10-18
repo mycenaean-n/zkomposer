@@ -11,7 +11,7 @@ export function Faucet() {
         variant="secondary"
         onClick={faucetCallback}
         className="min-w-[5rem] rounded-l-sm"
-        disabled={loading}
+        loading={loading}
       >
         Faucet
       </Button>
