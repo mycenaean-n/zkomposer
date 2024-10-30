@@ -2,9 +2,11 @@ import {
   Column as Column_,
   Entity as Entity_,
   Index as Index_,
+  ManyToOne as ManyToOne_,
   PrimaryColumn as PrimaryColumn_,
 } from 'typeorm';
 import * as marshal from './marshal';
+import { User } from './user.model';
 
 @Entity_()
 export class Solution {
@@ -24,8 +26,8 @@ export class Solution {
   puzzleId!: string;
 
   @Index_()
-  @Column_('text', { nullable: true })
-  player!: string | undefined | null;
+  @ManyToOne_(() => User, { nullable: true })
+  player!: User;
 
   @Column_('numeric', {
     transformer: marshal.bigintTransformer,

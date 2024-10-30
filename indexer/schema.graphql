@@ -1,7 +1,14 @@
+type User @entity {
+  "Account address"
+  id: ID!
+  totalSolved: Int!
+  solutions: [Solution!] @derivedFrom(field: "player")
+}
+
 type Solution @entity {
   id: ID!
   puzzleSet: String! @index
   puzzleId: String! @index
-  player: String @index
+  player: User!
   blockNumber: BigInt!
 }

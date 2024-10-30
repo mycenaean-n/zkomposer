@@ -11,8 +11,8 @@ deploy:
     rpc:
       - arbitrum-sepolia.http
     postgres:
-      migrations:
-        - db/migrations/*.js
+  migrate:
+    cmd: ['sqd', 'migration:apply']
   processor:
     cmd: ['sqd', 'process:prod']
     env:
