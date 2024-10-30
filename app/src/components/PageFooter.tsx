@@ -1,4 +1,4 @@
-import { GitHubIcon } from './GithubIcon';
+import { GitHubIcon } from './ui/GithubIcon';
 
 export function PageFooter(): JSX.Element {
   return (
