@@ -12,7 +12,7 @@ export function mapGrid(gridString: string, padding: number = 0): Colors[][] {
     Array.from({ length: heightWithPadding }, () => COLORS.WHITE)
   );
 
-  gridArray.forEach((value, index) => {
+  gridArray.slice(0, GRID_WIDTH * GRID_HEIGHT).forEach((value, index) => {
     const column = Math.floor(index / GRID_HEIGHT);
     const columnIndex = index % GRID_HEIGHT;
     if (isValidColor(Number(value))) {
