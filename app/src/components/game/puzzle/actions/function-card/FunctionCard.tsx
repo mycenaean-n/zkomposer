@@ -12,7 +12,7 @@ export function FunctionCard({ funcName }: { funcName: CircuitFunctions }) {
     parseCircuitArguments(funcName);
 
   return (
-    <div className="flex h-9 justify-center rounded-md border border-black bg-white p-1">
+    <div className="flex h-8 justify-center rounded-md border border-black bg-white p-1">
       <div className="flex items-center">
         <DisplayName functionName={functionName}>
           <div className="mx-1 flex items-center">
@@ -58,7 +58,7 @@ function ColorBox({
 }: { color: ColorsKeys } & HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={clsx('h-3.5 w-3.5 border border-black', bgColor(color))}
+      className={clsx('h-3 w-3 border border-black', bgColor(color))}
       {...props}
     />
   );
