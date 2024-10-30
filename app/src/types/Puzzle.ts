@@ -16,9 +16,9 @@ export enum PuzzleFunctionState {
 export type PuzzleFunctions = Record<PuzzleFunctionState, CircuitFunctions[]>;
 
 export type PuzzleContext = {
-  initConfig: Puzzle;
-  functions: PuzzleFunctions;
-  setFunctions: Dispatch<SetStateAction<PuzzleFunctions>>;
+  initConfig: Puzzle | undefined;
+  functions: PuzzleFunctions | undefined;
+  setFunctions: Dispatch<SetStateAction<PuzzleFunctions | undefined>>;
 };
 
 export type Puzzle = {
@@ -30,5 +30,5 @@ export type Puzzle = {
 export type OnChainPuzzle = {
   startingGrid: string;
   finalGrid: string;
-  availableFunctions: number[];
+  availableFunctions: readonly number[];
 };
