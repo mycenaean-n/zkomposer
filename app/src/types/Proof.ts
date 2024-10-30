@@ -6,7 +6,7 @@ export interface Proof {
   c: [Hex, Hex];
 }
 
-export type ZKProof = {
+export type ZKProofCalldata = {
   a: readonly [bigint, bigint];
   b: readonly [readonly [bigint, bigint], readonly [bigint, bigint]];
   c: readonly [bigint, bigint];
