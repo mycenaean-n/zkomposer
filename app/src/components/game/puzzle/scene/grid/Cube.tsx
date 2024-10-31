@@ -7,6 +7,7 @@ import {
   LineBasicMaterial,
   LineSegments,
   MeshPhongMaterial,
+  ShaderMaterial,
   Vector3,
 } from 'three';
 
@@ -78,7 +79,33 @@ export function Cube(props: CubeProps) {
       transparent: true,
       opacity: 0.2,
       emissive: neonColor,
-      emissiveIntensity: 0.5,
+      emissiveIntensity: 1,
+    });
+  }, [props.colour]);
+
+  const glowMaterial = useMemo(() => {
+    const neonColor = getCyberpunkColor(props.colour);
+    return new ShaderMaterial({
+      uniforms: {
+        color: { value: neonColor },
+      },
+      vertexShader: `
+        varying vec3 vPosition;
+        void main() {
+          vPosition = position;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform vec3 color;
+        varying vec3 vPosition;
+        void main() {
+          float distance = length(vPosition);
+          gl_FragColor = vec4(color, opacity);
+        }
+      `,
+      transparent: true,
+      depthWrite: false,
     });
   }, [props.colour]);
 
@@ -91,9 +118,9 @@ export function Cube(props: CubeProps) {
           <primitive object={neonLineMaterial} />
         </primitive>
       </mesh>
-      <mesh position={props.position} scale={1.05}>
-        <boxGeometry args={[0.28, 0.28, 0.28]} />
-        <primitive object={mistMaterial} />
+      <mesh position={props.position} scale={1.5}>
+        <sphereGeometry args={[0.2, 32, 32]} />
+        <primitive object={glowMaterial} />
       </mesh>
     </group>
   );
