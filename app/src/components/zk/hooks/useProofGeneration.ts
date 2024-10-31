@@ -11,7 +11,12 @@ export function useProofGeneration() {
     null
   );
 
-  const generateAndVerifyProof = async (signals: InputSignals) => {
+  const generateAndVerifyProof = async (signals: InputSignals | undefined) => {
+    if (!signals) {
+      setError(new Error('No signals'));
+      return;
+    }
+
     const checks = {
       'Initial grid': signals.initialGrid,
       'Final grid': signals.finalGrid,
@@ -53,7 +58,7 @@ export function useProofGeneration() {
       }
     } catch (e) {
       if ((e as Error).message.includes('ForceEqualIfEnabled_50')) {
-        setError(new Error('❌ Wrong answer! ❌'));
+        setError(new Error('❌ Wrong answer ❌'));
       } else {
         setError(e as Error);
       }
