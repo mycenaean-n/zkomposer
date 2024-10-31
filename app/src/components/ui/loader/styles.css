@@ -1,0 +1,26 @@
+@keyframes stackAndFadeWithDelay {
+  0% {
+    transform: translateY(-10vh);
+    opacity: 0;
+  }
+  40% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  60% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  90% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+}
+
+.animate-stack {
+  animation: stackAndFadeWithDelay 3s ease-in-out infinite;
+}
