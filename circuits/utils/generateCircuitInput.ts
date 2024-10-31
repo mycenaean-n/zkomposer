@@ -4,7 +4,7 @@ import { Colors } from '../types/circuitFunctions.types';
 import { getCircuitFunctionIndex } from '../utils/circuitFunctionGetter';
 import { gridMutator } from './transformers/gridMutator';
 
-const ADDRESS_PLAYER_ONE = '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266';
+const ADDRESS_PLAYER_ONE = '0x2B5AD5c4795c026514f8317c7a215E218DcCD6cF';
 const ADDRESS_PLAYER_TWO = '0x6813Eb9362372EEF6200f3b1dbC3f819671cBA69';
 
 export function generateCircuitInput() {
