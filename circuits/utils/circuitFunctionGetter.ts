@@ -15,7 +15,6 @@ export function getCircuitFunctionIndex<
   T extends CircuitFunctions | CircuitFunctions[],
 >(funcName: T): T extends CircuitFunctions[] ? number[] : number {
   if (Array.isArray(funcName)) {
-    // todo
     const emptyArray: number[] = new Array(AVAILABLE_CIRCUITS).fill(0);
     funcName.forEach((name, i) => {
       emptyArray[i] = getCircuitFunctionIndexByName(name);
