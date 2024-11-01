@@ -2,28 +2,26 @@ import { CircuitFunctions } from 'circuits/types/circuitFunctions.types';
 import React from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { useOnDragEnd } from '../../../../hooks/useOnDrag';
-import { PuzzleFunctionState } from '../../../../types/Puzzle';
+import { PuzzleContext, PuzzleFunctionState } from '../../../../types/Puzzle';
 import { Function } from './Function';
 
-interface DragAndDropProps {
-  functions: Record<PuzzleFunctionState, CircuitFunctions[]>;
-  setFunctions: React.Dispatch<
-    React.SetStateAction<Record<PuzzleFunctionState, CircuitFunctions[]>>
-  >;
-}
+export type DragAndDropProps = {
+  functions: NonNullable<PuzzleContext['functions']>;
+  setFunctions: NonNullable<PuzzleContext['setFunctions']>;
+};
 
-const DragAndDrop: React.FC<DragAndDropProps> = ({
+export const DragAndDrop: React.FC<DragAndDropProps> = ({
   functions,
   setFunctions,
 }) => {
-  const { onDragEnd } = useOnDragEnd(functions, setFunctions);
+  const { onDragEnd } = useOnDragEnd({ functions, setFunctions });
   return (
     <div className="grid grid-cols-2 justify-center gap-2">
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId={PuzzleFunctionState.remaining}>
           {(provided) => (
             <div
-              className="rounded-sm border border-solid border-black"
+              className="h-[18.5rem] border border-black"
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
@@ -63,5 +61,3 @@ const DragAndDrop: React.FC<DragAndDropProps> = ({
     </div>
   );
 };
-
-export default DragAndDrop;

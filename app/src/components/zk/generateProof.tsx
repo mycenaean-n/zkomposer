@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { zeroAddress } from 'viem';
 import { usePrivyWalletAddress } from '../../hooks/usePrivyWalletAddress';
 import { GameMode } from '../../types/Game';
-import { PuzzleFunctions } from '../../types/Puzzle';
 import { LevelAction } from '../game/puzzle/actions/LevelAction';
 import { Button } from '../ui/Button';
 import { useInputSignals } from './hooks/useInputSignal';
@@ -14,15 +13,7 @@ const isSignalMissing = (inputSignals: Partial<InputSignals> | undefined) => {
   return Object.values(inputSignals).some((signal) => signal == null);
 };
 
-export function GenerateProof({
-  gameMode,
-  id,
-  functions,
-}: {
-  gameMode: GameMode;
-  id: string;
-  functions: PuzzleFunctions;
-}) {
+export function GenerateProof({ gameMode }: { gameMode: GameMode }) {
   const [error, setError] = useState<Error | null>(null);
   const {
     loading: generateProofLoading,
@@ -31,10 +22,7 @@ export function GenerateProof({
     error: generateProofError,
   } = useProofGeneration();
   const address = usePrivyWalletAddress() ?? zeroAddress;
-  const { inputSignals, error: inputSignalError } = useInputSignals(
-    address,
-    functions
-  );
+  const { inputSignals, error: inputSignalError } = useInputSignals(address);
 
   useEffect(() => {
     setError(generateProofError);
@@ -45,26 +33,23 @@ export function GenerateProof({
   }, [inputSignalError]);
 
   return (
-    <div className="relative mb-2">
-      <div className="flex flex-col">
-        <Button
-          className="min-h-9 w-full border border-black p-1"
-          variant="secondary"
-          disabled={isSignalMissing(inputSignals)}
-          loading={generateProofLoading}
-          onClick={() => {
-            inputSignals && generateAndVerifyProof(inputSignals);
-          }}
-          type="button"
-          rounded
-        >
-          Verify Result
-        </Button>
-      </div>
+    <div className="relative mb-2 h-full">
+      <Button
+        className="min-h-8 w-full border border-black p-1"
+        variant="secondary"
+        disabled={isSignalMissing(inputSignals)}
+        loading={generateProofLoading}
+        onClick={() => {
+          generateAndVerifyProof(inputSignals);
+        }}
+        type="button"
+        rounded
+      >
+        Verify Result
+      </Button>
       <LevelAction
         {...{
           proofCalldata,
-          id,
           gameMode,
           error,
         }}
