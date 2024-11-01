@@ -1,4 +1,7 @@
-import { CircuitFunctions } from 'circuits/types/circuitFunctions.types';
+import {
+  CircuitFunctions,
+  Colors,
+} from 'circuits/types/circuitFunctions.types';
 import { isMobile } from 'react-device-detect';
 import { Grid } from './grid/Grid';
 
@@ -8,7 +11,7 @@ export default function IntermediateGrids({
   xPos,
   yPos,
 }: {
-  grids: number[][][];
+  grids: Colors[][][];
   availableFunctions: CircuitFunctions[];
   xPos: number;
   yPos: number;
