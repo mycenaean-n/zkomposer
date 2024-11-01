@@ -1,6 +1,7 @@
 import { Canvas } from '@react-three/fiber';
 import { gridMutator } from 'circuits';
 import { Colors } from 'circuits/types/circuitFunctions.types';
+import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import { Vector3 } from 'three';
@@ -12,13 +13,13 @@ import { ResponsiveCamera } from './ResponsiveCamera';
 const STARTING_X_POS = isMobile ? -0.7 : -1.5;
 const STARTING_Y_POS = isMobile ? 0.3 : 0.5;
 
-export function Scene({
-  initConfig,
-  functions,
-}: {
+type SceneProps = {
   initConfig: Puzzle;
   functions: PuzzleFunctions;
-}) {
+  className: string;
+};
+
+export function Scene({ initConfig, functions, className }: SceneProps) {
   const [grids, setGrids] = useState<Colors[][][]>([]);
 
   const {
@@ -50,7 +51,9 @@ export function Scene({
   );
 
   return (
-    <div className="grid h-[350px] grid-cols-[3fr_1fr] gap-2">
+    <div
+      className={clsx('grid h-[350px] grid-cols-[3fr_1fr] gap-2', className)}
+    >
       <Canvas
         orthographic
         camera={{

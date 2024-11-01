@@ -1,0 +1,24 @@
+.grid-area-game {
+  grid-area: game;
+}
+.grid-area-target {
+  grid-area: target;
+}
+.grid-area-actions {
+  grid-area: actions;
+}
+.grid-area-leaderboard {
+  grid-area: leaderboard;
+  grid-row: span 2;
+}
+
+.layout-grid {
+  display: grid;
+  gap: 1rem;
+  margin: 1rem 0;
+  grid-template-columns: repeat(7, 1fr) max-content;
+  grid-template-rows: 300px 340px;
+  grid-template-areas:
+    'game    game    game    game    game    game  game  leaderboard'
+    'actions actions actions actions actions actions actions leaderboard';
+}

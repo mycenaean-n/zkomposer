@@ -1,47 +1,55 @@
 'use client';
-import { createContext, memo, useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
+import { createContext, useEffect, useState } from 'react';
 import {
   PuzzleContext as PuzzleContextType,
   PuzzleFunctions,
-  Puzzle as PuzzleType,
 } from 'types/Puzzle';
+import { usePuzzleData } from '../../../hooks/fetching/usePuzzleData';
+import { LoadingState } from '../../ui/loader/LoadingState';
 import { Actions } from './actions/Actions';
+import { PuzzleLayout } from './layout/Layout';
 import { Scene } from './scene/Scene';
-
-type GameMode = 'singleplayer' | 'multiplayer';
+import { Sidepanel } from './sidepanel/Sidepanel';
 
 export const PuzzleContext = createContext<PuzzleContextType>({
-  initConfig: { initialGrid: [], finalGrid: [], availableFunctions: [] },
-  functions: { remaining: [], chosen: [], available: [] },
+  initConfig: undefined,
+  functions: undefined,
   setFunctions: () => {},
 });
 
-function Puzzle({
-  initConfig,
-  id,
-  gameMode,
-}: {
-  initConfig: PuzzleType;
-  id: string;
-  gameMode: GameMode;
-}) {
-  const [functions, setFunctions] = useState<PuzzleFunctions>({
-    remaining: initConfig.availableFunctions.filter(
-      (funcName) => funcName !== 'EMPTY'
-    ),
+const functionInitializer = (
+  initConfig: ReturnType<typeof usePuzzleData>['data']
+): PuzzleFunctions | undefined => {
+  if (!initConfig?.availableFunctions?.length || !initConfig.initialGrid) {
+    return undefined;
+  }
+
+  const availableFunctions = initConfig.availableFunctions;
+  const remainingFunctions = availableFunctions.filter(
+    (funcName) => funcName !== 'EMPTY'
+  );
+
+  return {
+    remaining: remainingFunctions,
     chosen: [],
-    available: initConfig.availableFunctions,
-  });
+    available: availableFunctions,
+  };
+};
+
+export function Puzzle() {
+  const params = useParams();
+  const id = params?.id ? String(params.id) : '0';
+  const { data: initConfig } = usePuzzleData(id);
+  const [functions, setFunctions] = useState<PuzzleFunctions | undefined>(
+    functionInitializer(initConfig)
+  );
 
   useEffect(() => {
-    setFunctions({
-      remaining: initConfig.availableFunctions.filter(
-        (funcName) => funcName !== 'EMPTY'
-      ),
-      chosen: [],
-      available: initConfig.availableFunctions,
-    });
-  }, [JSON.stringify(initConfig), id]);
+    setFunctions(functionInitializer(initConfig));
+  }, [initConfig]);
+
+  const isPuzzleReady = !!(initConfig && functions);
 
   return (
     <PuzzleContext.Provider
@@ -51,17 +59,23 @@ function Puzzle({
         setFunctions,
       }}
     >
-      <div className="m-auto flex flex-grow flex-col">
-        <Scene />
-        <Actions {...{ id, gameMode }} />
-      </div>
+      {isPuzzleReady ? (
+        <PuzzleLayout
+          scene={({ className }) => (
+            <Scene
+              initConfig={initConfig}
+              functions={functions}
+              className={className}
+            />
+          )}
+          actions={({ className }) => (
+            <Actions gameMode="singleplayer" className={className} />
+          )}
+          stats={({ className }) => <Sidepanel className={className} />}
+        />
+      ) : (
+        <LoadingState />
+      )}
     </PuzzleContext.Provider>
   );
 }
-
-export const PuzzleMemoized = memo(Puzzle, (prevProps, nextProps) => {
-  return (
-    JSON.stringify(prevProps.initConfig) ===
-    JSON.stringify(nextProps.initConfig)
-  );
-});

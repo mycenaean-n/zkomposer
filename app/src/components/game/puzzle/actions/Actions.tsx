@@ -1,10 +1,16 @@
+import clsx from 'clsx';
 import { useContext } from 'react';
 import { GameMode } from 'types/Game';
 import { GenerateProof } from '../../../zk/generateProof';
 import { PuzzleContext } from '../Puzzle';
 import { DragAndDrop } from './DragAndDrop';
 
-export function Actions({ gameMode }: { gameMode: GameMode }) {
+type ActionsProps = {
+  gameMode: GameMode;
+  className: string;
+};
+
+export function Actions({ gameMode, className }: ActionsProps) {
   const { functions, setFunctions } = useContext(PuzzleContext);
 
   const areFunctionsDefined =
@@ -14,7 +20,7 @@ export function Actions({ gameMode }: { gameMode: GameMode }) {
     setFunctions;
 
   return (
-    <div className="flex h-auto flex-col">
+    <div className={clsx('flex h-auto flex-col', className)}>
       <GenerateProof {...{ gameMode, functions }} />
       {areFunctionsDefined ? (
         <DragAndDrop functions={functions!} setFunctions={setFunctions!} />
