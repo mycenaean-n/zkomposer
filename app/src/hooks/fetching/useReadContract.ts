@@ -10,7 +10,7 @@ export const useReadContractPuzzleSet = <
   argsT extends ContractFunctionArgs<PuzzleSetAbi, 'view' | 'pure', funName>,
 >(
   functionName: funName,
-  args: argsT
+  args: argsT = [] as argsT
 ) => {
   return useReadContract<PuzzleSetAbi, funName, argsT>({
     abi: PUZZLESET_ABI,

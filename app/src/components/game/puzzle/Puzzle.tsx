@@ -1,10 +1,10 @@
 'use client';
-import { useParams } from 'next/navigation';
 import { createContext, useEffect, useState } from 'react';
 import {
   PuzzleContext as PuzzleContextType,
   PuzzleFunctions,
 } from 'types/Puzzle';
+import { useLocalStorage } from '../../../context/LocalStorageContext';
 import { usePuzzleData } from '../../../hooks/fetching/usePuzzleData';
 import { LoadingState } from '../../ui/loader/LoadingState';
 import { Actions } from './actions/Actions';
@@ -38,8 +38,7 @@ const functionInitializer = (
 };
 
 export function Puzzle() {
-  const params = useParams();
-  const id = params?.id ? String(params.id) : '0';
+  const [id] = useLocalStorage('puzzleId', '0');
   const { data: initConfig } = usePuzzleData(id);
   const [functions, setFunctions] = useState<PuzzleFunctions | undefined>(
     functionInitializer(initConfig)

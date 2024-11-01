@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { ZKUBE_PUZZLESET_ADDRESS } from '../../../../config';
 import { useLocalStorage } from '../../../../context/LocalStorageContext';
-import { useNumberOfPuzzlesInSet } from '../../../../hooks/fetching/useNumberOfPuzzlesInSet';
+import { useReadContractPuzzleSet } from '../../../../hooks/fetching/useReadContract';
 import { usePrivyWalletAddress } from '../../../../hooks/usePrivyWalletAddress';
 import { useUserPuzzlesSolved } from '../../../../hooks/useUserPuzzlesSolved';
 
@@ -12,7 +12,8 @@ export function Menu() {
     setId(level.toString());
   };
 
-  const { data: numberOfPuzzlesInSet } = useNumberOfPuzzlesInSet();
+  const { data: numberOfPuzzlesInSet } =
+    useReadContractPuzzleSet('numberOfPuzzles');
   const address = usePrivyWalletAddress();
   const { user } = useUserPuzzlesSolved(address, ZKUBE_PUZZLESET_ADDRESS);
 
