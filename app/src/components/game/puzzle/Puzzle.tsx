@@ -5,7 +5,7 @@ import {
   PuzzleFunctions,
 } from 'types/Puzzle';
 import { useLocalStorage } from '../../../context/LocalStorageContext';
-import { usePuzzleData } from '../../../hooks/fetching/usePuzzleData';
+import { usePuzzleData } from '../../../hooks/usePuzzleData';
 import { LoadingState } from '../../ui/loader/LoadingState';
 import { Actions } from './actions/Actions';
 import { PuzzleLayout } from './layout/Layout';
