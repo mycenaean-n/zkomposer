@@ -3,7 +3,7 @@ import { usePrivy } from '@privy-io/react-auth';
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { ZKUBE_PUZZLESET_ADDRESS } from '../../../../config';
-import { useNumberOfPuzzlesInSet } from '../../../../hooks/fetching/useNumberOfPuzzlesInSet';
+import { useReadContractPuzzleSet } from '../../../../hooks/fetching/useReadContract';
 import { useContractWriteZKube } from '../../../../hooks/useContractWrite';
 import { usePrivyWalletAddress } from '../../../../hooks/usePrivyWalletAddress';
 import { GameMode } from '../../../../types/Game';
@@ -28,7 +28,7 @@ export function LevelAction({
   const params = useParams();
   const id = params?.id;
   const puzzleSet = params?.puzzleSet;
-  const { data: puzzlesInSet } = useNumberOfPuzzlesInSet();
+  const { data: puzzlesInSet } = useReadContractPuzzleSet('numberOfPuzzles');
   const walletAddress = usePrivyWalletAddress();
   const router = useRouter(); // Add this hook
 
