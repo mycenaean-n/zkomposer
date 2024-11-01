@@ -88,6 +88,8 @@ export function Cube(props: CubeProps) {
     return new ShaderMaterial({
       uniforms: {
         color: { value: neonColor },
+        glowIntensity: { value: 0.8 },
+        glowFalloff: { value: 6 },
       },
       vertexShader: `
         varying vec3 vPosition;
@@ -98,9 +100,12 @@ export function Cube(props: CubeProps) {
       `,
       fragmentShader: `
         uniform vec3 color;
+        uniform float glowIntensity;
+        uniform float glowFalloff;
         varying vec3 vPosition;
         void main() {
           float distance = length(vPosition);
+          float opacity = glowIntensity * exp(-distance * glowFalloff);
           gl_FragColor = vec4(color, opacity);
         }
       `,
