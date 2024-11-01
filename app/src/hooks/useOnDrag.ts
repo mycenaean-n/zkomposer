@@ -1,12 +1,8 @@
 import { DropResult } from 'react-beautiful-dnd';
+import { DragAndDropProps } from '../components/game/puzzle/actions/DragAndDrop';
 import { PuzzleFunctionState } from '../types/Puzzle';
 
-export function useOnDragEnd(
-  functions: Record<PuzzleFunctionState, any[]>,
-  setFunctions: React.Dispatch<
-    React.SetStateAction<Record<PuzzleFunctionState, any[]>>
-  >
-) {
+export function useOnDragEnd({ functions, setFunctions }: DragAndDropProps) {
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
     if (!destination) return;
@@ -20,18 +16,17 @@ export function useOnDragEnd(
 
       destinationFunctions.splice(destination.index, 0, removedFunction);
       setFunctions((prev) => ({
-        ...prev,
+        ...(prev as DragAndDropProps['functions']),
         [sourceFunctionState]: sourceFunctions,
         [destinationFunctionState]: destinationFunctions,
       }));
-      console.log({ destinationFunctions });
     } else if (source.droppableId == destination.droppableId) {
       const functionState = source.droppableId as PuzzleFunctionState;
       const reorderedFunctions = functions[functionState];
       const [removedFunction] = reorderedFunctions.splice(source.index, 1);
       reorderedFunctions.splice(destination.index, 0, removedFunction);
       setFunctions((prev) => ({
-        ...prev,
+        ...(prev as DragAndDropProps['functions']),
         [functionState]: reorderedFunctions,
       }));
     }
