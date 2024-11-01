@@ -1,8 +1,8 @@
 import { Address } from 'viem';
 
 export const ZKUBE_ADDRESS: Address =
-  '0x141db87F9aD95bf3FFE0271DC02801Ede3C301f5';
+  '0x3233a7ed5f5741d0c5d07f19b2fe2dd8ac016ceb';
 export const ZKUBE_PUZZLESET_ADDRESS: Address =
-  '0x13cd31c4c3345e712a6501a040e8278b15107b32';
+  '0x57ebb901918f4b5e3395435fa36974bf0d79dc3a';
 export const GRID_WIDTH = 8;
-export const GRID_HEIGHT = 8;
+export const GRID_HEIGHT = 12;
