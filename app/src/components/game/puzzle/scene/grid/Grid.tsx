@@ -1,8 +1,9 @@
+import { Colors } from 'circuits';
 import { Color, ColorRepresentation, Vector3 } from 'three';
 import { Cube } from './Cube';
 
 type GridProps = {
-  grid: number[][];
+  grid: Colors[][];
   position: { x: number; y: number; z: number };
 };
 

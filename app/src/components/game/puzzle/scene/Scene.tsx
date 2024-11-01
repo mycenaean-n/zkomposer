@@ -1,20 +1,26 @@
 import { Canvas } from '@react-three/fiber';
 import { gridMutator } from 'circuits';
 import { Colors } from 'circuits/types/circuitFunctions.types';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import { Vector3 } from 'three';
-import { PuzzleContext } from '../Puzzle';
+import { Puzzle, PuzzleFunctions } from '../../../../types/Puzzle';
 import { Grid } from './grid/Grid';
 import IntermediateGrids from './IntermediateGrids';
 import { ResponsiveCamera } from './ResponsiveCamera';
 
-const STARTING_X_POS = isMobile ? -1.7 : -1.5;
+const STARTING_X_POS = isMobile ? -0.7 : -1.5;
 const STARTING_Y_POS = isMobile ? 0.3 : 0.5;
 
-export function Scene() {
-  const [grids, setGrids] = useState<number[][][]>([]);
-  const { initConfig, functions } = useContext(PuzzleContext);
+export function Scene({
+  initConfig,
+  functions,
+}: {
+  initConfig: Puzzle;
+  functions: PuzzleFunctions;
+}) {
+  const [grids, setGrids] = useState<Colors[][][]>([]);
+
   const {
     initialGrid: startingGrid,
     finalGrid,
@@ -22,19 +28,26 @@ export function Scene() {
   } = initConfig;
 
   useEffect(() => {
-    setGrids([]);
+    // setGrids([]);
     const mutatedGrids: Colors[][][] = [];
-    functions.chosen.forEach((funcName, index) => {
-      if (index === 0) {
-        const grid = gridMutator(startingGrid, [funcName]);
-        mutatedGrids.push(grid);
-      } else {
-        const grid = gridMutator(mutatedGrids[index - 1], [funcName]);
-        mutatedGrids.push(grid);
-      }
-    });
+    if (functions.chosen && startingGrid) {
+      functions.chosen.forEach((funcName, index) => {
+        if (index === 0) {
+          const grid = gridMutator(startingGrid, [funcName]);
+          mutatedGrids.push(grid);
+        } else {
+          const grid = gridMutator(mutatedGrids[index - 1], [funcName]);
+          mutatedGrids.push(grid);
+        }
+      });
+    }
     setGrids(mutatedGrids);
   }, [functions]);
+
+  console.log(
+    { startingGrid, finalGrid, availableFunctions },
+    grids.length > 0 && availableFunctions
+  );
 
   return (
     <div className="grid h-[350px] grid-cols-[3fr_1fr] gap-2">
@@ -45,19 +58,24 @@ export function Scene() {
         }}
       >
         <ambientLight intensity={Math.PI} />
-        <Grid
-          grid={startingGrid}
-          position={{ x: STARTING_X_POS, y: STARTING_Y_POS, z: 0 }}
-        />
-        <IntermediateGrids
-          {...{ grids, availableFunctions }}
-          xPos={STARTING_X_POS}
-          yPos={STARTING_Y_POS}
-        />
+        {startingGrid ? (
+          <Grid
+            grid={startingGrid}
+            position={{ x: STARTING_X_POS, y: STARTING_Y_POS, z: 0 }}
+          />
+        ) : null}
+        {grids.length > 0 && availableFunctions ? (
+          <IntermediateGrids
+            grids={grids}
+            availableFunctions={availableFunctions}
+            xPos={STARTING_X_POS}
+            yPos={STARTING_Y_POS}
+          />
+        ) : null}
         <ResponsiveCamera />
       </Canvas>
       <div className="relative overflow-hidden">
-        <h2 className="absolute left-0 top-5 text-2xl font-extrabold text-black">
+        <h2 className="absolute left-0 text-lg font-semibold text-black">
           Target
         </h2>
         <Canvas
