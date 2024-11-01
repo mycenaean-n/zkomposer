@@ -1,7 +1,7 @@
 import { ContractFunctionArgs, ContractFunctionName } from 'viem';
 import { useReadContract, UseReadContractParameters } from 'wagmi';
-import { abi as PUZZLESET_ABI } from '../../abis/zKubePuzzleSet';
-import { ZKUBE_PUZZLESET_ADDRESS } from '../../config';
+import { abi as PUZZLESET_ABI } from '../abis/zKubePuzzleSet';
+import { ZKUBE_PUZZLESET_ADDRESS } from '../config';
 
 type PuzzleSetAbi = typeof PUZZLESET_ABI;
 

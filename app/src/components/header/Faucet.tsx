@@ -1,4 +1,4 @@
-import { useFaucetCallback } from '@/hooks/callbacks/useFaucetCallback';
+import { useFaucetCallback } from '../../hooks/useFaucetCallback';
 import { Button } from '../ui/Button';
 import { Tooltip } from '../ui/Tooltip';
 

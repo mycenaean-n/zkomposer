@@ -2,7 +2,7 @@
 import { circuitFunctionsArray } from 'circuits/types/circuitFunctions.types';
 import { convertPuzzleToBase4FromHex } from 'circuits/utils/contracts/hexConversion';
 import { useMemo } from 'react';
-import { mapGrid } from '../../utils';
+import { mapGrid } from '../utils';
 import { useReadContractPuzzleSet } from './useReadContract';
 
 export const usePuzzleData = (puzzleId: string) => {

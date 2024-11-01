@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import { ZKUBE_PUZZLESET_ADDRESS } from '../../../../config';
 import { useLocalStorage } from '../../../../context/LocalStorageContext';
-import { useReadContractPuzzleSet } from '../../../../hooks/fetching/useReadContract';
 import { usePrivyWalletAddress } from '../../../../hooks/usePrivyWalletAddress';
+import { useReadContractPuzzleSet } from '../../../../hooks/useReadContract';
 import { useUserPuzzlesSolved } from '../../../../hooks/useUserPuzzlesSolved';
 
 export function Menu() {
