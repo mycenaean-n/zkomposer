@@ -1,12 +1,9 @@
 'use client';
 import { PrivyClientConfig, PrivyProvider } from '@privy-io/react-auth';
 import { createConfig, WagmiProvider } from '@privy-io/wagmi';
-import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
-import { QueryClient } from '@tanstack/react-query';
-import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { defineChain, http } from 'viem';
-import { deserialize, serialize } from 'wagmi';
 import { arbitrumSepolia, scroll, scrollSepolia } from 'wagmi/chains';
 
 export const LocalHost = defineChain({
@@ -24,28 +21,7 @@ export const LocalHost = defineChain({
   },
 });
 
-function getQueryClient() {
-  if (typeof window === 'undefined') return null;
-
-  return new QueryClient({
-    defaultOptions: {
-      queries: {
-        gcTime: 1000 * 60 * 60 * 24, // 24 hours
-      },
-    },
-  });
-}
-
-function getLocalStoragePersister() {
-  if (typeof window === 'undefined') return null;
-
-  return createSyncStoragePersister({
-    serialize,
-    storage: window.localStorage,
-    deserialize,
-  });
-}
-
+const queryClient = new QueryClient();
 const SUPPORTED_CHAINS = [
   arbitrumSepolia,
   LocalHost,
@@ -78,31 +54,20 @@ const privyConfig = {
 } as PrivyClientConfig;
 
 export function Web3Provider({ children }: { children: React.ReactNode }) {
-  const queryClient = getQueryClient();
-  const localStoragePersister = getLocalStoragePersister();
-
   useEffect(() => {
     window.localStorage.removeItem('wagmi.store');
   }, []);
 
   if (!process.env.NEXT_PUBLIC_PRIVY_APP_ID)
     throw new Error('Missing Privy App ID');
-
-  if (!queryClient || !localStoragePersister) {
-    return null;
-  }
-
   return (
     <PrivyProvider
       appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID}
       config={privyConfig}
     >
-      <PersistQueryClientProvider
-        client={queryClient}
-        persistOptions={{ persister: localStoragePersister }}
-      >
+      <QueryClientProvider client={queryClient}>
         <WagmiProvider config={wagmiConfig}>{children}</WagmiProvider>
-      </PersistQueryClientProvider>
+      </QueryClientProvider>
     </PrivyProvider>
   );
 }
