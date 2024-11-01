@@ -1,17 +1,14 @@
-import Link from 'next/link';
-import { CreateGame } from '../src/components/lobbies/CreateGame';
-import { SelectModeButton } from '../src/components/lobbies/SelectModeButton';
+'use client';
+import { redirect, useParams } from 'next/navigation';
+import { ZKUBE_PUZZLESET_ADDRESS } from '../src/config';
 
-export default async function Home() {
-  return (
-    <section className="flex flex-col">
-      <h1 className="py-8 text-center text-4xl">Create Game</h1>
-      <div className="flex flex-wrap justify-center gap-4">
-        <Link href="/puzzle/0">
-          <SelectModeButton mode="singleplayer" type="button" />
-        </Link>
-        <CreateGame />
-      </div>
-    </section>
-  );
+export default function Home() {
+  // const [id] = useLocalStorage('puzzleId', '0');
+  const params = useParams();
+  const id = params?.id ? String(params.id) : '0';
+  const puzzleSet = params?.puzzleSet
+    ? String(params.puzzleSet)
+    : ZKUBE_PUZZLESET_ADDRESS;
+
+  redirect(`/puzzle/${puzzleSet}/${id}`);
 }
