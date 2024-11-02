@@ -29,7 +29,6 @@ export function Scene({ initConfig, functions, className }: SceneProps) {
   } = initConfig;
 
   useEffect(() => {
-    // setGrids([]);
     const mutatedGrids: Colors[][][] = [];
     if (functions.chosen && startingGrid) {
       functions.chosen.forEach((funcName, index) => {
@@ -44,11 +43,6 @@ export function Scene({ initConfig, functions, className }: SceneProps) {
     }
     setGrids(mutatedGrids);
   }, [functions]);
-
-  console.log(
-    { startingGrid, finalGrid, availableFunctions },
-    grids.length > 0 && availableFunctions
-  );
 
   return (
     <div
