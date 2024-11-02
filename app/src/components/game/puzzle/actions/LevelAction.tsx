@@ -1,11 +1,11 @@
 'use client';
 import { usePrivy } from '@privy-io/react-auth';
-import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { ZKUBE_PUZZLESET_ADDRESS } from '../../../../config';
 import { useContractWriteZKube } from '../../../../hooks/useContractWrite';
 import { usePrivyWalletAddress } from '../../../../hooks/usePrivyWalletAddress';
 import { useReadContractPuzzleSet } from '../../../../hooks/useReadContract';
+import { useRouteParams } from '../../../../hooks/useRouteChange';
 import { GameMode } from '../../../../types/Game';
 import { ZKProofCalldata } from '../../../../types/Proof';
 import { Button } from '../../../ui/Button';
@@ -24,13 +24,9 @@ export function LevelAction({
   const { callback: submitSolution, error: submitSolutionError } =
     useContractWriteZKube('submitSolution');
   const { login } = usePrivy();
-  // const [id, setId] = useLocalStorage('puzzleId', '0');
-  const params = useParams();
-  const id = params?.id;
-  const puzzleSet = params?.puzzleSet;
+  const { id, puzzleSet } = useRouteParams();
   const { data: puzzlesInSet } = useReadContractPuzzleSet('numberOfPuzzles');
   const walletAddress = usePrivyWalletAddress();
-  const router = useRouter(); // Add this hook
 
   useEffect(() => {
     setError(proofError);
@@ -41,7 +37,10 @@ export function LevelAction({
   }, [submitSolutionError]);
 
   const handleNextLevel = () => {
-    router.push(`/puzzle/${puzzleSet}/${Number(id) + 1}`);
+    const newId = String(Number(id) + 1);
+    const newRoute = `/puzzle/${puzzleSet}/${newId}`;
+
+    window.history.pushState(null, '', newRoute);
   };
 
   const onClick = async (proofCd: ZKProofCalldata) => {
