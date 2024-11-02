@@ -1,11 +1,11 @@
 import { Colors, getCircuitFunctionIndex } from 'circuits';
 import { AVAILABLE_CIRCUITS } from 'circuits/config';
-import { useContext, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Address } from 'viem';
-import { PuzzleContext } from '../../game/puzzle/Puzzle';
+import { usePuzzleContext } from '../../../context/PuzzleContext';
 
 export function useInputSignals(address: Address) {
-  const { initConfig, functions } = useContext(PuzzleContext);
+  const { initConfig, functions } = usePuzzleContext();
   const [error, setError] = useState<Error | null>(null);
 
   const inputSignals = useMemo(() => {
