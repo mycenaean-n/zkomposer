@@ -5,8 +5,8 @@ import { useUserLeaderboard } from '../../../../hooks/useUserLeaderboard';
 import { truncateAddress } from '../../../../utils/truncateAddress';
 
 type LeaderboardProps = {
-  puzzleSet: Address;
-  puzzleId: string;
+  puzzleSet: Address | null;
+  puzzleId: string | null;
 };
 
 export function Leaderboard({ puzzleSet, puzzleId }: LeaderboardProps) {
@@ -52,7 +52,7 @@ export function Leaderboard({ puzzleSet, puzzleId }: LeaderboardProps) {
                 <td className="px-4 py-2 text-center text-sm text-gray-500">
                   {
                     !!user?.solutions.some(
-                      (s) => s.id.toUpperCase() === puzzleId.toUpperCase()
+                      (s) => s.id.toUpperCase() === puzzleId?.toUpperCase()
                     )
                   }
                 </td>

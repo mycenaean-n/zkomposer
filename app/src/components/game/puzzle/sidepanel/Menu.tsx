@@ -1,15 +1,20 @@
 import clsx from 'clsx';
+import { Address } from 'viem';
 import { ZKUBE_PUZZLESET_ADDRESS } from '../../../../config';
-import { useLocalStorage } from '../../../../context/LocalStorageContext';
 import { usePrivyWalletAddress } from '../../../../hooks/usePrivyWalletAddress';
 import { useReadContractPuzzleSet } from '../../../../hooks/useReadContract';
 import { useUserPuzzlesSolved } from '../../../../hooks/useUserPuzzlesSolved';
 
-export function Menu() {
-  const [id, setId] = useLocalStorage('puzzleId', '0');
+type MenuProps = {
+  puzzleSet: Address | null;
+  puzzleId: string | null;
+};
 
+export function Menu({ puzzleId, puzzleSet }: MenuProps) {
   const navigateLevel = (level: number) => {
-    setId(level.toString());
+    const newId = String(level);
+    const newRoute = `/puzzle/${puzzleSet}/${newId}`;
+    window.history.pushState(null, '', newRoute);
   };
 
   const { data: numberOfPuzzlesInSet } =
@@ -31,7 +36,7 @@ export function Menu() {
               'border border-black text-center',
               user?.solutions.find((s) => Number(s.puzzleId) === i) &&
                 'bg-green-500',
-              Number(id) === i && 'border-2 border-black'
+              Number(puzzleId) === i && 'border-2 border-black'
             )}
           >
             {i + 1}

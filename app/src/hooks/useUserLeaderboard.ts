@@ -13,7 +13,10 @@ const USER_LEADERBOARD = gql`
   }
 `;
 
-export function useUserLeaderboard(puzzleSet: Address, take: number = 5) {
+export function useUserLeaderboard(
+  puzzleSet: Address | null,
+  take: number = 5
+) {
   const { data, loading, error } = useQuery<{
     users: {
       totalSolved: number;
@@ -24,9 +27,10 @@ export function useUserLeaderboard(puzzleSet: Address, take: number = 5) {
     }[];
   }>(USER_LEADERBOARD, {
     variables: {
-      puzzleSet: checksumAddress(puzzleSet),
+      puzzleSet: checksumAddress(puzzleSet!),
       take,
     },
+    skip: !puzzleSet,
   });
 
   const parsedUsers = data?.users.map((user) => ({
