@@ -37,7 +37,7 @@ export function Function({
               : setFunctions((prev: PuzzleFunctions | undefined) => {
                   if (!prev) return prev;
                   return {
-                    remaining: prev.remaining,
+                    remaining: prev.remaining.concat(funcName),
                     chosen: prev.chosen.toSpliced(index, 1),
                     available: prev.available,
                   };
