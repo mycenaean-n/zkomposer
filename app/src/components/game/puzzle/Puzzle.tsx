@@ -4,8 +4,8 @@ import {
   PuzzleContext as PuzzleContextType,
   PuzzleFunctions,
 } from 'types/Puzzle';
-import { useLocalStorage } from '../../../context/LocalStorageContext';
 import { usePuzzleData } from '../../../hooks/usePuzzleData';
+import { useRouteParams } from '../../../hooks/useRouteChange';
 import { LoadingState } from '../../ui/loader/LoadingState';
 import { Actions } from './actions/Actions';
 import { PuzzleLayout } from './layout/Layout';
@@ -19,7 +19,7 @@ export const PuzzleContext = createContext<PuzzleContextType>({
 });
 
 const functionInitializer = (
-  initConfig: ReturnType<typeof usePuzzleData>['data']
+  initConfig: ReturnType<typeof usePuzzleData>
 ): PuzzleFunctions | undefined => {
   if (!initConfig?.availableFunctions?.length || !initConfig.initialGrid) {
     return undefined;
@@ -27,7 +27,7 @@ const functionInitializer = (
 
   const availableFunctions = initConfig.availableFunctions;
   const remainingFunctions = availableFunctions.filter(
-    (funcName) => funcName !== 'EMPTY'
+    (funcName: string) => funcName !== 'EMPTY'
   );
 
   return {
@@ -38,8 +38,8 @@ const functionInitializer = (
 };
 
 export function Puzzle() {
-  const [id] = useLocalStorage('puzzleId', '0');
-  const { data: initConfig } = usePuzzleData(id);
+  const { id } = useRouteParams();
+  const initConfig = usePuzzleData(id ?? '');
   const [functions, setFunctions] = useState<PuzzleFunctions | undefined>(
     functionInitializer(initConfig)
   );
