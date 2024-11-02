@@ -1,8 +1,7 @@
 import clsx from 'clsx';
-import { useContext } from 'react';
 import { GameMode } from 'types/Game';
+import { usePuzzleContext } from '../../../../context/PuzzleContext';
 import { GenerateProof } from '../../../zk/generateProof';
-import { PuzzleContext } from '../Puzzle';
 import { DragAndDrop } from './DragAndDrop';
 
 type ActionsProps = {
@@ -11,7 +10,7 @@ type ActionsProps = {
 };
 
 export function Actions({ gameMode, className }: ActionsProps) {
-  const { functions, setFunctions } = useContext(PuzzleContext);
+  const { functions, setFunctions } = usePuzzleContext();
 
   const areFunctionsDefined =
     functions?.remaining &&

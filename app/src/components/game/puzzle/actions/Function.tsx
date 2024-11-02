@@ -1,8 +1,7 @@
 import { CircuitFunctions } from 'circuits/types/circuitFunctions.types';
-import { useContext } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
+import { usePuzzleContext } from '../../../../context/PuzzleContext';
 import { PuzzleFunctions } from '../../../../types/Puzzle';
-import { PuzzleContext } from '../Puzzle';
 import { FunctionCard } from './function-card/FunctionCard';
 
 export function Function({
@@ -14,7 +13,7 @@ export function Function({
   funcName: CircuitFunctions;
   index: number;
 }) {
-  const { setFunctions } = useContext(PuzzleContext);
+  const { setFunctions } = usePuzzleContext();
   return (
     <Draggable
       draggableId={String(funcName)}
