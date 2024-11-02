@@ -1,6 +1,5 @@
 import clsx from 'clsx';
-import { ZKUBE_PUZZLESET_ADDRESS } from '../../../../config';
-import { useLocalStorage } from '../../../../context/LocalStorageContext';
+import { useRouteParams } from '../../../../hooks/useRouteChange';
 import { Leaderboard } from './Leaderboard';
 import { Menu } from './Menu';
 
@@ -9,12 +8,12 @@ type SidepanelProps = {
 };
 
 export function Sidepanel({ className }: SidepanelProps) {
-  const [id] = useLocalStorage('puzzleId', '0');
+  const { id, puzzleSet } = useRouteParams();
 
   return (
     <div className={clsx('flex h-full w-72 flex-col gap-6', className)}>
-      <Menu />
-      <Leaderboard puzzleSet={ZKUBE_PUZZLESET_ADDRESS} puzzleId={id} />
+      <Menu puzzleSet={puzzleSet} puzzleId={id} />
+      <Leaderboard puzzleSet={puzzleSet} puzzleId={id} />
     </div>
   );
 }
