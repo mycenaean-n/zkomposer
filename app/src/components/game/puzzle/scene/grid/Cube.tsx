@@ -24,7 +24,7 @@ export function Cube(props: CubeProps) {
 
     const topColor = baseColor.clone().multiplyScalar(1.3);
     const sideColor = baseColor.clone().multiplyScalar(0.8);
-    const leftColor = baseColor.clone().multiplyScalar(0.25);
+    const leftColor = baseColor.clone().multiplyScalar(0.35);
     const bottomColor = baseColor.clone().multiplyScalar(3);
 
     for (let i = 0; i < 6; i++) {
