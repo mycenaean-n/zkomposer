@@ -1,4 +1,4 @@
-import { Colors, getCircuitFunctionIndex } from 'circuits';
+import { getCircuitFunctionIndex } from 'circuits';
 import { AVAILABLE_CIRCUITS } from 'circuits/config';
 import { useMemo, useState } from 'react';
 import { Address } from 'viem';
@@ -31,8 +31,8 @@ export function useInputSignals(address: Address) {
 
     setError(null);
     return {
-      initialGrid: initConfig.initialGrid as Colors[][],
-      finalGrid: initConfig.finalGrid as Colors[][],
+      initialGrid: initConfig.initialGrid,
+      finalGrid: initConfig.finalGrid,
       account: address,
       selectedFunctionsIndexes: getCircuitFunctionIndex(functions.chosen),
       availableFunctionsIndexes: getCircuitFunctionIndex(functions.available),
