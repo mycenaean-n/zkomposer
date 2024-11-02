@@ -55,11 +55,7 @@ export function Cube(props: CubeProps) {
     // Increase saturation and brightness for a neon effect
     const hsl = { h: 0, s: 0, l: 0 };
     baseColor.getHSL(hsl);
-    return new Color().setHSL(
-      hsl.h,
-      Math.min(1, hsl.s * 1.5), // Increase saturation
-      Math.min(1, hsl.l * 1.5) // Increase brightness
-    );
+    return new Color().setHSL(hsl.h, Math.min(1, hsl.s), Math.min(1, hsl.l));
   }
 
   const neonLineMaterial = useMemo(() => {
@@ -77,9 +73,9 @@ export function Cube(props: CubeProps) {
     return new MeshPhongMaterial({
       color: neonColor,
       transparent: true,
-      opacity: 0.2,
+      opacity: 0.1,
       emissive: neonColor,
-      emissiveIntensity: 1,
+      emissiveIntensity: 0.5,
     });
   }, [props.colour]);
 
@@ -88,8 +84,8 @@ export function Cube(props: CubeProps) {
     return new ShaderMaterial({
       uniforms: {
         color: { value: neonColor },
-        glowIntensity: { value: 0.8 },
-        glowFalloff: { value: 6 },
+        glowIntensity: { value: 0 },
+        glowFalloff: { value: 0 },
       },
       vertexShader: `
         varying vec3 vPosition;
