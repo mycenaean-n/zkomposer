@@ -38,7 +38,7 @@ export function Menu({ puzzleId, puzzleSet }: MenuProps) {
             className={clsx(
               'border border-black text-center',
               hasSubmittedPuzzle(user, i) && 'bg-green-500',
-              Number(puzzleId) === i && 'border-2 border-black'
+              Number(puzzleId) === i && 'border-[3px] border-black'
             )}
           >
             {i + 1}
