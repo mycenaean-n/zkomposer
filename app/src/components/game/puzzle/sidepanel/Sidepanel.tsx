@@ -51,7 +51,7 @@ export function Sidepanel({
       >
         {isLeaderboardOpen ? <ArrowRight /> : <ArrowLeft />}
       </button>
-      <div className={clsx('flex h-full w-72 flex-col gap-6', className)}>
+      <div className={clsx('flex h-full min-w-72 flex-col gap-6', className)}>
         <Menu puzzleSet={puzzleSet} puzzleId={id} />
         <Leaderboard puzzleSet={puzzleSet} puzzleId={id} />
       </div>
