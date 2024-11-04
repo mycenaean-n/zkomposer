@@ -8,6 +8,8 @@ const USER_LEADERBOARD = gql`
       totalSolved
       solutions(where: { puzzleSet_eq: $puzzleSet }) {
         id
+        puzzleId
+        puzzleSet
       }
     }
   }
@@ -22,7 +24,9 @@ export function useUserLeaderboard(
       totalSolved: number;
       id: Address;
       solutions: {
-        id: string;
+        id: Address;
+        puzzleId: string;
+        puzzleSet: Address;
       }[];
     }[];
   }>(USER_LEADERBOARD, {
