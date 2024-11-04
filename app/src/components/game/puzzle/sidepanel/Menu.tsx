@@ -36,9 +36,12 @@ export function Menu({ puzzleId, puzzleSet }: MenuProps) {
             key={i}
             onClick={() => navigateLevel(i)}
             className={clsx(
-              'border border-black text-center',
-              hasSubmittedPuzzle(user, i) && 'bg-green-500',
-              Number(puzzleId) === i && 'border-[3px] border-black'
+              'relative rounded-md border border-black text-center',
+              'transition-all duration-200 ease-in-out',
+              'hover:border-primary hover:scale-[102%] hover:shadow-md',
+              hasSubmittedPuzzle(user, i) &&
+                'after:absolute after:left-[-20%] after:top-1/2 after:h-[1px] after:w-[141%] after:rotate-[-45deg] after:bg-black',
+              Number(puzzleId) === i ? 'border-[3px] border-black' : 'p-[3px]'
             )}
           >
             {i + 1}
