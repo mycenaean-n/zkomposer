@@ -1,9 +1,10 @@
 import clsx from 'clsx';
 import { Address } from 'viem';
-import { ZKUBE_PUZZLESET_ADDRESS } from '../../../../config';
+import { useProofCalldata } from '../../../../context/ProofContext';
 import { usePrivyWalletAddress } from '../../../../hooks/usePrivyWalletAddress';
 import { useReadContractPuzzleSet } from '../../../../hooks/useReadContract';
 import { useUserPuzzlesSolved } from '../../../../hooks/useUserPuzzlesSolved';
+import { hasSubmittedPuzzle } from '../../../../utils/hasSubmittedPuzzle';
 
 type MenuProps = {
   puzzleSet: Address | null;
@@ -11,16 +12,18 @@ type MenuProps = {
 };
 
 export function Menu({ puzzleId, puzzleSet }: MenuProps) {
-  const navigateLevel = (level: number) => {
-    const newId = String(level);
-    const newRoute = `/puzzle/${puzzleSet}/${newId}`;
-    window.history.pushState(null, '', newRoute);
-  };
-
   const { data: numberOfPuzzlesInSet } =
     useReadContractPuzzleSet('numberOfPuzzles');
   const address = usePrivyWalletAddress();
-  const { user } = useUserPuzzlesSolved(address, ZKUBE_PUZZLESET_ADDRESS);
+  const { user } = useUserPuzzlesSolved({ address, puzzleSet });
+  const { nullifyProofCalldata } = useProofCalldata();
+
+  const navigateLevel = (level: number) => {
+    const newId = String(level);
+    const newRoute = `/puzzle/${puzzleSet}/${newId}`;
+    nullifyProofCalldata();
+    window.history.pushState(null, '', newRoute);
+  };
 
   return (
     <div className="min-h-24">
@@ -34,8 +37,7 @@ export function Menu({ puzzleId, puzzleSet }: MenuProps) {
             onClick={() => navigateLevel(i)}
             className={clsx(
               'border border-black text-center',
-              user?.solutions.find((s) => Number(s.puzzleId) === i) &&
-                'bg-green-500',
+              hasSubmittedPuzzle(user, i) && 'bg-green-500',
               Number(puzzleId) === i && 'border-2 border-black'
             )}
           >
