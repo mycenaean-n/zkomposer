@@ -35,8 +35,8 @@ export function GenerateProof({ gameMode }: { gameMode: GameMode }) {
   return (
     <div className="relative mb-2 h-full">
       <Button
-        className="min-h-8 w-full border border-black p-1"
-        variant="secondary"
+        className="min-h-8 w-full border border-black p-1 text-white shadow-md shadow-black/50 transition-transform hover:-translate-y-px hover:shadow-lg hover:shadow-black/50"
+        variant="primary"
         disabled={isSignalMissing(inputSignals)}
         loading={generateProofLoading}
         onClick={() => {
