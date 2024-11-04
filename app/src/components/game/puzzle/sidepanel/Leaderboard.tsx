@@ -31,7 +31,7 @@ export function Leaderboard({ puzzleSet, puzzleId }: LeaderboardProps) {
             <th className="w-2/12 px-4 py-2 text-center text-sm font-semibold text-gray-600">
               Solved
             </th>
-            <th className="w-2/12 px-4 py-2 text-center text-sm font-semibold text-gray-600">
+            <th className="w-3/12 px-4 py-2 text-center text-sm font-semibold text-gray-600">
               Current
             </th>
           </tr>
