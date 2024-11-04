@@ -2,6 +2,7 @@ import clsx from 'clsx';
 import { Address } from 'viem';
 import { usePrivyWalletAddress } from '../../../../hooks/usePrivyWalletAddress';
 import { useUserLeaderboard } from '../../../../hooks/useUserLeaderboard';
+import { hasSubmittedPuzzle } from '../../../../utils/hasSubmittedPuzzle';
 import { truncateAddress } from '../../../../utils/truncateAddress';
 
 type LeaderboardProps = {
@@ -40,22 +41,22 @@ export function Leaderboard({ puzzleSet, puzzleId }: LeaderboardProps) {
             const user = users[i];
             return (
               <tr key={user?.id} className={clsx('h-8 transition-colors')}>
-                <td className="px-4 py-2 text-center text-sm text-gray-500">
-                  {user && i + 1}
-                </td>
-                <td className="px-4 py-2 text-center text-sm font-medium text-gray-900">
-                  {user?.id && truncateAddress(user.id)}
-                </td>
-                <td className="px-4 py-2 text-center text-sm text-gray-500">
-                  {user?.totalSolvedInPuzzleSet}
-                </td>
-                <td className="px-4 py-2 text-center text-sm text-gray-500">
-                  {
-                    !!user?.solutions.some(
-                      (s) => s.id.toUpperCase() === puzzleId?.toUpperCase()
-                    )
-                  }
-                </td>
+                {user ? (
+                  <>
+                    <td className="px-4 py-2 text-center text-sm text-gray-500">
+                      {user && i + 1}
+                    </td>
+                    <td className="px-4 py-2 text-center text-sm font-medium text-gray-900">
+                      {user?.id && truncateAddress(user.id)}
+                    </td>
+                    <td className="px-4 py-2 text-center text-sm text-gray-500">
+                      {user?.totalSolvedInPuzzleSet}
+                    </td>
+                    <td className="px-4 py-2 text-center text-sm text-gray-500">
+                      {hasSubmittedPuzzle(user, puzzleId) ? '✅' : '❌'}
+                    </td>
+                  </>
+                ) : null}
               </tr>
             );
           })}
