@@ -106,7 +106,7 @@ export function LevelAction({
       {error ? (
         <div className="col-span-full">
           {error ? (
-            <h1 className="text-sm">{error?.message.slice(0, 50)}</h1>
+            <h1 className="text-lg">{error?.message.slice(0, 50)}</h1>
           ) : null}
         </div>
       ) : null}
