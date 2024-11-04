@@ -17,9 +17,14 @@ type SceneProps = {
   initConfig: Puzzle;
   functions: PuzzleFunctions;
   className: string;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
-export function Scene({ initConfig, functions, className }: SceneProps) {
+export function Scene({
+  initConfig,
+  functions,
+  className,
+  ...props
+}: SceneProps) {
   const [grids, setGrids] = useState<Colors[][][]>([]);
 
   const {
@@ -47,6 +52,7 @@ export function Scene({ initConfig, functions, className }: SceneProps) {
   return (
     <div
       className={clsx('grid h-[350px] grid-cols-[3fr_1fr] gap-2', className)}
+      {...props}
     >
       <Canvas
         orthographic

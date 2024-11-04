@@ -42,7 +42,13 @@ export function LevelAction({
   }, [proofError]);
 
   useEffect(() => {
-    setError(submitSolutionError);
+    if (
+      submitSolutionError?.message.includes('The total cost (gas * gas fee')
+    ) {
+      setError(new Error('Click "Faucet", get money'));
+    } else {
+      setError(submitSolutionError);
+    }
   }, [submitSolutionError]);
 
   const handleNextLevel = () => {
@@ -53,6 +59,8 @@ export function LevelAction({
   };
 
   const onClick = async (proofCd: ZKProofCalldata) => {
+    console.log({ address, proofCd });
+
     if (!address) {
       login();
     } else {
@@ -62,7 +70,7 @@ export function LevelAction({
 
   return (
     <div className="absolute bottom-14 right-4 grid grid-cols-2 gap-2">
-      {proofCalldata ? (
+      {!error && proofCalldata ? (
         <>
           <div className="col-span-full flex items-center justify-center gap-2">
             <h1 className="text-lg">🎉 Puzzle Solved 🎉</h1>
@@ -96,11 +104,14 @@ export function LevelAction({
             </Button>
           ) : null}
         </>
-      ) : (
+      ) : null}
+      {error ? (
         <div className="col-span-full">
-          {error ? <h1 className="text-lg">{error?.message}</h1> : null}
+          {error ? (
+            <h1 className="text-sm">{error?.message.slice(0, 50)}</h1>
+          ) : null}
         </div>
-      )}
+      ) : null}
     </div>
   );
 }
