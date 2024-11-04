@@ -38,17 +38,9 @@ describe.only('zkube circuit', () => {
       ] as any),
     ]);
 
-    // console.log({
-    //   selected: { selectedFunctionsIndexes, selectedFunctions },
-    // });
-
     const availableFunctionsIndexes = [...availableFunctions].map((f) =>
       circuitFunctionsArray.indexOf(f)
     );
-
-    // console.log({
-    //   available: { availableFunctionsIndexes, availableFunctions },
-    // });
 
     const witness = await calculateLabeledWitness(
       circuit,

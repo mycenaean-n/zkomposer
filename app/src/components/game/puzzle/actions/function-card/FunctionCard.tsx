@@ -12,7 +12,7 @@ export function FunctionCard({ funcName }: { funcName: CircuitFunctions }) {
     parseCircuitArguments(funcName);
 
   return (
-    <div className="flex h-8 justify-center rounded-md border border-black bg-white p-1">
+    <div className="flex h-8 justify-center rounded-md border border-black bg-white p-1 shadow-md shadow-black/30 transition-transform hover:-translate-y-px hover:shadow-lg hover:shadow-black/30">
       <div className="flex items-center">
         <DisplayName functionName={functionName}>
           <div className="mx-1 flex items-center">

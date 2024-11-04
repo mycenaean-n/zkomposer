@@ -59,8 +59,6 @@ export function LevelAction({
   };
 
   const onClick = async (proofCd: ZKProofCalldata) => {
-    console.log({ address, proofCd });
-
     if (!address) {
       login();
     } else {
