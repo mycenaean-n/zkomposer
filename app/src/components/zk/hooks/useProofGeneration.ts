@@ -1,15 +1,13 @@
 import { generateGroth16Proof, verifyGroth16Proof } from 'circuits';
 import { InputSignals } from 'circuits/types/proof.types';
 import { useState } from 'react';
+import { useProofCalldata } from '../../../context/ProofContext';
 import { generateGroth16ProofCalldataParsed } from '../../../hooks/useProof';
-import { ZKProofCalldata } from '../../../types/Proof';
 
 export function useProofGeneration() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
-  const [proofCalldata, setProofCalldata] = useState<ZKProofCalldata | null>(
-    null
-  );
+  const { proofCalldata, setProofCalldata } = useProofCalldata();
 
   const generateAndVerifyProof = async (signals: InputSignals | undefined) => {
     if (!signals) {

@@ -1,5 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
 import { Address, checksumAddress } from 'viem';
+import { useWindowFocusRefetch } from './useWindowFocusRefetch';
 
 const USER_PUZZLES_SOLVED = gql`
   query UserPuzzlesSolved($userId: String!, $puzzleSet: String!) {
@@ -16,11 +17,16 @@ const USER_PUZZLES_SOLVED = gql`
   }
 `;
 
-export function useUserPuzzlesSolved(
-  address: Address | undefined,
-  puzzleSet: Address
-) {
-  const { data, loading, error } = useQuery<{
+type PuzzleSolvedProps = {
+  address: Address | undefined;
+  puzzleSet: Address | null;
+};
+
+export function useUserPuzzlesSolved({
+  address,
+  puzzleSet,
+}: PuzzleSolvedProps) {
+  const { data, loading, error, refetch } = useQuery<{
     users: [
       {
         id: Address;
@@ -34,11 +40,13 @@ export function useUserPuzzlesSolved(
   }>(USER_PUZZLES_SOLVED, {
     variables: {
       userId: address ? checksumAddress(address) : '',
-      puzzleSet: checksumAddress(puzzleSet),
+      puzzleSet: puzzleSet ? checksumAddress(puzzleSet) : '',
     },
-    fetchPolicy: 'cache-and-network', // Ensures cache data is used first, then refetches
-    skip: !address,
+    skip: !address || !puzzleSet,
+    fetchPolicy: 'cache-and-network',
   });
+
+  useWindowFocusRefetch(refetch);
 
   return {
     user: data?.users[0],
