@@ -40,7 +40,13 @@ export function Leaderboard({ puzzleSet, puzzleId }: LeaderboardProps) {
           {Array.from({ length: 20 }, (_, i) => {
             const user = users[i];
             return (
-              <tr key={user?.id} className={clsx('h-8 transition-colors')}>
+              <tr
+                key={user?.id}
+                className={clsx(
+                  'h-8 transition-colors',
+                  user && user.id === address && 'bg-gray-100'
+                )}
+              >
                 {user ? (
                   <>
                     <td className="px-4 py-2 text-center text-sm text-gray-500">
