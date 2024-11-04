@@ -6,10 +6,9 @@ import { DragAndDrop } from './DragAndDrop';
 
 type ActionsProps = {
   gameMode: GameMode;
-  className: string;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
-export function Actions({ gameMode, className }: ActionsProps) {
+export function Actions({ gameMode, className, ...props }: ActionsProps) {
   const { functions, setFunctions } = usePuzzleContext();
 
   const areFunctionsDefined =
@@ -19,7 +18,7 @@ export function Actions({ gameMode, className }: ActionsProps) {
     setFunctions;
 
   return (
-    <div className={clsx('flex h-auto flex-col', className)}>
+    <div className={clsx('flex h-auto flex-col', className)} {...props}>
       <GenerateProof {...{ gameMode, functions }} />
       {areFunctionsDefined ? (
         <DragAndDrop functions={functions!} setFunctions={setFunctions!} />

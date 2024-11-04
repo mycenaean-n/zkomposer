@@ -1,4 +1,4 @@
-import { Logo } from '../Logo';
+import { Logo } from '../ui/icons/Logo';
 import { ConnectButton } from './ConnectButton';
 
 export function Header() {
