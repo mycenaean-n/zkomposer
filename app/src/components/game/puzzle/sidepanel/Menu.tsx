@@ -36,7 +36,7 @@ export function Menu({ puzzleId, puzzleSet }: MenuProps) {
             key={i}
             onClick={() => navigateLevel(i)}
             className={clsx(
-              'relative rounded-md border border-black text-center',
+              'relative border border-black text-center',
               'transition-all duration-200 ease-in-out',
               'hover:border-primary hover:scale-[102%] hover:shadow-md',
               hasSubmittedPuzzle(user, i) &&
