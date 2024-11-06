@@ -1,9 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Address } from 'viem';
 
-const parsePath = (
-  path: string
-): { puzzleSet: Address | null; id: string | null } => {
+type RouteParams = {
+  puzzleSet: Address | null;
+  id: string | null;
+};
+
+const parsePath = (): RouteParams => {
+  if (typeof window === 'undefined') {
+    return { puzzleSet: null, id: null };
+  }
+  const path = window?.location.href;
   const segments = path.split('/');
   const puzzleSet = segments.at(-2) ?? null;
   const id = segments.at(-1) ?? null;
@@ -15,11 +22,11 @@ const parsePath = (
 };
 
 export function useRouteParams() {
-  const [url, setUrl] = useState(parsePath(window.location.href));
+  const [url, setUrl] = useState<RouteParams>(parsePath());
 
   useEffect(() => {
     const handleUrlChange = () => {
-      const parsedPath = parsePath(window.location.href);
+      const parsedPath = parsePath();
       setUrl(parsedPath);
     };
 
