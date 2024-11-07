@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { usePuzzleContext } from '../../../context/PuzzleContext';
 import { LoadingState } from '../../ui/loader/LoadingState';
 import { Actions } from './actions/Actions';
@@ -13,13 +13,19 @@ export function Puzzle() {
 
   const isPuzzleReady = !!(initConfig && functions);
 
+  const closeLeaderboard = useCallback(() => {
+    if (window.innerWidth < 1024) {
+      setIsLeaderboardOpen(false);
+    }
+  }, [setIsLeaderboardOpen]);
+
   return (
     <>
       {isPuzzleReady ? (
         <PuzzleLayout
           scene={({ className }) => (
             <Scene
-              onClick={() => setIsLeaderboardOpen(false)}
+              onClick={closeLeaderboard}
               initConfig={initConfig}
               functions={functions}
               className={className}
@@ -27,7 +33,7 @@ export function Puzzle() {
           )}
           actions={({ className }) => (
             <Actions
-              onClick={() => setIsLeaderboardOpen(false)}
+              onClick={closeLeaderboard}
               gameMode="singleplayer"
               className={className}
             />
