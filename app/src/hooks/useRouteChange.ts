@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useState } from 'react';
 import { Address } from 'viem';
 
 type RouteParams = {
@@ -6,22 +7,22 @@ type RouteParams = {
   id: string | null;
 };
 
-const parsePath = (): RouteParams => {
-  if (typeof window === 'undefined') {
-    return { puzzleSet: null, id: null };
-  }
-  const path = window?.location.href;
-  const segments = path.split('/');
-  const puzzleSet = segments.at(-2) ?? null;
-  const id = segments.at(-1) ?? null;
+const useParsePath = () => {
+  const searchParams = useSearchParams();
 
-  return {
-    puzzleSet: puzzleSet as Address,
-    id,
-  };
+  return useCallback(() => {
+    const puzzleSet = searchParams.get('puzzleSet');
+    const puzzleId = searchParams.get('puzzleId');
+
+    return {
+      puzzleSet: puzzleSet as Address,
+      id: puzzleId,
+    };
+  }, [searchParams]);
 };
 
 export function useRouteParams() {
+  const parsePath = useParsePath();
   const [url, setUrl] = useState<RouteParams>(parsePath());
 
   useEffect(() => {
@@ -29,6 +30,8 @@ export function useRouteParams() {
       const parsedPath = parsePath();
       setUrl(parsedPath);
     };
+
+    handleUrlChange();
 
     const originalPushState = history.pushState;
     const originalReplaceState = history.replaceState;
@@ -50,7 +53,7 @@ export function useRouteParams() {
       history.pushState = originalPushState;
       history.replaceState = originalReplaceState;
     };
-  }, []);
+  }, [parsePath]);
 
   return url;
 }

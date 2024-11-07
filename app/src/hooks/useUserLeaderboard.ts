@@ -31,7 +31,7 @@ export function useUserLeaderboard(
     }[];
   }>(USER_LEADERBOARD, {
     variables: {
-      puzzleSet: checksumAddress(puzzleSet!),
+      puzzleSet: puzzleSet ? checksumAddress(puzzleSet) : '',
       take,
     },
     skip: !puzzleSet,

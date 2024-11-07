@@ -1,6 +1,7 @@
 'use client';
 import { usePrivy } from '@privy-io/react-auth';
 import clsx from 'clsx';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { ZKUBE_PUZZLESET_ADDRESS } from '../../../../config';
 import { useProofCalldata } from '../../../../context/ProofContext';
@@ -11,6 +12,7 @@ import { useRouteParams } from '../../../../hooks/useRouteChange';
 import { useUserPuzzlesSolved } from '../../../../hooks/useUserPuzzlesSolved';
 import { GameMode } from '../../../../types/Game';
 import { ZKProofCalldata } from '../../../../types/Proof';
+import { composePuzzleRoute } from '../../../../utils/composePuzzleRoute';
 import { hasSubmittedPuzzle } from '../../../../utils/hasSubmittedPuzzle';
 import { Button } from '../../../ui/Button';
 
@@ -33,7 +35,7 @@ export function LevelAction({
   const address = usePrivyWalletAddress();
   const { user } = useUserPuzzlesSolved({ address, puzzleSet });
   const { nullifyProofCalldata } = useProofCalldata();
-
+  const router = useRouter();
   const hasUserSubmittedPuzzle = hasSubmittedPuzzle(user, id);
   const isLastInSet = Number(puzzlesInSet) === Number(id) + 1;
 
@@ -52,10 +54,10 @@ export function LevelAction({
   }, [submitSolutionError]);
 
   const handleNextLevel = () => {
+    if (!puzzleSet) return;
     const newId = String(Number(id) + 1);
-    const newRoute = `/puzzle/${puzzleSet}/${newId}`;
     nullifyProofCalldata();
-    window.history.pushState(null, '', newRoute);
+    router.push(composePuzzleRoute(puzzleSet, newId));
   };
 
   const onClick = async (proofCd: ZKProofCalldata) => {
