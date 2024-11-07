@@ -1,11 +1,54 @@
-import { Puzzle } from '@components/game/puzzle/Puzzle';
-export const dynamic = 'force-dynamic';
-export const revalidate = 3600; // Revalidate every hour
+'use client';
+import { useCallback, useState } from 'react';
+import { Actions } from '../../src/components/game/puzzle/actions/Actions';
+import { PuzzleLayout } from '../../src/components/game/puzzle/layout/Layout';
+import { Scene } from '../../src/components/game/puzzle/scene/Scene';
+import { Sidepanel } from '../../src/components/game/puzzle/sidepanel/Sidepanel';
+import { LoadingState } from '../../src/components/ui/loader/LoadingState';
+import { usePuzzleContext } from '../../src/context/PuzzleContext';
 
-export default function Page({ params: { id } }: { params: { id: string } }) {
+export default function Page() {
+  const { initConfig, functions } = usePuzzleContext();
+  const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
+
+  const isPuzzleReady = !!(initConfig && functions);
+
+  const closeLeaderboard = useCallback(() => {
+    if (window.innerWidth < 1024) {
+      setIsLeaderboardOpen(false);
+    }
+  }, [setIsLeaderboardOpen]);
+
   return (
     <section className="flex flex-col">
-      <Puzzle />
+      {isPuzzleReady ? (
+        <PuzzleLayout
+          scene={({ className }) => (
+            <Scene
+              onClick={closeLeaderboard}
+              initConfig={initConfig}
+              functions={functions}
+              className={className}
+            />
+          )}
+          actions={({ className }) => (
+            <Actions
+              onClick={closeLeaderboard}
+              gameMode="singleplayer"
+              className={className}
+            />
+          )}
+          stats={({ className }) => (
+            <Sidepanel
+              isLeaderboardOpen={isLeaderboardOpen}
+              setIsLeaderboardOpen={setIsLeaderboardOpen}
+              className={className}
+            />
+          )}
+        />
+      ) : (
+        <LoadingState />
+      )}
     </section>
   );
 }
