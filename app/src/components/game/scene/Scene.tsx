@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import { Vector3 } from 'three';
-import { Puzzle, PuzzleFunctions } from '../../../../types/Puzzle';
+import { Puzzle, PuzzleFunctions } from '../../../types/Puzzle';
 import { Grid } from './grid/Grid';
 import IntermediateGrids from './IntermediateGrids';
 import { ResponsiveCamera } from './ResponsiveCamera';

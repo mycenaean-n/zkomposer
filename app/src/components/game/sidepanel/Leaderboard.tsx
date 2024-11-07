@@ -1,9 +1,9 @@
 import clsx from 'clsx';
 import { Address } from 'viem';
-import { usePrivyWalletAddress } from '../../../../hooks/usePrivyWalletAddress';
-import { useUserLeaderboard } from '../../../../hooks/useUserLeaderboard';
-import { hasSubmittedPuzzle } from '../../../../utils/hasSubmittedPuzzle';
-import { truncateAddress } from '../../../../utils/truncateAddress';
+import { usePrivyWalletAddress } from '../../../hooks/usePrivyWalletAddress';
+import { useUserLeaderboard } from '../../../hooks/useUserLeaderboard';
+import { hasSubmittedPuzzle } from '../../../utils/hasSubmittedPuzzle';
+import { truncateAddress } from '../../../utils/truncateAddress';
 
 type LeaderboardProps = {
   puzzleSet: Address | null;

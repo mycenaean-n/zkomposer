@@ -1,9 +1,9 @@
 import { CircuitFunctions } from 'circuits/types/circuitFunctions.types';
 import React from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { PuzzleContextType } from '../../../../context/PuzzleContext';
-import { useOnDragEnd } from '../../../../hooks/useOnDrag';
-import { PuzzleFunctionState } from '../../../../types/Puzzle';
+import { PuzzleContextType } from '../../../context/PuzzleContext';
+import { useOnDragEnd } from '../../../hooks/useOnDrag';
+import { PuzzleFunctionState } from '../../../types/Puzzle';
 import { Function } from './Function';
 
 export type DragAndDropProps = {

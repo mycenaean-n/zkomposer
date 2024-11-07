@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { zeroAddress } from 'viem';
 import { usePrivyWalletAddress } from '../../hooks/usePrivyWalletAddress';
 import { GameMode } from '../../types/Game';
-import { LevelAction } from '../game/puzzle/actions/LevelAction';
+import { LevelAction } from '../game/actions/LevelAction';
 import { Button } from '../ui/Button';
 import { useInputSignals } from './hooks/useInputSignal';
 import { useProofGeneration } from './hooks/useProofGeneration';

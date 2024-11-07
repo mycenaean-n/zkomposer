@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import { Dispatch, SetStateAction, useEffect } from 'react';
-import { useRouteParams } from '../../../../hooks/useRouteChange';
-import { ArrowLeft } from '../../../ui/icons/ArrowLeft';
-import { ArrowRight } from '../../../ui/icons/ArrowRight';
+import { useRouteParams } from '../../../hooks/useRouteChange';
+import { ArrowLeft } from '../../ui/icons/ArrowLeft';
+import { ArrowRight } from '../../ui/icons/ArrowRight';
 import { Leaderboard } from './Leaderboard';
 import { Menu } from './Menu';
 

@@ -1,12 +1,12 @@
 import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 import { Address } from 'viem';
-import { useProofCalldata } from '../../../../context/ProofContext';
-import { usePrivyWalletAddress } from '../../../../hooks/usePrivyWalletAddress';
-import { useReadContractPuzzleSet } from '../../../../hooks/useReadContract';
-import { useUserPuzzlesSolved } from '../../../../hooks/useUserPuzzlesSolved';
-import { composePuzzleRoute } from '../../../../utils/composePuzzleRoute';
-import { hasSubmittedPuzzle } from '../../../../utils/hasSubmittedPuzzle';
+import { useProofCalldata } from '../../../context/ProofContext';
+import { usePrivyWalletAddress } from '../../../hooks/usePrivyWalletAddress';
+import { useReadContractPuzzleSet } from '../../../hooks/useReadContract';
+import { useUserPuzzlesSolved } from '../../../hooks/useUserPuzzlesSolved';
+import { composePuzzleRoute } from '../../../utils/composePuzzleRoute';
+import { hasSubmittedPuzzle } from '../../../utils/hasSubmittedPuzzle';
 
 type MenuProps = {
   puzzleSet: Address | null;
