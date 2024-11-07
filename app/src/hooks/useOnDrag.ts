@@ -1,5 +1,5 @@
 import { DropResult } from 'react-beautiful-dnd';
-import { DragAndDropProps } from '../components/game/puzzle/actions/DragAndDrop';
+import { DragAndDropProps } from '../components/game/actions/DragAndDrop';
 import { PuzzleFunctionState } from '../types/Puzzle';
 
 export function useOnDragEnd({ functions, setFunctions }: DragAndDropProps) {

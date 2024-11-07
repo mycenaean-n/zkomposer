@@ -1,9 +1,9 @@
 'use client';
 import { useCallback, useState } from 'react';
-import { Actions } from '../../src/components/game/puzzle/actions/Actions';
-import { PuzzleLayout } from '../../src/components/game/puzzle/layout/Layout';
-import { Scene } from '../../src/components/game/puzzle/scene/Scene';
-import { Sidepanel } from '../../src/components/game/puzzle/sidepanel/Sidepanel';
+import { Actions } from '../../src/components/game/actions/Actions';
+import { PuzzleLayout } from '../../src/components/game/layout/Layout';
+import { Scene } from '../../src/components/game/scene/Scene';
+import { Sidepanel } from '../../src/components/game/sidepanel/Sidepanel';
 import { LoadingState } from '../../src/components/ui/loader/LoadingState';
 import { usePuzzleContext } from '../../src/context/PuzzleContext';
 
