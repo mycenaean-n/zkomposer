@@ -87,7 +87,7 @@ export function Scene({
             position: new Vector3(2.5, 3, 3),
           }}
         >
-          <Grid grid={finalGrid} position={{ x: 0.5, y: 1.2, z: 0.8 }} />
+          <Grid grid={finalGrid} position={{ x: 0.7, y: 1.5, z: 0.8 }} />
           <ResponsiveCamera />
         </Canvas>
       </div>
