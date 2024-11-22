@@ -39,8 +39,8 @@ export function Sidepanel({
   return (
     <div
       className={clsx(
-        'absolute right-0 top-0 flex h-full gap-2 bg-white px-2 shadow-xl transition-all duration-700 ease-in-out',
-        isLeaderboardOpen ? 'w-[22rem] lg:relative' : 'w-8',
+        'absolute right-0 top-0 flex h-full gap-2 bg-white px-2 shadow-xl transition-all duration-700 ease-in-out md:relative',
+        isLeaderboardOpen ? 'w-[22rem]' : 'w-8',
         className
       )}
     >

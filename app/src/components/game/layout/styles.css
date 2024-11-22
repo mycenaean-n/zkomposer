@@ -16,7 +16,7 @@
   display: grid;
   gap: 1rem;
   margin: 1rem 0;
-  grid-template-columns: repeat(7, 1fr) minmax(30px, max-content);
+  grid-template-columns: repeat(7, 1fr) minmax(30px, auto);
   grid-template-rows: 300px 340px;
   grid-template-areas:
     'game    game    game    game    game    game  game  leaderboard'
