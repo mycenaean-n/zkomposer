@@ -1,25 +1,34 @@
 import { generateGroth16Proof, verifyGroth16Proof } from 'circuits';
-import { InputSignals } from 'circuits/types/proof.types';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { zeroAddress } from 'viem';
 import { useProofCalldata } from '../../../context/ProofContext';
+import { usePrivyWalletAddress } from '../../../hooks/usePrivyWalletAddress';
 import { generateGroth16ProofCalldataParsed } from '../../../hooks/useProof';
+import { useInputSignals } from './useInputSignal';
 
 export function useProofGeneration() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
+  const address = usePrivyWalletAddress() ?? zeroAddress;
+  const { inputSignals: inputSignals, error: inputSignalError } =
+    useInputSignals(address);
   const { proofCalldata, setProofCalldata } = useProofCalldata();
 
-  const generateAndVerifyProof = async (signals: InputSignals | undefined) => {
-    if (!signals) {
+  useEffect(() => {
+    setError(inputSignalError);
+  }, [inputSignalError]);
+
+  const generateAndVerifyProof = useCallback(async () => {
+    if (!inputSignals) {
       setError(new Error('No signals'));
       return;
     }
 
     const checks = {
-      'Initial grid': signals.initialGrid,
-      'Final grid': signals.finalGrid,
-      Account: signals.account,
-      'Selected functions': signals.selectedFunctionsIndexes,
+      'Initial grid': inputSignals.initialGrid,
+      'Final grid': inputSignals.finalGrid,
+      Account: inputSignals.account,
+      'Selected functions': inputSignals.selectedFunctionsIndexes,
     };
 
     for (const [name, value] of Object.entries(checks)) {
@@ -32,7 +41,7 @@ export function useProofGeneration() {
     setLoading(true);
     try {
       const { proof, publicSignals } = await generateGroth16Proof(
-        signals,
+        inputSignals,
         '/zk/zkube.wasm',
         '/zk/zkube_final.zkey'
       );
@@ -64,7 +73,9 @@ export function useProofGeneration() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [inputSignals, inputSignalError, proofCalldata, setProofCalldata]);
+
+  console.log({ inputSignalError, error });
 
   return {
     loading,
