@@ -3,7 +3,6 @@ import { usePrivy } from '@privy-io/react-auth';
 import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { ZKUBE_PUZZLESET_ADDRESS } from '../../../config';
 import { useProofCalldata } from '../../../context/ProofContext';
 import { useContractWriteZKube } from '../../../hooks/useContractWrite';
 import { usePrivyWalletAddress } from '../../../hooks/usePrivyWalletAddress';
@@ -64,7 +63,8 @@ export function LevelAction({
     if (!address) {
       login();
     } else {
-      submitSolution([ZKUBE_PUZZLESET_ADDRESS, BigInt(id as string), proofCd]);
+      if (!puzzleSet) return;
+      submitSolution([puzzleSet, BigInt(id as string), proofCd]);
     }
   };
 

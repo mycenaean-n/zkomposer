@@ -1,11 +1,7 @@
 import { InputSignals } from 'circuits/types/proof.types';
-import { useEffect, useState } from 'react';
-import { zeroAddress } from 'viem';
-import { usePrivyWalletAddress } from '../../hooks/usePrivyWalletAddress';
 import { GameMode } from '../../types/Game';
 import { LevelAction } from '../game/actions/LevelAction';
 import { Button } from '../ui/Button';
-import { useInputSignals } from './hooks/useInputSignal';
 import { useProofGeneration } from './hooks/useProofGeneration';
 
 const isSignalMissing = (inputSignals: Partial<InputSignals> | undefined) => {
@@ -14,34 +10,23 @@ const isSignalMissing = (inputSignals: Partial<InputSignals> | undefined) => {
 };
 
 export function GenerateProof({ gameMode }: { gameMode: GameMode }) {
-  const [error, setError] = useState<Error | null>(null);
   const {
     loading: generateProofLoading,
     proofCalldata,
     generateAndVerifyProof,
-    error: generateProofError,
+    error,
   } = useProofGeneration();
-  const address = usePrivyWalletAddress() ?? zeroAddress;
-  const { inputSignals, error: inputSignalError } = useInputSignals(address);
 
-  useEffect(() => {
-    setError(generateProofError);
-  }, [generateProofError]);
-
-  useEffect(() => {
-    setError(inputSignalError);
-  }, [inputSignalError]);
+  console.log({ error });
 
   return (
     <div className="relative mb-2 h-full">
       <Button
         className="min-h-8 w-full border border-black p-1 text-white shadow-md shadow-black/50 transition-transform hover:-translate-y-px hover:shadow-lg hover:shadow-black/50"
         variant="primary"
-        disabled={isSignalMissing(inputSignals)}
+        disabled={!!error}
         loading={generateProofLoading}
-        onClick={() => {
-          generateAndVerifyProof(inputSignals);
-        }}
+        onClick={generateAndVerifyProof}
         type="button"
         rounded
       >
