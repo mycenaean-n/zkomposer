@@ -4,6 +4,7 @@ import { zeroAddress } from 'viem';
 import { useProofCalldata } from '../../../context/ProofContext';
 import { usePrivyWalletAddress } from '../../../hooks/usePrivyWalletAddress';
 import { generateGroth16ProofCalldataParsed } from '../../../hooks/useProof';
+import { useRouteParams } from '../../../hooks/useRouteChange';
 import { useInputSignals } from './useInputSignal';
 
 export function useProofGeneration() {
@@ -13,10 +14,16 @@ export function useProofGeneration() {
   const { inputSignals: inputSignals, error: inputSignalError } =
     useInputSignals(address);
   const { proofCalldata, setProofCalldata } = useProofCalldata();
+  const { id, puzzleSet } = useRouteParams();
 
   useEffect(() => {
     setError(inputSignalError);
   }, [inputSignalError]);
+
+  useEffect(() => {
+    setError(null);
+    setProofCalldata(null);
+  }, [id, puzzleSet, inputSignals]);
 
   const generateAndVerifyProof = useCallback(async () => {
     if (!inputSignals) {
