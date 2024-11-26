@@ -17,8 +17,6 @@ export function GenerateProof({ gameMode }: { gameMode: GameMode }) {
     error,
   } = useProofGeneration();
 
-  console.log({ error });
-
   return (
     <div className="relative mb-2 h-full">
       <Button

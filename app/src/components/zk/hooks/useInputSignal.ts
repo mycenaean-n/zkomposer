@@ -19,8 +19,6 @@ export function useInputSignals(address: Address) {
       return;
     }
 
-    console.log(functions.chosen.length, AVAILABLE_CIRCUITS);
-
     if (functions.chosen.length > AVAILABLE_CIRCUITS) {
       setError(new Error(`More than ${AVAILABLE_CIRCUITS} functions chosen`));
       return;

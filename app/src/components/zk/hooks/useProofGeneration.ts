@@ -75,8 +75,6 @@ export function useProofGeneration() {
     }
   }, [inputSignals, inputSignalError, proofCalldata, setProofCalldata]);
 
-  console.log({ inputSignalError, error });
-
   return {
     loading,
     proofCalldata,

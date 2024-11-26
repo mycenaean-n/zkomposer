@@ -54,17 +54,6 @@ describe.only('zkube circuit', () => {
       sanityCheck
     );
 
-    console.log({
-      initialGrid,
-      targetGrid,
-    });
-
-    // console.log({
-    //   initialGrid,
-    //   prettyFinalFromCircuit: prettyFinalFromCircuit(witness),
-    //   targetGrid,
-    // });
-
     for (let i = 0; i < GRID_WIDTH; i++) {
       for (let j = 0; j < GRID_HEIGHT; j++) {
         assert.propertyVal(

@@ -21,21 +21,25 @@ export default function IntermediateGrids({
     ? 8 / availableFunctions.length
     : 5 / availableFunctions.length;
 
-  return grids.map((grid, index) => {
-    xPos += xGap;
+  const elements: JSX.Element[] = [];
 
-    // Calculate sum of all elements in the grid
+  for (let index = 0; index < grids.length; index++) {
+    xPos += xGap;
+    const grid = grids[index];
+
     const gridSum = grid
       .flat(2)
       .reduce((sum: number, val: number) => sum + val, 0);
 
     if (gridSum === 0) {
-      return <BlackHole key={index} xPos={xPos} yPos={yPos} />;
+      elements.push(<BlackHole key={index} xPos={xPos} yPos={yPos} />);
+      break;
     }
 
-    // Return normal grid otherwise
-    return (
+    elements.push(
       <Grid key={index} grid={grid} position={{ x: xPos, y: yPos, z: 0 }} />
     );
-  });
+  }
+
+  return <>{elements}</>;
 }
