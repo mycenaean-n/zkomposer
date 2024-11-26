@@ -10,10 +10,10 @@ export function BlackHole({ xPos, yPos }: { xPos: number; yPos: number }) {
       {[-0.2, -0.3].map((_, i) => (
         <mesh
           key={`vortex-${i}`}
-          position={new Vector3(-0.015, -0.13, 0)}
+          position={new Vector3(xPos - 0.015, yPos - 0.13, 0)}
           rotation={[0, 0, i * 0.65]} // Increased rotation for more visible spiral
         >
-          <ringGeometry args={[0.41, 0.51, 32]} />
+          <ringGeometry args={[0.72, 0.6, 32]} />
           <shaderMaterial
             fragmentShader={`
                   varying vec2 vUv;
@@ -39,16 +39,16 @@ export function BlackHole({ xPos, yPos }: { xPos: number; yPos: number }) {
         </mesh>
       ))}
       {/* Inner bright ring - orange */}
-      <mesh position={new Vector3(-0.05, -0.15, 0)}>
-        <ringGeometry args={[0.6, 0.48, 32]} />
+      <mesh position={new Vector3(xPos - 0.05, yPos - 0.15, 0)}>
+        <ringGeometry args={[0.8, 0.68, 32]} />
         <meshBasicMaterial color="#ff3300" transparent={true} side={2} />
       </mesh>
       {/* inner black */}
       <mesh
-        position={new Vector3(-0.015, -0.13, 0)}
+        position={new Vector3(xPos - 0.04, yPos - 0.15, 0)}
         rotation={[0, 0, 0.75]} // Increased rotation for more visible spiral
       >
-        <ringGeometry args={[0, 0.45, 70]} />
+        <ringGeometry args={[0, 0.62, 68]} />
         <meshBasicMaterial color="#000000" side={2} />
       </mesh>
     </group>
