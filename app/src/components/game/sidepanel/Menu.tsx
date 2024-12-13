@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 import { Address } from 'viem';
-import { useProofCalldata } from '../../../context/ProofContext';
+import { useProof } from '../../../context/ProofContext';
 import { usePrivyWalletAddress } from '../../../hooks/usePrivyWalletAddress';
 import { useReadContractPuzzleSet } from '../../../hooks/useReadContract';
 import { useUserPuzzlesSolved } from '../../../hooks/useUserPuzzlesSolved';
@@ -19,7 +19,7 @@ export function Menu({ puzzleId, puzzleSet }: MenuProps) {
   const address = usePrivyWalletAddress();
   const router = useRouter();
   const { user } = useUserPuzzlesSolved({ address, puzzleSet });
-  const { nullifyProofCalldata } = useProofCalldata();
+  const { nullifyProofCalldata } = useProof();
 
   const navigateLevel = (level: number) => {
     console.log('navigateLevel', puzzleSet, level);

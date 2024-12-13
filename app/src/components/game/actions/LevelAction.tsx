@@ -1,39 +1,97 @@
 'use client';
-import { usePrivy } from '@privy-io/react-auth';
+import { useLogin } from '@privy-io/react-auth';
 import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { useProofCalldata } from '../../../context/ProofContext';
+import { ButtonHTMLAttributes, useEffect, useState } from 'react';
+import { useProof } from '../../../context/ProofContext';
 import { useContractWriteZKube } from '../../../hooks/useContractWrite';
 import { usePrivyWalletAddress } from '../../../hooks/usePrivyWalletAddress';
 import { useReadContractPuzzleSet } from '../../../hooks/useReadContract';
 import { useRouteParams } from '../../../hooks/useRouteChange';
 import { useUserPuzzlesSolved } from '../../../hooks/useUserPuzzlesSolved';
-import { GameMode } from '../../../types/Game';
 import { ZKProofCalldata } from '../../../types/Proof';
 import { composePuzzleRoute } from '../../../utils/composePuzzleRoute';
 import { hasSubmittedPuzzle } from '../../../utils/hasSubmittedPuzzle';
 import { Button } from '../../ui/Button';
+import { Spinner } from '../../ui/Spinner';
+import { useProofGeneration } from '../../zk/hooks/useProofGeneration';
 
 type LevelActionProps = {
-  proofCalldata: ZKProofCalldata | null;
-  gameMode: GameMode;
   error: Error | null;
 };
 
-export function LevelAction({
-  proofCalldata,
-  error: proofError,
-}: LevelActionProps) {
+type SuccessMessageProps = {
+  message: string;
+};
+
+function SuccessMessage({ message }: SuccessMessageProps) {
+  return (
+    <div className="col-span-full flex items-center justify-center gap-2">
+      <h1 className="text-lg">{message}</h1>
+    </div>
+  );
+}
+
+type ActionButtonProps = {
+  onClick: () => void;
+  variant: 'primary' | 'secondary';
+  fullWidth?: boolean;
+  children: React.ReactNode;
+} & ButtonHTMLAttributes<HTMLButtonElement>;
+
+function ActionButton({
+  onClick,
+  variant,
+  fullWidth,
+  children,
+}: ActionButtonProps) {
+  return (
+    <Button
+      onClick={onClick}
+      variant={variant}
+      className={clsx(
+        'min-h-6 w-full border border-black text-sm',
+        fullWidth && 'col-span-full'
+      )}
+      type="button"
+      rounded
+    >
+      {children}
+    </Button>
+  );
+}
+
+type ErrorMessageProps = {
+  error: Error;
+};
+
+function ErrorMessage({ error }: ErrorMessageProps) {
+  return (
+    <div className="col-span-full">
+      <h1 className="text-lg">{error.message.slice(0, 50)}</h1>
+    </div>
+  );
+}
+
+export function LevelAction() {
   const [error, setError] = useState<Error | null>(null);
   const { callback: submitSolution, error: submitSolutionError } =
     useContractWriteZKube('submitSolution');
-  const { login } = usePrivy();
   const { data: puzzlesInSet } = useReadContractPuzzleSet('numberOfPuzzles');
-  const { id, puzzleSet } = useRouteParams();
   const address = usePrivyWalletAddress();
+  const { id, puzzleSet } = useRouteParams();
+  const { generateAndVerifyProof, loading } = useProofGeneration();
   const { user } = useUserPuzzlesSolved({ address, puzzleSet });
-  const { nullifyProofCalldata } = useProofCalldata();
+  const { login } = useLogin({
+    onComplete: async () => {
+      const proofCalldata = await generateAndVerifyProof();
+      if (!puzzleSet || !id) return;
+      console.log(hasSubmittedPuzzle(user, id));
+      if (hasSubmittedPuzzle(user, id)) return;
+      submitSolution([puzzleSet, BigInt(id as string), proofCalldata]);
+    },
+  });
+  const { nullifyProofCalldata, proofCalldata, error: proofError } = useProof();
   const router = useRouter();
   const hasUserSubmittedPuzzle = hasSubmittedPuzzle(user, id);
   const isLastInSet = Number(puzzlesInSet) === Number(id) + 1;
@@ -70,48 +128,36 @@ export function LevelAction({
 
   return (
     <div className="absolute bottom-14 right-4 grid grid-cols-2 gap-2">
-      {!error && proofCalldata ? (
+      {!error && proofCalldata && (
         <>
-          <div className="col-span-full flex items-center justify-center gap-2">
-            <h1 className="text-lg">🎉 Puzzle Solved 🎉</h1>
-          </div>
-          {!hasUserSubmittedPuzzle ? (
-            <Button
+          <SuccessMessage message="🎉 Puzzle Solved 🎉" />
+          {!hasUserSubmittedPuzzle && (
+            <ActionButton
               onClick={() => onClick(proofCalldata)}
               variant="secondary"
-              className={clsx(
-                'min-h-6 w-full border border-black text-sm',
-                isLastInSet && 'col-span-full'
-              )}
-              type="button"
-              rounded
+              fullWidth={isLastInSet}
             >
               Submit
-            </Button>
-          ) : null}
-          {!isLastInSet ? (
-            <Button
+            </ActionButton>
+          )}
+          {!isLastInSet && (
+            <ActionButton
               onClick={handleNextLevel}
               variant="primary"
-              className={clsx(
-                'min-h-6 w-full border border-black text-sm',
-                hasUserSubmittedPuzzle && 'col-span-full'
-              )}
-              type="button"
-              rounded
+              fullWidth={hasUserSubmittedPuzzle}
             >
               Next Level
-            </Button>
-          ) : null}
+            </ActionButton>
+          )}
         </>
-      ) : null}
-      {error ? (
-        <div className="col-span-full">
-          {error ? (
-            <h1 className="text-lg">{error?.message.slice(0, 50)}</h1>
-          ) : null}
+      )}
+      {loading && (
+        <div className="col-span-full flex items-center justify-center gap-2">
+          <Spinner isPrimary={false} />
+          <h1 className="text-lg">Submitting ⚙️</h1>
         </div>
-      ) : null}
+      )}
+      {error && <ErrorMessage error={error} />}
     </div>
   );
 }

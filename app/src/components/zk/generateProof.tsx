@@ -1,18 +1,10 @@
-import { InputSignals } from 'circuits/types/proof.types';
-import { GameMode } from '../../types/Game';
 import { LevelAction } from '../game/actions/LevelAction';
 import { Button } from '../ui/Button';
 import { useProofGeneration } from './hooks/useProofGeneration';
 
-const isSignalMissing = (inputSignals: Partial<InputSignals> | undefined) => {
-  if (!inputSignals) return true;
-  return Object.values(inputSignals).some((signal) => signal == null);
-};
-
-export function GenerateProof({ gameMode }: { gameMode: GameMode }) {
+export function GenerateProof() {
   const {
     loading: generateProofLoading,
-    proofCalldata,
     generateAndVerifyProof,
     error,
   } = useProofGeneration();
@@ -30,13 +22,7 @@ export function GenerateProof({ gameMode }: { gameMode: GameMode }) {
       >
         Verify Result
       </Button>
-      <LevelAction
-        {...{
-          proofCalldata,
-          gameMode,
-          error,
-        }}
-      />
+      <LevelAction />
     </div>
   );
 }
