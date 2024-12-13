@@ -4,7 +4,7 @@ import { createConfig, WagmiProvider } from '@privy-io/wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { defineChain, http } from 'viem';
-import { arbitrumSepolia, scroll, scrollSepolia } from 'wagmi/chains';
+import { arbitrumSepolia } from 'wagmi/chains';
 
 export const LocalHost = defineChain({
   id: 31337,
@@ -22,12 +22,7 @@ export const LocalHost = defineChain({
 });
 
 const queryClient = new QueryClient();
-const SUPPORTED_CHAINS = [
-  arbitrumSepolia,
-  LocalHost,
-  scroll,
-  scrollSepolia,
-] as const;
+const SUPPORTED_CHAINS = [arbitrumSepolia, LocalHost] as const;
 
 export const wagmiConfig = createConfig({
   chains: SUPPORTED_CHAINS,
@@ -36,8 +31,6 @@ export const wagmiConfig = createConfig({
       `https://arbitrum-sepolia.infura.io/v3/${process.env.NEXT_PUBLIC_INFURA_API_KEY}`
     ),
     ['31337']: http(),
-    [scroll.id]: http(),
-    [scrollSepolia.id]: http(),
   },
 });
 

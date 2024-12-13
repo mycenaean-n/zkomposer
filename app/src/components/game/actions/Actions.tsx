@@ -19,7 +19,7 @@ export function Actions({ gameMode, className, ...props }: ActionsProps) {
 
   return (
     <div className={clsx('flex h-auto flex-col', className)} {...props}>
-      <GenerateProof {...{ gameMode, functions }} />
+      <GenerateProof />
       {areFunctionsDefined ? (
         <DragAndDrop functions={functions!} setFunctions={setFunctions!} />
       ) : null}
