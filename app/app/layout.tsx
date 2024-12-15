@@ -16,13 +16,13 @@ export default function RootLayout({
       <body>
         <ApolloClientProvider>
           <Web3Provider>
-            <ProofContextProvider>
-              <PuzzleContextProvider>
+            <PuzzleContextProvider>
+              <ProofContextProvider>
                 <Header />
                 <main className="container m-auto">{children}</main>
                 <PageFooter />
-              </PuzzleContextProvider>
-            </ProofContextProvider>
+              </ProofContextProvider>
+            </PuzzleContextProvider>
           </Web3Provider>
         </ApolloClientProvider>
       </body>
