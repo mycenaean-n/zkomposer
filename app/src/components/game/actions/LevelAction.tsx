@@ -1,24 +1,88 @@
 'use client';
 import { useLogin } from '@privy-io/react-auth';
 import clsx from 'clsx';
-import { useRouter } from 'next/navigation';
-import { ButtonHTMLAttributes, useEffect, useState } from 'react';
-import { useProof } from '../../../context/ProofContext';
-import { useContractWriteZKube } from '../../../hooks/useContractWrite';
-import { usePrivyWalletAddress } from '../../../hooks/usePrivyWalletAddress';
-import { useReadContractPuzzleSet } from '../../../hooks/useReadContract';
+import { ButtonHTMLAttributes } from 'react';
+import { useAuthAndUserState } from '../../../hooks/level-actions/useAuthAndUseState';
+import { useContractInteractions } from '../../../hooks/level-actions/useContractInteractions';
+import { useProofSubmission } from '../../../hooks/level-actions/useProofSubmission';
 import { useRouteParams } from '../../../hooks/useRouteChange';
-import { useUserPuzzlesSolved } from '../../../hooks/useUserPuzzlesSolved';
 import { ZKProofCalldata } from '../../../types/Proof';
 import { composePuzzleRoute } from '../../../utils/composePuzzleRoute';
 import { hasSubmittedPuzzle } from '../../../utils/hasSubmittedPuzzle';
 import { Button } from '../../ui/Button';
-import { Spinner } from '../../ui/Spinner';
-import { useProofGeneration } from '../../zk/hooks/useProofGeneration';
 
-type LevelActionProps = {
-  error: Error | null;
-};
+export function LevelAction() {
+  const { id, puzzleSet } = useRouteParams();
+  const {
+    error,
+    loading,
+    generateAndVerifyProof,
+    proofCalldata,
+    nullifyProofCalldata,
+  } = useProofSubmission();
+  const { submitSolution, puzzlesInSet } = useContractInteractions();
+  const { address, user, router } = useAuthAndUserState(puzzleSet);
+  const hasUserSubmittedPuzzle = hasSubmittedPuzzle(user, id);
+  const isLastInSet = Number(puzzlesInSet) === Number(id) + 1;
+  const handleNextLevel = () => {
+    if (!puzzleSet) return;
+    const newId = String(Number(id) + 1);
+    nullifyProofCalldata();
+    router.push(composePuzzleRoute(puzzleSet, newId));
+  };
+
+  const handleSubmitSolution = async (proofCd: ZKProofCalldata) => {
+    if (!puzzleSet) return;
+    submitSolution([puzzleSet, BigInt(id as string), proofCd]);
+  };
+
+  const { login } = useLogin({
+    onComplete: async () => {
+      if (!address) return;
+      const proofCalldata = await generateAndVerifyProof();
+      if (!puzzleSet || !id || !proofCalldata || hasUserSubmittedPuzzle) return;
+      handleSubmitSolution(proofCalldata);
+    },
+  });
+
+  const onClick = async (proofCd: ZKProofCalldata) => {
+    if (!address) {
+      login();
+    } else {
+      handleSubmitSolution(proofCd);
+    }
+  };
+
+  return (
+    <div className="absolute bottom-14 right-4 grid grid-cols-2 gap-2">
+      {proofCalldata && !loading && (
+        <>
+          <SuccessMessage message="🎉 Puzzle Solved 🎉" />
+          {!hasUserSubmittedPuzzle && (
+            <ActionButton
+              onClick={() => onClick(proofCalldata)}
+              variant="secondary"
+              fullWidth={isLastInSet}
+            >
+              Submit
+            </ActionButton>
+          )}
+          {!isLastInSet && (
+            <ActionButton
+              onClick={handleNextLevel}
+              variant="primary"
+              fullWidth={hasUserSubmittedPuzzle}
+            >
+              Next Level
+            </ActionButton>
+          )}
+        </>
+      )}
+      {loading && <LoadingState message="Generating Proof" icon="⚙️" />}
+      {error && !loading && !proofCalldata && <ErrorMessage error={error} />}
+    </div>
+  );
+}
 
 type SuccessMessageProps = {
   message: string;
@@ -73,91 +137,17 @@ function ErrorMessage({ error }: ErrorMessageProps) {
   );
 }
 
-export function LevelAction() {
-  const [error, setError] = useState<Error | null>(null);
-  const { callback: submitSolution, error: submitSolutionError } =
-    useContractWriteZKube('submitSolution');
-  const { data: puzzlesInSet } = useReadContractPuzzleSet('numberOfPuzzles');
-  const address = usePrivyWalletAddress();
-  const { id, puzzleSet } = useRouteParams();
-  const { generateAndVerifyProof, loading } = useProofGeneration();
-  const { user } = useUserPuzzlesSolved({ address, puzzleSet });
-  const { login } = useLogin({
-    onComplete: async () => {
-      const proofCalldata = await generateAndVerifyProof();
-      if (!puzzleSet || !id) return;
-      console.log(hasSubmittedPuzzle(user, id));
-      if (hasSubmittedPuzzle(user, id)) return;
-      submitSolution([puzzleSet, BigInt(id as string), proofCalldata]);
-    },
-  });
-  const { nullifyProofCalldata, proofCalldata, error: proofError } = useProof();
-  const router = useRouter();
-  const hasUserSubmittedPuzzle = hasSubmittedPuzzle(user, id);
-  const isLastInSet = Number(puzzlesInSet) === Number(id) + 1;
+type LoadingStateProps = {
+  icon: string;
+  message: string;
+};
 
-  useEffect(() => {
-    setError(proofError);
-  }, [proofError]);
-
-  useEffect(() => {
-    if (
-      submitSolutionError?.message.includes('The total cost (gas * gas fee')
-    ) {
-      setError(new Error('Click "Faucet", get money'));
-    } else {
-      setError(submitSolutionError);
-    }
-  }, [submitSolutionError]);
-
-  const handleNextLevel = () => {
-    if (!puzzleSet) return;
-    const newId = String(Number(id) + 1);
-    nullifyProofCalldata();
-    router.push(composePuzzleRoute(puzzleSet, newId));
-  };
-
-  const onClick = async (proofCd: ZKProofCalldata) => {
-    if (!address) {
-      login();
-    } else {
-      if (!puzzleSet) return;
-      submitSolution([puzzleSet, BigInt(id as string), proofCd]);
-    }
-  };
-
+function LoadingState({ icon, message }: LoadingStateProps) {
   return (
-    <div className="absolute bottom-14 right-4 grid grid-cols-2 gap-2">
-      {!error && proofCalldata && (
-        <>
-          <SuccessMessage message="🎉 Puzzle Solved 🎉" />
-          {!hasUserSubmittedPuzzle && (
-            <ActionButton
-              onClick={() => onClick(proofCalldata)}
-              variant="secondary"
-              fullWidth={isLastInSet}
-            >
-              Submit
-            </ActionButton>
-          )}
-          {!isLastInSet && (
-            <ActionButton
-              onClick={handleNextLevel}
-              variant="primary"
-              fullWidth={hasUserSubmittedPuzzle}
-            >
-              Next Level
-            </ActionButton>
-          )}
-        </>
-      )}
-      {loading && (
-        <div className="col-span-full flex items-center justify-center gap-2">
-          <Spinner isPrimary={false} />
-          <h1 className="text-lg">Submitting ⚙️</h1>
-        </div>
-      )}
-      {error && <ErrorMessage error={error} />}
+    <div className="col-span-full flex items-center justify-center gap-2">
+      <h1 className="text-lg">
+        {message} <span className="inline-block animate-spin">{icon}</span>
+      </h1>
     </div>
   );
 }
