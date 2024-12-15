@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import { GameMode } from 'types/Game';
 import { usePuzzleContext } from '../../../context/PuzzleContext';
-import { GenerateProof } from '../../zk/generateProof';
+import { GenerateProof } from '../../zk/GenerateProof';
 import { DragAndDrop } from './DragAndDrop';
 
 type ActionsProps = {
