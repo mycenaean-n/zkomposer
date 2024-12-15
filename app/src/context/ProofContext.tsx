@@ -63,7 +63,7 @@ const generateProof = async (signals: InputSignals | undefined) => {
 interface ProofGenerationContextType extends ProofCalldataContextType {
   loading: boolean;
   error: Error | null;
-  generateAndVerifyProof: () => Promise<ZKProofCalldata>;
+  generateAndVerifyProof: () => Promise<ZKProofCalldata | undefined>;
 }
 
 const ProofContext = createContext<ProofGenerationContextType | undefined>(
@@ -81,7 +81,7 @@ export function ProofContextProvider({
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
   const address = usePrivyWalletAddress() ?? zeroAddress;
-  const { inputSignals, error: inputSignalError } = useInputSignals(address);
+  const { inputSignals } = useInputSignals(address);
   const { id, puzzleSet } = useRouteParams();
 
   const nullifyProofCalldata = useCallback(() => {
@@ -98,7 +98,6 @@ export function ProofContextProvider({
     setError(null);
 
     try {
-      console.log({ inputSignals });
       const result = await generateProof(inputSignals);
       setProofCalldata(result);
       return result;
@@ -108,7 +107,7 @@ export function ProofContextProvider({
         : (e as Error);
       setError(error);
       setProofCalldata(null);
-      throw error;
+      return;
     } finally {
       setLoading(false);
     }
