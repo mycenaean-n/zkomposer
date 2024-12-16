@@ -1,8 +1,8 @@
 import clsx from 'clsx';
 import { GameMode } from 'types/Game';
 import { usePuzzleContext } from '../../../context/PuzzleContext';
-import { GenerateProof } from '../../zk/GenerateProof';
 import { DragAndDrop } from './DragAndDrop';
+import { LevelAction } from './level-actions/LevelAction';
 
 type ActionsProps = {
   gameMode: GameMode;
@@ -19,7 +19,9 @@ export function Actions({ gameMode, className, ...props }: ActionsProps) {
 
   return (
     <div className={clsx('flex h-auto flex-col', className)} {...props}>
-      <GenerateProof />
+      <div className="relative mb-2 h-full">
+        <LevelAction />
+      </div>
       {areFunctionsDefined ? (
         <DragAndDrop functions={functions!} setFunctions={setFunctions!} />
       ) : null}

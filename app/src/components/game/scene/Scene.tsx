@@ -51,7 +51,7 @@ export function Scene({
 
   return (
     <div
-      className={clsx('grid h-[350px] grid-cols-[3fr_1fr] gap-2', className)}
+      className={clsx('grid grid-cols-[3fr_1fr] gap-2', className)}
       {...props}
     >
       <Canvas

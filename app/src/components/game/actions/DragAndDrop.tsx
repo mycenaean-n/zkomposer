@@ -38,7 +38,6 @@ export const DragAndDrop: React.FC<DragAndDropProps> = ({
             </div>
           )}
         </Droppable>
-
         <Droppable droppableId={PuzzleFunctionState.chosen}>
           {(provided) => (
             <div
