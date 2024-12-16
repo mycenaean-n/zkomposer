@@ -1,7 +1,7 @@
 'use client';
 import { useLogin } from '@privy-io/react-auth';
 import clsx from 'clsx';
-import { ButtonHTMLAttributes } from 'react';
+import { ButtonHTMLAttributes, useState } from 'react';
 import { useAuthAndUserState } from '../../../hooks/level-actions/useAuthAndUseState';
 import { useContractInteractions } from '../../../hooks/level-actions/useContractInteractions';
 import { useProofSubmission } from '../../../hooks/level-actions/useProofSubmission';
@@ -10,6 +10,7 @@ import { ZKProofCalldata } from '../../../types/Proof';
 import { composePuzzleRoute } from '../../../utils/composePuzzleRoute';
 import { hasSubmittedPuzzle } from '../../../utils/hasSubmittedPuzzle';
 import { Button } from '../../ui/Button';
+import { Modal } from '../../ui/Modal';
 
 export function LevelAction() {
   const { id, puzzleSet } = useRouteParams();
@@ -24,8 +25,18 @@ export function LevelAction() {
   const { address, user, router } = useAuthAndUserState(puzzleSet);
   const hasUserSubmittedPuzzle = hasSubmittedPuzzle(user, id);
   const isLastInSet = Number(puzzlesInSet) === Number(id) + 1;
+  const [isOpen, setIsOpen] = useState(false);
+  const [isFirstClick, setIsFirstClick] = useState(true);
+
   const handleNextLevel = () => {
     if (!puzzleSet) return;
+
+    if (isFirstClick) {
+      setIsOpen(true);
+      setIsFirstClick(false);
+      return;
+    }
+
     const newId = String(Number(id) + 1);
     nullifyProofCalldata();
     router.push(composePuzzleRoute(puzzleSet, newId));
@@ -77,6 +88,35 @@ export function LevelAction() {
             </ActionButton>
           )}
         </>
+      )}
+      {isOpen && proofCalldata && (
+        <Modal setIsOpen={setIsOpen}>
+          <div className="flex w-72 flex-col gap-3 text-black">
+            <div className="flex items-center justify-center">
+              <h1 className="text-lg">Warning!</h1>
+            </div>
+            <div className="flex items-center justify-center gap-2 text-sm">
+              If you want to appear on the leaderboard, you must submit your
+              solution.
+            </div>
+            <div className="mt-2 flex items-center justify-center gap-2">
+              <ActionButton
+                onClick={() => onClick(proofCalldata)}
+                variant="secondary"
+                fullWidth={isLastInSet}
+              >
+                Submit
+              </ActionButton>
+              <ActionButton
+                onClick={handleNextLevel}
+                variant="primary"
+                fullWidth={hasUserSubmittedPuzzle}
+              >
+                Next Level
+              </ActionButton>
+            </div>
+          </div>
+        </Modal>
       )}
       {loading && <LoadingState message="Generating Proof" icon="⚙️" />}
       {error && !loading && !proofCalldata && <ErrorMessage error={error} />}
