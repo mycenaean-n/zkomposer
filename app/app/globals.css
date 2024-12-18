@@ -16,7 +16,7 @@ body {
 }
 
 main {
-  height: calc(100svh - (72px + 40px));
+  height: calc(100svh - (72px + 2rem));
 }
 
 .modal {
