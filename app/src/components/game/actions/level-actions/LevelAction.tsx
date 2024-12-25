@@ -39,8 +39,8 @@ export function LevelAction() {
 
     const newId = String(Number(id) + 1);
     nullifyProofCalldata();
-    setIsOpen(false);
     router.push(composePuzzleRoute(puzzleSet, newId));
+    setIsOpen(false);
   };
 
   const handleProofGeneration = async () => {

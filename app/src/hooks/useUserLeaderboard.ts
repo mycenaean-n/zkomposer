@@ -37,10 +37,12 @@ export function useUserLeaderboard(
     skip: !puzzleSet,
   });
 
-  const parsedUsers = data?.users.map((user) => ({
-    ...user,
-    totalSolvedInPuzzleSet: user.solutions.length,
-  }));
+  const parsedUsers = data?.users.map((user) => {
+    return {
+      ...user,
+      totalSolvedInPuzzleSet: user.totalSolved,
+    };
+  });
 
   return {
     users: parsedUsers || [],
