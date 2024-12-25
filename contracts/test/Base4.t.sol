@@ -2,7 +2,7 @@
 pragma solidity ^0.8.19;
 
 import {Base4} from "../src/libraries/Base4.sol";
-import {Constants} from "./constants.sol";
+import {Constants} from "./Constants.sol";
 import {Test, console2} from "forge-std/Test.sol";
 contract Base4Test is Test, Constants {
     using Base4 for bytes16;

@@ -10,7 +10,7 @@ import {ZKubeVerifier} from "../src/ZKubeVerifier.sol";
 import {stdJson} from "forge-std/StdJson.sol";
 import "openzeppelin-contracts/contracts/utils/Strings.sol";
 import {GameCreated, GameJoined, PlayerSubmitted, GameResolved} from "../src/Events.sol";
-import {Constants} from "./constants.sol";
+import {Constants} from "./Constants.sol";
 
 contract ZKubeTest is Test, Constants {
     using stdJson for string;
