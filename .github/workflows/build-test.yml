@@ -62,6 +62,10 @@ jobs:
 
   app:
     runs-on: ubuntu-latest
+    env:
+      PRIV_KEY: ${{ secrets.PRIV_KEY }}
+      NEXT_PUBLIC_PRIVY_APP_ID: ${{ secrets.NEXT_PUBLIC_PRIVY_APP_ID }}
+      NEXT_PUBLIC_INFURA_API_KEY: ${{ secrets.NEXT_PUBLIC_INFURA_API_KEY }}
     steps:
       - uses: actions/checkout@v4
         with:
