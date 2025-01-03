@@ -65,7 +65,7 @@ export function LevelAction() {
   };
 
   return (
-    <div className="absolute bottom-8 right-4 grid grid-cols-2 gap-2">
+    <div className="absolute right-4 top-[-80px] grid grid-cols-2 gap-2">
       {isSolved && !loading && (
         <>
           <SuccessMessage message="🎉 Puzzle Solved 🎉" />
