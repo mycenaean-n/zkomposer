@@ -18,10 +18,11 @@ export function Actions({ gameMode, className, ...props }: ActionsProps) {
     setFunctions;
 
   return (
-    <div className={clsx('flex h-auto flex-col', className)} {...props}>
-      <div className="relative mb-2 h-full">
-        <LevelAction />
-      </div>
+    <div
+      className={clsx('relative flex h-auto flex-col', className)}
+      {...props}
+    >
+      <LevelAction />
       {areFunctionsDefined ? (
         <DragAndDrop functions={functions!} setFunctions={setFunctions!} />
       ) : null}
