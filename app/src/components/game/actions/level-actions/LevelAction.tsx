@@ -1,10 +1,11 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useProof } from '../../../../context/ProofContext';
 import { usePuzzleContext } from '../../../../context/PuzzleContext';
 import { useAuthAndUserState } from '../../../../hooks/level-actions/useAuthAndUseState';
 import { useContractInteractions } from '../../../../hooks/level-actions/useContractInteractions';
-import { useProofSubmission } from '../../../../hooks/level-actions/useProofSubmission';
-import { usePrivyLogin } from '../../../../hooks/usePrivyLogin';
+import { usePrivyLogin } from '../../../../hooks/privy/usePrivyLogin';
 import { useRouteParams } from '../../../../hooks/useRouteChange';
 import { composePuzzleRoute } from '../../../../utils/composePuzzleRoute';
 import { hasSubmittedPuzzle } from '../../../../utils/hasSubmittedPuzzle';
@@ -19,14 +20,15 @@ export function LevelAction() {
     generateAndVerifyProof,
     proofCalldata,
     nullifyProofCalldata,
-  } = useProofSubmission();
+  } = useProof();
   const { submitSolution, puzzlesInSet } = useContractInteractions();
-  const { address, user, router } = useAuthAndUserState(puzzleSet);
+  const { address, user } = useAuthAndUserState(puzzleSet);
   const hasUserSubmittedPuzzle = hasSubmittedPuzzle(user, id);
   const isLastInSet = Number(puzzlesInSet) === Number(id) + 1;
   const [isOpen, setIsOpen] = useState(false);
   const [isFirstClick, setIsFirstClick] = useState(true);
   const { isSolved } = usePuzzleContext();
+  const router = useRouter();
 
   const handleNextLevel = () => {
     if (!puzzleSet) return;
@@ -52,7 +54,7 @@ export function LevelAction() {
   };
 
   const { login } = usePrivyLogin(() => {
-    if (!address) return;
+    if (!address || !isSolved) return;
     handleProofGeneration();
   });
 
