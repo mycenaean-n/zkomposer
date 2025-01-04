@@ -1,6 +1,6 @@
 'use client';
 import { useCallback, useEffect, useState } from 'react';
-import { usePrivyWalletAddress } from './usePrivyWalletAddress';
+import { usePrivyWalletAddress } from './privy/usePrivyWalletAddress';
 
 export function useFaucetCallback(delay = 4000) {
   const address = usePrivyWalletAddress();

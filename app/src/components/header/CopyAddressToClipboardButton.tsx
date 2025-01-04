@@ -1,5 +1,5 @@
+import { usePrivyWalletAddress } from '@/hooks/privy/usePrivyWalletAddress';
 import { useCopyToClipboard } from '@hooks/useCopyToClipboard';
-import { usePrivyWalletAddress } from '@hooks/usePrivyWalletAddress';
 import { Button } from '../ui/Button';
 import { Tooltip } from '../ui/Tooltip';
 
@@ -8,7 +8,7 @@ export function CopyAddressToClipboardButton({
 }: {
   text: string;
 }) {
-  const address = usePrivyWalletAddress();
+  const { address } = usePrivyWalletAddress();
   const { copyToClipboard, success: copySuccess } = useCopyToClipboard();
 
   return (

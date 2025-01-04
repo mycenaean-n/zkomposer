@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 import { ContractFunctionArgs, ContractFunctionName } from 'viem';
-import { Config, useWriteContract } from 'wagmi';
+import { Config, useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import { WriteContractVariables } from 'wagmi/query';
 import { abi as zKubeAbi } from '../abis/zKube';
 import { ZKUBE_ADDRESS } from '../config';
@@ -36,5 +36,10 @@ export const useContractWriteZKube = <
     [writeContract, functionName]
   );
 
-  return { callback, error, hash };
+  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+    useWaitForTransactionReceipt({
+      hash,
+    });
+
+  return { callback, error, hash, isConfirming, isConfirmed };
 };

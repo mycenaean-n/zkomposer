@@ -12,7 +12,7 @@ import React, {
 } from 'react';
 import { zeroAddress } from 'viem';
 import { useInputSignals } from '../components/zk/hooks/useInputSignal';
-import { usePrivyWalletAddress } from '../hooks/usePrivyWalletAddress';
+import { usePrivyWalletAddress } from '../hooks/privy/usePrivyWalletAddress';
 import { generateGroth16ProofCalldataParsed } from '../hooks/useProof';
 import { useRouteParams } from '../hooks/useRouteChange';
 import { ZKProofCalldata } from '../types/Proof';
@@ -80,8 +80,8 @@ export function ProofContextProvider({
   );
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
-  const address = usePrivyWalletAddress() ?? zeroAddress;
-  const { inputSignals } = useInputSignals(address);
+  const { address } = usePrivyWalletAddress();
+  const { inputSignals } = useInputSignals(address ?? zeroAddress);
   const { id, puzzleSet } = useRouteParams();
 
   const nullifyProofCalldata = useCallback(() => {
