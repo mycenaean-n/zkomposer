@@ -1,10 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useContractWriteZKube } from '../useContractWrite';
 import { useReadContractPuzzleSet } from '../useReadContract';
+import { useRouteParams } from '../useRouteChange';
+import { useUserLeaderboard } from '../useUserLeaderboard';
 
 export function useContractInteractions() {
-  const { callback: submitSolution, error: submitSolutionError } =
-    useContractWriteZKube('submitSolution');
+  const { puzzleSet } = useRouteParams();
+  const { fetchLeaderboard } = useUserLeaderboard(puzzleSet, 20);
+  const {
+    callback: submitSolution,
+    error: submitSolutionError,
+    isConfirmed,
+  } = useContractWriteZKube('submitSolution');
   const { data: puzzlesInSet } = useReadContractPuzzleSet('numberOfPuzzles');
   const [error, setError] = useState<Error | null>(null);
 
@@ -17,6 +24,12 @@ export function useContractInteractions() {
       setError(submitSolutionError);
     }
   }, [submitSolutionError]);
+
+  useEffect(() => {
+    if (isConfirmed) {
+      fetchLeaderboard();
+    }
+  }, [isConfirmed]);
 
   return { submitSolution, puzzlesInSet, error, setError };
 }

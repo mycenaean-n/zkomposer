@@ -2,7 +2,6 @@
 import { PrivyClientConfig, PrivyProvider } from '@privy-io/react-auth';
 import { createConfig, WagmiProvider } from '@privy-io/wagmi';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useEffect } from 'react';
 import { defineChain, http } from 'viem';
 import { arbitrumSepolia } from 'wagmi/chains';
 
@@ -40,19 +39,18 @@ const privyConfig = {
     accentColor: '#676FFF',
   },
   embeddedWallets: {
-    createOnLogin: 'all-users',
+    createOnLogin: 'users-without-wallets',
   },
-  supportedChains: SUPPORTED_CHAINS as unknown,
+  supportedChains:
+    SUPPORTED_CHAINS as unknown as PrivyClientConfig['supportedChains'],
   defaultChain: SUPPORTED_CHAINS[0],
 } as PrivyClientConfig;
 
 export function Web3Provider({ children }: { children: React.ReactNode }) {
-  useEffect(() => {
-    window.localStorage.removeItem('wagmi.store');
-  }, []);
-
-  if (!process.env.NEXT_PUBLIC_PRIVY_APP_ID)
+  if (!process.env.NEXT_PUBLIC_PRIVY_APP_ID) {
     throw new Error('Missing Privy App ID');
+  }
+
   return (
     <PrivyProvider
       appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID}

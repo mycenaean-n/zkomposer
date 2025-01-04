@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 import { Address } from 'viem';
-import { usePrivyWalletAddress } from '../../../hooks/usePrivyWalletAddress';
+import { usePrivyWalletAddress } from '../../../hooks/privy/usePrivyWalletAddress';
 import { useUserLeaderboard } from '../../../hooks/useUserLeaderboard';
 import { hasSubmittedPuzzle } from '../../../utils/hasSubmittedPuzzle';
 import { truncateAddress } from '../../../utils/truncateAddress';
@@ -12,7 +12,7 @@ type LeaderboardProps = {
 
 export function Leaderboard({ puzzleSet, puzzleId }: LeaderboardProps) {
   const { users } = useUserLeaderboard(puzzleSet, 20);
-  const address = usePrivyWalletAddress();
+  const { address } = usePrivyWalletAddress();
 
   return (
     <div className="w-full overflow-y-auto">

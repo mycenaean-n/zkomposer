@@ -2,7 +2,7 @@ import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 import { Address } from 'viem';
 import { useProof } from '../../../context/ProofContext';
-import { usePrivyWalletAddress } from '../../../hooks/usePrivyWalletAddress';
+import { usePrivyWalletAddress } from '../../../hooks/privy/usePrivyWalletAddress';
 import { useReadContractPuzzleSet } from '../../../hooks/useReadContract';
 import { useUserPuzzlesSolved } from '../../../hooks/useUserPuzzlesSolved';
 import { composePuzzleRoute } from '../../../utils/composePuzzleRoute';
@@ -16,7 +16,7 @@ type MenuProps = {
 export function Menu({ puzzleId, puzzleSet }: MenuProps) {
   const { data: numberOfPuzzlesInSet } =
     useReadContractPuzzleSet('numberOfPuzzles');
-  const address = usePrivyWalletAddress();
+  const { address } = usePrivyWalletAddress();
   const router = useRouter();
   const { user } = useUserPuzzlesSolved({ address, puzzleSet });
   const { nullifyProofCalldata } = useProof();

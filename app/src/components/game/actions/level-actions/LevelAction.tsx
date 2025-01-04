@@ -1,10 +1,10 @@
 'use client';
-import { useLogin } from '@privy-io/react-auth';
 import { useState } from 'react';
 import { usePuzzleContext } from '../../../../context/PuzzleContext';
 import { useAuthAndUserState } from '../../../../hooks/level-actions/useAuthAndUseState';
 import { useContractInteractions } from '../../../../hooks/level-actions/useContractInteractions';
 import { useProofSubmission } from '../../../../hooks/level-actions/useProofSubmission';
+import { usePrivyLogin } from '../../../../hooks/usePrivyLogin';
 import { useRouteParams } from '../../../../hooks/useRouteChange';
 import { composePuzzleRoute } from '../../../../utils/composePuzzleRoute';
 import { hasSubmittedPuzzle } from '../../../../utils/hasSubmittedPuzzle';
@@ -45,15 +45,15 @@ export function LevelAction() {
 
   const handleProofGeneration = async () => {
     const proofCalldata = await generateAndVerifyProof();
-    if (!puzzleSet || !id || !proofCalldata || hasUserSubmittedPuzzle) return;
-    submitSolution([puzzleSet, BigInt(id as string), proofCalldata]);
+    if (!puzzleSet || !id || !proofCalldata || hasUserSubmittedPuzzle) {
+      return;
+    }
+    await submitSolution([puzzleSet, BigInt(id as string), proofCalldata]);
   };
 
-  const { login } = useLogin({
-    onComplete: () => {
-      if (!address) return;
-      handleProofGeneration();
-    },
+  const { login } = usePrivyLogin(() => {
+    if (!address) return;
+    handleProofGeneration();
   });
 
   const onClick = async () => {

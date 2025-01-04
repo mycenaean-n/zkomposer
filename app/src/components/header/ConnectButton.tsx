@@ -2,11 +2,15 @@
 import { WalletIcon } from '@heroicons/react/24/solid';
 import { usePrivy } from '@privy-io/react-auth';
 import { Address } from 'viem';
+import { usePrivyWalletAddress } from '../../hooks/privy/usePrivyWalletAddress';
+import { usePrivyLogin } from '../../hooks/usePrivyLogin';
 import { Button } from '../ui/Button';
 import { AccountSection } from './AccountSection';
 
 export function ConnectButton() {
-  const { ready, authenticated, login, user, logout } = usePrivy();
+  const { ready, authenticated, user, logout } = usePrivy();
+  const { login } = usePrivyLogin();
+  const { address, isConnected } = usePrivyWalletAddress();
 
   return (
     <div className="flex justify-between rounded-md border-2 border-solid">
@@ -16,7 +20,7 @@ export function ConnectButton() {
           <div className="spinner border-white"></div>
         </div>
       ) : null}
-      {ready && !user?.wallet?.address ? (
+      {ready && !isConnected ? (
         <Button
           variant="primary"
           disabled={authenticated}
@@ -27,11 +31,8 @@ export function ConnectButton() {
           <span className="ml-2 inline">Log in</span>
         </Button>
       ) : null}
-      {user?.wallet?.address && authenticated ? (
-        <AccountSection
-          logout={logout}
-          address={user.wallet.address as Address}
-        />
+      {isConnected && authenticated ? (
+        <AccountSection logout={logout} address={address as Address} />
       ) : null}
     </div>
   );

@@ -15,38 +15,68 @@ const USER_LEADERBOARD = gql`
   }
 `;
 
+interface UserLeaderboardData {
+  users: {
+    totalSolved: number;
+    id: Address;
+    solutions: {
+      id: Address;
+      puzzleId: string;
+      puzzleSet: Address;
+    }[];
+  }[];
+}
+
+interface ParsedUser {
+  id: Address;
+  totalSolved: number;
+  totalSolvedInPuzzleSet: number;
+  solutions: {
+    id: Address;
+    puzzleId: string;
+    puzzleSet: Address;
+  }[];
+}
+
 export function useUserLeaderboard(
   puzzleSet: Address | null,
-  take: number = 5
+  take: number = 5,
+  enabled: boolean = true
 ) {
-  const { data, loading, error } = useQuery<{
-    users: {
-      totalSolved: number;
-      id: Address;
-      solutions: {
-        id: Address;
-        puzzleId: string;
-        puzzleSet: Address;
-      }[];
-    }[];
-  }>(USER_LEADERBOARD, {
+  const queryResult = useQuery<UserLeaderboardData>(USER_LEADERBOARD, {
     variables: {
       puzzleSet: puzzleSet ? checksumAddress(puzzleSet) : '',
       take,
     },
-    skip: !puzzleSet,
+    skip: !puzzleSet || !enabled,
   });
 
-  const parsedUsers = data?.users.map((user) => {
-    return {
+  const parseUsers = (data?: UserLeaderboardData): ParsedUser[] => {
+    if (!data) return [];
+    return data.users.map((user) => ({
       ...user,
       totalSolvedInPuzzleSet: user.totalSolved,
-    };
-  });
+    }));
+  };
+
+  const fetchLeaderboard = async (
+    customTake?: number
+  ): Promise<ParsedUser[]> => {
+    if (!puzzleSet) throw new Error('PuzzleSet address is required');
+
+    const result = await queryResult.refetch({
+      puzzleSet: checksumAddress(puzzleSet),
+      take: customTake ?? take,
+    });
+
+    return parseUsers(result.data);
+  };
 
   return {
-    users: parsedUsers || [],
-    loading,
-    error,
+    users: parseUsers(queryResult.data),
+    loading: queryResult.loading,
+    error: queryResult.error,
+    fetchLeaderboard,
+    refetch: queryResult.refetch,
   };
 }
