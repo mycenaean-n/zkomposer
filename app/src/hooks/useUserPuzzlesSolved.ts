@@ -17,27 +17,29 @@ const USER_PUZZLES_SOLVED = gql`
   }
 `;
 
-type PuzzleSolvedProps = {
-  address: Address | undefined;
-  puzzleSet: Address | null;
-};
+interface UserPuzzlesData {
+  users: [
+    {
+      id: Address;
+      totalSolved: number;
+      solutions: {
+        id: Address;
+        puzzleId: string;
+        puzzleSet: Address;
+        blockNumber: number;
+      }[];
+    },
+  ];
+}
 
 export function useUserPuzzlesSolved({
   address,
   puzzleSet,
-}: PuzzleSolvedProps) {
-  const { data, loading, error, refetch } = useQuery<{
-    users: [
-      {
-        id: Address;
-        solutions: {
-          id: Address;
-          puzzleId: string;
-          puzzleSet: Address;
-        }[];
-      },
-    ];
-  }>(USER_PUZZLES_SOLVED, {
+}: {
+  address: Address | undefined;
+  puzzleSet: Address | null;
+}) {
+  const queryResult = useQuery<UserPuzzlesData>(USER_PUZZLES_SOLVED, {
     variables: {
       userId: address ? checksumAddress(address) : '',
       puzzleSet: puzzleSet ? checksumAddress(puzzleSet) : '',
@@ -46,11 +48,24 @@ export function useUserPuzzlesSolved({
     fetchPolicy: 'cache-and-network',
   });
 
-  useWindowFocusRefetch(refetch);
+  const fetchUserPuzzles = async () => {
+    if (!address || !puzzleSet)
+      throw new Error('Address and puzzleSet are required');
+
+    const result = await queryResult.refetch({
+      userId: checksumAddress(address),
+      puzzleSet: checksumAddress(puzzleSet),
+    });
+
+    return result.data?.users[0];
+  };
+
+  useWindowFocusRefetch(queryResult.refetch);
 
   return {
-    user: data?.users[0],
-    loading,
-    error,
+    user: queryResult.data?.users[0],
+    loading: queryResult.loading,
+    error: queryResult.error,
+    fetchUserPuzzles,
   };
 }

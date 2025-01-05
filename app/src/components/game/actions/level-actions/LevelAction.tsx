@@ -21,7 +21,8 @@ export function LevelAction() {
     proofCalldata,
     nullifyProofCalldata,
   } = useProof();
-  const { submitSolution, puzzlesInSet } = useContractInteractions();
+  const { submitSolution, puzzlesInSet, isConfirming } =
+    useContractInteractions();
   const { address, user } = useAuthAndUserState(puzzleSet);
   const hasUserSubmittedPuzzle = hasSubmittedPuzzle(user, id);
   const isLastInSet = Number(puzzlesInSet) === Number(id) + 1;
@@ -76,8 +77,9 @@ export function LevelAction() {
               onClick={onClick}
               variant="secondary"
               fullWidth={isLastInSet}
+              disabled={isConfirming}
             >
-              Submit
+              {isConfirming ? 'Syncing' : 'Submit'}
             </ActionButton>
           )}
           {!isLastInSet && (

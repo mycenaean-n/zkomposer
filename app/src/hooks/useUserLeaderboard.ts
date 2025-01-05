@@ -77,6 +77,5 @@ export function useUserLeaderboard(
     loading: queryResult.loading,
     error: queryResult.error,
     fetchLeaderboard,
-    refetch: queryResult.refetch,
   };
 }
