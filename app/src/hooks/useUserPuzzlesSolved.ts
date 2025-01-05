@@ -26,7 +26,6 @@ interface UserPuzzlesData {
         id: Address;
         puzzleId: string;
         puzzleSet: Address;
-        blockNumber: number;
       }[];
     },
   ];
