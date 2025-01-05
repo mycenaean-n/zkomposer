@@ -39,7 +39,8 @@ const privyConfig = {
     accentColor: '#676FFF',
   },
   embeddedWallets: {
-    createOnLogin: 'users-without-wallets',
+    createOnLogin: 'all-users',
+    waitForTransactionConfirmation: true,
   },
   supportedChains:
     SUPPORTED_CHAINS as unknown as PrivyClientConfig['supportedChains'],
