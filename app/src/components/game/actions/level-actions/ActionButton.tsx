@@ -14,6 +14,7 @@ export function ActionButton({
   variant,
   fullWidth,
   children,
+  ...props
 }: ActionButtonProps) {
   return (
     <Button
@@ -25,6 +26,7 @@ export function ActionButton({
       )}
       type="button"
       rounded
+      {...props}
     >
       {children}
     </Button>
