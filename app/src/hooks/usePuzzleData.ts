@@ -4,11 +4,11 @@ import { circuitFunctionsArray } from 'circuits/types/circuitFunctions.types';
 import { convertPuzzleToBase4FromHex } from 'circuits/utils/contracts/hexConversion';
 import { multicall } from 'wagmi/actions';
 import { abi as PUZZLESET_ABI } from '../abis/zKubePuzzleSet';
-import { ZKUBE_PUZZLESET_ADDRESS } from '../config';
 import { wagmiConfig } from '../providers/Web3Provider';
 import { OnChainPuzzle, Puzzle } from '../types/Puzzle';
 import { mapGrid } from '../utils';
 import { useReadContractPuzzleSet } from './useReadContract';
+import { useRouteParams } from './useRouteChange';
 
 type PuzzleWithId = Puzzle & { id: number };
 
@@ -35,14 +35,16 @@ type UsePuzzleReturnType = {
 };
 
 const queryFunction = async (numberOfPuzzles: bigint) => {
-  const contracts = Array.from({ length: Number(numberOfPuzzles) }, (_, i) => {
-    return {
-      address: ZKUBE_PUZZLESET_ADDRESS,
-      abi: PUZZLESET_ABI,
-      functionName: 'getPuzzle',
-      args: [BigInt(i)],
-    };
-  });
+  const { puzzleSet } = useRouteParams();
+  if (!puzzleSet) throw new Error('PuzzleSet address is required');
+
+  const contracts = Array.from({ length: Number(numberOfPuzzles) }, (_, i) => ({
+    address: puzzleSet,
+    abi: PUZZLESET_ABI,
+    functionName: 'getPuzzle',
+    args: [BigInt(i)],
+  }));
+
   const results = await multicall(wagmiConfig, { contracts });
   const puzzles: PuzzleWithId[] | undefined = results
     .map((r, i) => parsePuzzleData(r.result as unknown as OnChainPuzzle, i))
