@@ -2,7 +2,7 @@
 
 Puzzle game inspired by [Cube Composer](https://david-peter.de/cube-composer/) and verified using ZK proofs.
 
-https://github.com/mycenaean-n/zkomposer/zkomposer.mp4
+https://github.com/user-attachments/assets/f16a56bd-f1c1-40e7-a2a4-e2dc50fc5476
 
 ## Rules
 
