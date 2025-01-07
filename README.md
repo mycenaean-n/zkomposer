@@ -1,4 +1,4 @@
-# zKube
+# zkomposers
 
 Puzzle game inspired by [Cube Composer](https://david-peter.de/cube-composer/) and verified using ZK proofs.
 
