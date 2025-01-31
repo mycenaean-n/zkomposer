@@ -1,3 +1,4 @@
+'use client';
 import { Colors } from 'circuits';
 import { Color, ColorRepresentation, Vector3 } from 'three';
 import { Cube } from './Cube';

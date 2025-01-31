@@ -1,5 +1,11 @@
 'use client';
-import { createContext, useCallback, useContext, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 
 interface LeaderboardContextType {
   isLeaderboardOpen: boolean;
@@ -16,7 +22,25 @@ export function LeaderboardProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
+  const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(
+    typeof window !== 'undefined' ? window.innerWidth >= 1280 : false
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1280) {
+        setIsLeaderboardOpen(true);
+      } else {
+        setIsLeaderboardOpen(false);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const closeLeaderboard = useCallback(() => {
     if (window.innerWidth < 1024) {

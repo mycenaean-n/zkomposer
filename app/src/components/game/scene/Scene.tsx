@@ -1,8 +1,6 @@
+'use client';
 import { Canvas } from '@react-three/fiber';
-import { gridMutator } from 'circuits';
-import { Colors } from 'circuits/types/circuitFunctions.types';
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import { Vector3 } from 'three';
 import { useLeaderboard } from '../../../context/LeaderboardContext';
@@ -19,25 +17,8 @@ type SceneProps = {
 } & React.HTMLAttributes<HTMLDivElement>;
 
 export function Scene({ className, ...props }: SceneProps) {
-  const [grids, setGrids] = useState<Colors[][][]>([]);
-  const { initConfig, functions } = usePuzzleContext();
+  const { initConfig, grids } = usePuzzleContext();
   const { closeLeaderboard } = useLeaderboard();
-
-  useEffect(() => {
-    const mutatedGrids: Colors[][][] = [];
-    if (functions?.chosen && initConfig?.initialGrid) {
-      functions.chosen.forEach((funcName, index) => {
-        if (index === 0) {
-          const grid = gridMutator(initConfig?.initialGrid, [funcName]);
-          mutatedGrids.push(grid);
-        } else {
-          const grid = gridMutator(mutatedGrids[index - 1], [funcName]);
-          mutatedGrids.push(grid);
-        }
-      });
-    }
-    setGrids(mutatedGrids);
-  }, [functions]);
 
   return (
     <div
@@ -58,14 +39,12 @@ export function Scene({ className, ...props }: SceneProps) {
               grid={initConfig.initialGrid}
               position={{ x: STARTING_X_POS, y: STARTING_Y_POS, z: 0 }}
             />
-            {grids.length > 0 && (
-              <IntermediateGrids
-                grids={grids}
-                availableFunctions={initConfig.availableFunctions}
-                xPos={STARTING_X_POS}
-                yPos={STARTING_Y_POS}
-              />
-            )}
+            <IntermediateGrids
+              grids={grids}
+              availableFunctions={initConfig.availableFunctions}
+              xPos={STARTING_X_POS}
+              yPos={STARTING_Y_POS}
+            />
           </>
         )}
         <ResponsiveCamera />

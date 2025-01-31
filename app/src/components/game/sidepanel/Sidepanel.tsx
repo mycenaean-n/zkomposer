@@ -1,5 +1,5 @@
+'use client';
 import clsx from 'clsx';
-import { useEffect } from 'react';
 import { useLeaderboard } from '../../../context/LeaderboardContext';
 import { useRouteParams } from '../../../hooks/useRouteChange';
 import { ArrowLeft } from '../../ui/icons/ArrowLeft';
@@ -14,23 +14,6 @@ type SidepanelProps = {
 export function Sidepanel({ className }: SidepanelProps) {
   const { id, puzzleSet } = useRouteParams();
   const { isLeaderboardOpen, setIsLeaderboardOpen } = useLeaderboard();
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1280) {
-        setIsLeaderboardOpen(true);
-      } else {
-        setIsLeaderboardOpen(false);
-      }
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
 
   return (
     <div

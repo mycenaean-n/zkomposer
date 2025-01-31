@@ -1,21 +1,19 @@
+'use client';
 import { CircuitFunctions } from 'circuits/types/circuitFunctions.types';
 import React from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { PuzzleContextType } from '../../../context/PuzzleContext';
+import { usePuzzleContext } from '../../../context/PuzzleContext';
 import { useOnDragEnd } from '../../../hooks/useOnDrag';
 import { PuzzleFunctionState } from '../../../types/Puzzle';
 import { Function } from './Function';
 
-export type DragAndDropProps = {
-  functions: NonNullable<PuzzleContextType['functions']>;
-  setFunctions: NonNullable<PuzzleContextType['setFunctions']>;
-};
+export const DragAndDrop: React.FC = () => {
+  const { functions, setFunctions } = usePuzzleContext();
+  const { onDragEnd } = useOnDragEnd({
+    functions,
+    setFunctions,
+  });
 
-export const DragAndDrop: React.FC<DragAndDropProps> = ({
-  functions,
-  setFunctions,
-}) => {
-  const { onDragEnd } = useOnDragEnd({ functions, setFunctions });
   return (
     <div className="grid grid-cols-2 justify-center gap-2">
       <DragDropContext onDragEnd={onDragEnd}>
@@ -26,7 +24,7 @@ export const DragAndDrop: React.FC<DragAndDropProps> = ({
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
-              {functions.remaining.map((funcName: CircuitFunctions, i) => (
+              {functions?.remaining?.map((funcName: CircuitFunctions, i) => (
                 <Function
                   key={`${funcName}-${i}`}
                   elementType="remaining"
@@ -45,7 +43,7 @@ export const DragAndDrop: React.FC<DragAndDropProps> = ({
               className="rounded-sm border border-black"
               {...provided.droppableProps}
             >
-              {functions.chosen.map((funcName: CircuitFunctions, i) => (
+              {functions?.chosen?.map((funcName: CircuitFunctions, i) => (
                 <Function
                   key={`${funcName}-${i}`}
                   elementType="chosen"
