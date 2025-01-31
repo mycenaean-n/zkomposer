@@ -1,5 +1,6 @@
 import clsx from 'clsx';
-import { Dispatch, SetStateAction, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useLeaderboard } from '../../../context/LeaderboardContext';
 import { useRouteParams } from '../../../hooks/useRouteChange';
 import { ArrowLeft } from '../../ui/icons/ArrowLeft';
 import { ArrowRight } from '../../ui/icons/ArrowRight';
@@ -8,16 +9,11 @@ import { Menu } from './Menu';
 
 type SidepanelProps = {
   className: string;
-  isLeaderboardOpen: boolean;
-  setIsLeaderboardOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-export function Sidepanel({
-  className,
-  isLeaderboardOpen,
-  setIsLeaderboardOpen,
-}: SidepanelProps) {
+export function Sidepanel({ className }: SidepanelProps) {
   const { id, puzzleSet } = useRouteParams();
+  const { isLeaderboardOpen, setIsLeaderboardOpen } = useLeaderboard();
 
   useEffect(() => {
     const handleResize = () => {
