@@ -2,6 +2,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { circuitFunctionsArray } from 'circuits/types/circuitFunctions.types';
 import { convertPuzzleToBase4FromHex } from 'circuits/utils/contracts/hexConversion';
+import { Address } from 'viem';
 import { multicall } from 'wagmi/actions';
 import { abi as PUZZLESET_ABI } from '../abis/zKubePuzzleSet';
 import { wagmiConfig } from '../providers/Web3Provider';
@@ -34,8 +35,10 @@ type UsePuzzleReturnType = {
   error: Error | null;
 };
 
-const queryFunction = async (numberOfPuzzles: bigint) => {
-  const { puzzleSet } = useRouteParams();
+const queryFunction = async (
+  numberOfPuzzles: bigint,
+  puzzleSet: Address | null
+) => {
   if (!puzzleSet) throw new Error('PuzzleSet address is required');
 
   const contracts = Array.from({ length: Number(numberOfPuzzles) }, (_, i) => ({
@@ -49,15 +52,15 @@ const queryFunction = async (numberOfPuzzles: bigint) => {
   const puzzles: PuzzleWithId[] | undefined = results
     .map((r, i) => parsePuzzleData(r.result as unknown as OnChainPuzzle, i))
     .filter(Boolean) as PuzzleWithId[] | undefined;
-
   return puzzles;
 };
 
 const usePuzzles = (): UsePuzzleReturnType => {
+  const { puzzleSet } = useRouteParams();
   const { data: numberOfPuzzles } = useReadContractPuzzleSet('numberOfPuzzles');
   const { data, isLoading, error } = useQuery<PuzzleWithId[] | undefined>({
     queryKey: ['puzzles'],
-    queryFn: () => queryFunction(numberOfPuzzles!),
+    queryFn: () => queryFunction(numberOfPuzzles!, puzzleSet),
     enabled: !!numberOfPuzzles,
   });
 
