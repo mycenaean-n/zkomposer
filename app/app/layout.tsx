@@ -1,5 +1,6 @@
 import { Header } from '../src/components/header/Header';
 import { PageFooter } from '../src/components/PageFooter';
+import { LeaderboardProvider } from '../src/context/LeaderboardContext';
 import { ProofContextProvider } from '../src/context/ProofContext';
 import { PuzzleContextProvider } from '../src/context/PuzzleContext';
 import { ApolloClientProvider } from '../src/providers/ApolloClientProvider';
@@ -33,9 +34,11 @@ export default function RootLayout({
           <Web3Provider>
             <PuzzleContextProvider>
               <ProofContextProvider>
-                <Header />
-                <main className="container m-auto">{children}</main>
-                <PageFooter />
+                <LeaderboardProvider>
+                  <Header />
+                  <main className="container m-auto">{children}</main>
+                  <PageFooter />
+                </LeaderboardProvider>
               </ProofContextProvider>
             </PuzzleContextProvider>
           </Web3Provider>

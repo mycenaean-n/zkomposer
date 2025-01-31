@@ -5,7 +5,8 @@ import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import { Vector3 } from 'three';
-import { Puzzle, PuzzleFunctions } from '../../../types/Puzzle';
+import { useLeaderboard } from '../../../context/LeaderboardContext';
+import { usePuzzleContext } from '../../../context/PuzzleContext';
 import { Grid } from './grid/Grid';
 import IntermediateGrids from './IntermediateGrids';
 import { ResponsiveCamera } from './ResponsiveCamera';
@@ -14,31 +15,20 @@ const STARTING_X_POS = isMobile ? -0.7 : -1.5;
 const STARTING_Y_POS = isMobile ? 0.3 : 0.5;
 
 type SceneProps = {
-  initConfig: Puzzle;
-  functions: PuzzleFunctions;
   className: string;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-export function Scene({
-  initConfig,
-  functions,
-  className,
-  ...props
-}: SceneProps) {
+export function Scene({ className, ...props }: SceneProps) {
   const [grids, setGrids] = useState<Colors[][][]>([]);
-
-  const {
-    initialGrid: startingGrid,
-    finalGrid,
-    availableFunctions,
-  } = initConfig;
+  const { initConfig, functions } = usePuzzleContext();
+  const { closeLeaderboard } = useLeaderboard();
 
   useEffect(() => {
     const mutatedGrids: Colors[][][] = [];
-    if (functions.chosen && startingGrid) {
+    if (functions?.chosen && initConfig?.initialGrid) {
       functions.chosen.forEach((funcName, index) => {
         if (index === 0) {
-          const grid = gridMutator(startingGrid, [funcName]);
+          const grid = gridMutator(initConfig?.initialGrid, [funcName]);
           mutatedGrids.push(grid);
         } else {
           const grid = gridMutator(mutatedGrids[index - 1], [funcName]);
@@ -51,6 +41,7 @@ export function Scene({
 
   return (
     <div
+      onClick={closeLeaderboard}
       className={clsx('grid grid-cols-[3fr_1fr] gap-2', className)}
       {...props}
     >
@@ -61,20 +52,22 @@ export function Scene({
         }}
       >
         <ambientLight intensity={Math.PI} />
-        {startingGrid ? (
-          <Grid
-            grid={startingGrid}
-            position={{ x: STARTING_X_POS, y: STARTING_Y_POS, z: 0 }}
-          />
-        ) : null}
-        {grids.length > 0 && availableFunctions ? (
-          <IntermediateGrids
-            grids={grids}
-            availableFunctions={availableFunctions}
-            xPos={STARTING_X_POS}
-            yPos={STARTING_Y_POS}
-          />
-        ) : null}
+        {initConfig && (
+          <>
+            <Grid
+              grid={initConfig.initialGrid}
+              position={{ x: STARTING_X_POS, y: STARTING_Y_POS, z: 0 }}
+            />
+            {grids.length > 0 && (
+              <IntermediateGrids
+                grids={grids}
+                availableFunctions={initConfig.availableFunctions}
+                xPos={STARTING_X_POS}
+                yPos={STARTING_Y_POS}
+              />
+            )}
+          </>
+        )}
         <ResponsiveCamera />
       </Canvas>
       <div className="relative overflow-hidden">
@@ -87,7 +80,12 @@ export function Scene({
             position: new Vector3(2.5, 3, 3),
           }}
         >
-          <Grid grid={finalGrid} position={{ x: 0.7, y: 1.5, z: 0.8 }} />
+          {initConfig ? (
+            <Grid
+              grid={initConfig?.finalGrid}
+              position={{ x: 0.7, y: 1.5, z: 0.8 }}
+            />
+          ) : null}
           <ResponsiveCamera />
         </Canvas>
       </div>
