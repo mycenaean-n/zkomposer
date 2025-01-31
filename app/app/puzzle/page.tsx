@@ -1,4 +1,3 @@
-'use client';
 import { Actions } from '../../src/components/game/actions/Actions';
 import { PuzzleLayout } from '../../src/components/game/layout/Layout';
 import { Scene } from '../../src/components/game/scene/Scene';

@@ -1,8 +1,28 @@
 import { DropResult } from 'react-beautiful-dnd';
-import { DragAndDropProps } from '../components/game/actions/DragAndDrop';
+import { PuzzleContextType } from '../context/PuzzleContext';
 import { PuzzleFunctionState } from '../types/Puzzle';
 
+type DragAndDropProps = {
+  functions: PuzzleContextType['functions'];
+  setFunctions: PuzzleContextType['setFunctions'];
+};
+
+type NonNullableDragAndDropProps = {
+  functions: NonNullable<PuzzleContextType['functions']>;
+  setFunctions: NonNullable<PuzzleContextType['setFunctions']>;
+};
+
 export function useOnDragEnd({ functions, setFunctions }: DragAndDropProps) {
+  const areFunctionsDefined =
+    functions?.remaining &&
+    functions?.chosen &&
+    functions?.available &&
+    setFunctions;
+
+  if (!areFunctionsDefined) {
+    return { onDragEnd: () => {} };
+  }
+
   const onDragEnd = (result: DropResult) => {
     const { source, destination } = result;
     if (!destination) return;
@@ -16,7 +36,7 @@ export function useOnDragEnd({ functions, setFunctions }: DragAndDropProps) {
 
       destinationFunctions.splice(destination.index, 0, removedFunction);
       setFunctions((prev) => ({
-        ...(prev as DragAndDropProps['functions']),
+        ...(prev as NonNullableDragAndDropProps['functions']),
         [sourceFunctionState]: sourceFunctions,
         [destinationFunctionState]: destinationFunctions,
       }));
@@ -26,7 +46,7 @@ export function useOnDragEnd({ functions, setFunctions }: DragAndDropProps) {
       const [removedFunction] = reorderedFunctions.splice(source.index, 1);
       reorderedFunctions.splice(destination.index, 0, removedFunction);
       setFunctions((prev) => ({
-        ...(prev as DragAndDropProps['functions']),
+        ...(prev as NonNullableDragAndDropProps['functions']),
         [functionState]: reorderedFunctions,
       }));
     }
