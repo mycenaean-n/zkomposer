@@ -1,19 +1,16 @@
+'use client';
 import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
-import { Address } from 'viem';
 import { useProof } from '../../../context/ProofContext';
 import { usePrivyWalletAddress } from '../../../hooks/privy/usePrivyWalletAddress';
 import { useReadContractPuzzleSet } from '../../../hooks/useReadContract';
+import { useRouteParams } from '../../../hooks/useRouteChange';
 import { useUserPuzzlesSolved } from '../../../hooks/useUserPuzzlesSolved';
 import { composePuzzleRoute } from '../../../utils/composePuzzleRoute';
 import { hasSubmittedPuzzle } from '../../../utils/hasSubmittedPuzzle';
 
-type MenuProps = {
-  puzzleSet: Address | null;
-  puzzleId: string | null;
-};
-
-export function Menu({ puzzleId, puzzleSet }: MenuProps) {
+export function Menu() {
+  const { id, puzzleSet } = useRouteParams();
   const { data: numberOfPuzzlesInSet } =
     useReadContractPuzzleSet('numberOfPuzzles');
   const { address } = usePrivyWalletAddress();
@@ -22,7 +19,6 @@ export function Menu({ puzzleId, puzzleSet }: MenuProps) {
   const { nullifyProofCalldata } = useProof();
 
   const navigateLevel = (level: number) => {
-    console.log('navigateLevel', puzzleSet, level);
     if (!puzzleSet) return;
     const newId = String(level);
     nullifyProofCalldata();
@@ -45,7 +41,7 @@ export function Menu({ puzzleId, puzzleSet }: MenuProps) {
               'hover:border-primary hover:scale-[102%] hover:shadow-md',
               hasSubmittedPuzzle(user, i) &&
                 'after:absolute after:left-[-20%] after:top-1/2 after:h-[1px] after:w-[141%] after:rotate-[-45deg] after:bg-black',
-              Number(puzzleId) === i ? 'border-[3px] border-black' : 'p-[3px]'
+              Number(id) === i ? 'border-[3px] border-black' : 'p-[3px]'
             )}
           >
             {i + 1}

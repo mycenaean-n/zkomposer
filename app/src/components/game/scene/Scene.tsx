@@ -5,6 +5,7 @@ import { isMobile } from 'react-device-detect';
 import { Vector3 } from 'three';
 import { useLeaderboard } from '../../../context/LeaderboardContext';
 import { usePuzzleContext } from '../../../context/PuzzleContext';
+import { Skeleton } from '../../ui/skeleton/Skeleton';
 import { Grid } from './grid/Grid';
 import IntermediateGrids from './IntermediateGrids';
 import { ResponsiveCamera } from './ResponsiveCamera';
@@ -19,6 +20,10 @@ type SceneProps = {
 export function Scene({ className, ...props }: SceneProps) {
   const { initConfig, grids } = usePuzzleContext();
   const { closeLeaderboard } = useLeaderboard();
+
+  if (!initConfig || !grids) {
+    return <Skeleton className={className} />;
+  }
 
   return (
     <div

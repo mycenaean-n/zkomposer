@@ -5,6 +5,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { usePuzzleContext } from '../../../context/PuzzleContext';
 import { useOnDragEnd } from '../../../hooks/useOnDrag';
 import { PuzzleFunctionState } from '../../../types/Puzzle';
+import { Skeleton } from '../../ui/skeleton/Skeleton';
 import { Function } from './Function';
 
 export const DragAndDrop: React.FC = () => {
@@ -14,47 +15,57 @@ export const DragAndDrop: React.FC = () => {
     setFunctions,
   });
 
+  const isLoading = !functions || !setFunctions;
+
   return (
-    <div className="grid grid-cols-2 justify-center gap-2">
+    <div className="grid h-auto grid-cols-2 justify-center gap-2">
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId={PuzzleFunctionState.remaining}>
-          {(provided) => (
-            <div
-              className="h-[18.5rem] border border-black"
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-            >
-              {functions?.remaining?.map((funcName: CircuitFunctions, i) => (
-                <Function
-                  key={`${funcName}-${i}`}
-                  elementType="remaining"
-                  funcName={funcName}
-                  index={i}
-                />
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-        <Droppable droppableId={PuzzleFunctionState.chosen}>
-          {(provided) => (
-            <div
-              ref={provided.innerRef}
-              className="rounded-sm border border-black"
-              {...provided.droppableProps}
-            >
-              {functions?.chosen?.map((funcName: CircuitFunctions, i) => (
-                <Function
-                  key={`${funcName}-${i}`}
-                  elementType="chosen"
-                  funcName={funcName}
-                  index={i}
-                />
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
+        {!isLoading ? (
+          <Droppable droppableId={PuzzleFunctionState.remaining}>
+            {(provided) => (
+              <div
+                className="h-[18.5rem] border border-black"
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {functions?.remaining?.map((funcName: CircuitFunctions, i) => (
+                  <Function
+                    key={`${funcName}-${i}`}
+                    elementType="remaining"
+                    funcName={funcName}
+                    index={i}
+                  />
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        ) : (
+          <Skeleton className="h-[300px]" />
+        )}
+        {!isLoading ? (
+          <Droppable droppableId={PuzzleFunctionState.chosen}>
+            {(provided) => (
+              <div
+                ref={provided.innerRef}
+                className="h-[18.5rem] rounded-sm border border-black"
+                {...provided.droppableProps}
+              >
+                {functions?.chosen?.map((funcName: CircuitFunctions, i) => (
+                  <Function
+                    key={`${funcName}-${i}`}
+                    elementType="chosen"
+                    funcName={funcName}
+                    index={i}
+                  />
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        ) : (
+          <Skeleton className="h-[300px]" />
+        )}
       </DragDropContext>
     </div>
   );
