@@ -22,9 +22,7 @@ export function LeaderboardProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(
-    typeof window !== 'undefined' ? window.innerWidth >= 1280 : false
-  );
+  const [isLeaderboardOpen, setIsLeaderboardOpen] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {

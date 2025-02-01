@@ -1,9 +1,10 @@
 'use client';
+import { usePrivy } from '@privy-io/react-auth';
 import clsx from 'clsx';
 import { useLeaderboard } from '../../../context/LeaderboardContext';
-import { useRouteParams } from '../../../hooks/useRouteChange';
 import { ArrowLeft } from '../../ui/icons/ArrowLeft';
 import { ArrowRight } from '../../ui/icons/ArrowRight';
+import { Skeleton } from '../../ui/skeleton/Skeleton';
 import { Leaderboard } from './Leaderboard';
 import { Menu } from './Menu';
 
@@ -12,8 +13,12 @@ type SidepanelProps = {
 };
 
 export function Sidepanel({ className }: SidepanelProps) {
-  const { id, puzzleSet } = useRouteParams();
   const { isLeaderboardOpen, setIsLeaderboardOpen } = useLeaderboard();
+  const { ready } = usePrivy();
+
+  if (!ready) {
+    return <Skeleton className={className} />;
+  }
 
   return (
     <div
@@ -25,14 +30,16 @@ export function Sidepanel({ className }: SidepanelProps) {
     >
       <button
         type="button"
-        onClick={() => setIsLeaderboardOpen(!isLeaderboardOpen)}
+        onClick={() => {
+          setIsLeaderboardOpen(!isLeaderboardOpen);
+        }}
         className="w-8"
       >
         {isLeaderboardOpen ? <ArrowRight /> : <ArrowLeft />}
       </button>
       <div className={clsx('flex h-full min-w-72 flex-col gap-6', className)}>
-        <Menu puzzleSet={puzzleSet} puzzleId={id} />
-        <Leaderboard puzzleSet={puzzleSet} puzzleId={id} />
+        <Menu />
+        <Leaderboard />
       </div>
     </div>
   );
