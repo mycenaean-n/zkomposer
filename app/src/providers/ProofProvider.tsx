@@ -70,11 +70,7 @@ const ProofContext = createContext<ProofGenerationContextType | undefined>(
   undefined
 );
 
-export function ProofContextProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function ProofProvider({ children }: { children: React.ReactNode }) {
   const [proofCalldata, setProofCalldata] = useState<ZKProofCalldata | null>(
     null
   );
