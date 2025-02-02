@@ -1,12 +1,12 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { useProof } from '../../../../context/ProofContext';
 import { usePuzzleContext } from '../../../../context/PuzzleContext';
 import { useAuthAndUserState } from '../../../../hooks/level-actions/useAuthAndUseState';
 import { useContractInteractions } from '../../../../hooks/level-actions/useContractInteractions';
 import { usePrivyLogin } from '../../../../hooks/privy/usePrivyLogin';
 import { useRouteParams } from '../../../../hooks/useRouteChange';
+import { useProof } from '../../../../providers/ProofContext';
 import { composePuzzleRoute } from '../../../../utils/composePuzzleRoute';
 import { hasSubmittedPuzzle } from '../../../../utils/hasSubmittedPuzzle';
 import { ActionButton } from './ActionButton';

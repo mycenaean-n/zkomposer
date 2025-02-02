@@ -1,7 +1,7 @@
 'use client';
 import { usePrivy } from '@privy-io/react-auth';
 import clsx from 'clsx';
-import { useLeaderboard } from '../../../context/LeaderboardContext';
+import { useLeaderboard } from '../../../providers/LeaderboardContext';
 import { ArrowLeft } from '../../ui/icons/ArrowLeft';
 import { ArrowRight } from '../../ui/icons/ArrowRight';
 import { Skeleton } from '../../ui/skeleton/Skeleton';

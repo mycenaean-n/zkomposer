@@ -1,9 +1,9 @@
 import { Header } from '../src/components/header/Header';
 import { PageFooter } from '../src/components/PageFooter';
-import { LeaderboardProvider } from '../src/context/LeaderboardContext';
 import { ProofContextProvider } from '../src/context/ProofContext';
 import { PuzzleContextProvider } from '../src/context/PuzzleContext';
 import { ApolloClientProvider } from '../src/providers/ApolloClientProvider';
+import { LeaderboardProvider } from '../src/providers/LeaderboardContext';
 import { Web3Provider } from '../src/providers/Web3Provider';
 import './globals.css';
 export default function RootLayout({

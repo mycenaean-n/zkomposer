@@ -1,5 +1,5 @@
 import { DropResult } from 'react-beautiful-dnd';
-import { PuzzleContextType } from '../context/PuzzleContext';
+import { PuzzleContextType } from '../providers/PuzzleContext';
 import { PuzzleFunctionState } from '../types/Puzzle';
 
 type DragAndDropProps = {

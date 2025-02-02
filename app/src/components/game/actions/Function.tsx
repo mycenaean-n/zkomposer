@@ -1,6 +1,6 @@
 import { CircuitFunctions } from 'circuits/types/circuitFunctions.types';
 import { Draggable } from 'react-beautiful-dnd';
-import { usePuzzleContext } from '../../../context/PuzzleContext';
+import { usePuzzleContext } from '../../../providers/PuzzleContext';
 import { PuzzleFunctions } from '../../../types/Puzzle';
 import { FunctionCard } from './function-card/FunctionCard';
 
