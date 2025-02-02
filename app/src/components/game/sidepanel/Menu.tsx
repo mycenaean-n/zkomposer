@@ -5,7 +5,7 @@ import { usePrivyWalletAddress } from '../../../hooks/privy/usePrivyWalletAddres
 import { useReadContractPuzzleSet } from '../../../hooks/useReadContract';
 import { useRouteParams } from '../../../hooks/useRouteChange';
 import { useUserPuzzlesSolved } from '../../../hooks/useUserPuzzlesSolved';
-import { useProof } from '../../../providers/ProofContext';
+import { useProof } from '../../../providers/ProofProvider';
 import { composePuzzleRoute } from '../../../utils/composePuzzleRoute';
 import { hasSubmittedPuzzle } from '../../../utils/hasSubmittedPuzzle';
 
