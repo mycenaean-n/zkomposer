@@ -2,7 +2,7 @@ import { getCircuitFunctionIndex } from 'circuits';
 import { AVAILABLE_CIRCUITS } from 'circuits/config';
 import { useMemo, useState } from 'react';
 import { Address } from 'viem';
-import { usePuzzleContext } from '../providers/PuzzleContext';
+import { usePuzzleContext } from '../providers/PuzzleProvider';
 
 export function useInputSignals(address: Address) {
   const { initConfig, functions } = usePuzzleContext();

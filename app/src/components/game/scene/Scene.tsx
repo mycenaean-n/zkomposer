@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import { isMobile } from 'react-device-detect';
 import { Vector3 } from 'three';
 import { usePuzzleContext } from '../../../context/PuzzleContext';
-import { useLeaderboard } from '../../../providers/LeaderboardContext';
+import { useLeaderboard } from '../../../providers/LeaderboardProvider';
 import { Skeleton } from '../../ui/skeleton/Skeleton';
 import { Grid } from './grid/Grid';
 import IntermediateGrids from './IntermediateGrids';

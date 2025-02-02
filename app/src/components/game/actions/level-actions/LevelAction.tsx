@@ -6,7 +6,7 @@ import { useAuthAndUserState } from '../../../../hooks/level-actions/useAuthAndU
 import { useContractInteractions } from '../../../../hooks/level-actions/useContractInteractions';
 import { usePrivyLogin } from '../../../../hooks/privy/usePrivyLogin';
 import { useRouteParams } from '../../../../hooks/useRouteChange';
-import { useProof } from '../../../../providers/ProofContext';
+import { useProof } from '../../../../providers/ProofProvider';
 import { composePuzzleRoute } from '../../../../utils/composePuzzleRoute';
 import { hasSubmittedPuzzle } from '../../../../utils/hasSubmittedPuzzle';
 import { ActionButton } from './ActionButton';
