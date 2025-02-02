@@ -1,11 +1,11 @@
 'use client';
 import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
-import { useProof } from '../../../context/ProofContext';
 import { usePrivyWalletAddress } from '../../../hooks/privy/usePrivyWalletAddress';
 import { useReadContractPuzzleSet } from '../../../hooks/useReadContract';
 import { useRouteParams } from '../../../hooks/useRouteChange';
 import { useUserPuzzlesSolved } from '../../../hooks/useUserPuzzlesSolved';
+import { useProof } from '../../../providers/ProofContext';
 import { composePuzzleRoute } from '../../../utils/composePuzzleRoute';
 import { hasSubmittedPuzzle } from '../../../utils/hasSubmittedPuzzle';
 
