@@ -49,11 +49,7 @@ const functionInitializer = (
   };
 };
 
-export function PuzzleContextProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function PuzzleProvider({ children }: { children: React.ReactNode }) {
   const { id } = useRouteParams();
   const initConfig = usePuzzleData(id ?? '');
   const [functions, setFunctions] = useState<PuzzleFunctions | undefined>(

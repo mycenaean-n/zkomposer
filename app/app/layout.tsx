@@ -2,8 +2,8 @@ import { Header } from '../src/components/header/Header';
 import { PageFooter } from '../src/components/PageFooter';
 import { ApolloClientProvider } from '../src/providers/ApolloClientProvider';
 import { LeaderboardProvider } from '../src/providers/LeaderboardProvider';
-import { ProofContextProvider } from '../src/providers/ProofProvider';
-import { PuzzleContextProvider } from '../src/providers/PuzzleProvider';
+import { ProofProvider } from '../src/providers/ProofProvider';
+import { PuzzleProvider } from '../src/providers/PuzzleProvider';
 import { Web3Provider } from '../src/providers/Web3Provider';
 import './globals.css';
 export default function RootLayout({
@@ -32,15 +32,15 @@ export default function RootLayout({
       <body>
         <ApolloClientProvider>
           <Web3Provider>
-            <PuzzleContextProvider>
-              <ProofContextProvider>
+            <PuzzleProvider>
+              <ProofProvider>
                 <LeaderboardProvider>
                   <Header />
                   <main className="container m-auto">{children}</main>
                   <PageFooter />
                 </LeaderboardProvider>
-              </ProofContextProvider>
-            </PuzzleContextProvider>
+              </ProofProvider>
+            </PuzzleProvider>
           </Web3Provider>
         </ApolloClientProvider>
       </body>
