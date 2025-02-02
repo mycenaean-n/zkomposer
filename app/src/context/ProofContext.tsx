@@ -11,8 +11,8 @@ import React, {
   useState,
 } from 'react';
 import { zeroAddress } from 'viem';
-import { useInputSignals } from '../components/zk/hooks/useInputSignal';
 import { usePrivyWalletAddress } from '../hooks/privy/usePrivyWalletAddress';
+import { useInputSignals } from '../hooks/useInputSignal';
 import { generateGroth16ProofCalldataParsed } from '../hooks/useProof';
 import { useRouteParams } from '../hooks/useRouteChange';
 import { ZKProofCalldata } from '../types/Proof';
