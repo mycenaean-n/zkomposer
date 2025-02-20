@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { usePrivyWalletAddress } from '../privy/usePrivyWalletAddress';
-import { useContractWriteZKube } from '../useContractWrite';
 import { useReadContractPuzzleSet } from '../useReadContract';
 import { useRouteParams } from '../useRouteChange';
 import { useUserLeaderboard } from '../useUserLeaderboard';
 import { useUserPuzzlesSolved } from '../useUserPuzzlesSolved';
+import { useWriteContractZKube } from '../useWriteContractZKube';
 
 export function useContractInteractions() {
   const { puzzleSet } = useRouteParams();
@@ -19,7 +19,7 @@ export function useContractInteractions() {
     error: submitSolutionError,
     isConfirmed,
     isConfirming,
-  } = useContractWriteZKube('submitSolution');
+  } = useWriteContractZKube('submitSolution');
   const { data: puzzlesInSet } = useReadContractPuzzleSet('numberOfPuzzles');
   const [error, setError] = useState<Error | null>(null);
 

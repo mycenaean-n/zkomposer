@@ -7,7 +7,7 @@ import { ZKUBE_ADDRESS } from '../config';
 
 type ZKubeAbi = typeof zKubeAbi;
 
-export const useContractWriteZKube = <
+export const useWriteContractZKube = <
   funName extends ContractFunctionName<ZKubeAbi, 'payable' | 'nonpayable'>,
 >(
   functionName: funName
