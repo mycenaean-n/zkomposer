@@ -1,11 +1,12 @@
 import { Header } from '../src/components/header/Header';
-import { PageFooter } from '../src/components/PageFooter';
+import { PageFooter } from '../src/components/ui/PageFooter';
 import { ApolloClientProvider } from '../src/providers/ApolloClientProvider';
 import { LeaderboardProvider } from '../src/providers/LeaderboardProvider';
 import { ProofProvider } from '../src/providers/ProofProvider';
 import { PuzzleProvider } from '../src/providers/PuzzleProvider';
 import { Web3Provider } from '../src/providers/Web3Provider';
 import './globals.css';
+
 export default function RootLayout({
   children,
 }: {
