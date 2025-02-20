@@ -44,7 +44,7 @@ export function Leaderboard() {
                   user && user.id === address && 'bg-gray-100'
                 )}
               >
-                {user ? (
+                {user && (
                   <>
                     <td className="px-4 py-2 text-center text-sm text-gray-500">
                       {user && i + 1}
@@ -59,7 +59,7 @@ export function Leaderboard() {
                       {hasSubmittedPuzzle(user, id) ? '✅' : '❌'}
                     </td>
                   </>
-                ) : null}
+                )}
               </tr>
             );
           })}
