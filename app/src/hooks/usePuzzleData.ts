@@ -8,7 +8,7 @@ import { abi as PUZZLESET_ABI } from '../abis/zKubePuzzleSet';
 import { wagmiConfig } from '../providers/Web3Provider';
 import { OnChainPuzzle, Puzzle } from '../types/Puzzle';
 import { mapGrid } from '../utils';
-import { useReadContractPuzzleSet } from './useReadContract';
+import { useReadContractPuzzleSet } from './useReadContractPuzzleSet';
 import { useRouteParams } from './useRouteChange';
 
 type PuzzleWithId = Puzzle & { id: number };

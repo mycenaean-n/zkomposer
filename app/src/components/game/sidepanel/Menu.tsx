@@ -2,7 +2,7 @@
 import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
 import { usePrivyWalletAddress } from '../../../hooks/privy/usePrivyWalletAddress';
-import { useReadContractPuzzleSet } from '../../../hooks/useReadContract';
+import { useReadContractPuzzleSet } from '../../../hooks/useReadContractPuzzleSet';
 import { useRouteParams } from '../../../hooks/useRouteChange';
 import { useUserPuzzlesSolved } from '../../../hooks/useUserPuzzlesSolved';
 import { useProof } from '../../../providers/ProofProvider';
