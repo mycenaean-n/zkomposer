@@ -64,12 +64,12 @@ export function Scene({ className, ...props }: SceneProps) {
             position: new Vector3(2.5, 3, 3),
           }}
         >
-          {initConfig ? (
+          {initConfig && (
             <Grid
               grid={initConfig?.finalGrid}
               position={{ x: 0.7, y: 1.5, z: 0.8 }}
             />
-          ) : null}
+          )}
           <ResponsiveCamera />
         </Canvas>
       </div>
