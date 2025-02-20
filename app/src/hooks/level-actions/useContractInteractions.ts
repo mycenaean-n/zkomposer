@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { usePrivyWalletAddress } from '../privy/usePrivyWalletAddress';
-import { useReadContractPuzzleSet } from '../useReadContract';
+import { useReadContractPuzzleSet } from '../useReadContractPuzzleSet';
 import { useRouteParams } from '../useRouteChange';
 import { useUserLeaderboard } from '../useUserLeaderboard';
 import { useUserPuzzlesSolved } from '../useUserPuzzlesSolved';
