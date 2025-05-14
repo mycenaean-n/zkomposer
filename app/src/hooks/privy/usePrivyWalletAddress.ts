@@ -1,6 +1,5 @@
 'use client';
 import { usePrivy, User } from '@privy-io/react-auth';
-import { useEffect, useState } from 'react';
 import { Address } from 'viem';
 
 const getPrivyWalletAddress = (user: User | null): Address | undefined => {
@@ -13,18 +12,19 @@ const getPrivyWalletAddress = (user: User | null): Address | undefined => {
   }
 };
 
+let prevAddress: Address | undefined;
+
 export const usePrivyWalletAddress = () => {
   const { user } = usePrivy();
-  const [embeddedWalletAddress, setEmbeddedWalletAddress] = useState<
-    Address | undefined
-  >(getPrivyWalletAddress(user));
 
-  useEffect(() => {
-    setEmbeddedWalletAddress(getPrivyWalletAddress(user));
-  }, [user?.wallet?.address, user?.wallet?.connectorType]);
+  if (!user) {
+    return { address: undefined, isConnected: false };
+  }
 
-  return {
-    address: embeddedWalletAddress,
-    isConnected: !!embeddedWalletAddress,
-  };
+  if (user.wallet?.connectorType === 'embedded') {
+    prevAddress = user.wallet.address as Address;
+    return { address: prevAddress, isConnected: true };
+  }
+
+  return { address: prevAddress, isConnected: !!prevAddress };
 };
