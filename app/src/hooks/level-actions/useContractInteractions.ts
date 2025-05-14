@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { usePrivyWalletAddress } from '../privy/usePrivyWalletAddress';
 import { useReadContractPuzzleSet } from '../useReadContractPuzzleSet';
 import { useRouteParams } from '../useRouteChange';
@@ -21,24 +20,22 @@ export function useContractInteractions() {
     isConfirming,
   } = useWriteContractZKube('submitSolution');
   const { data: puzzlesInSet } = useReadContractPuzzleSet('numberOfPuzzles');
-  const [error, setError] = useState<Error | null>(null);
 
-  useEffect(() => {
-    if (
-      submitSolutionError?.message.includes('The total cost (gas * gas fee')
-    ) {
-      setError(new Error('Click "Faucet", get money'));
-    } else {
-      setError(submitSolutionError);
-    }
-  }, [submitSolutionError]);
+  if (isConfirmed) {
+    fetchLeaderboard();
+    fetchUserPuzzles();
+  }
 
-  useEffect(() => {
-    if (isConfirmed) {
-      fetchLeaderboard();
-      fetchUserPuzzles();
-    }
-  }, [isConfirmed]);
+  const formattedError = submitSolutionError?.message.includes(
+    'The total cost (gas * gas fee'
+  )
+    ? new Error('Click "Faucet", get money')
+    : submitSolutionError;
 
-  return { submitSolution, puzzlesInSet, error, setError, isConfirming };
+  return {
+    submitSolution,
+    puzzlesInSet,
+    error: formattedError,
+    isConfirming,
+  };
 }

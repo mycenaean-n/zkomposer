@@ -57,8 +57,6 @@ export function PuzzleProvider({ children }: { children: React.ReactNode }) {
     setFunctions(functionInitializer(initConfig));
   }, [initConfig]);
 
-  console.log('outside');
-
   const grids: Colors[][][] = [];
   if (functions?.chosen && initConfig?.initialGrid) {
     functions.chosen.forEach((funcName, index) => {
