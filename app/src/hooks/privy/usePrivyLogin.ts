@@ -1,23 +1,21 @@
 import { useLogin, useWallets } from '@privy-io/react-auth';
 import { useSetActiveWallet } from '@privy-io/wagmi';
-import { useEffect } from 'react';
+import { useCallback } from 'react';
 
 export const usePrivyLogin = (onComplete: () => void = () => {}) => {
-  const { login } = useLogin({ onComplete });
+  const { login: privyLogin } = useLogin({ onComplete });
   const { setActiveWallet } = useSetActiveWallet();
   const { wallets } = useWallets();
 
-  useEffect(() => {
-    if (wallets.length > 0) {
-      const privyWallet = wallets.find(
-        (wallet) => wallet.walletClientType === 'privy'
-      );
-
-      if (privyWallet) {
-        setActiveWallet(privyWallet);
-      }
+  const login = useCallback(async () => {
+    await privyLogin();
+    const privyWallet = wallets.find(
+      (wallet) => wallet.walletClientType === 'privy'
+    );
+    if (privyWallet) {
+      setActiveWallet(privyWallet);
     }
-  }, [wallets, setActiveWallet]);
+  }, [privyLogin, wallets, setActiveWallet]);
 
   return {
     login,
