@@ -7,7 +7,6 @@ import {
   SetStateAction,
   useContext,
   useEffect,
-  useMemo,
   useState,
 } from 'react';
 import { usePuzzleData } from '../hooks/usePuzzleData';
@@ -58,30 +57,27 @@ export function PuzzleProvider({ children }: { children: React.ReactNode }) {
     setFunctions(functionInitializer(initConfig));
   }, [initConfig]);
 
-  const grids = useMemo(() => {
-    const mutatedGrids: Colors[][][] = [];
-    if (functions?.chosen && initConfig?.initialGrid) {
-      functions.chosen.forEach((funcName, index) => {
-        if (index === 0) {
-          const grid = gridMutator(initConfig?.initialGrid, [funcName]);
-          mutatedGrids.push(grid);
-        } else {
-          const grid = gridMutator(mutatedGrids[index - 1], [funcName]);
-          mutatedGrids.push(grid);
-        }
-      });
-    }
+  console.log('outside');
 
-    return mutatedGrids;
-  }, [functions, initConfig]);
+  const grids: Colors[][][] = [];
+  if (functions?.chosen && initConfig?.initialGrid) {
+    functions.chosen.forEach((funcName, index) => {
+      if (index === 0) {
+        const grid = gridMutator(initConfig?.initialGrid, [funcName]);
+        grids.push(grid);
+      } else {
+        const grid = gridMutator(grids[index - 1], [funcName]);
+        grids.push(grid);
+      }
+    });
+  }
 
-  const isSolved = useMemo(() => {
-    const targetGrid = gridMutator(initConfig?.initialGrid ?? [], [
-      ...(functions?.chosen ?? []),
-    ]);
+  const targetGrid = gridMutator(initConfig?.initialGrid ?? [], [
+    ...(functions?.chosen ?? []),
+  ]);
 
-    return JSON.stringify(targetGrid) === JSON.stringify(initConfig?.finalGrid);
-  }, [functions, initConfig]);
+  const isSolved =
+    JSON.stringify(targetGrid) === JSON.stringify(initConfig?.finalGrid);
 
   const value = {
     initConfig,
