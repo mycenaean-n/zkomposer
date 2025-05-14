@@ -52,16 +52,13 @@ const functionInitializer = (
 export function PuzzleProvider({ children }: { children: React.ReactNode }) {
   const { id } = useRouteParams();
   const initConfig = usePuzzleData(id ?? '');
-  const [functions, setFunctions] = useState<PuzzleFunctions | undefined>(
-    functionInitializer(initConfig)
-  );
-  const [grids, setGrids] = useState<Colors[][][]>([]);
+  const [functions, setFunctions] = useState<PuzzleFunctions | undefined>();
 
   useEffect(() => {
     setFunctions(functionInitializer(initConfig));
   }, [initConfig]);
 
-  useEffect(() => {
+  const grids = useMemo(() => {
     const mutatedGrids: Colors[][][] = [];
     if (functions?.chosen && initConfig?.initialGrid) {
       functions.chosen.forEach((funcName, index) => {
@@ -74,7 +71,8 @@ export function PuzzleProvider({ children }: { children: React.ReactNode }) {
         }
       });
     }
-    setGrids(mutatedGrids);
+
+    return mutatedGrids;
   }, [functions, initConfig]);
 
   const isSolved = useMemo(() => {

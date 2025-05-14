@@ -1,10 +1,9 @@
 'use client';
 import {
   createContext,
-  useCallback,
   useContext,
   useEffect,
-  useState,
+  useState
 } from 'react';
 
 interface LeaderboardContextType {
@@ -40,11 +39,11 @@ export function LeaderboardProvider({
     };
   }, []);
 
-  const closeLeaderboard = useCallback(() => {
+  const closeLeaderboard = () => {
     if (window.innerWidth < 1024) {
       setIsLeaderboardOpen(false);
     }
-  }, []);
+  };
 
   return (
     <LeaderboardContext.Provider
