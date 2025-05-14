@@ -1,11 +1,11 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuthAndUserState } from '../../../../hooks/level-actions/useAuthAndUseState';
 import { useContractInteractions } from '../../../../hooks/level-actions/useContractInteractions';
 import { usePrivyLogin } from '../../../../hooks/privy/usePrivyLogin';
+import { useGenerateProof } from '../../../../hooks/useGenerateProof';
 import { useRouteParams } from '../../../../hooks/useRouteChange';
-import { useProof } from '../../../../providers/ProofProvider';
 import { usePuzzleContext } from '../../../../providers/PuzzleProvider';
 import { composePuzzleRoute } from '../../../../utils/composePuzzleRoute';
 import { hasSubmittedPuzzle } from '../../../../utils/hasSubmittedPuzzle';
@@ -13,23 +13,22 @@ import { ActionButton } from './ActionButton';
 import { LevelModal } from './LevelModal';
 
 export function LevelAction() {
-  const { id, puzzleSet } = useRouteParams();
-  const {
-    error,
-    loading,
-    generateAndVerifyProof,
-    proofCalldata,
-    nullifyProofCalldata,
-  } = useProof();
-  const { submitSolution, puzzlesInSet, isConfirming } =
-    useContractInteractions();
-  const { address, user } = useAuthAndUserState(puzzleSet);
-  const hasUserSubmittedPuzzle = hasSubmittedPuzzle(user, id);
-  const isLastInSet = Number(puzzlesInSet) === Number(id) + 1;
   const [isOpen, setIsOpen] = useState(false);
   const [isFirstClick, setIsFirstClick] = useState(true);
-  const { isSolved } = usePuzzleContext();
   const router = useRouter();
+  const { id, puzzleSet } = useRouteParams();
+  const { isSolved } = usePuzzleContext();
+  const { submitSolution, puzzlesInSet, isConfirming } =
+    useContractInteractions();
+  const { mutateAsync: generateProof, isPending, error } = useGenerateProof();
+  const { address, user } = useAuthAndUserState(puzzleSet);
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [id, puzzleSet]);
+
+  const hasUserSubmittedPuzzle = hasSubmittedPuzzle(user, id);
+  const isLastInSet = Number(puzzlesInSet) === Number(id) + 1;
 
   const handleNextLevel = () => {
     if (!puzzleSet) return;
@@ -41,13 +40,12 @@ export function LevelAction() {
     }
 
     const newId = String(Number(id) + 1);
-    nullifyProofCalldata();
     router.push(composePuzzleRoute(puzzleSet, newId));
     setIsOpen(false);
   };
 
   const handleProofGeneration = async () => {
-    const proofCalldata = await generateAndVerifyProof();
+    const proofCalldata = await generateProof(undefined);
     if (!puzzleSet || !id || !proofCalldata || hasUserSubmittedPuzzle) {
       return;
     }
@@ -69,7 +67,7 @@ export function LevelAction() {
 
   return (
     <div className="absolute right-4 top-[-80px] grid grid-cols-2 gap-2">
-      {isSolved && !loading && (
+      {isSolved && !isPending && (
         <>
           <SuccessMessage message="🎉 Puzzle Solved 🎉" />
           {!hasUserSubmittedPuzzle && (
@@ -104,8 +102,8 @@ export function LevelAction() {
           }}
         />
       )}
-      {loading && <LoadingState message="Generating Proof" icon="⚙️" />}
-      {error && !loading && !proofCalldata && <ErrorMessage error={error} />}
+      {isPending && <LoadingState message="Generating Proof" icon="⚙️" />}
+      {error && !isPending && <ErrorMessage error={error} />}
     </div>
   );
 }

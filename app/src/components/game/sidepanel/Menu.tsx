@@ -5,7 +5,6 @@ import { usePrivyWalletAddress } from '../../../hooks/privy/usePrivyWalletAddres
 import { useReadContractPuzzleSet } from '../../../hooks/useReadContractPuzzleSet';
 import { useRouteParams } from '../../../hooks/useRouteChange';
 import { useUserPuzzlesSolved } from '../../../hooks/useUserPuzzlesSolved';
-import { useProof } from '../../../providers/ProofProvider';
 import { composePuzzleRoute } from '../../../utils/composePuzzleRoute';
 import { hasSubmittedPuzzle } from '../../../utils/hasSubmittedPuzzle';
 
@@ -16,12 +15,9 @@ export function Menu() {
   const { address } = usePrivyWalletAddress();
   const router = useRouter();
   const { user } = useUserPuzzlesSolved({ address, puzzleSet });
-  const { nullifyProofCalldata } = useProof();
-
   const navigateLevel = (level: number) => {
     if (!puzzleSet) return;
     const newId = String(level);
-    nullifyProofCalldata();
     router.push(composePuzzleRoute(puzzleSet, newId));
   };
 
