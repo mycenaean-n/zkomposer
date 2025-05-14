@@ -135,9 +135,9 @@ export const useGenerateProof = () => {
   const { address } = usePrivyWalletAddress();
 
   const { mutateAsync, isPending, error } = useMutation({
-    mutationFn: () => {
+    mutationFn: async () => {
       const inputSignals = generateInputSignals(initConfig, functions, address);
-      const proof = generateProof(inputSignals);
+      const proof = await generateProof(inputSignals);
       return proof;
     },
   });
