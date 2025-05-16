@@ -1,6 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
 import { Address, checksumAddress } from 'viem';
-import { useWindowFocusRefetch } from './useWindowFocusRefetch';
 
 const USER_PUZZLES_SOLVED = gql`
   query UserPuzzlesSolved($userId: String!, $puzzleSet: String!) {
@@ -58,8 +57,6 @@ export function useUserPuzzlesSolved({
 
     return result.data?.users[0];
   };
-
-  useWindowFocusRefetch(queryResult.refetch);
 
   return {
     user: queryResult.data?.users[0],
