@@ -24,7 +24,7 @@ export const DragAndDrop: React.FC = () => {
           <Droppable droppableId={PuzzleFunctionState.remaining}>
             {(provided) => (
               <div
-                className="h-[18.5rem] border border-black"
+                className="h-[18.5rem] rounded-sm border border-black"
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
