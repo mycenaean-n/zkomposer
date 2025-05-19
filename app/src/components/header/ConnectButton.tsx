@@ -1,9 +1,8 @@
 'use client';
+import { usePrivyLogin, usePrivyWalletAddress } from '@/hooks';
 import { WalletIcon } from '@heroicons/react/24/solid';
 import { usePrivy } from '@privy-io/react-auth';
 import { Address } from 'viem';
-import { usePrivyLogin } from '../../hooks/privy/usePrivyLogin';
-import { usePrivyWalletAddress } from '../../hooks/privy/usePrivyWalletAddress';
 import { Button } from '../ui/Button';
 import { AccountSection } from './AccountSection';
 

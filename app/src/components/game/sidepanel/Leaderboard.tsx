@@ -1,10 +1,11 @@
 'use client';
+import {
+  usePrivyWalletAddress,
+  useRouteParams,
+  useUserLeaderboard,
+} from '@/hooks';
+import { hasSubmittedPuzzle, truncateAddress } from '@/utils';
 import clsx from 'clsx';
-import { usePrivyWalletAddress } from '../../../hooks/privy/usePrivyWalletAddress';
-import { useRouteParams } from '../../../hooks/useRouteChange';
-import { useUserLeaderboard } from '../../../hooks/useUserLeaderboard';
-import { hasSubmittedPuzzle } from '../../../utils/hasSubmittedPuzzle';
-import { truncateAddress } from '../../../utils/truncateAddress';
 
 export function Leaderboard() {
   const { id, puzzleSet } = useRouteParams();

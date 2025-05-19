@@ -1,14 +1,16 @@
 'use client';
+import {
+  useContractInteractions,
+  useGenerateProof,
+  usePrivyLogin,
+  usePrivyWalletAddress,
+  useRouteParams,
+  useUserPuzzlesSolved,
+} from '@/hooks';
+import { composePuzzleRoute, hasSubmittedPuzzle } from '@/utils';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { useAuthAndUserState } from '../../../../hooks/level-actions/useAuthAndUseState';
-import { useContractInteractions } from '../../../../hooks/level-actions/useContractInteractions';
-import { usePrivyLogin } from '../../../../hooks/privy/usePrivyLogin';
-import { useGenerateProof } from '../../../../hooks/useGenerateProof';
-import { useRouteParams } from '../../../../hooks/useRouteChange';
 import { usePuzzleContext } from '../../../../providers/PuzzleProvider';
-import { composePuzzleRoute } from '../../../../utils/composePuzzleRoute';
-import { hasSubmittedPuzzle } from '../../../../utils/hasSubmittedPuzzle';
 import { ActionButton } from './ActionButton';
 import { LevelModal } from './LevelModal';
 
@@ -21,7 +23,8 @@ export function LevelAction() {
   const { submitSolution, puzzlesInSet, isConfirming } =
     useContractInteractions();
   const { mutateAsync: generateProof, isPending, error } = useGenerateProof();
-  const { address, user } = useAuthAndUserState(puzzleSet);
+  const { address } = usePrivyWalletAddress();
+  const { user } = useUserPuzzlesSolved({ address, puzzleSet });
 
   useEffect(() => {
     setIsOpen(false);

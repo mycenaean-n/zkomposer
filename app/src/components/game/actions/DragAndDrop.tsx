@@ -1,8 +1,8 @@
 'use client';
+import { useOnDragEnd } from '@/hooks/useOnDrag';
 import { CircuitFunctions } from 'circuits/types/circuitFunctions.types';
 import React from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { useOnDragEnd } from '../../../hooks/useOnDrag';
 import { usePuzzleContext } from '../../../providers/PuzzleProvider';
 import { PuzzleFunctionState } from '../../../types/Puzzle';
 import { Skeleton } from '../../ui/skeleton/Skeleton';

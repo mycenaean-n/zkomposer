@@ -1,4 +1,5 @@
 'use client';
+import { usePuzzleData, useRouteParams } from '@/hooks';
 import { Colors } from 'circuits/types/circuitFunctions.types';
 import { gridMutator } from 'circuits/utils/transformers/gridMutator';
 import {
@@ -9,8 +10,6 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { usePuzzleData } from '../hooks/usePuzzleData';
-import { useRouteParams } from '../hooks/useRouteChange';
 import { Puzzle, PuzzleFunctions } from '../types/Puzzle';
 
 export type PuzzleContextType = {

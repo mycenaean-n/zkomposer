@@ -1,5 +1,4 @@
-import { usePrivyWalletAddress } from '@/hooks/privy/usePrivyWalletAddress';
-import { useCopyToClipboard } from '@hooks/useCopyToClipboard';
+import { useCopyToClipboard, usePrivyWalletAddress } from '@/hooks';
 import { Button } from '../ui/Button';
 import { Tooltip } from '../ui/Tooltip';
 
