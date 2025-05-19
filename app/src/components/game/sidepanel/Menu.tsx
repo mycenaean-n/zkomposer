@@ -1,12 +1,13 @@
 'use client';
+import {
+  usePrivyWalletAddress,
+  useReadContractPuzzleSet,
+  useRouteParams,
+  useUserPuzzlesSolved,
+} from '@/hooks';
+import { composePuzzleRoute, hasSubmittedPuzzle } from '@/utils';
 import clsx from 'clsx';
 import { useRouter } from 'next/navigation';
-import { usePrivyWalletAddress } from '../../../hooks/privy/usePrivyWalletAddress';
-import { useReadContractPuzzleSet } from '../../../hooks/useReadContractPuzzleSet';
-import { useRouteParams } from '../../../hooks/useRouteChange';
-import { useUserPuzzlesSolved } from '../../../hooks/useUserPuzzlesSolved';
-import { composePuzzleRoute } from '../../../utils/composePuzzleRoute';
-import { hasSubmittedPuzzle } from '../../../utils/hasSubmittedPuzzle';
 
 export function Menu() {
   const { id, puzzleSet } = useRouteParams();
