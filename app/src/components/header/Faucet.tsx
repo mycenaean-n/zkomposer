@@ -9,7 +9,7 @@ export function Faucet() {
     <div className="relative inline-block">
       <Button
         variant="secondary"
-        onClick={faucetCallback}
+        onClick={() => faucetCallback()}
         className="min-w-[5rem] rounded-l-sm"
         loading={loading}
       >
